@@ -49,9 +49,10 @@ public class Main {
 		//LolAccount lolAccount = lolAccountsRestClient.getLolAccount(4L);
 		//System.out.println(lolAccount);
 		
-		LolAccount accountToCreate = new LolAccount("JosDevos","JosDevos123","EUW", true);
-		LolAccount createdAccount = lolAccountsRestClient.createLolAccount(3L, accountToCreate);
-		System.out.println(createdAccount);
+		//LLolAccount accountToCreate = new LolAccount("JosDevos","JosDevos123","EUW", true);
+		//LolAccount createdAccount = lolAccountsRestClient.createLolAccount(3L, accountToCreate);
+		//System.out.println(createdAccount);
 		
+		lolAccountsRestClient.test();
 	}
 }

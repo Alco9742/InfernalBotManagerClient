@@ -33,4 +33,9 @@ public class LolAccountsRestClient {
 		LolAccount createdAccount = restTemplate.postForObject(URI_ACCOUNTS + "/user/" + userid, entity, LolAccount.class); 
 		return createdAccount;
 	}
+	
+	public void test(){
+		HttpHeaders httpHeaders = restTemplate.headForHeaders("http://localhost:8080/api/accounts/user/9");
+		System.out.println(httpHeaders.toString());
+	}
 }
