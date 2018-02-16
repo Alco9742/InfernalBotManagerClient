@@ -1,0 +1,51 @@
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+}
+
+plugins {
+	id 'java'
+	id 'eclipse'
+	id "io.franzbecker.gradle-lombok" version "1.11"
+}
+
+
+jar {
+    baseName = 'LeagueInformerClient'
+    version =  '0.1.0'
+}
+
+lombok {
+	version = '1.16.20'
+	sha256 = ""
+}
+
+repositories {
+    mavenCentral()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+           // exclude '**/nocompile/**'
+       }
+   }
+}
+dependencies {
+    compile group: 'commons-collections', name: 'commons-collections', version: '3.2'
+	compile(group: 'com.google.code.gson', name: 'gson', version: '2.3.1')
+	compile(group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.3')
+	compile(group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-xml', version: '2.9.4')
+	compile(group: 'org.springframework', name: 'spring-web', version: '5.0.3.RELEASE')
+    testCompile group: 'junit', name: 'junit', version: '4.+'
+}
+
+test {
+    systemProperties 'property': 'value'
+}
+
