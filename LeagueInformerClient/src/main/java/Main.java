@@ -13,6 +13,7 @@ import org.springframework.web.client.HttpClientErrorException;
 
 import net.nilsghesquiere.entities.AppUser;
 import net.nilsghesquiere.entities.LolAccount;
+import net.nilsghesquiere.enums.Server;
 import net.nilsghesquiere.restclients.LolAccountsRestClient;
 
 public class Main {
@@ -100,7 +101,7 @@ public class Main {
 	
 	private static void leagueInformerAPICreateTest(LolAccountsRestClient lolAccountsRestClient){
 		try{
-			LolAccount accountToCreate = new LolAccount("JosDevos","JosDevos123","EUW", true);
+			LolAccount accountToCreate = new LolAccount("JosDevos","JosDevos123",Server.EUROPE_WEST, 30L, true);
 			LolAccount updatedAccount = lolAccountsRestClient.createLolAccount(9L, accountToCreate);
 			System.out.println(updatedAccount);
 		} catch(HttpClientErrorException e){
@@ -116,7 +117,7 @@ public class Main {
 			LolAccount account = lolAccountsRestClient.getLolAccount(77L);
 			System.out.println(account);
 			account.setUsername("Nils");
-			account.setRegion("EUNE");
+			account.setServer(Server.EUROPE_NORTH_EAST);
 			LolAccount updatedAccount = lolAccountsRestClient.updateLolAccount(9L, account);
 			System.out.println(updatedAccount);
 		} catch(HttpClientErrorException e){

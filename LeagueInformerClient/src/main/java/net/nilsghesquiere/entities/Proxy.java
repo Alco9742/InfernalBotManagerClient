@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import net.nilsghesquiere.enums.ProxyTypeEnum;
+import net.nilsghesquiere.enums.ProxyType;
 
 @Data
 public class Proxy implements Serializable {
@@ -15,12 +15,12 @@ public class Proxy implements Serializable {
 	private String proxyPort;
 	private String proxyUser;
 	private String proxyPassword;	
-	private ProxyTypeEnum proxyType;
+	private ProxyType proxyType;
 	
 	public Proxy() {}
 	
 	public Proxy(String handle, String proxyHost, String proxyPort,
-			String proxyUser, String proxyPassword, ProxyTypeEnum proxyType) {
+			String proxyUser, String proxyPassword, ProxyType proxyType) {
 		super();
 		this.handle = handle;
 		this.proxyHost = proxyHost;

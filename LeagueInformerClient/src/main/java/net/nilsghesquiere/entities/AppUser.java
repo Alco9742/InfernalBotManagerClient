@@ -1,6 +1,7 @@
 package net.nilsghesquiere.entities;
 
 import java.io.Serializable;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -20,6 +21,8 @@ public class AppUser implements Serializable{
 	@JsonIgnore
 	private String password;
 	private boolean enabled;
+	private ZoneId timezone;
+	private Long standardLevel;
 	private Set<Role> roles;
 	
 	public AppUser() {}
@@ -30,6 +33,8 @@ public class AppUser implements Serializable{
 		this.password = password;
 		this.roles = roles;
 		this.enabled = enabled;
+		this.timezone = ZoneId.of("Europe/Brussels");
+		this.standardLevel = 30L;
 	}
 	
 	public AppUser(String username, String password, Set<Role> roles) {
