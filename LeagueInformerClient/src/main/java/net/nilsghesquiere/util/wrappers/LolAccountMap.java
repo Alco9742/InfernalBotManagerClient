@@ -1,28 +1,28 @@
-package net.nilsghesquiere.valueobjects;
+package net.nilsghesquiere.util.wrappers;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import lombok.Data;
+import net.nilsghesquiere.entities.LolAccount;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 
-@Data
-public class JSONWrapper {
-	private Map<String, Object> map;
+public class LolAccountMap{
+	private Map<String, LolAccount> map;
 
-	public JSONWrapper() {
+	public LolAccountMap() {
 		this.map = new HashMap<>();
 	}	
 	
 	@JsonAnySetter 
-	public void add(String key, Object value) {
+	public void add(String key, LolAccount value) {
 		map.put(key, value);
 	}
 
 	@JsonAnyGetter
-	public Map<String,Object> getMap() {
+	public Map<String, LolAccount> getMap() {
 		return map;
 	}
+	
 }

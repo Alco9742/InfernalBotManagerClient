@@ -14,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class AppUserRestClient {
+public class UserRestClient {
 	private static final String URI_USERS = "http://localhost:8080/api/users";
 	private RestTemplate restTemplate = new RestTemplate();
 	
