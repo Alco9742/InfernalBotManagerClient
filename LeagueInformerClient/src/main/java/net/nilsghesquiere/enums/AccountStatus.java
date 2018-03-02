@@ -5,5 +5,5 @@ public enum AccountStatus {
 	READY_FOR_USE,
 	DONE,
 	ERROR,
-	NEW;
+	NEW
 }
