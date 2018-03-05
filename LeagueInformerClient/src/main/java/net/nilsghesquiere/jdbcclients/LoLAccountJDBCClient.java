@@ -9,26 +9,31 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import net.nilsghesquiere.entities.LolAccount;
 import net.nilsghesquiere.enums.AccountStatus;
 import net.nilsghesquiere.enums.Region;
 
 //TODO Transactions
 public class LoLAccountJDBCClient {
+	private static final Logger LOGGER = LoggerFactory.getLogger("InfernalBot Database Client");
 	private final String DATABASE_URI;
 	private static final String SELECT_SQL = "SELECT * FROM Accountlist";
 	private static final String DELETE_SQL = "DELETE FROM Accountlist";
 	private static final String INSERT_SQL = "INSERT INTO Accountlist(Account,Password,Summoner,Region,Level,MaxLevel,XP,IP,MaxIP,Prioity,Playtime,Sleeptime,Active) values (?,?,?,?,?,?,?,?,?,?,?,?,?)";
 	
 	public LoLAccountJDBCClient(String infernalMap){
-		this.DATABASE_URI = "jdbc:sqlite:" + infernalMap +"/InfernalDatabase.sqlite";
+		this.DATABASE_URI = "jdbc:sqlite:" + infernalMap +"InfernalDatabase.sqlite";
 	}
 	
 	public void connect(){
 		try(Connection connection = DriverManager.getConnection(DATABASE_URI)){
-			System.out.println("Connection to SQLite has been established.");
+			LOGGER.info("Successfully connected to InfernalBot database.");
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+			LOGGER.info("Error conencting to InfernalBot database");
+			LOGGER.debug(e.getMessage());
 		} 
 	}
 	
@@ -41,8 +46,10 @@ public class LoLAccountJDBCClient {
 				LolAccount lolAccount = buildLolAccount(resultSet);
 				lolAccounts.add(lolAccount);
 			}
+			LOGGER.info("Successfully grabbed " + lolAccounts.size() + " accounts from the InfernalBot database.");
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+			LOGGER.info("Error grabbing accounts from the InfernalBot database.");
+			LOGGER.debug(e.getMessage());
 		} 
 		return lolAccounts;
 	}
@@ -53,8 +60,10 @@ public class LoLAccountJDBCClient {
 			Statement statement = connection.createStatement();
 			statement.executeUpdate(DELETE_SQL);
 			connection.commit();
+			LOGGER.info("Successfully deleted all accounts from the InfernalBot database.");
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+			LOGGER.info("Error deleting accounts from the InfernalBot database.");
+			LOGGER.debug(e.getMessage());
 		} 
 	}
 	
@@ -65,7 +74,6 @@ public class LoLAccountJDBCClient {
 			connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 			connection.setAutoCommit(false);
 			for (LolAccount lolAccount: lolAccounts){
-				System.out.println(lolAccount);
 				statement.setString(1, lolAccount.getAccount());
 				statement.setString(2, lolAccount.getPassword());
 				statement.setString(3, lolAccount.getSummoner());
@@ -88,8 +96,10 @@ public class LoLAccountJDBCClient {
 			for(int aantalToegevoegdeRecords : aantalToegevoegdeRecordsPerInsert){
 				aantalToegevoegdeAccounts += aantalToegevoegdeRecords;
 			}
+			LOGGER.info("Successfully inserted " + aantalToegevoegdeAccounts + " accounts into the InfernalBot database.");
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+			LOGGER.info("Error inserting accounts into the InfernalBot database.");
+			LOGGER.debug(e.getMessage());
 		}
 		return aantalToegevoegdeAccounts; 
 	}

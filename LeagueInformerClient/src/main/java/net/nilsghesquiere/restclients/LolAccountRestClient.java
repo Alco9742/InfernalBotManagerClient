@@ -11,6 +11,8 @@ import net.nilsghesquiere.util.wrappers.LolAccountWrapper;
 import net.nilsghesquiere.util.wrappers.LolMixedAccountMap;
 import net.nilsghesquiere.util.wrappers.StringResponseMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -19,9 +21,14 @@ import org.springframework.web.client.RestTemplate;
 
 
 public class LolAccountRestClient {
-	private static final String URI_ACCOUNTS = "http://localhost:8080/api/accounts";
+	private static final Logger LOGGER = LoggerFactory.getLogger("InfernalBotManager Database Client");
+	private final String URI_ACCOUNTS;
 	private RestTemplate restTemplate = new RestTemplate();
 	
+	public LolAccountRestClient(String uriServer) {
+		this.URI_ACCOUNTS = uriServer +"api/accounts";
+	}
+
 	public List<LolAccount> getUserLolAccounts(Long userid){
 		LolAccountWrapper jsonResponse = restTemplate.getForObject(URI_ACCOUNTS + "/user/" + userid, LolAccountWrapper.class);
 		return jsonResponse.getMap().get("data");
@@ -33,9 +40,14 @@ public class LolAccountRestClient {
 	}
 	
 	public List<LolAccount> getUsableAccounts(Long userid, Region region, Integer amount){
-		//TODO debug this, something is going wrong
 		LolAccountWrapper jsonResponse = restTemplate.getForObject(URI_ACCOUNTS + "/user/" + userid + "/region/" + region + "/limit/" + amount, LolAccountWrapper.class);
-		return jsonResponse.getMap().get("data");
+		List<LolAccount> returnAccounts = jsonResponse.getMap().get("data");
+		if (returnAccounts.size() == amount){
+			LOGGER.info("Succesfully grabbed " + returnAccounts.size() + " accounts from the InfernalBotManager database.");
+		} else {
+			LOGGER.info("Warning: only found " + returnAccounts.size() + " eligible accounts in the the InfernalBotManager database.");
+		}
+		return returnAccounts;
 	}
 	
 	public String getUsableAccountsJSON(Long userid, Region region, Integer amount){
@@ -45,6 +57,7 @@ public class LolAccountRestClient {
 	
 	public LolAccount getByUserIdAndAccount(Long userid, String account){
 		LolAccount lolAccount = restTemplate.getForObject(URI_ACCOUNTS + "/user/" + userid + "/account/" + account, LolAccount.class);
+		LOGGER.debug("getByUserIdAndAccount:" + lolAccount);
 		return lolAccount;
 	}
 
@@ -53,13 +66,16 @@ public class LolAccountRestClient {
 		for(LolAccount lolAccount : lolAccounts){
 			lolAccountMap.add(lolAccount.getId().toString(), lolAccount);
 		}
+		LOGGER.debug("updateLolAccounts (before):" + lolAccountMap.getMap().values());
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<LolAccountMap> request = new HttpEntity<>(lolAccountMap, headers);
 		HttpEntity<LolAccountWrapper> response = restTemplate.exchange(URI_ACCOUNTS + "/user/" + userid, HttpMethod.PUT,request, LolAccountWrapper.class);
 		LolAccountWrapper lolAccountWrapperResponse = response.getBody();
-		return lolAccountWrapperResponse.getMap().get("data");
+		List<LolAccount> returnAccounts = lolAccountWrapperResponse.getMap().get("data");
+		LOGGER.debug("updateLolAccounts (after):" + returnAccounts);
+		return returnAccounts;
 	} 
 	
 	public boolean sendInfernalAccounts(Long userid, LolMixedAccountMap map){
@@ -70,9 +86,11 @@ public class LolAccountRestClient {
 		HttpEntity<LolMixedAccountMap> request = new HttpEntity<>(map, headers);
 		HttpEntity<StringResponseMap> response = restTemplate.exchange(URI_ACCOUNTS + "/user/" + userid + "/infernalImport", HttpMethod.PUT,request, StringResponseMap.class);
 		StringResponseMap stringResponseMap = response.getBody();
+		LOGGER.debug("sendInfernalAccounts - existing:" + map.getMap().values());
+		LOGGER.debug("sendInfernalAccounts - new:" + map.getNewAccs());
 		for(Entry<String,String> entry : stringResponseMap.getMap().entrySet()){
 			if(!entry.getValue().equals("OK")){
-				System.out.println("Error(" + entry.getKey() + ": " + entry.getValue() + ")");
+				LOGGER.info("Error(" + entry.getKey() + ": " + entry.getValue() + ")");
 				result = false;
 			}
 		}

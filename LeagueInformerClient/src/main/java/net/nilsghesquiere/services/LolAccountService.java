@@ -3,6 +3,10 @@ package net.nilsghesquiere.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.client.ResourceAccessException;
+
 import net.nilsghesquiere.entities.LolAccount;
 import net.nilsghesquiere.enums.AccountStatus;
 import net.nilsghesquiere.enums.Region;
@@ -11,25 +15,32 @@ import net.nilsghesquiere.restclients.LolAccountRestClient;
 import net.nilsghesquiere.util.wrappers.LolMixedAccountMap;
 
 public class LolAccountService {
+	private static final Logger LOGGER = LoggerFactory.getLogger("LolAccount Service");
 	private final LoLAccountJDBCClient jdbcClient;
 	private final LolAccountRestClient restClient;
 	
-	public LolAccountService(String infernalMap){
+	public LolAccountService(String infernalMap, String webServer){
 		this.jdbcClient =  new LoLAccountJDBCClient(infernalMap);
-		this.restClient = new LolAccountRestClient();
+		this.restClient = new LolAccountRestClient(webServer);
 	}
 	
-	public void exchangeAccounts(Long userid, Region region, String clientTag, Integer amount){
+	public void exchangeAccounts(Long userid, Region region, String clientTag, Integer amount) throws ResourceAccessException {
 		LolMixedAccountMap sendMap = prepareAccountsToSend(userid);
 		if(restClient.sendInfernalAccounts(userid, sendMap)){
-			System.out.println("Succesfully updated accounts on server, deleting from local database");
+			LOGGER.info("Succesfully updated accounts on server");
 			jdbcClient.deleteAccounts();
-			System.out.println("Delete complete, grabbing " + amount + " accounts from the server");
 			List<LolAccount> accountsForInfernal = restClient.getUsableAccounts(userid, region, amount);
 			int addedInfernalAccounts = jdbcClient.insertAccounts(accountsForInfernal);
-			System.out.println(addedInfernalAccounts + " accounts added to the Infernalbot Database" ); 
+			if (addedInfernalAccounts > 0){
+				for (LolAccount lolAccount : accountsForInfernal){
+					lolAccount.setAccountStatus(AccountStatus.IN_USE);
+					lolAccount.setAssignedTo(clientTag);
+				}
+				restClient.updateLolAccounts(userid, accountsForInfernal);
+			}
+			
 		} else {
-			System.out.println("Failed to update accounts on server");
+			LOGGER.info("Failed to update accounts on server.");
 		}
 	}
 	private LolMixedAccountMap prepareAccountsToSend(Long userid){
