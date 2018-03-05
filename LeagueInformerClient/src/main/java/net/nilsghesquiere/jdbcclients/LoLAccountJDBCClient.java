@@ -22,7 +22,7 @@ public class LoLAccountJDBCClient {
 	private final String DATABASE_URI;
 	private static final String SELECT_SQL = "SELECT * FROM Accountlist";
 	private static final String DELETE_SQL = "DELETE FROM Accountlist";
-	private static final String INSERT_SQL = "INSERT INTO Accountlist(Account,Password,Summoner,Region,Level,MaxLevel,XP,IP,MaxIP,Prioity,Playtime,Sleeptime,Active) values (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+	private static final String INSERT_SQL = "INSERT INTO Accountlist(Account,Password,Summoner,Region,Level,MaxLevel,XP,IP,MaxIP,Prioity,Status,Playtime,Sleeptime,Active) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 	
 	public LoLAccountJDBCClient(String infernalMap){
 		this.DATABASE_URI = "jdbc:sqlite:" + infernalMap +"InfernalDatabase.sqlite";
@@ -84,11 +84,12 @@ public class LoLAccountJDBCClient {
 				statement.setInt(8, lolAccount.getBe());
 				statement.setInt(9, lolAccount.getMaxBe());
 				statement.setInt(10, lolAccount.getPriority());
-				statement.setInt(11, lolAccount.getPlayTime());
-				statement.setInt(12, lolAccount.getSleepTime());
+				statement.setString(11, ""); // doesn't work when null
+				statement.setInt(12, lolAccount.getPlayTime());
+				statement.setInt(13, lolAccount.getSleepTime());
 				String activeString = String.valueOf(lolAccount.isActive());
 				String activeStringCapitalized = activeString.substring(0, 1).toUpperCase() + activeString.substring(1);
-				statement.setString(13, activeStringCapitalized);
+				statement.setString(14, activeStringCapitalized);
 				statement.addBatch();
 			}
 			int[] aantalToegevoegdeRecordsPerInsert = statement.executeBatch();

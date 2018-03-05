@@ -29,7 +29,7 @@ public class Main {
 	private static Boolean REBOOT;
 	private static Integer REBOOT_TIME;
 	private static Boolean BYPASS_DEV_CHECKS;
-	private static final String INFERNAL_PROG_NAME = "notepad.exe";
+	private static final String INFERNAL_PROG_NAME = "Infernal Launcher.exe";
 	
 	public static void main(String[] args){
 		boolean initializationOK= initialize();
