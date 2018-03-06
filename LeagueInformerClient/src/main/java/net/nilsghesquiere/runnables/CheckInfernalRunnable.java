@@ -5,19 +5,20 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.concurrent.TimeUnit;
 
+import net.nilsghesquiere.InfernalBotManagerClient;
+import net.nilsghesquiere.entities.InfernalBotManagerClientSettings;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class CheckInfernalRunnable implements Runnable {
 	private static final Logger LOGGER = LoggerFactory.getLogger("InfernalBot Process Checker");
-	private final String infernalTaskName;
-	private final String infernalMap;
+	private final InfernalBotManagerClient client;
 	private volatile boolean cancelled;
 	
-	public CheckInfernalRunnable(String infernalMap, String infernalTaskName) {
+	public CheckInfernalRunnable(InfernalBotManagerClient client) {
 		super();
-		this.infernalMap = infernalMap;
-		this.infernalTaskName = infernalTaskName;
+		this.client = client;
 	}
 
 	@Override
@@ -42,9 +43,13 @@ public class CheckInfernalRunnable implements Runnable {
 					pidInfo+=line; 
 				}
 				input.close();
-				if(!pidInfo.contains(infernalTaskName)){
-					LOGGER.info("InfernalBot process not found, restarting InfernalBot");
-					runInfernalbot();
+				if(!pidInfo.contains(client.getClientSettings().getInfernalProgname())){
+					LOGGER.info("InfernalBot process not found, restarting client");
+					if(client.checkConnection() && client.accountExchange()){
+						runInfernalbot();
+					} else {
+						LOGGER.info("Error requesting new accounts, trying again in 1 minute");
+					}
 				}
 				try {
 					TimeUnit.MINUTES.sleep(1);
@@ -61,7 +66,7 @@ public class CheckInfernalRunnable implements Runnable {
 
 	private void runInfernalbot(){
 		try {
-			Process process = new ProcessBuilder(infernalMap + infernalTaskName).start();
+			Process process = new ProcessBuilder(client.getClientSettings().getInfernalMap() + client.getClientSettings().getInfernalProgname()).start();
 			LOGGER.info("InfernalBot started succesfully");
 		} catch (IOException e) {
 			LOGGER.info("Error starting infernalbot");

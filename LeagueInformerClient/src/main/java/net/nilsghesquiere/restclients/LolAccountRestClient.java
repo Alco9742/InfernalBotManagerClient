@@ -21,7 +21,7 @@ import org.springframework.web.client.RestTemplate;
 
 
 public class LolAccountRestClient {
-	private static final Logger LOGGER = LoggerFactory.getLogger("InfernalBotManager Database Client");
+	private static final Logger LOGGER = LoggerFactory.getLogger("InfernalBotManagerAccountDatabaseClient");
 	private final String URI_ACCOUNTS;
 	private RestTemplate restTemplate = new RestTemplate();
 	
@@ -43,7 +43,7 @@ public class LolAccountRestClient {
 		LolAccountWrapper jsonResponse = restTemplate.getForObject(URI_ACCOUNTS + "/user/" + userid + "/region/" + region + "/limit/" + amount, LolAccountWrapper.class);
 		List<LolAccount> returnAccounts = jsonResponse.getMap().get("data");
 		if (returnAccounts.size() == amount){
-			LOGGER.info("Succesfully grabbed " + returnAccounts.size() + " accounts from the InfernalBotManager database.");
+			LOGGER.info("Succesfully received " + returnAccounts.size() + " accounts from the InfernalBotManager database.");
 		} else {
 			LOGGER.info("Warning: only found " + returnAccounts.size() + " eligible accounts in the the InfernalBotManager database.");
 		}

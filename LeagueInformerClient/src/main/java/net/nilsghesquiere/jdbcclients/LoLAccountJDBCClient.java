@@ -18,7 +18,7 @@ import net.nilsghesquiere.enums.Region;
 
 //TODO Transactions
 public class LoLAccountJDBCClient {
-	private static final Logger LOGGER = LoggerFactory.getLogger("InfernalBot Database Client");
+	private static final Logger LOGGER = LoggerFactory.getLogger("InfernalBotAccountDatabaseClient");
 	private final String DATABASE_URI;
 	private static final String SELECT_SQL = "SELECT * FROM Accountlist";
 	private static final String DELETE_SQL = "DELETE FROM Accountlist";
@@ -46,9 +46,9 @@ public class LoLAccountJDBCClient {
 				LolAccount lolAccount = buildLolAccount(resultSet);
 				lolAccounts.add(lolAccount);
 			}
-			LOGGER.info("Successfully grabbed " + lolAccounts.size() + " accounts from the InfernalBot database.");
+			LOGGER.info("Successfully received " + lolAccounts.size() + " accounts from the InfernalBot database.");
 		} catch (SQLException e) {
-			LOGGER.info("Error grabbing accounts from the InfernalBot database.");
+			LOGGER.info("Error receiving accounts from the InfernalBot database.");
 			LOGGER.debug(e.getMessage());
 		} 
 		return lolAccounts;
