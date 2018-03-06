@@ -15,7 +15,7 @@ import net.nilsghesquiere.restclients.LolAccountRestClient;
 import net.nilsghesquiere.util.wrappers.LolMixedAccountMap;
 
 public class LolAccountService {
-	private static final Logger LOGGER = LoggerFactory.getLogger("LolAccount Service");
+	private static final Logger LOGGER = LoggerFactory.getLogger("LolAccountService");
 	private final LoLAccountJDBCClient jdbcClient;
 	private final LolAccountRestClient restClient;
 	

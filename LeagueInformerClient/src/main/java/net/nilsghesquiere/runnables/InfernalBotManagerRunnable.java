@@ -1,0 +1,99 @@
+package net.nilsghesquiere.runnables;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.concurrent.TimeUnit;
+
+import net.nilsghesquiere.InfernalBotManagerClient;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class InfernalBotManagerRunnable implements Runnable {
+	private static final Logger LOGGER = LoggerFactory.getLogger("InfernalBotManagerRunnable");
+	private final InfernalBotManagerClient client;
+	private volatile boolean stop = false;
+	
+	public InfernalBotManagerRunnable(InfernalBotManagerClient client) {
+		super();
+		this.client = client;
+	}
+
+	@Override
+	public void run() {
+		//Attempt to get accounts, retry if fail
+		boolean connected = client.checkConnection() && client.accountExchange();
+		while (!connected && !stop){
+			try {
+				LOGGER.info("Retrying in 1 minute...");
+				TimeUnit.MINUTES.sleep(1);
+				connected = (client.checkConnection() && client.accountExchange());
+			} catch (InterruptedException e) {
+				LOGGER.info("Error during sleep");
+				LOGGER.debug(e.getMessage());
+			}
+		}
+		if (!stop){
+			runInfernalbot();
+			LOGGER.info("Sleeping for 10 minutes");
+			try {
+				TimeUnit.MINUTES.sleep(10);
+			} catch (InterruptedException e2) {
+				LOGGER.info("Error during sleep");
+				LOGGER.debug(e2.getMessage());
+			}
+			LOGGER.info("Starting InfernalBot crash checker");
+		}
+		while (!stop){
+			String line ="";
+			String pidInfo ="";
+			Process p;
+			try {
+				p = Runtime.getRuntime().exec(System.getenv("windir") +"\\system32\\"+"tasklist.exe");
+				BufferedReader input =  new BufferedReader(new InputStreamReader(p.getInputStream()));
+				while ((line = input.readLine()) != null) {
+					pidInfo+=line; 
+				}
+				input.close();
+				if(!pidInfo.contains(client.getClientSettings().getInfernalProgname())){
+					LOGGER.info("InfernalBot process not found, restarting client");
+					if(client.checkConnection() && client.accountExchange()){
+						runInfernalbot();
+					} else {
+						LOGGER.info("Retrying in 1 minute..");
+					}
+				}
+				try {
+					TimeUnit.MINUTES.sleep(1);
+				} catch (InterruptedException e1) {
+					LOGGER.info("Error during sleep");
+					LOGGER.debug(e1.getMessage());
+				}
+			} catch (IOException e) {
+				LOGGER.info("Error checking task list");
+				LOGGER.debug(e.getMessage());
+			}
+		}
+		LOGGER.info("Successfully closed thread");
+	}
+
+	private void runInfernalbot(){
+		try {
+			@SuppressWarnings("unused")
+			Process process = new ProcessBuilder(client.getClientSettings().getInfernalMap() + client.getClientSettings().getInfernalProgname()).start();
+			LOGGER.info("InfernalBot started succesfully");
+		} catch (IOException e) {
+			LOGGER.info("Error starting infernalbot");
+			LOGGER.debug(e.getMessage());
+		}
+	}
+	
+	public void stop(){
+		stop = true;
+	}
+
+	public boolean isStopped() {
+		return stop;
+	}
+}

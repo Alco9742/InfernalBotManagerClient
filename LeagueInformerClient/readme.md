@@ -14,7 +14,9 @@
 <li>JavaFX front-end</li>
 <li>Crash: regedit stuff from script: closing infernalbot on errorlevel?</li>
 <li>Grab new accounts on crash of infernalbot</li>
-<li>Refactor to better match object oriented programming
+<li><del>Refactor to better match object oriented programming</del><:li>
+<li><del>Safely close threads</del</li>
+<li>implement a Console window in Swing<li>
 </ul>
 
 <h3>Client server connection map(for LolAccounts</h3>
