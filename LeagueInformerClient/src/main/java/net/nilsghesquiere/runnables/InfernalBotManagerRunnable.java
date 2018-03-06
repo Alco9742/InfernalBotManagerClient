@@ -75,6 +75,7 @@ public class InfernalBotManagerRunnable implements Runnable {
 				LOGGER.debug(e.getMessage());
 			}
 		}
+		client.setAccountsAsReadyForUse();
 		LOGGER.info("Successfully closed thread");
 	}
 

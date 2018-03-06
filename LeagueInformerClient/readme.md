@@ -9,14 +9,15 @@
 <li>Fix network connection checks</li>
 <li>Check server for riot server status --> add to network checks</li>
 <li>Autoupdater</li>
+<li>Register clients and make a thread ping every 5 minutes to check which clients are running (possibly with a status?)</li>
 <li>java2exe + encryption</li>
 <li><del>temp console front-end</del></li>
-<li>JavaFX front-end</li>
 <li>Crash: regedit stuff from script: closing infernalbot on errorlevel?</li>
-<li>Grab new accounts on crash of infernalbot</li>
+<li><del>Grab new accounts on crash of infernalbot<del></li>
 <li><del>Refactor to better match object oriented programming</del><:li>
 <li><del>Safely close threads</del</li>
 <li>implement a Console window in Swing<li>
+<li>JavaFX front-end -- optional </li>
 </ul>
 
 <h3>Client server connection map(for LolAccounts</h3>

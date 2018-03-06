@@ -21,13 +21,27 @@ public class Main {
 	private static final String INI_NAME = "settings.ini";
 	public static Map<Thread, Runnable> threadMap = new HashMap<>();
 	
-	public static void main(String[] args) throws IOException{
+	public static void main(String[] args){
+		//program();
+		test();
+	}
+	
+	private static void test(){
+		InfernalBotManagerClient client= buildClient();
+		client.setInfernalSettings();
+	}
+	
+	private static void program(){
 		System.out.println("|||||||||||||||||||||||||||||||||||||||||||||||||");
 		System.out.println("|||   InfernalBotManager (BETA) by NilsGhes   |||");
 		System.out.println("||| PRESS CTRL + C TO SAFELY CLOSE THE CLIENT |||");
 		System.out.println("|||     PRESS ANY KEY TO START THE CLIENT     |||");
 		System.out.println("|||||||||||||||||||||||||||||||||||||||||||||||||");
-		System.in.read();
+		try {
+			System.in.read();
+		} catch (IOException e) {
+			LOGGER.debug(e.getMessage());
+		}
 		LOGGER.info("Starting InfernalBotManager Client");
 		Runtime.getRuntime().addShutdownHook(new GracefulExitHook());
 		InfernalBotManagerClient client= buildClient();
@@ -43,7 +57,6 @@ public class Main {
 			System.exit(0);
 		}
 	}
-
 	private static InfernalBotManagerClient buildClient(){
 		String iniFile = System.getProperty("user.dir") + "\\" + INI_NAME;
 		Path iniFilePath = Paths.get(iniFile);

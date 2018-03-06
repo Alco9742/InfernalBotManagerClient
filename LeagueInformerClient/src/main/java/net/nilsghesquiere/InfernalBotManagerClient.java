@@ -8,6 +8,7 @@ import java.nio.file.StandardCopyOption;
 
 import lombok.Data;
 import net.nilsghesquiere.entities.InfernalBotManagerClientSettings;
+import net.nilsghesquiere.services.InfernalSettingsService;
 import net.nilsghesquiere.services.LolAccountService;
 
 import org.slf4j.Logger;
@@ -23,6 +24,7 @@ public class InfernalBotManagerClient {
 		this.clientSettings = clientSettings;
 	}
 	
+	//Schedule Reboot
 	public void scheduleReboot(){
 		if (clientSettings.getReboot()){
 			try {
@@ -35,6 +37,7 @@ public class InfernalBotManagerClient {
 		}
 	}
 
+	//Connection Check
 	public boolean checkConnection(){
 		//TODO try /catch
 		//Process p1 = java.lang.Runtime.getRuntime().exec("ping -n 1 8.8.8.8");
@@ -67,6 +70,7 @@ public class InfernalBotManagerClient {
 		return true;
 	}
 	
+	//LolAccount methods
 	public boolean accountExchange(){
 		if (backUpInfernalDatabase()){
 			try{
@@ -82,7 +86,37 @@ public class InfernalBotManagerClient {
 			return false;
 		}
 	}
+	
+	public boolean setAccountsAsReadyForUse(){
+		try{
+			LolAccountService lolAccountService = new LolAccountService(clientSettings.getInfernalMap(), "http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort());
+			lolAccountService.setAccountsAsReadyForUse(clientSettings.getUserId());
+			return true;
+		} catch (ResourceAccessException e) {
+			LOGGER.info("Error retrieving the requested resource");
+			LOGGER.debug(e.getMessage());
+			return false;
+		} 
+	}
 
+	//InfernalSettings methods
+	public boolean setInfernalSettings(){
+		if (backUpInfernalDatabase()){
+			try{
+				InfernalSettingsService infernalSettingsService = new InfernalSettingsService(clientSettings.getInfernalMap(), "http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort());
+				infernalSettingsService.setInfernalSettings(clientSettings.getUserId());
+				return true;
+			} catch (ResourceAccessException e) {
+				LOGGER.info("Error retrieving the requested resource");
+				LOGGER.debug(e.getMessage());
+				return false;
+			} 
+		} else {
+			return false;
+		}
+	}
+	
+	//Private methods
 	private boolean backUpInfernalDatabase(){
 		if(checkDir()){
 			LOGGER.info("Successfully located Infernalbot");

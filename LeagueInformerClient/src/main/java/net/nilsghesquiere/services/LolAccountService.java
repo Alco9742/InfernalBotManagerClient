@@ -43,6 +43,17 @@ public class LolAccountService {
 			LOGGER.info("Failed to update accounts on server.");
 		}
 	}
+	
+	public void setAccountsAsReadyForUse(Long userid) throws ResourceAccessException {
+		LolMixedAccountMap sendMap = prepareAccountsToSend(userid);
+		if(restClient.sendInfernalAccounts(userid, sendMap)){
+			LOGGER.info("Succesfully updated accounts on server");
+			jdbcClient.deleteAccounts();
+		} else {
+			LOGGER.info("Failed to update accounts on server.");
+		}
+	}
+	
 	private LolMixedAccountMap prepareAccountsToSend(Long userid){
 		LolMixedAccountMap lolAccountMap = new LolMixedAccountMap();
 		List<LolAccount> newAccounts = new ArrayList<>();
