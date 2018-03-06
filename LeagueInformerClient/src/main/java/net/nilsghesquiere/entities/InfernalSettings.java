@@ -13,7 +13,7 @@ public class InfernalSettings implements Serializable{
 	private String username;
 	private String password;
 	private Integer groups;
-	private Integer level;
+	private String level;
 	private String clientPath;
 	private String currentVersion;
 	private String wildcard;

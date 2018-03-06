@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 @Data
 public class InfernalBotManagerClientSettings {
 	private static final Logger LOGGER = LoggerFactory.getLogger("InfernalBotManagerClientSettings");
+	private static final String INFERNAL_PROCESS_NAME ="Infernal Launcher.exe";
 	private Long userId;
 	private String infernalMap;
 	private String infernalProgname;
@@ -99,7 +100,7 @@ public class InfernalBotManagerClientSettings {
 			bypassDevChecks = false;
 		}
 		if(!hasError){
-			InfernalBotManagerClientSettings settings = new InfernalBotManagerClientSettings(userId,infernalMap,"notepad.exe",numberOfAccounts,clientTag, clientRegion, webServer,port, reboot, rebootTime, bypassDevChecks);
+			InfernalBotManagerClientSettings settings = new InfernalBotManagerClientSettings(userId,infernalMap,INFERNAL_PROCESS_NAME,numberOfAccounts,clientTag, clientRegion, webServer,port, reboot, rebootTime, bypassDevChecks);
 			LOGGER.info("Succesfully loaded settings from settings.ini");
 			return settings;
 		} else {

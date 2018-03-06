@@ -21,6 +21,8 @@ public class InfernalSettingsService {
 	
 	public void setInfernalSettings(Long userid) throws ResourceAccessException {
 		InfernalSettings infernalSettings = restClient.getUserInfernalSettings(userid);
-		System.out.println(infernalSettings);
+		System.out.println("server: " + infernalSettings);
+		InfernalSettings infernalSettings2 = jdbcClient.getDefaultInfernalSettings();
+		System.out.println("client: " + infernalSettings2);
 	}
 }

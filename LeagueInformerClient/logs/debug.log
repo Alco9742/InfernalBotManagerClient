@@ -757,3 +757,32 @@
 2018-03-06 16:51:21.804 INFO  [main] InfernalBotManagerClientSettings - Succesfully loaded settings from settings.ini
 2018-03-06 16:51:21.804 INFO  [main] InfernalBotManagerClient - Successfully located Infernalbot
 2018-03-06 16:51:21.814 INFO  [main] InfernalBotManagerClient - Succesfully backed up Infernalbot database
+2018-03-06 20:39:00.889 INFO  [main] InfernalBotManagerClientSettings - Succesfully loaded settings from settings.ini
+2018-03-06 20:39:00.913 INFO  [main] InfernalBotManagerClient - Successfully located Infernalbot
+2018-03-06 20:39:00.914 INFO  [main] InfernalBotManagerClient - Infernalbot database not found, check your path.
+2018-03-06 20:39:32.740 INFO  [main] InfernalBotManagerClientSettings - Succesfully loaded settings from settings.ini
+2018-03-06 20:39:32.769 INFO  [main] InfernalBotManagerClient - Error: couldn't locate Infernalbot
+2018-03-06 20:41:44.414 INFO  [main] InfernalBotManagerClientSettings - Succesfully loaded settings from settings.ini
+2018-03-06 20:41:44.432 INFO  [main] InfernalBotManagerClient - Successfully located Infernalbot
+2018-03-06 20:41:44.433 INFO  [main] InfernalBotManagerClient - Succesfully backed up Infernalbot database
+2018-03-06 20:41:45.839 INFO  [main] InfernalBotManagerClient - Error retrieving the requested resource
+2018-03-06 20:41:45.839 DEBUG [main] InfernalBotManagerClient - I/O error on GET request for "http://localhost:8080/api/infernalsettings/user/3": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2018-03-06 20:48:59.547 INFO  [main] InfernalBotManagerClientSettings - Succesfully loaded settings from settings.ini
+2018-03-06 20:48:59.569 INFO  [main] InfernalBotManagerClient - Successfully located Infernalbot
+2018-03-06 20:48:59.571 INFO  [main] InfernalBotManagerClient - Succesfully backed up Infernalbot database
+2018-03-06 20:49:06.103 INFO  [main] InfernalBotAccountDatabaseClient - Error receiving the default settings from the InfernalBot database.
+2018-03-06 20:49:06.103 DEBUG [main] InfernalBotAccountDatabaseClient - no such column: 'ConsoldeHide'
+2018-03-06 20:50:08.398 INFO  [main] InfernalBotManagerClientSettings - Succesfully loaded settings from settings.ini
+2018-03-06 20:50:08.403 INFO  [main] InfernalBotManagerClient - Successfully located Infernalbot
+2018-03-06 20:50:08.405 INFO  [main] InfernalBotManagerClient - Succesfully backed up Infernalbot database
+2018-03-06 20:50:09.107 INFO  [main] InfernalBotAccountDatabaseClient - Error receiving the default settings from the InfernalBot database.
+2018-03-06 20:50:09.107 DEBUG [main] InfernalBotAccountDatabaseClient - no such column: 'Surrender'
+2018-03-06 20:50:29.391 INFO  [main] InfernalBotManagerClientSettings - Succesfully loaded settings from settings.ini
+2018-03-06 20:50:29.396 INFO  [main] InfernalBotManagerClient - Successfully located Infernalbot
+2018-03-06 20:50:29.398 INFO  [main] InfernalBotManagerClient - Succesfully backed up Infernalbot database
+2018-03-06 20:50:30.113 INFO  [main] InfernalBotAccountDatabaseClient - Error receiving the default settings from the InfernalBot database.
+2018-03-06 20:50:30.113 DEBUG [main] InfernalBotAccountDatabaseClient - no such column: 'TimoutLoadGame'
+2018-03-06 20:50:51.546 INFO  [main] InfernalBotManagerClientSettings - Succesfully loaded settings from settings.ini
+2018-03-06 20:50:51.552 INFO  [main] InfernalBotManagerClient - Successfully located Infernalbot
+2018-03-06 20:50:51.554 INFO  [main] InfernalBotManagerClient - Succesfully backed up Infernalbot database
+2018-03-06 20:50:52.169 INFO  [main] InfernalBotAccountDatabaseClient - Successfully received the default settings from the InfernalBot database.
