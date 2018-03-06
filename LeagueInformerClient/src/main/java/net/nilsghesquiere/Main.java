@@ -22,8 +22,8 @@ public class Main {
 	public static Map<Thread, Runnable> threadMap = new HashMap<>();
 	
 	public static void main(String[] args){
-		//program();
-		test();
+		program();
+		//test();
 	}
 	
 	private static void test(){
@@ -35,13 +35,7 @@ public class Main {
 		System.out.println("|||||||||||||||||||||||||||||||||||||||||||||||||");
 		System.out.println("|||   InfernalBotManager (BETA) by NilsGhes   |||");
 		System.out.println("||| PRESS CTRL + C TO SAFELY CLOSE THE CLIENT |||");
-		System.out.println("|||     PRESS ANY KEY TO START THE CLIENT     |||");
 		System.out.println("|||||||||||||||||||||||||||||||||||||||||||||||||");
-		try {
-			System.in.read();
-		} catch (IOException e) {
-			LOGGER.debug(e.getMessage());
-		}
 		LOGGER.info("Starting InfernalBotManager Client");
 		Runtime.getRuntime().addShutdownHook(new GracefulExitHook());
 		InfernalBotManagerClient client= buildClient();

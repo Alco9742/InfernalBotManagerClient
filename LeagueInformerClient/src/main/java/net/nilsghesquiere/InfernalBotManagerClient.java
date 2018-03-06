@@ -43,11 +43,12 @@ public class InfernalBotManagerClient {
 		//Process p1 = java.lang.Runtime.getRuntime().exec("ping -n 1 8.8.8.8");
 		if (clientSettings.getBypassDevChecks() == false){
 			try{
-				Process p1 = java.lang.Runtime.getRuntime().exec("ping -n 1 google.be");
+				Process p1 = java.lang.Runtime.getRuntime().exec("ping -n 1 8.8.8.8");
 				int returnVal = p1.waitFor();
 				boolean reachable = (returnVal==0);
 				if (reachable){
 					LOGGER.info("Successfully connected to network");
+					//this way doesn't work, do it with REST
 					Process p2 = java.lang.Runtime.getRuntime().exec("ping -n 1 " + clientSettings.getWebServer());
 					int returnVal2 = p2.waitFor();
 					boolean reachable2 = (returnVal2==0);
