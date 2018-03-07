@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResourceAccessException;
 
 import net.nilsghesquiere.entities.InfernalBotManagerClientSettings;
@@ -66,10 +67,13 @@ public class LolAccountService {
 		List<LolAccount> newAccounts = new ArrayList<>();
 		List<LolAccount> accountsFromJDBC = jdbcClient.getAccounts();
 		for (LolAccount accountFromJDBC : accountsFromJDBC){
-			LolAccount accountFromREST = restClient.getByUserIdAndAccount(userid, accountFromJDBC.getAccount());
+			LolAccount accountFromREST= null;
+			try{
+				accountFromREST = restClient.getByUserIdAndAccount(userid, accountFromJDBC.getAccount());
+			} catch (HttpServerErrorException e){
+				LOGGER.debug(e.getMessage());
+			}
 			//added here to only touch accounts not assigned to anyone or assigned to this client
-
-
 			if(accountFromREST != null){
 				boolean accountAssignedToOtherClient = true;
 				if(accountFromREST.getAssignedTo().equals(clientSettings.getClientTag())){
