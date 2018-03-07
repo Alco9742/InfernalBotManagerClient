@@ -43,7 +43,7 @@ public class LolAccountRestClient {
 		LolAccountWrapper jsonResponse = restTemplate.getForObject(URI_ACCOUNTS + "/user/" + userid + "/region/" + region + "/limit/" + amount, LolAccountWrapper.class);
 		List<LolAccount> returnAccounts = jsonResponse.getMap().get("data");
 		if (returnAccounts.size() == amount){
-			LOGGER.info("Succesfully received " + returnAccounts.size() + " accounts from the InfernalBotManager database.");
+			LOGGER.info("Successfully received " + returnAccounts.size() + " accounts from the InfernalBotManager database.");
 		} else {
 			LOGGER.info("Warning: only found " + returnAccounts.size() + " eligible accounts in the the InfernalBotManager database.");
 		}
@@ -93,6 +93,9 @@ public class LolAccountRestClient {
 				LOGGER.info("Error(" + entry.getKey() + ": " + entry.getValue() + ")");
 				result = false;
 			}
+		}
+		if (result = true){
+			LOGGER.info("Successfully updated accounts on server");
 		}
 		return result;
 	}

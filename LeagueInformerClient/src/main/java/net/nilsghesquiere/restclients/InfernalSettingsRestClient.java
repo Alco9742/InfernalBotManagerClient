@@ -9,7 +9,7 @@ import org.springframework.web.client.RestTemplate;
 
 
 public class InfernalSettingsRestClient {
-	private static final Logger LOGGER = LoggerFactory.getLogger("InfernalBotManagerAccountDatabaseClient");
+	private static final Logger LOGGER = LoggerFactory.getLogger("InfernalBotManagerSettingsDatabaseClient");
 	private final String URI_INFERNALSETTINGS;
 	private RestTemplate restTemplate = new RestTemplate();
 	
@@ -18,7 +18,12 @@ public class InfernalSettingsRestClient {
 	}
 	public InfernalSettings getUserInfernalSettings(Long userid){
 		InfernalSettingsWrapper jsonResponse = restTemplate.getForObject(URI_INFERNALSETTINGS + "/user/" + userid, InfernalSettingsWrapper.class);
-		return jsonResponse.getMap().get("data");
+		InfernalSettings infernalSettings = jsonResponse.getMap().get("data");
+		if (infernalSettings != null){
+			LOGGER.info("Successfully received InfernalBot settings from the InfernalBotManager database.");
+			LOGGER.debug("I: " + infernalSettings);
+		}
+		return infernalSettings;
 	}
 	
 	public String getUserInfernalSettingJSON(Long userid){

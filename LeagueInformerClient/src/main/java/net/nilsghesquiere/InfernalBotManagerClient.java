@@ -73,24 +73,20 @@ public class InfernalBotManagerClient {
 	
 	//LolAccount methods
 	public boolean accountExchange(){
-		if (backUpInfernalDatabase()){
-			try{
-				LolAccountService lolAccountService = new LolAccountService(clientSettings.getInfernalMap(), "http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort());
-				lolAccountService.exchangeAccounts(clientSettings.getUserId(), clientSettings.getClientRegion(), clientSettings.getClientTag(), clientSettings.getAccountAmount());
-				return true;
-			} catch (ResourceAccessException e) {
-				LOGGER.info("Error retrieving the requested resource");
-				LOGGER.debug(e.getMessage());
+		try{
+			LolAccountService lolAccountService = new LolAccountService(clientSettings);
+			lolAccountService.exchangeAccounts(clientSettings.getUserId(), clientSettings.getClientRegion(), clientSettings.getClientTag(), clientSettings.getAccountAmount());
+			return true;
+		} catch (ResourceAccessException e) {
+			LOGGER.info("Error retrieving the requested resource");
+			LOGGER.debug(e.getMessage());
 				return false;
-			} 
-		} else {
-			return false;
-		}
+		} 
 	}
 	
 	public boolean setAccountsAsReadyForUse(){
 		try{
-			LolAccountService lolAccountService = new LolAccountService(clientSettings.getInfernalMap(), "http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort());
+			LolAccountService lolAccountService = new LolAccountService(clientSettings);
 			lolAccountService.setAccountsAsReadyForUse(clientSettings.getUserId());
 			return true;
 		} catch (ResourceAccessException e) {
@@ -102,23 +98,25 @@ public class InfernalBotManagerClient {
 
 	//InfernalSettings methods
 	public boolean setInfernalSettings(){
-		if (backUpInfernalDatabase()){
+		if (clientSettings.getFetchSettings()){
 			try{
-				InfernalSettingsService infernalSettingsService = new InfernalSettingsService(clientSettings.getInfernalMap(), "http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort());
-				infernalSettingsService.setInfernalSettings(clientSettings.getUserId());
+				InfernalSettingsService infernalSettingsService = new InfernalSettingsService(clientSettings);
+				infernalSettingsService.updateInfernalSettings(clientSettings.getUserId());
+				//get the settings here and overwrite them if in ini has the values, this should probably be done in the service
+				//--> boolean for overwrite and values in a map --> pass to the method
 				return true;
 			} catch (ResourceAccessException e) {
 				LOGGER.info("Error retrieving the requested resource");
 				LOGGER.debug(e.getMessage());
 				return false;
-			} 
+			}
 		} else {
-			return false;
+			LOGGER.info("Not requesting settings from the InfernalBotManager Server, using InfernalBots own settings.");
+			return true;
 		}
 	}
 	
-	//Private methods
-	private boolean backUpInfernalDatabase(){
+	public boolean backUpInfernalDatabase(){
 		if(checkDir()){
 			LOGGER.info("Successfully located Infernalbot");
 			Path backupDir = Paths.get(clientSettings.getInfernalMap() + "InfernalManager") ;
@@ -134,7 +132,7 @@ public class InfernalBotManagerClient {
 			if (Files.exists(file)){
 				try {
 					Files.copy(file,backupFile, StandardCopyOption.REPLACE_EXISTING);
-					LOGGER.info("Succesfully backed up Infernalbot database" );
+					LOGGER.info("Successfully backed up Infernalbot database" );
 				} catch (IOException e) {
 					LOGGER.info("Error backing up Infernal Database: " + e.getMessage());
 					LOGGER.debug(e.getMessage());
@@ -152,7 +150,7 @@ public class InfernalBotManagerClient {
 	}
 	
 	private boolean checkDir(){
-		Path infernalPath = Paths.get(clientSettings.getInfernalMap() + clientSettings.getInfernalProgname());
+		Path infernalPath = Paths.get(clientSettings.getInfernalMap() + clientSettings.getInfernalProg());
 		return Files.exists(infernalPath);
 	}
 	

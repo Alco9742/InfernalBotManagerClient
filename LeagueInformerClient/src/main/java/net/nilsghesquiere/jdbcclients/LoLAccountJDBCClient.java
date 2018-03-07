@@ -24,6 +24,7 @@ public class LoLAccountJDBCClient {
 	private static final String DELETE_SQL = "DELETE FROM Accountlist";
 	private static final String INSERT_SQL = "INSERT INTO Accountlist(Account,Password,Summoner,Region,Level,MaxLevel,XP,IP,MaxIP,Prioity,Status,Playtime,Sleeptime,Active) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 	
+	
 	public LoLAccountJDBCClient(String infernalMap){
 		this.DATABASE_URI = "jdbc:sqlite:" + infernalMap +"InfernalDatabase.sqlite";
 	}
