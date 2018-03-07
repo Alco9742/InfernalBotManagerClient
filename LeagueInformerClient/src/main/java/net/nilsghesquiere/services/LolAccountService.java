@@ -67,12 +67,7 @@ public class LolAccountService {
 		List<LolAccount> newAccounts = new ArrayList<>();
 		List<LolAccount> accountsFromJDBC = jdbcClient.getAccounts();
 		for (LolAccount accountFromJDBC : accountsFromJDBC){
-			LolAccount accountFromREST= null;
-			try{
-				accountFromREST = restClient.getByUserIdAndAccount(userid, accountFromJDBC.getAccount());
-			} catch (HttpServerErrorException e){
-				LOGGER.debug(e.getMessage());
-			}
+			LolAccount accountFromREST = restClient.getByUserIdAndAccount(userid, accountFromJDBC.getAccount());
 			//added here to only touch accounts not assigned to anyone or assigned to this client
 			if(accountFromREST != null){
 				boolean accountAssignedToOtherClient = true;
