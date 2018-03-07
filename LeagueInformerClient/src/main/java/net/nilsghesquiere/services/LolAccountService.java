@@ -68,37 +68,41 @@ public class LolAccountService {
 		for (LolAccount accountFromJDBC : accountsFromJDBC){
 			LolAccount accountFromREST = restClient.getByUserIdAndAccount(userid, accountFromJDBC.getAccount());
 			//added here to only touch accounts not assigned to anyone or assigned to this client
-			boolean accountAssignedToOtherClient = true;
-			if(accountFromREST.getAssignedTo().equals(clientSettings.getClientTag())){
-				accountAssignedToOtherClient = false;
-			}
-			if(accountFromREST.getAssignedTo().equals("")){
-				accountAssignedToOtherClient = false;
-			}
-			if(accountFromREST != null && !accountAssignedToOtherClient){
-				//Account already exists in the database: copy the editable settings from serverside
-				//set the id
-				accountFromJDBC.setId(accountFromREST.getId());
-				//set the max level & max BE (this will always be filled in if it exists on the server)
-				accountFromJDBC.setMaxLevel(accountFromREST.getMaxLevel());
-				accountFromJDBC.setMaxBe(accountFromREST.getMaxBe());
-				//set the region
-				accountFromJDBC.setRegion(accountFromREST.getRegion());
-				//set the Info
-				accountFromJDBC.setInfo(accountFromREST.getInfo());
-				//set the priority
-				accountFromJDBC.setPriority(accountFromREST.getPriority());
-				//set assignedto Empty
-				accountFromJDBC.setAssignedTo("");
-				//Set accountstatus
-				if (accountFromJDBC.getAccountStatus() != AccountStatus.ERROR){
-					if (accountFromJDBC.getLevel() >= accountFromREST.getMaxLevel()){
-						accountFromJDBC.setAccountStatus(AccountStatus.DONE);
-					} else {
-						accountFromJDBC.setAccountStatus(AccountStatus.READY_FOR_USE);
-					}
+
+
+			if(accountFromREST != null){
+				boolean accountAssignedToOtherClient = true;
+				if(accountFromREST.getAssignedTo().equals(clientSettings.getClientTag())){
+					accountAssignedToOtherClient = false;
 				}
-				lolAccountMap.add(accountFromJDBC.getId().toString(), accountFromJDBC);
+				if(accountFromREST.getAssignedTo().equals("")){
+					accountAssignedToOtherClient = false;
+				}
+				if(!accountAssignedToOtherClient){
+					//Account already exists in the database: copy the editable settings from serverside
+					//set the id
+					accountFromJDBC.setId(accountFromREST.getId());
+					//set the max level & max BE (this will always be filled in if it exists on the server)
+					accountFromJDBC.setMaxLevel(accountFromREST.getMaxLevel());
+					accountFromJDBC.setMaxBe(accountFromREST.getMaxBe());
+					//set the region
+					accountFromJDBC.setRegion(accountFromREST.getRegion());
+					//set the Info
+					accountFromJDBC.setInfo(accountFromREST.getInfo());
+					//set the priority
+					accountFromJDBC.setPriority(accountFromREST.getPriority());
+					//set assignedto Empty
+					accountFromJDBC.setAssignedTo("");
+					//Set accountstatus
+					if (accountFromJDBC.getAccountStatus() != AccountStatus.ERROR){
+						if (accountFromJDBC.getLevel() >= accountFromREST.getMaxLevel()){
+							accountFromJDBC.setAccountStatus(AccountStatus.DONE);
+						} else {
+							accountFromJDBC.setAccountStatus(AccountStatus.READY_FOR_USE);
+						}
+					}
+					lolAccountMap.add(accountFromJDBC.getId().toString(), accountFromJDBC);
+				}
 			} else {
 				accountFromJDBC.setAccountStatus(AccountStatus.NEW);
 				accountFromJDBC.setAssignedTo("");

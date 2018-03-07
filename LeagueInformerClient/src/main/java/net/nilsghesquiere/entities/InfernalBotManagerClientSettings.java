@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 @Data
 public class InfernalBotManagerClientSettings {
 	private static final Logger LOGGER = LoggerFactory.getLogger("InfernalBotManagerClientSettings");
-	private static final String INFERNAL_PROCESS_NAME ="notepad.exe";
+	private static final String INFERNAL_PROCESS_NAME ="Infernal Launcher.exe";
 	private Long userId;
 	private String infernalMap;
 	private String infernalProg;

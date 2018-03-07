@@ -84,6 +84,8 @@ public class InfernalSettingsService {
 		infernalSettingsFromJDBC.setPrio(infernalSettingsFromREST.getPrio());
 	//	infernalSettingsFromJDBC.setGrSize(infernalSettingsFromREST.getGrSize());
 	//	infernalSettingsFromJDBC.setClientUpdateSel(infernalSettingsFromREST.getClientUpdateSel());
+		//autostart after login, temporarely set this to true manually 
+		infernalSettingsFromJDBC.setClientUpdateSel(true);
 		infernalSettingsFromJDBC.setReplaceConfig(infernalSettingsFromREST.getReplaceConfig());
 		infernalSettingsFromJDBC.setLolHeight(infernalSettingsFromREST.getLolHeight());
 		infernalSettingsFromJDBC.setLolWidth(infernalSettingsFromREST.getLolWidth());

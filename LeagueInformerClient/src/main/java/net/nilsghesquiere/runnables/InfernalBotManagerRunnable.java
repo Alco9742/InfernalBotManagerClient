@@ -22,6 +22,7 @@ public class InfernalBotManagerRunnable implements Runnable {
 
 	@Override
 	public void run() {
+		client.scheduleReboot();
 		//Attempt to get accounts, retry if fail
 		boolean connected = client.checkConnection() && client.backUpInfernalDatabase() && client.setInfernalSettings() && client.accountExchange();
 		while (!connected && !stop){
