@@ -93,7 +93,7 @@ public class InfernalBotManagerClientSettings {
 			LOGGER.error("Bad value in settings.ini: value '" + accountBuffer + "' is not accepted for accountbuffer");
 			hasError = true;
 		} 
-		if(overwriteSettings == null){
+		if(uploadNewAccounts == null){
 			LOGGER.error("Bad value in settings.ini: value '" + uploadNewAccounts + "' is not accepted for uploadnewaccounts");
 			hasError = true;
 		} 
