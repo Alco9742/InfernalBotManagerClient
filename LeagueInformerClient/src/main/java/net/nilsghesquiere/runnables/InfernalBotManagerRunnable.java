@@ -31,7 +31,7 @@ public class InfernalBotManagerRunnable implements Runnable {
 				TimeUnit.MINUTES.sleep(1);
 				connected = (client.checkConnection() && client.backUpInfernalDatabase() && client.setInfernalSettings() && client.accountExchange());
 			} catch (InterruptedException e) {
-				LOGGER.info("Error during sleep");
+				LOGGER.error("Failure during sleep");
 				LOGGER.debug(e.getMessage());
 			}
 		}
@@ -41,7 +41,7 @@ public class InfernalBotManagerRunnable implements Runnable {
 			try {
 				TimeUnit.MINUTES.sleep(5);
 			} catch (InterruptedException e2) {
-				LOGGER.info("Error during sleep");
+				LOGGER.error("Failure during sleep");
 				LOGGER.debug(e2.getMessage());
 			}
 			LOGGER.info("Starting InfernalBot crash checker");
@@ -58,7 +58,7 @@ public class InfernalBotManagerRunnable implements Runnable {
 				}
 				input.close();
 				if(!pidInfo.contains(client.getClientSettings().getInfernalProg())){
-					LOGGER.info("InfernalBot process not found, restarting client");
+					LOGGER.warn("InfernalBot process not found, restarting client");
 					if(client.checkConnection() && client.accountExchange()){
 						runInfernalbot();
 					} else {
@@ -68,11 +68,11 @@ public class InfernalBotManagerRunnable implements Runnable {
 				try {
 					TimeUnit.MINUTES.sleep(1);
 				} catch (InterruptedException e1) {
-					LOGGER.info("Error during sleep");
+					LOGGER.error("Failure during sleep");
 					LOGGER.debug(e1.getMessage());
 				}
 			} catch (IOException e) {
-				LOGGER.info("Error checking task list");
+				LOGGER.error("Failure checking task list");
 				LOGGER.debug(e.getMessage());
 			}
 		}

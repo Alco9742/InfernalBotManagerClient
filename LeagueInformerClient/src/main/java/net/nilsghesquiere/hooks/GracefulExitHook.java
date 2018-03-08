@@ -23,13 +23,13 @@ public class GracefulExitHook extends Thread {
 					entry.getKey().join();
 				} catch (InterruptedException e) {
 					fail = true;
-					LOGGER.debug("Error closing threads");
+					LOGGER.error("Failure closing threads");
 					LOGGER.debug(e.getMessage());
 				}
 			}
 		}
 		if(!fail){
-			LOGGER.info("Successfully closed all threads, ending program");
+			LOGGER.info("Closed all threads, ending program");
 		}
 	}
 }

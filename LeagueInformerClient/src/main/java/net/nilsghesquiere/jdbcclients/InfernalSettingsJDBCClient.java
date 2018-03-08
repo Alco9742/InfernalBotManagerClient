@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 
 //TODO Transactions
 public class InfernalSettingsJDBCClient {
-	private static final Logger LOGGER = LoggerFactory.getLogger("InfernalBotSettingsDatabaseClient");
+	private static final Logger LOGGER = LoggerFactory.getLogger(InfernalSettingsJDBCClient.class);
 	private final String DATABASE_URI;
 	private static final String SELECT_DEFAULT_SQL = "SELECT * FROM Settings WHERE Sets='Default'";
 	private static final String SELECT_INFERNALBOTMANAGER_SQL = "SELECT * FROM Settings WHERE Sets='InfernalBotManager'";
@@ -30,9 +30,9 @@ public class InfernalSettingsJDBCClient {
 	
 	public void connect(){
 		try(Connection connection = DriverManager.getConnection(DATABASE_URI)){
-			LOGGER.info("Successfully connected to InfernalBot database.");
+			LOGGER.info("Connected to InfernalBot database.");
 		} catch (SQLException e) {
-			LOGGER.info("Error connecting to InfernalBot database");
+			LOGGER.error("Failure connecting to InfernalBot database.");
 			LOGGER.debug(e.getMessage());
 		} 
 	}
@@ -46,12 +46,12 @@ public class InfernalSettingsJDBCClient {
 				infernalSettings = buildInfernalSetting(resultSet);
 			}
 			if (infernalSettings != null){
-				LOGGER.info("Successfully received the Default settings from the InfernalBot database");
+				LOGGER.info("Received the Default settings from InfernalBot.");
 			} else {
-				LOGGER.info("Error: could not retrieve InfernalBotManager or default settings from the InfernalBot database");
+				LOGGER.error("Could not retrieve default settings from InfernalBot.");
 			}
 		} catch (SQLException e) {
-			LOGGER.info("Error receiving the default settings from the InfernalBot database.");
+			LOGGER.error("Failure receiving the default settings from InfernalBot.");
 			LOGGER.debug(e.getMessage());
 		} 
 		return infernalSettings;
@@ -66,12 +66,12 @@ public class InfernalSettingsJDBCClient {
 				infernalSettings = buildInfernalSetting(resultSet);
 			}
 			if (infernalSettings != null){
-				LOGGER.info("Successfully received InfernalBotManager settings from the InfernalBot database");
+				LOGGER.info("Received InfernalBotManager settings from InfernalBot.");
 			} else {
-				LOGGER.info("InfernalBotManager settings not found in the InfernalBot database, creating new set.");
+				//LOGGER.warn("InfernalBotManager settings not found in the InfernalBot database, creating new set.");
 			}
 		} catch (SQLException e) {
-			LOGGER.info("Error receiving the InfernalBotManager settings from the InfernalBot database.");
+			LOGGER.error("Failure receiving the InfernalBotManager settings from InfernalBot.");
 			LOGGER.debug(e.getMessage());
 		} 
 		return infernalSettings;
@@ -144,14 +144,14 @@ public class InfernalSettingsJDBCClient {
 			statement.setString(60, infernalSettings.getMySQLQueueTable());
 			statement.setString(61, infernalSettings.getMySQLAktivTable());
 			statement.executeUpdate();
-			LOGGER.info("Successfully inserted InfernalBotManager settings into the InfernalBot database.");
+			LOGGER.info("Inserted InfernalBotManager settings into InfernalBot.");
 			ResultSet rs = statement.getGeneratedKeys();
 			if (rs != null && rs.next()) {
 				key = rs.getLong(1);
 			}
 			return key;
 		} catch (SQLException e) {
-			LOGGER.info("Error inserting InfernalBotManager settings into the InfernalBot database.");
+			LOGGER.info("Failure inserting InfernalBotManager settings into InfernalBot.");
 			LOGGER.debug(e.getMessage());
 			return key;
 		}
@@ -225,7 +225,7 @@ public class InfernalSettingsJDBCClient {
 			statement.setString(61,infernalSettings.getMySQLQueueTable());
 			statement.setString(62,infernalSettings.getMySQLAktivTable());
 			statement.executeUpdate();
-			LOGGER.info("Successfully updated the Default settings in the InfernalBot database.");
+			LOGGER.info("Updated the Default settings in InfernalBot.");
 			//LOGGER.info("Successfully updated InfernalBotManager settings in the InfernalBot database.");
 			ResultSet rs = statement.getGeneratedKeys();
 			if (rs != null && rs.next()) {
@@ -233,7 +233,7 @@ public class InfernalSettingsJDBCClient {
 			}
 			return key;
 		} catch (SQLException e) {
-			LOGGER.info("Successfully updated the Default settings in the InfernalBot database.");
+			LOGGER.error("Failure updating the Default settings in InfernalBot.");
 			//LOGGER.info("Error updating InfernalBotManager settings in the InfernalBot database.");
 			LOGGER.debug(e.getMessage());
 			return key;

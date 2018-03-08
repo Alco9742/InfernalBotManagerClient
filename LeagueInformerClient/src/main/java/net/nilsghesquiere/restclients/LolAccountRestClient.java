@@ -21,7 +21,7 @@ import org.springframework.web.client.RestTemplate;
 
 
 public class LolAccountRestClient {
-	private static final Logger LOGGER = LoggerFactory.getLogger("InfernalBotManagerAccountDatabaseClient");
+	private static final Logger LOGGER = LoggerFactory.getLogger(LolAccountRestClient.class);
 	private final String URI_ACCOUNTS;
 	private RestTemplate restTemplate = new RestTemplate();
 	
@@ -43,9 +43,28 @@ public class LolAccountRestClient {
 		LolAccountWrapper jsonResponse = restTemplate.getForObject(URI_ACCOUNTS + "/user/" + userid + "/region/" + region + "/limit/" + amount, LolAccountWrapper.class);
 		List<LolAccount> returnAccounts = jsonResponse.getMap().get("data");
 		if (returnAccounts.size() == amount){
-			LOGGER.info("Successfully received " + returnAccounts.size() + " accounts from the InfernalBotManager database.");
+			LOGGER.info("Received " + returnAccounts.size() + " accounts from the InfernalBotManager server.");
 		} else {
-			LOGGER.info("Warning: only found " + returnAccounts.size() + " eligible accounts in the the InfernalBotManager database.");
+			if(returnAccounts.size() > 0){
+				LOGGER.warn("Only found " + returnAccounts.size() + " eligible accounts on the the InfernalBotManager server.");
+			} else {
+				LOGGER.error("No eligible accounts on the the InfernalBotManager server.");
+			}
+		}
+		return returnAccounts;
+	}
+	
+	public List<LolAccount> getBufferAccounts(Long userid, Region region, Integer amount){
+		LolAccountWrapper jsonResponse = restTemplate.getForObject(URI_ACCOUNTS + "/user/" + userid + "/region/" + region + "/limit/" + amount + "/buffer/", LolAccountWrapper.class);
+		List<LolAccount> returnAccounts = jsonResponse.getMap().get("data");
+		if (returnAccounts.size() == amount){
+			LOGGER.info("Received " + returnAccounts.size() + " bufferaccounts from the InfernalBotManager server.");
+		} else {
+			if(returnAccounts.size() > 0){
+				LOGGER.warn("Only found " + returnAccounts.size() + " eligible bufferaccounts on the the InfernalBotManager server.");
+			} else {
+				LOGGER.warn("No eligible bufferaccounts on the the InfernalBotManager server.");
+			}
 		}
 		return returnAccounts;
 	}
@@ -55,9 +74,9 @@ public class LolAccountRestClient {
 		return lolAccounts;
 	}
 	
-	public LolAccount getByUserIdAndAccount(Long userid, String account){
-		LolAccount lolAccount = restTemplate.getForObject(URI_ACCOUNTS + "/user/" + userid + "/account/" + account, LolAccount.class);
-		LOGGER.debug("getByUserIdAndAccount:" + lolAccount);
+	public LolAccount getByUserIdRegionAndAccount(Long userid, Region region, String account){
+		LolAccount lolAccount = restTemplate.getForObject(URI_ACCOUNTS + "/user/" + userid + "/region/" + region + "/account/" + account, LolAccount.class);
+		LOGGER.debug("getByUserIdRegionAndAccount:" + lolAccount);
 		return lolAccount;
 	}
 
@@ -90,12 +109,12 @@ public class LolAccountRestClient {
 		LOGGER.debug("sendInfernalAccounts - new:" + map.getNewAccs());
 		for(Entry<String,String> entry : stringResponseMap.getMap().entrySet()){
 			if(!entry.getValue().equals("OK")){
-				LOGGER.info("Error(" + entry.getKey() + ": " + entry.getValue() + ")");
+				LOGGER.warn("Error(" + entry.getKey() + ": " + entry.getValue() + ")");
 				result = false;
 			}
 		}
 		if (result = true){
-			LOGGER.info("Successfully updated accounts on server");
+			LOGGER.info("Updated accounts on the InfernalBotManager server");
 		}
 		return result;
 	}

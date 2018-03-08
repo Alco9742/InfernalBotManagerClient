@@ -17,7 +17,7 @@ import org.springframework.web.client.ResourceAccessException;
 
 @Data
 public class InfernalBotManagerClient {
-	private static final Logger LOGGER = LoggerFactory.getLogger("InfernalBotManagerClient");
+	private static final Logger LOGGER = LoggerFactory.getLogger(InfernalBotManagerClient.class);
 	private InfernalBotManagerClientSettings clientSettings;
 	
 	public InfernalBotManagerClient(InfernalBotManagerClientSettings clientSettings) {
@@ -30,7 +30,7 @@ public class InfernalBotManagerClient {
 			try {
 				Process p = Runtime.getRuntime().exec("shutdown -r -t " + clientSettings.getRebootTime());
 			} catch (IOException e) {
-				LOGGER.info("Error scheduling reboot");
+				LOGGER.error("Error scheduling reboot");
 				LOGGER.debug(e.getMessage().toString());
 			}
 			LOGGER.info("Shutdown scheduled in " + clientSettings.getRebootTime() + " seconds");
@@ -47,23 +47,23 @@ public class InfernalBotManagerClient {
 				int returnVal = p1.waitFor();
 				boolean reachable = (returnVal==0);
 				if (reachable){
-					LOGGER.info("Successfully connected to network");
+					LOGGER.info("Connected to network");
 					//this way doesn't work, do it with REST
 					Process p2 = java.lang.Runtime.getRuntime().exec("ping -n 1 " + clientSettings.getWebServer());
 					int returnVal2 = p2.waitFor();
 					boolean reachable2 = (returnVal2==0);
 					if (reachable2){
-						LOGGER.info("Successfully connected to the InfernalBotManager server");
+						LOGGER.info("Connected to the InfernalBotManager server");
 					} else {
-						LOGGER.info("Error connecting to the InfernalBotManager server");
+						LOGGER.error("Failure connecting to the InfernalBotManager server");
 						return false;
 					}
 				} else {
-					LOGGER.info("Error connecting to network");
+					LOGGER.error("Error connecting to network");
 					return false;
 				}
 			}catch (IOException | InterruptedException e ){
-				LOGGER.info("Error establishing connection: " + e.getMessage());
+				LOGGER.error("Failure establishing connection");
 				LOGGER.debug(e.getMessage());
 				return false;
 			}
@@ -75,10 +75,9 @@ public class InfernalBotManagerClient {
 	public boolean accountExchange(){
 		try{
 			LolAccountService lolAccountService = new LolAccountService(clientSettings);
-			lolAccountService.exchangeAccounts(clientSettings.getUserId(), clientSettings.getClientRegion(), clientSettings.getClientTag(), clientSettings.getAccountAmount());
-			return true;
+			return lolAccountService.exchangeAccounts(clientSettings.getUserId(), clientSettings.getClientRegion(), clientSettings.getClientTag(), clientSettings.getAccountAmount());
 		} catch (ResourceAccessException e) {
-			LOGGER.info("Error retrieving the requested resource");
+			LOGGER.error("Failure retrieving the requested resource");
 			LOGGER.debug(e.getMessage());
 				return false;
 		} 
@@ -90,7 +89,7 @@ public class InfernalBotManagerClient {
 			lolAccountService.setAccountsAsReadyForUse(clientSettings.getUserId());
 			return true;
 		} catch (ResourceAccessException e) {
-			LOGGER.info("Error retrieving the requested resource");
+			LOGGER.error("Failure retrieving the requested resource");
 			LOGGER.debug(e.getMessage());
 			return false;
 		} 
@@ -106,7 +105,7 @@ public class InfernalBotManagerClient {
 				//--> boolean for overwrite and values in a map --> pass to the method
 				return true;
 			} catch (ResourceAccessException e) {
-				LOGGER.info("Error retrieving the requested resource");
+				LOGGER.error("Failure retrieving the requested resource");
 				LOGGER.debug(e.getMessage());
 				return false;
 			}
@@ -118,7 +117,7 @@ public class InfernalBotManagerClient {
 	
 	public boolean backUpInfernalDatabase(){
 		if(checkDir()){
-			LOGGER.info("Successfully located Infernalbot");
+			LOGGER.info("Located Infernalbot");
 			Path backupDir = Paths.get(clientSettings.getInfernalMap() + "InfernalManager") ;
 			Path file = Paths.get(clientSettings.getInfernalMap() + "InfernalDatabase.sqlite") ;
 			Path backupFile = Paths.get(clientSettings.getInfernalMap() + "InfernalManager/InfernalDatabase.bak") ;
@@ -132,18 +131,18 @@ public class InfernalBotManagerClient {
 			if (Files.exists(file)){
 				try {
 					Files.copy(file,backupFile, StandardCopyOption.REPLACE_EXISTING);
-					LOGGER.info("Successfully backed up Infernalbot database" );
+					LOGGER.info("Backed up Infernalbot database" );
 				} catch (IOException e) {
-					LOGGER.info("Error backing up Infernal Database: " + e.getMessage());
+					LOGGER.error("Failure backing up Infernal Database: " + e.getMessage());
 					LOGGER.debug(e.getMessage());
 					return false;
 				}
 			} else {
-				LOGGER.info("Infernalbot database not found, check your path.");
+				LOGGER.error("Infernalbot database not found, check your path.");
 				return false;
 			}
 		} else {
-			LOGGER.info("Error: couldn't locate Infernalbot");
+			LOGGER.error("Failure locating Infernalbot");
 			return false;
 		}
 		return true;

@@ -17,7 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Main {
-	private static final Logger LOGGER = LoggerFactory.getLogger("Main");
+	private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 	private static final String INI_NAME = "settings.ini";
 	public static Map<Thread, Runnable> threadMap = new HashMap<>();
 	
@@ -32,10 +32,8 @@ public class Main {
 	}
 	
 	private static void program(){
-		System.out.println("|||||||||||||||||||||||||||||||||||||||||||||||||");
-		System.out.println("|||   InfernalBotManager (BETA) by NilsGhes   |||");
-		System.out.println("||| PRESS CTRL + C TO SAFELY CLOSE THE CLIENT |||");
-		System.out.println("|||||||||||||||||||||||||||||||||||||||||||||||||");
+		System.out.println("---  InfernalBotManager (BETA) by NilsGhes  ---");
+		System.out.println("---PRESS CTRL + C TO SAFELY CLOSE THE CLIENT---");
 		LOGGER.info("Starting InfernalBotManager Client");
 		Runtime.getRuntime().addShutdownHook(new GracefulExitHook());
 		InfernalBotManagerClient client= buildClient();
@@ -63,14 +61,14 @@ public class Main {
 					client = new InfernalBotManagerClient(settings);
 				}
 			} catch (InvalidFileFormatException e) {
-				LOGGER.info("Error reading settings.ini file");
+				LOGGER.error("Error reading settings.ini file");
 				LOGGER.debug(e.getMessage());
 			} catch (IOException e) {
-				LOGGER.info("Error reading settings.ini file");
+				LOGGER.error("Error reading settings.ini file");
 				LOGGER.debug(e.getMessage());;
 			}
 		} else {
-			LOGGER.info("Error: .ini file not found at path: " + iniFilePath);
+			LOGGER.error("settings.ini file not found at path: " + iniFilePath);
 		}
 		return client;
 	}

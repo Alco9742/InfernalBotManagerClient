@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.client.ResourceAccessException;
 
 public class InfernalSettingsService {
-	private static final Logger LOGGER = LoggerFactory.getLogger("InfernalSettingsService");
+	private static final Logger LOGGER = LoggerFactory.getLogger(InfernalSettingsService.class);
 	private final InfernalSettingsJDBCClient jdbcClient;
 	private final InfernalSettingsRestClient restClient;
 	private final InfernalBotManagerClientSettings clientSettings;
@@ -37,7 +37,7 @@ public class InfernalSettingsService {
 				if (newId == infernalSettingsForUpdate.getId()){
 					return true;
 				} else{
-					LOGGER.debug("Error: id of updated record not the same as id of record to update");
+					LOGGER.debug("ID of updated record not the same as ID of record to update");
 					return false;
 				}
 			} else {
@@ -58,7 +58,7 @@ public class InfernalSettingsService {
 				}
 			}
 		} else {
-			LOGGER.info("Error: could not retrieve InfernalSettings from the InfernalBotManager database");
+			LOGGER.error("Failure retrieving InfernalSettings from the InfernalBotManager server");
 			return false;
 		}
 		return true;

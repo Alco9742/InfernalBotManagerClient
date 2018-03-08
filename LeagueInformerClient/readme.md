@@ -1,23 +1,25 @@
 <h1>LeagueInformer base project</h1>
 <h2>InfernalManagerClient</h2>
-<h3>TODO:</h3>	
+<h3>TODO BEFORE BETA:</h3>	
 <ul>
 <li>Spring security -> Log in to server</li>
-<li>Fix ENUMs usage in REST</li>
-<li>Client settings fetch from server</li>
-<li>Infernalbot settings fetch from server</li>
 <li>Fix network connection checks</li>
-<li>Check server for riot server status --> add to network checks</li>
 <li>Autoupdater</li>
 <li>Register clients and make a thread ping every 5 minutes to check which clients are running (possibly with a status?)</li>
 <li>java2exe + encryption</li>
-<li><del>temp console front-end</del></li>
 <li>Crash: regedit stuff from script: closing infernalbot on errorlevel?</li>
-<li><del>Grab new accounts on crash of infernalbot<del></li>
-<li><del>Refactor to better match object oriented programming</del><:li>
-<li><del>Safely close threads</del</li>
+<li>Seperate thread check for queuers -->reboot from manager client instead of from infernalbot (safely closing threads)</li>
+<li>implement a Console window in Swing<li>
+</ul>
+
+
+<h3>TODO DURING BETA:</h3>	
+<ul>
+<li>Client settings fetch from server</li>
+<li>Check server for riot server status --> add to network checks</li>
 <li>implement a Console window in Swing<li>
 <li>JavaFX front-end -- optional </li>
+<li>Change from nullchecks to Optionals</li>
 </ul>
 
 <h3>Client server connection map(for LolAccounts</h3>

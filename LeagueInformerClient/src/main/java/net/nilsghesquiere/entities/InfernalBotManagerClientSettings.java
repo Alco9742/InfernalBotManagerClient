@@ -14,13 +14,14 @@ import org.slf4j.LoggerFactory;
 
 @Data
 public class InfernalBotManagerClientSettings {
-	private static final Logger LOGGER = LoggerFactory.getLogger("InfernalBotManagerClientSettings");
-	private static final String INFERNAL_PROCESS_NAME ="Infernal Launcher.exe";
+	private static final Logger LOGGER = LoggerFactory.getLogger(InfernalBotManagerClientSettings.class);
+	private static final String INFERNAL_PROCESS_NAME ="notepad.exe";
 	private Long userId;
 	private String infernalMap;
 	private String infernalProg;
 	private Integer accountAmount;
 	private Integer accountBuffer;
+	private Boolean uploadNewAccounts;
 	private String clientTag;
 	private Region clientRegion;
 	private String webServer;
@@ -35,7 +36,7 @@ public class InfernalBotManagerClientSettings {
 
 	
 	public InfernalBotManagerClientSettings(Long userId, String infernalMap, String infernalProgname,
-			Integer accountAmount, String clientTag, Region clientRegion,
+			Integer accountAmount,Integer accountBuffer, Boolean uploadNewAccounts, String clientTag, Region clientRegion,
 			String webServer, String port, Boolean reboot, Integer rebootTime,
 			Boolean fetchSettings, Boolean overwriteSettings, Map<String, String> settingsOverwriteMap,
 			Boolean bypassDevChecks) {
@@ -44,6 +45,8 @@ public class InfernalBotManagerClientSettings {
 		this.infernalMap = infernalMap;
 		this.infernalProg = infernalProgname;
 		this.accountAmount = accountAmount;
+		this.accountBuffer = accountBuffer;
+		this.uploadNewAccounts = uploadNewAccounts;
 		this.clientTag = clientTag;
 		this.clientRegion = clientRegion;
 		this.webServer = webServer;
@@ -62,6 +65,7 @@ public class InfernalBotManagerClientSettings {
 		String infernalMap = ini.get("main", "infernalmap", String.class);
 		Integer numberOfAccounts = ini.get("main", "accounts", Integer.class);
 		Integer accountBuffer = ini.get("main", "accountbuffer", Integer.class);
+		Boolean uploadNewAccounts = ini.get("main","uploadnewaccounts", boolean.class);
 		String clientTag = ini.get("main", "clienttag", String.class);
 		Region clientRegion = ini.get("main", "region", Region.class);
 		String webServer = ini.get("main", "webserver", String.class);
@@ -74,68 +78,72 @@ public class InfernalBotManagerClientSettings {
 		Boolean bypassDevChecks = ini.get("main", "bypassdev", boolean.class);
 		
 		if(userId == null){
-			LOGGER.info("Error in settings.ini: value '" + userId + "' is not accepted for userid");
+			LOGGER.error("Bad value in settings.ini: value '" + userId + "' is not accepted for userid");
 			hasError = true;
 		}
 		if(infernalMap == null){
-			LOGGER.info("Error in settings.ini: value '" + infernalMap + "' is not accepted for infernalmap");
+			LOGGER.error("Bad value in settings.ini: value '" + infernalMap + "' is not accepted for infernalmap");
 			hasError = true;
 		}
 		if(numberOfAccounts == null){
-			LOGGER.info("Error in settings.ini: value '" + numberOfAccounts + "' is not accepted for accounts");
+			LOGGER.error("Bad value in settings.ini: value '" + numberOfAccounts + "' is not accepted for accounts");
 			hasError = true;
 		} 
 		if(accountBuffer == null){
-			LOGGER.info("Error in settings.ini: value '" + accountBuffer + "' is not accepted for accountbuffer");
+			LOGGER.error("Bad value in settings.ini: value '" + accountBuffer + "' is not accepted for accountbuffer");
+			hasError = true;
+		} 
+		if(overwriteSettings == null){
+			LOGGER.error("Bad value in settings.ini: value '" + uploadNewAccounts + "' is not accepted for uploadnewaccounts");
 			hasError = true;
 		} 
 		if(clientTag == null){
-			LOGGER.info("Error in settings.ini: value '" + clientTag + "' is not accepted for clienttag");
+			LOGGER.error("Bad value in settings.ini: value '" + clientTag + "' is not accepted for clienttag");
 			hasError = true;
 		}
 		if(clientRegion == null){
-			LOGGER.info("Error in settings.ini: value '" + clientRegion + "' is not accepted for region");
+			LOGGER.error("Bad value in settings.ini: value '" + clientRegion + "' is not accepted for region");
 			hasError = true;
 		}
 		if(webServer == null){
-			LOGGER.info("Error in settings.ini: value '" + webServer + "' is not accepted for webserver");
+			LOGGER.error("Bad value in settings.ini: value '" + webServer + "' is not accepted for webserver");
 			hasError = true;
 		}
 		if(port == null){
-			LOGGER.info("Error in settings.ini: value '" + port + "' is not accepted for port");
+			LOGGER.error("Bad value in settings.ini: value '" + port + "' is not accepted for port");
 			hasError = true;
 		}
 		if(reboot == null){
-			LOGGER.info("Error in settings.ini: value '" + reboot + "' is not accepted for reboot");
+			LOGGER.error("Bad value in settings.ini: value '" + reboot + "' is not accepted for reboot");
 			hasError = true;
 		} else {
 			if (reboot){
 				if(rebootTime == null){
-					LOGGER.info("Error in settings.ini: value '" + rebootTime + "' is not accepted for reboottime");
+					LOGGER.error("Bad value in settings.ini: value '" + rebootTime + "' is not accepted for reboottime");
 					hasError = true;
 				}
 			}
 		}
 		if(infernalMap == null){
-			LOGGER.info("Error in settings.ini: value '" + infernalMap + "' is not accepted for infernalmap");
+			LOGGER.error("Bad value in settings.ini: value '" + infernalMap + "' is not accepted for infernalmap");
 			hasError = true;
 		}
 		if(bypassDevChecks == null){
 			bypassDevChecks = false;
 		}
 		if(fetchSettings == null){
-			LOGGER.info("Error in settings.ini: value '" + fetchSettings + "' is not accepted for fetchsettings");
+			LOGGER.error("Bad value in settings.ini: value '" + fetchSettings + "' is not accepted for fetchsettings");
 			hasError = true;
 		} 
 		if(overwriteSettings == null){
-			LOGGER.info("Error in settings.ini: value '" + overwriteSettings + "' is not accepted for overwritesettings");
+			LOGGER.error("Bad value in settings.ini: value '" + overwriteSettings + "' is not accepted for overwritesettings");
 			hasError = true;
 		} 
 		
 		if(fetchSettings != null && overwriteSettings != null){
 			if(!fetchSettings){
 				if(overwriteSettings){
-					LOGGER.info("Error in settings.ini: overwritesettings can't be true if fetchsettings is false");
+					LOGGER.error("Bad value in settings.ini: overwritesettings can't be true if fetchsettings is false");
 					hasError = true;
 				}
 			} else {
@@ -150,11 +158,11 @@ public class InfernalBotManagerClientSettings {
 		
 		
 		if(!hasError){
-			InfernalBotManagerClientSettings settings = new InfernalBotManagerClientSettings(userId,infernalMap,INFERNAL_PROCESS_NAME,numberOfAccounts,clientTag, clientRegion, webServer,port, reboot, rebootTime, fetchSettings, overwriteSettings, settingsOverwriteMap, bypassDevChecks);
-			LOGGER.info("Successfully loaded settings from settings.ini");
+			InfernalBotManagerClientSettings settings = new InfernalBotManagerClientSettings(userId,infernalMap,INFERNAL_PROCESS_NAME,numberOfAccounts,accountBuffer, uploadNewAccounts, clientTag, clientRegion, webServer,port, reboot, rebootTime, fetchSettings, overwriteSettings, settingsOverwriteMap, bypassDevChecks);
+			LOGGER.info("Loaded settings from settings.ini");
 			return settings;
 		} else {
-			LOGGER.info("Error loading settings from settings.ini");
+			LOGGER.error("Failure loading settings from settings.ini");
 			return null;
 		}
 	}

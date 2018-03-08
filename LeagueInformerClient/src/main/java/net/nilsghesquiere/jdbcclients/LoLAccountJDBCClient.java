@@ -18,7 +18,7 @@ import net.nilsghesquiere.enums.Region;
 
 //TODO Transactions
 public class LoLAccountJDBCClient {
-	private static final Logger LOGGER = LoggerFactory.getLogger("InfernalBotAccountDatabaseClient");
+	private static final Logger LOGGER = LoggerFactory.getLogger(LoLAccountJDBCClient.class);
 	private final String DATABASE_URI;
 	private static final String SELECT_SQL = "SELECT * FROM Accountlist";
 	private static final String DELETE_SQL = "DELETE FROM Accountlist";
@@ -29,12 +29,14 @@ public class LoLAccountJDBCClient {
 		this.DATABASE_URI = "jdbc:sqlite:" + infernalMap +"InfernalDatabase.sqlite";
 	}
 	
-	public void connect(){
+	public boolean connect(){
 		try(Connection connection = DriverManager.getConnection(DATABASE_URI)){
-			LOGGER.info("Successfully connected to InfernalBot database.");
+			LOGGER.info("Connected to the InfernalBot database.");
+			return true;
 		} catch (SQLException e) {
-			LOGGER.info("Error conencting to InfernalBot database");
+			LOGGER.error("Failure connecting to InfernalBot database");
 			LOGGER.debug(e.getMessage());
+			return false;
 		} 
 	}
 	
@@ -47,9 +49,13 @@ public class LoLAccountJDBCClient {
 				LolAccount lolAccount = buildLolAccount(resultSet);
 				lolAccounts.add(lolAccount);
 			}
-			LOGGER.info("Successfully received " + lolAccounts.size() + " accounts from the InfernalBot database.");
+			if (lolAccounts.size() > 0){
+				LOGGER.info("Received " + lolAccounts.size() + " accounts from InfernalBot.");
+			} else {
+				LOGGER.warn("Infernalbot accountlist is empty: not sending to the server.");
+			}
 		} catch (SQLException e) {
-			LOGGER.info("Error receiving accounts from the InfernalBot database.");
+			LOGGER.error("Failure receiving accounts from InfernalBot.");
 			LOGGER.debug(e.getMessage());
 		} 
 		return lolAccounts;
@@ -61,14 +67,14 @@ public class LoLAccountJDBCClient {
 			Statement statement = connection.createStatement();
 			statement.executeUpdate(DELETE_SQL);
 			connection.commit();
-			LOGGER.info("Successfully deleted all accounts from the InfernalBot database.");
+			LOGGER.info("Deleted all accounts from InfernalBot.");
 		} catch (SQLException e) {
-			LOGGER.info("Error deleting accounts from the InfernalBot database.");
+			LOGGER.error("Failure deleting accounts from InfernalBot .");
 			LOGGER.debug(e.getMessage());
 		} 
 	}
 	
-	public int insertAccounts(List<LolAccount> lolAccounts){
+	public int insertAccounts(List<LolAccount> lolAccounts, Boolean buffer){
 		int aantalToegevoegdeAccounts = 0;
 		try(Connection connection = DriverManager.getConnection(DATABASE_URI);
 			PreparedStatement statement = connection.prepareStatement(INSERT_SQL, Statement.RETURN_GENERATED_KEYS)){
@@ -98,9 +104,13 @@ public class LoLAccountJDBCClient {
 			for(int aantalToegevoegdeRecords : aantalToegevoegdeRecordsPerInsert){
 				aantalToegevoegdeAccounts += aantalToegevoegdeRecords;
 			}
-			LOGGER.info("Successfully inserted " + aantalToegevoegdeAccounts + " accounts into the InfernalBot database.");
+			if(!buffer){
+				LOGGER.info("Inserted " + aantalToegevoegdeAccounts + " accounts into InfernalBot.");
+			} else {
+				LOGGER.info("Inserted " + aantalToegevoegdeAccounts + " bufferaccounts into InfernalBot.");	
+			}
 		} catch (SQLException e) {
-			LOGGER.info("Error inserting accounts into the InfernalBot database.");
+			LOGGER.error("Failure inserting accounts into InfernalBot.");
 			LOGGER.debug(e.getMessage());
 		}
 		return aantalToegevoegdeAccounts; 
@@ -124,7 +134,8 @@ public class LoLAccountJDBCClient {
 		String statusString = resultSet.getString("Status");
 		if (statusString != null && !statusString.isEmpty() && statusString.toLowerCase().contains("banned")){
 			//TODO: dit verfijnen
-			lolAccount.setAccountStatus(AccountStatus.ERROR);
+			lolAccount.setAccountStatus(AccountStatus.BANNED);
+			LOGGER.warn(lolAccount.getAccount() + " has been banned");
 		}
 		return lolAccount;
 	}
