@@ -3003,3 +3003,421 @@
 2018-03-08 14:27:49.342 DEBUG [Thread-1] LolAccountRestClient - updateLolAccounts (after):[LolAccount(id=88, account=participatingl51, password=oEJoMe67, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_BUFFER, assignedTo=TESTJE5, info=null), LolAccount(id=89, account=theromorphism50, password=FMyCOE65, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_BUFFER, assignedTo=TESTJE5, info=null), LolAccount(id=87, account=typeset47, password=fMBRvr42, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_BUFFER, assignedTo=TESTJE5, info=null)]
 2018-03-08 14:27:49.342 INFO  [Thread-1] InfernalBotManagerRunnable - InfernalBot started
 2018-03-08 14:30:12.745 INFO  [Thread-1] InfernalBotManagerRunnable - Starting InfernalBot crash checker
+2018-03-09 11:34:37.388 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 11:34:37.465 ERROR [main] InfernalBotManagerClientSettings - Bad value in settings.ini: value 'null' is not accepted for infernalprogramname
+2018-03-09 11:34:37.465 ERROR [main] InfernalBotManagerClientSettings - Failure loading settings from settings.ini
+2018-03-09 11:34:37.465 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-09 11:34:37.465 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-09 11:34:37.465 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-09 11:35:24.260 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 11:35:24.283 ERROR [main] InfernalBotManagerClientSettings - Bad value in settings.ini: value 'null' is not accepted for infernalprogramname
+2018-03-09 11:35:24.283 ERROR [main] InfernalBotManagerClientSettings - Failure loading settings from settings.ini
+2018-03-09 11:35:24.283 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-09 11:35:24.284 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-09 11:35:24.284 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-09 11:35:56.340 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 11:35:56.364 INFO  [main] InfernalBotManagerClientSettings - Loaded settings from settings.ini
+2018-03-09 11:35:57.746 ERROR [main] InfernalBotManagerClient - Failure retrieving the requested resource
+2018-03-09 11:35:57.747 DEBUG [main] InfernalBotManagerClient - I/O error on GET request for "http://localhost:8080/api/admin/globalvars/name/clientVersion": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2018-03-09 11:35:57.764 INFO  [main] InfernalBotManagerClient - Located Infernalbot
+2018-03-09 11:35:57.768 INFO  [main] InfernalBotManagerClient - Backed up Infernalbot database
+2018-03-09 11:35:58.790 ERROR [main] InfernalBotManagerClient - Failure retrieving the requested resource
+2018-03-09 11:35:58.790 DEBUG [main] InfernalBotManagerClient - I/O error on GET request for "http://localhost:8080/api/infernalsettings/user/3": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2018-03-09 11:35:58.790 INFO  [main] Main - Retrying in 1 minute...
+2018-03-09 11:38:56.464 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 11:38:56.486 INFO  [main] InfernalBotManagerClientSettings - Loaded settings from settings.ini
+2018-03-09 11:38:57.776 ERROR [main] InfernalBotManagerClient - Failure retrieving the requested resource
+2018-03-09 11:38:57.777 DEBUG [main] InfernalBotManagerClient - I/O error on GET request for "http://localhost:8080/api/admin/globalvars/name/clientVersion": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2018-03-09 11:38:57.777 INFO  [main] Main - test
+2018-03-09 11:38:57.777 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-09 11:38:57.777 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-09 11:38:57.778 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-09 11:53:32.207 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 11:53:32.229 INFO  [main] InfernalBotManagerClientSettings - Loaded settings from settings.ini
+2018-03-09 11:53:32.914 ERROR [main] GlobalVariableService - Client is outdated (v5.0.1)
+2018-03-09 11:53:32.915 INFO  [main] GlobalVariableService - Updating to new version (v0.5.1)
+2018-03-09 11:53:32.915 INFO  [main] Main - test
+2018-03-09 11:53:32.915 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-09 11:53:32.915 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-09 11:53:32.916 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-09 11:53:52.219 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 11:53:52.240 INFO  [main] InfernalBotManagerClientSettings - Loaded settings from settings.ini
+2018-03-09 11:53:52.550 INFO  [main] GlobalVariableService - Client up to date (v0.5.1)
+2018-03-09 11:53:52.551 INFO  [main] InfernalBotManagerClient - Located Infernalbot
+2018-03-09 11:53:52.556 INFO  [main] InfernalBotManagerClient - Backed up Infernalbot database
+2018-03-09 11:53:52.620 INFO  [main] InfernalSettingsRestClient - Received InfernalBot settings from the InfernalBotManager server.
+2018-03-09 11:53:52.620 DEBUG [main] InfernalSettingsRestClient - SettingsFromServer: InfernalSettings(id=4, sets=InfernalManager, username=null, password=null, groups=1, level=30, clientPath=, currentVersion=null, wildcard=:, maxLevel=30, sleepTime=0, playTime=24, region=null, prio=1, grSize=null, clientUpdateSel=null, replaceConfig=false, lolHeight=240, lolWidth=320, maxBe=30000, aktive=true, clientHide=true, consoleHide=true, ramManager=true, ramMin=200, ramMax=300, leaderHide=true, surrender=false, renderDisable=true, leaderRenderDisable=true, cpuBoost=true, leaderCpuBoost=true, levelToBeginnerBot=99, timeSpan=30, softEndDefault=true, softEndValue=5, queuerAutoClose=false, queueCloseValue=1, winReboot=true, winShutdown=false, timeoutLogin=5, timeoutLobby=5, timeoutChamp=5, timeoutMastery=5, timeoutLoadGame=5, timeoutInGame=60, timeoutInGameFF=17, timeoutEndOfGame=5, timeUntilCheck=false, timeUntilReboot=1:00, serverCon=false, serverPort=100, openChest=true, openHexTech=true, disChest=true, apiClient=null, mySQLServer=null, mySQLDatabase=null, mySQLUser=null, mySQLPassword=null, mySQLQueueTable=null, mySQLAktivTable=null)
+2018-03-09 11:53:54.195 INFO  [main] InfernalSettingsJDBCClient - Received the Default settings from InfernalBot.
+2018-03-09 11:53:54.539 INFO  [main] InfernalSettingsJDBCClient - Updated the Default settings in InfernalBot.
+2018-03-09 11:53:54.548 INFO  [main] LoLAccountJDBCClient - Received 8 accounts from InfernalBot.
+2018-03-09 11:53:54.583 DEBUG [main] LolAccountRestClient - getByUserIdRegionAndAccount:LolAccount(id=92, account=testN12, password=zedaz, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=1, playTime=24, sleepTime=0, active=true, accountStatus=NEW, assignedTo=, info=)
+2018-03-09 11:53:54.597 DEBUG [main] LolAccountRestClient - getByUserIdRegionAndAccount:LolAccount(id=84, account=salinometer1968, password=ZrLSdo41, summoner=salinometer1968, region=EUW, level=23, maxLevel=30, xp=366, be=14305, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_USE, assignedTo=TESTJE5, info=null)
+2018-03-09 11:53:54.608 DEBUG [main] LolAccountRestClient - getByUserIdRegionAndAccount:LolAccount(id=83, account=undelude36, password=BKfzRb04, summoner=undelude36, region=EUW, level=23, maxLevel=30, xp=192, be=14305, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_USE, assignedTo=TESTJE5, info=null)
+2018-03-09 11:53:54.621 DEBUG [main] LolAccountRestClient - getByUserIdRegionAndAccount:null
+2018-03-09 11:53:54.633 DEBUG [main] LolAccountRestClient - getByUserIdRegionAndAccount:LolAccount(id=82, account=antiparallel73, password=RfYViX23, summoner=antiparallel73, region=EUW, level=23, maxLevel=30, xp=195, be=14305, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_USE, assignedTo=TESTJE5, info=null)
+2018-03-09 11:53:54.647 DEBUG [main] LolAccountRestClient - getByUserIdRegionAndAccount:LolAccount(id=87, account=typeset47, password=fMBRvr42, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_BUFFER, assignedTo=TESTJE5, info=null)
+2018-03-09 11:53:54.657 DEBUG [main] LolAccountRestClient - getByUserIdRegionAndAccount:LolAccount(id=88, account=participatingl51, password=oEJoMe67, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_BUFFER, assignedTo=TESTJE5, info=)
+2018-03-09 11:53:54.669 DEBUG [main] LolAccountRestClient - getByUserIdRegionAndAccount:LolAccount(id=89, account=theromorphism50, password=FMyCOE65, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_BUFFER, assignedTo=TESTJE5, info=null)
+2018-03-09 11:53:54.876 DEBUG [main] LolAccountRestClient - sendInfernalAccounts - existing:[LolAccount(id=88, account=participatingl51, password=oEJoMe67, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=READY_FOR_USE, assignedTo=, info=), LolAccount(id=89, account=theromorphism50, password=FMyCOE65, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=READY_FOR_USE, assignedTo=, info=null), LolAccount(id=92, account=testN12, password=testN12, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=1, playTime=24, sleepTime=0, active=true, accountStatus=READY_FOR_USE, assignedTo=, info=), LolAccount(id=82, account=antiparallel73, password=RfYViX23, summoner=antiparallel73, region=EUW, level=23, maxLevel=30, xp=195, be=14305, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=READY_FOR_USE, assignedTo=, info=null), LolAccount(id=83, account=undelude36, password=BKfzRb04, summoner=undelude36, region=EUW, level=23, maxLevel=30, xp=192, be=14305, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=READY_FOR_USE, assignedTo=, info=null), LolAccount(id=84, account=salinometer1968, password=ZrLSdo41, summoner=salinometer1968, region=EUW, level=23, maxLevel=30, xp=366, be=14305, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=READY_FOR_USE, assignedTo=, info=null), LolAccount(id=87, account=typeset47, password=fMBRvr42, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=READY_FOR_USE, assignedTo=, info=null)]
+2018-03-09 11:53:54.877 DEBUG [main] LolAccountRestClient - sendInfernalAccounts - new:[]
+2018-03-09 11:53:54.877 INFO  [main] LolAccountRestClient - Updated accounts on the InfernalBotManager server
+2018-03-09 11:53:55.103 INFO  [main] LoLAccountJDBCClient - Deleted all accounts from InfernalBot.
+2018-03-09 11:53:55.124 INFO  [main] LolAccountRestClient - Received 5 accounts from the InfernalBotManager server.
+2018-03-09 11:53:55.291 INFO  [main] LoLAccountJDBCClient - Inserted 5 accounts into InfernalBot.
+2018-03-09 11:53:55.293 DEBUG [main] LolAccountRestClient - updateLolAccounts (before):[LolAccount(id=92, account=testN12, password=testN12, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=1, playTime=24, sleepTime=0, active=true, accountStatus=IN_USE, assignedTo=TESTJE5, info=), LolAccount(id=82, account=antiparallel73, password=RfYViX23, summoner=antiparallel73, region=EUW, level=23, maxLevel=30, xp=195, be=14305, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_USE, assignedTo=TESTJE5, info=null), LolAccount(id=83, account=undelude36, password=BKfzRb04, summoner=undelude36, region=EUW, level=23, maxLevel=30, xp=192, be=14305, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_USE, assignedTo=TESTJE5, info=null), LolAccount(id=84, account=salinometer1968, password=ZrLSdo41, summoner=salinometer1968, region=EUW, level=23, maxLevel=30, xp=366, be=14305, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_USE, assignedTo=TESTJE5, info=null), LolAccount(id=87, account=typeset47, password=fMBRvr42, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_USE, assignedTo=TESTJE5, info=null)]
+2018-03-09 11:53:55.351 DEBUG [main] LolAccountRestClient - updateLolAccounts (after):[LolAccount(id=92, account=testN12, password=testN12, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=1, playTime=24, sleepTime=0, active=true, accountStatus=IN_USE, assignedTo=TESTJE5, info=), LolAccount(id=82, account=antiparallel73, password=RfYViX23, summoner=antiparallel73, region=EUW, level=23, maxLevel=30, xp=195, be=14305, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_USE, assignedTo=TESTJE5, info=null), LolAccount(id=83, account=undelude36, password=BKfzRb04, summoner=undelude36, region=EUW, level=23, maxLevel=30, xp=192, be=14305, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_USE, assignedTo=TESTJE5, info=null), LolAccount(id=84, account=salinometer1968, password=ZrLSdo41, summoner=salinometer1968, region=EUW, level=23, maxLevel=30, xp=366, be=14305, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_USE, assignedTo=TESTJE5, info=null), LolAccount(id=87, account=typeset47, password=fMBRvr42, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_USE, assignedTo=TESTJE5, info=null)]
+2018-03-09 11:53:55.383 WARN  [main] LolAccountRestClient - Only found 2 eligible bufferaccounts on the the InfernalBotManager server.
+2018-03-09 11:53:55.558 INFO  [main] LoLAccountJDBCClient - Inserted 2 bufferaccounts into InfernalBot.
+2018-03-09 11:53:55.558 DEBUG [main] LolAccountRestClient - updateLolAccounts (before):[LolAccount(id=88, account=participatingl51, password=oEJoMe67, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_BUFFER, assignedTo=TESTJE5, info=), LolAccount(id=89, account=theromorphism50, password=FMyCOE65, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_BUFFER, assignedTo=TESTJE5, info=null)]
+2018-03-09 11:53:55.577 DEBUG [main] LolAccountRestClient - updateLolAccounts (after):[LolAccount(id=88, account=participatingl51, password=oEJoMe67, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_BUFFER, assignedTo=TESTJE5, info=), LolAccount(id=89, account=theromorphism50, password=FMyCOE65, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_BUFFER, assignedTo=TESTJE5, info=null)]
+2018-03-09 11:53:55.579 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-09 11:53:55.580 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-09 11:53:55.580 INFO  [Thread-0] GracefulShutdownHook - Gracefully shutting down Thread-1, please don't close the program
+2018-03-09 11:53:55.585 INFO  [Thread-1] InfernalBotManagerRunnable - InfernalBot started
+2018-03-09 11:53:55.585 INFO  [Thread-1] InfernalBotManagerRunnable - Sleeping for 5 minutes
+2018-03-09 11:56:19.303 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 11:56:19.326 INFO  [main] InfernalBotManagerClientSettings - Loaded settings from settings.ini
+2018-03-09 11:56:19.639 INFO  [main] GlobalVariableService - Client up to date (v0.5.1)
+2018-03-09 11:56:19.640 INFO  [main] InfernalBotManagerClient - Located Infernalbot
+2018-03-09 11:56:19.645 INFO  [main] InfernalBotManagerClient - Backed up Infernalbot database
+2018-03-09 11:56:19.681 INFO  [main] InfernalSettingsRestClient - Received InfernalBot settings from the InfernalBotManager server.
+2018-03-09 11:56:19.682 DEBUG [main] InfernalSettingsRestClient - SettingsFromServer: InfernalSettings(id=4, sets=InfernalManager, username=null, password=null, groups=1, level=30, clientPath=, currentVersion=null, wildcard=:, maxLevel=30, sleepTime=0, playTime=24, region=null, prio=1, grSize=null, clientUpdateSel=null, replaceConfig=false, lolHeight=240, lolWidth=320, maxBe=30000, aktive=true, clientHide=true, consoleHide=true, ramManager=true, ramMin=200, ramMax=300, leaderHide=true, surrender=false, renderDisable=true, leaderRenderDisable=true, cpuBoost=true, leaderCpuBoost=true, levelToBeginnerBot=99, timeSpan=30, softEndDefault=true, softEndValue=5, queuerAutoClose=false, queueCloseValue=1, winReboot=true, winShutdown=false, timeoutLogin=5, timeoutLobby=5, timeoutChamp=5, timeoutMastery=5, timeoutLoadGame=5, timeoutInGame=60, timeoutInGameFF=17, timeoutEndOfGame=5, timeUntilCheck=false, timeUntilReboot=1:00, serverCon=false, serverPort=100, openChest=true, openHexTech=true, disChest=true, apiClient=null, mySQLServer=null, mySQLDatabase=null, mySQLUser=null, mySQLPassword=null, mySQLQueueTable=null, mySQLAktivTable=null)
+2018-03-09 11:56:19.817 INFO  [main] InfernalSettingsJDBCClient - Received the Default settings from InfernalBot.
+2018-03-09 11:56:20.094 INFO  [main] InfernalSettingsJDBCClient - Updated the Default settings in InfernalBot.
+2018-03-09 11:56:20.104 INFO  [main] LoLAccountJDBCClient - Received 7 accounts from InfernalBot.
+2018-03-09 11:56:20.116 DEBUG [main] LolAccountRestClient - getByUserIdRegionAndAccount:LolAccount(id=92, account=testN12, password=testN12, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=1, playTime=24, sleepTime=0, active=true, accountStatus=IN_USE, assignedTo=TESTJE5, info=)
+2018-03-09 11:56:20.122 DEBUG [main] LolAccountRestClient - getByUserIdRegionAndAccount:LolAccount(id=82, account=antiparallel73, password=RfYViX23, summoner=antiparallel73, region=EUW, level=23, maxLevel=30, xp=195, be=14305, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_USE, assignedTo=TESTJE5, info=null)
+2018-03-09 11:56:20.129 DEBUG [main] LolAccountRestClient - getByUserIdRegionAndAccount:LolAccount(id=83, account=undelude36, password=BKfzRb04, summoner=undelude36, region=EUW, level=23, maxLevel=30, xp=192, be=14305, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_USE, assignedTo=TESTJE5, info=null)
+2018-03-09 11:56:20.136 DEBUG [main] LolAccountRestClient - getByUserIdRegionAndAccount:LolAccount(id=84, account=salinometer1968, password=ZrLSdo41, summoner=salinometer1968, region=EUW, level=23, maxLevel=30, xp=366, be=14305, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_USE, assignedTo=TESTJE5, info=null)
+2018-03-09 11:56:20.144 DEBUG [main] LolAccountRestClient - getByUserIdRegionAndAccount:LolAccount(id=87, account=typeset47, password=fMBRvr42, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_USE, assignedTo=TESTJE5, info=null)
+2018-03-09 11:56:20.152 DEBUG [main] LolAccountRestClient - getByUserIdRegionAndAccount:LolAccount(id=88, account=participatingl51, password=oEJoMe67, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_BUFFER, assignedTo=TESTJE5, info=)
+2018-03-09 11:56:20.159 DEBUG [main] LolAccountRestClient - getByUserIdRegionAndAccount:LolAccount(id=89, account=theromorphism50, password=FMyCOE65, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_BUFFER, assignedTo=TESTJE5, info=null)
+2018-03-09 11:56:20.225 DEBUG [main] LolAccountRestClient - sendInfernalAccounts - existing:[LolAccount(id=88, account=participatingl51, password=oEJoMe67, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=READY_FOR_USE, assignedTo=, info=), LolAccount(id=89, account=theromorphism50, password=FMyCOE65, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=READY_FOR_USE, assignedTo=, info=null), LolAccount(id=92, account=testN12, password=testN12, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=1, playTime=24, sleepTime=0, active=true, accountStatus=READY_FOR_USE, assignedTo=, info=), LolAccount(id=82, account=antiparallel73, password=RfYViX23, summoner=antiparallel73, region=EUW, level=23, maxLevel=30, xp=195, be=14305, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=READY_FOR_USE, assignedTo=, info=null), LolAccount(id=83, account=undelude36, password=BKfzRb04, summoner=undelude36, region=EUW, level=23, maxLevel=30, xp=192, be=14305, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=READY_FOR_USE, assignedTo=, info=null), LolAccount(id=84, account=salinometer1968, password=ZrLSdo41, summoner=salinometer1968, region=EUW, level=23, maxLevel=30, xp=366, be=14305, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=READY_FOR_USE, assignedTo=, info=null), LolAccount(id=87, account=typeset47, password=fMBRvr42, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=READY_FOR_USE, assignedTo=, info=null)]
+2018-03-09 11:56:20.225 DEBUG [main] LolAccountRestClient - sendInfernalAccounts - new:[]
+2018-03-09 11:56:20.225 INFO  [main] LolAccountRestClient - Updated accounts on the InfernalBotManager server
+2018-03-09 11:56:20.415 INFO  [main] LoLAccountJDBCClient - Deleted all accounts from InfernalBot.
+2018-03-09 11:56:20.434 INFO  [main] LolAccountRestClient - Received 5 accounts from the InfernalBotManager server.
+2018-03-09 11:56:20.936 INFO  [main] LoLAccountJDBCClient - Inserted 5 accounts into InfernalBot.
+2018-03-09 11:56:20.937 DEBUG [main] LolAccountRestClient - updateLolAccounts (before):[LolAccount(id=92, account=testN12, password=testN12, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=1, playTime=24, sleepTime=0, active=true, accountStatus=IN_USE, assignedTo=TESTJE5, info=), LolAccount(id=82, account=antiparallel73, password=RfYViX23, summoner=antiparallel73, region=EUW, level=23, maxLevel=30, xp=195, be=14305, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_USE, assignedTo=TESTJE5, info=null), LolAccount(id=83, account=undelude36, password=BKfzRb04, summoner=undelude36, region=EUW, level=23, maxLevel=30, xp=192, be=14305, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_USE, assignedTo=TESTJE5, info=null), LolAccount(id=84, account=salinometer1968, password=ZrLSdo41, summoner=salinometer1968, region=EUW, level=23, maxLevel=30, xp=366, be=14305, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_USE, assignedTo=TESTJE5, info=null), LolAccount(id=87, account=typeset47, password=fMBRvr42, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_USE, assignedTo=TESTJE5, info=null)]
+2018-03-09 11:56:21.002 DEBUG [main] LolAccountRestClient - updateLolAccounts (after):[LolAccount(id=92, account=testN12, password=testN12, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=1, playTime=24, sleepTime=0, active=true, accountStatus=IN_USE, assignedTo=TESTJE5, info=), LolAccount(id=82, account=antiparallel73, password=RfYViX23, summoner=antiparallel73, region=EUW, level=23, maxLevel=30, xp=195, be=14305, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_USE, assignedTo=TESTJE5, info=null), LolAccount(id=83, account=undelude36, password=BKfzRb04, summoner=undelude36, region=EUW, level=23, maxLevel=30, xp=192, be=14305, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_USE, assignedTo=TESTJE5, info=null), LolAccount(id=84, account=salinometer1968, password=ZrLSdo41, summoner=salinometer1968, region=EUW, level=23, maxLevel=30, xp=366, be=14305, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_USE, assignedTo=TESTJE5, info=null), LolAccount(id=87, account=typeset47, password=fMBRvr42, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_USE, assignedTo=TESTJE5, info=null)]
+2018-03-09 11:56:21.020 WARN  [main] LolAccountRestClient - Only found 2 eligible bufferaccounts on the the InfernalBotManager server.
+2018-03-09 11:56:21.725 INFO  [main] LoLAccountJDBCClient - Inserted 2 bufferaccounts into InfernalBot.
+2018-03-09 11:56:21.725 DEBUG [main] LolAccountRestClient - updateLolAccounts (before):[LolAccount(id=88, account=participatingl51, password=oEJoMe67, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_BUFFER, assignedTo=TESTJE5, info=), LolAccount(id=89, account=theromorphism50, password=FMyCOE65, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_BUFFER, assignedTo=TESTJE5, info=null)]
+2018-03-09 11:56:21.749 DEBUG [main] LolAccountRestClient - updateLolAccounts (after):[LolAccount(id=88, account=participatingl51, password=oEJoMe67, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_BUFFER, assignedTo=TESTJE5, info=), LolAccount(id=89, account=theromorphism50, password=FMyCOE65, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_BUFFER, assignedTo=TESTJE5, info=null)]
+2018-03-09 11:56:21.754 INFO  [Thread-1] InfernalBotManagerRunnable - InfernalBot started
+2018-03-09 11:56:21.755 INFO  [Thread-1] InfernalBotManagerRunnable - Sleeping for 5 minutes
+2018-03-09 11:56:53.968 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 11:56:53.991 INFO  [main] InfernalBotManagerClientSettings - Loaded settings from settings.ini
+2018-03-09 11:56:54.310 ERROR [main] GlobalVariableService - Client is outdated (v0.5.1)
+2018-03-09 11:56:54.310 INFO  [main] GlobalVariableService - Updating to new version (v0.5.2)
+2018-03-09 11:56:54.310 INFO  [main] Main - TODO Update
+2018-03-09 11:56:54.310 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-09 11:56:54.317 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-09 11:56:54.318 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-09 11:58:08.643 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 11:58:08.664 INFO  [main] InfernalBotManagerClientSettings - Loaded settings from settings.ini
+2018-03-09 11:58:08.971 ERROR [main] GlobalVariableService - Client is outdated (v0.5.1)
+2018-03-09 11:58:08.971 INFO  [main] GlobalVariableService - Updating to new version (v0.5.2)
+2018-03-09 11:58:08.971 INFO  [main] InfernalBotManagerClient - TODO UPDATE
+2018-03-09 11:58:08.971 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-09 11:58:08.973 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-09 11:58:08.973 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-09 13:11:42.379 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 13:11:42.565 INFO  [main] InfernalBotManagerClientSettings - Loaded settings from settings.ini
+2018-03-09 13:11:42.900 ERROR [main] GlobalVariableService - client is currently unavailable
+2018-03-09 13:11:42.901 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-09 13:11:42.901 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-09 13:11:42.901 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-09 13:12:03.245 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 13:12:03.267 INFO  [main] InfernalBotManagerClientSettings - Loaded settings from settings.ini
+2018-03-09 13:12:03.594 ERROR [main] GlobalVariableService - Client is currently unavailable
+2018-03-09 13:12:03.594 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-09 13:12:03.595 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-09 13:12:03.595 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-09 13:12:16.940 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 13:12:16.961 INFO  [main] InfernalBotManagerClientSettings - Loaded settings from settings.ini
+2018-03-09 13:12:17.316 ERROR [main] GlobalVariableService - Client is outdated (v0.5.1)
+2018-03-09 13:12:17.317 INFO  [main] GlobalVariableService - Updating to new version (v0.5.2)
+2018-03-09 13:12:17.317 INFO  [main] InfernalBotManagerClient - TODO UPDATE
+2018-03-09 13:12:17.317 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-09 13:12:17.317 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-09 13:12:17.317 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-09 13:16:24.141 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 13:16:24.163 INFO  [main] InfernalBotManagerClientSettings - Loaded settings from settings.ini
+2018-03-09 13:16:24.482 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-09 13:16:24.483 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-09 13:16:54.639 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 13:16:54.661 INFO  [main] InfernalBotManagerClientSettings - Loaded settings from settings.ini
+2018-03-09 13:16:55.000 ERROR [main] GlobalVariableService - Client is outdated (v0.5.1)
+2018-03-09 13:16:55.001 INFO  [main] GlobalVariableService - Updating to new version (v0.5.2)
+2018-03-09 13:16:55.001 INFO  [main] InfernalBotManagerClient - TODO UPDATE
+2018-03-09 13:16:55.001 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-09 13:16:55.002 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-09 13:16:55.002 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-09 13:17:27.158 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 13:17:27.180 INFO  [main] InfernalBotManagerClientSettings - Loaded settings from settings.ini
+2018-03-09 13:17:27.519 ERROR [main] GlobalVariableService - Client is outdated (v0.5.1)
+2018-03-09 13:17:27.520 INFO  [main] GlobalVariableService - Updating to new version (v0.5.2)
+2018-03-09 13:17:27.520 INFO  [main] InfernalBotManagerClient - TODO UPDATE
+2018-03-09 13:17:27.520 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-09 13:17:27.520 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-09 13:17:27.521 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-09 13:17:42.509 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 13:17:42.532 INFO  [main] InfernalBotManagerClientSettings - Loaded settings from settings.ini
+2018-03-09 13:22:09.550 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 13:22:09.572 INFO  [main] InfernalBotManagerClientSettings - Loaded settings from settings.ini
+2018-03-09 13:22:09.877 ERROR [main] InfernalBotManagerClient - Failure connecting to the InfernalBotManager server.
+2018-03-09 13:22:35.873 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 13:22:35.895 INFO  [main] InfernalBotManagerClientSettings - Loaded settings from settings.ini
+2018-03-09 13:22:36.193 ERROR [main] InfernalBotManagerClient - Failure connecting to the InfernalBotManager server.
+2018-03-09 13:22:36.197 INFO  [main] Main - Retrying in 1 minute..
+2018-03-09 13:23:36.224 ERROR [main] GlobalVariableService - Client is outdated (v0.5.1)
+2018-03-09 13:23:36.225 INFO  [main] GlobalVariableService - Updating to new version (v0.5.2)
+2018-03-09 13:23:36.225 INFO  [main] InfernalBotManagerClient - TODO UPDATE
+2018-03-09 13:23:36.225 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-09 13:23:36.226 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-09 13:23:36.226 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-09 14:09:47.280 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 14:09:47.303 INFO  [main] InfernalBotManagerClientSettings - Loaded settings from settings.ini
+2018-03-09 14:09:48.610 ERROR [main] InfernalBotManagerClient - Failure connecting to the InfernalBotManager server.
+2018-03-09 14:09:48.610 DEBUG [main] InfernalBotManagerClient - I/O error on GET request for "http://localhost:8080/api/admin/globalvars/name/connection": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2018-03-09 14:09:48.610 INFO  [main] Main - Retrying in 1 minute..
+2018-03-09 14:43:10.129 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 14:43:10.150 INFO  [main] InfernalBotManagerClientSettings - Loaded settings from settings.ini
+2018-03-09 14:43:10.552 ERROR [main] GlobalVariableService - Client is outdated (v0.5.1)
+2018-03-09 14:43:10.552 INFO  [main] GlobalVariableService - Updating to new version (v0.5.2)
+2018-03-09 14:43:10.554 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-09 14:43:10.554 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-09 14:43:10.554 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-09 14:43:47.689 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 14:43:47.710 INFO  [main] InfernalBotManagerClientSettings - Loaded settings from settings.ini
+2018-03-09 14:43:48.072 ERROR [main] GlobalVariableService - Client is outdated (v0.5.1)
+2018-03-09 14:43:48.072 INFO  [main] GlobalVariableService - Updating to new version (v0.5.2)
+2018-03-09 14:43:48.074 ERROR [main] ProgramUtil - Updatedata not found, contact the admin
+2018-03-09 14:43:48.074 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-09 14:43:48.074 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-09 14:43:48.075 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-09 14:44:14.163 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 14:44:14.185 INFO  [main] InfernalBotManagerClientSettings - Loaded settings from settings.ini
+2018-03-09 14:44:14.529 ERROR [main] GlobalVariableService - Client is outdated (v0.5.1)
+2018-03-09 14:44:14.530 INFO  [main] GlobalVariableService - Updating to new version (v0.5.2)
+2018-03-09 14:44:14.532 ERROR [main] ProgramUtil - Updatedata not found, contact the admin
+2018-03-09 14:44:14.532 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-09 14:44:14.532 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-09 14:44:14.533 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-09 14:46:22.406 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 14:46:22.429 INFO  [main] InfernalBotManagerClientSettings - Loaded settings from settings.ini
+2018-03-09 14:46:23.134 ERROR [main] GlobalVariableService - Client is outdated (v0.5.1)
+2018-03-09 14:46:23.134 INFO  [main] GlobalVariableService - Updating to new version (v0.5.2)
+2018-03-09 14:46:23.136 ERROR [main] ProgramUtil - Updatedata not found, contact the admin
+2018-03-09 14:46:23.136 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-09 14:46:23.137 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-09 14:46:23.137 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-09 14:48:16.351 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 14:48:16.375 INFO  [main] InfernalBotManagerClientSettings - Loaded settings from settings.ini
+2018-03-09 14:48:16.829 ERROR [main] GlobalVariableService - Client is outdated (v0.5.1)
+2018-03-09 14:48:16.829 INFO  [main] GlobalVariableService - Updating to new version (v0.5.2)
+2018-03-09 14:48:16.832 ERROR [main] ProgramUtil - Updatedata not found, contact the admin
+2018-03-09 14:48:16.832 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-09 14:48:16.833 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-09 14:48:16.833 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-09 14:48:33.111 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 14:48:33.134 INFO  [main] InfernalBotManagerClientSettings - Loaded settings from settings.ini
+2018-03-09 14:48:33.490 ERROR [main] GlobalVariableService - Client is outdated (v0.5.1)
+2018-03-09 14:48:33.490 INFO  [main] GlobalVariableService - Updating to new version (v0.5.2)
+2018-03-09 14:48:33.491 ERROR [main] ProgramUtil - Updatedata not found, contact the admin
+2018-03-09 14:48:33.492 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-09 14:48:33.492 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-09 14:48:33.492 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-09 14:49:28.352 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 14:49:28.376 INFO  [main] InfernalBotManagerClientSettings - Loaded settings from settings.ini
+2018-03-09 14:49:28.733 ERROR [main] GlobalVariableService - Client is outdated (v0.5.1)
+2018-03-09 14:49:28.733 INFO  [main] GlobalVariableService - Updating to new version (v0.5.2)
+2018-03-09 14:49:28.736 ERROR [main] ProgramUtil - Updatedata not found, contact the admin
+2018-03-09 14:49:28.736 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-09 14:49:28.738 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-09 14:49:28.739 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-09 14:51:40.666 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 14:51:40.689 INFO  [main] InfernalBotManagerClientSettings - Loaded settings from settings.ini
+2018-03-09 14:51:41.049 ERROR [main] GlobalVariableService - Client is outdated (v0.5.1)
+2018-03-09 14:51:41.050 INFO  [main] GlobalVariableService - Updating to new version (v0.5.2)
+2018-03-09 14:51:41.072 ERROR [main] ProgramUtil - Problem occured while downloading the update
+2018-03-09 14:51:41.072 DEBUG [main] ProgramUtil - C:\Temp\InfernalBotManager\notepad.exe (The system cannot find the path specified)
+2018-03-09 14:51:41.073 ERROR [main] ProgramUtil - Failed to find the downloaded data
+2018-03-09 14:51:41.073 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-09 14:51:41.074 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-09 14:51:41.074 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-09 14:55:03.652 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 14:55:03.675 INFO  [main] InfernalBotManagerClientSettings - Loaded settings from settings.ini
+2018-03-09 14:55:04.023 ERROR [main] GlobalVariableService - Client is outdated (v0.5.1)
+2018-03-09 14:55:04.023 INFO  [main] GlobalVariableService - Updating to new version (v0.5.2)
+2018-03-09 14:55:04.037 ERROR [main] ProgramUtil - Failure creating file
+2018-03-09 14:55:04.037 DEBUG [main] ProgramUtil - The system cannot find the path specified
+2018-03-09 14:55:04.045 ERROR [main] ProgramUtil - Problem occured while downloading the update
+2018-03-09 14:55:04.045 DEBUG [main] ProgramUtil - C:\Temp\InfernalBotManager\notepad.exe (The system cannot find the path specified)
+2018-03-09 14:55:04.046 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-09 14:55:04.047 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-09 14:55:04.047 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-09 14:56:48.231 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 14:56:48.254 INFO  [main] InfernalBotManagerClientSettings - Loaded settings from settings.ini
+2018-03-09 14:56:48.603 ERROR [main] GlobalVariableService - Client is outdated (v0.5.1)
+2018-03-09 14:56:48.603 INFO  [main] GlobalVariableService - Updating to new version (v0.5.2)
+2018-03-09 14:56:48.617 ERROR [main] ProgramUtil - Failure creating file
+2018-03-09 14:56:48.617 DEBUG [main] ProgramUtil - The system cannot find the path specified
+2018-03-09 14:56:48.624 ERROR [main] ProgramUtil - Problem occured while downloading the update
+2018-03-09 14:56:48.624 DEBUG [main] ProgramUtil - C:\temp\InfernalBotManager\notepad.exe (The system cannot find the path specified)
+2018-03-09 14:56:48.625 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-09 14:56:48.625 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-09 14:56:48.625 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-09 14:57:36.868 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 14:57:36.890 INFO  [main] InfernalBotManagerClientSettings - Loaded settings from settings.ini
+2018-03-09 14:57:37.245 ERROR [main] GlobalVariableService - Client is outdated (v0.5.1)
+2018-03-09 14:57:37.245 INFO  [main] GlobalVariableService - Updating to new version (v0.5.2)
+2018-03-09 14:57:37.259 ERROR [main] ProgramUtil - Failure creating file
+2018-03-09 14:57:37.259 DEBUG [main] ProgramUtil - The system cannot find the path specified
+2018-03-09 14:57:37.266 ERROR [main] ProgramUtil - Problem occured while downloading the update
+2018-03-09 14:57:37.266 DEBUG [main] ProgramUtil - C:\temp\InfernalBotManager\notepad.exe (The system cannot find the path specified)
+2018-03-09 14:57:37.266 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-09 14:57:37.267 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-09 14:57:37.267 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-09 14:58:33.770 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 14:58:33.791 INFO  [main] InfernalBotManagerClientSettings - Loaded settings from settings.ini
+2018-03-09 14:58:34.144 ERROR [main] GlobalVariableService - Client is outdated (v0.5.1)
+2018-03-09 14:58:34.144 INFO  [main] GlobalVariableService - Updating to new version (v0.5.2)
+2018-03-09 14:58:34.157 ERROR [main] ProgramUtil - Failure creating file
+2018-03-09 14:58:34.157 DEBUG [main] ProgramUtil - The system cannot find the path specified
+2018-03-09 14:58:34.170 ERROR [main] ProgramUtil - Problem occured while downloading the update
+2018-03-09 14:58:34.170 DEBUG [main] ProgramUtil - C:\temp\InfernalBotManager\notepad.exe (The system cannot find the path specified)
+2018-03-09 14:58:34.171 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-09 14:58:34.172 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-09 14:58:34.172 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-09 15:05:10.308 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 15:05:10.330 INFO  [main] InfernalBotManagerClientSettings - Loaded settings from settings.ini
+2018-03-09 15:05:10.671 ERROR [main] GlobalVariableService - Client is outdated (v0.5.1)
+2018-03-09 15:05:10.671 INFO  [main] GlobalVariableService - Updating to new version (v0.5.2)
+2018-03-09 15:05:10.711 INFO  [main] ProgramUtil - Update download complete
+2018-03-09 15:05:10.712 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-09 15:05:10.713 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-09 15:05:10.713 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-09 15:06:56.969 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 15:06:56.991 INFO  [main] InfernalBotManagerClientSettings - Loaded settings from settings.ini
+2018-03-09 15:06:57.329 ERROR [main] GlobalVariableService - Client is outdated (v0.5.1)
+2018-03-09 15:06:57.329 INFO  [main] GlobalVariableService - Updating to new version (v0.5.2)
+2018-03-09 15:06:57.341 INFO  [main] ProgramUtil - Update download complete
+2018-03-09 15:06:57.342 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-09 15:06:57.343 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-09 15:06:57.343 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-09 15:31:05.843 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 15:31:05.865 INFO  [main] InfernalBotManagerClientSettings - Loaded settings from settings.ini
+2018-03-09 15:31:06.203 ERROR [main] GlobalVariableService - Client is outdated (v0.5.1)
+2018-03-09 15:31:06.203 INFO  [main] GlobalVariableService - Updating to new version (v0.5.2)
+2018-03-09 15:31:06.206 ERROR [main] ProgramUtil - Failure creating file
+2018-03-09 15:31:06.206 DEBUG [main] ProgramUtil - The system cannot find the path specified
+2018-03-09 15:31:06.212 ERROR [main] ProgramUtil - Problem occured while downloading the update
+2018-03-09 15:31:06.212 DEBUG [main] ProgramUtil - http://localhost:8080/admin/files/updater.bat
+2018-03-09 15:31:06.212 ERROR [main] InfernalBotManagerClient - Failed to download the updater
+2018-03-09 15:31:06.212 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-09 15:31:06.213 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-09 15:31:06.213 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-09 15:31:57.327 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 15:31:57.350 INFO  [main] InfernalBotManagerClientSettings - Loaded settings from settings.ini
+2018-03-09 15:31:57.705 ERROR [main] GlobalVariableService - Client is outdated (v0.5.1)
+2018-03-09 15:31:57.705 INFO  [main] GlobalVariableService - Updating to new version (v0.5.2)
+2018-03-09 15:31:57.711 ERROR [main] ProgramUtil - Problem occured while downloading the update
+2018-03-09 15:31:57.711 DEBUG [main] ProgramUtil - http://localhost:8080/admin/files/updater.bat
+2018-03-09 15:31:57.711 ERROR [main] InfernalBotManagerClient - Failed to download the updater
+2018-03-09 15:31:57.712 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-09 15:31:57.712 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-09 15:31:57.712 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-09 15:32:22.329 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 15:32:22.352 INFO  [main] InfernalBotManagerClientSettings - Loaded settings from settings.ini
+2018-03-09 15:32:22.695 ERROR [main] GlobalVariableService - Client is outdated (v0.5.1)
+2018-03-09 15:32:22.696 INFO  [main] GlobalVariableService - Updating to new version (v0.5.2)
+2018-03-09 15:32:22.701 ERROR [main] ProgramUtil - Problem occured while downloading the update
+2018-03-09 15:32:22.702 DEBUG [main] ProgramUtil - http://localhost:8080/admin/files/updater.bat
+2018-03-09 15:32:22.702 ERROR [main] InfernalBotManagerClient - Failed to download the updater
+2018-03-09 15:32:22.702 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-09 15:32:22.703 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-09 15:32:22.703 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-09 15:43:43.629 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 15:43:43.651 INFO  [main] InfernalBotManagerClientSettings - Loaded settings from settings.ini
+2018-03-09 15:43:44.007 ERROR [main] GlobalVariableService - Client is outdated (v0.5.1)
+2018-03-09 15:43:44.007 INFO  [main] GlobalVariableService - Updating to new version (v0.5.2)
+2018-03-09 15:43:44.013 ERROR [main] ProgramUtil - Problem occured while downloading the update
+2018-03-09 15:43:44.013 DEBUG [main] ProgramUtil - http://localhost:8080/admin/files/updater.bat
+2018-03-09 15:43:44.013 ERROR [main] InfernalBotManagerClient - Failed to download the updater
+2018-03-09 15:43:44.014 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-09 15:43:44.014 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-09 15:43:44.014 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-09 16:09:18.444 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 16:09:18.587 INFO  [main] InfernalBotManagerClientSettings - Loaded settings from settings.ini
+2018-03-09 16:09:19.085 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-09 16:09:19.086 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-09 16:12:29.333 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 16:12:29.367 INFO  [main] InfernalBotManagerClientSettings - Loaded settings from settings.ini
+2018-03-09 16:12:30.211 ERROR [main] GlobalVariableService - Client is outdated (v0.5.3)
+2018-03-09 16:12:30.211 INFO  [main] GlobalVariableService - Updating to new version (v0.5.2)
+2018-03-09 16:12:30.240 INFO  [main] ProgramUtil - Update download complete
+2018-03-09 16:12:30.482 INFO  [main] ProgramUtil - Update download complete
+2018-03-09 16:12:30.489 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-09 16:12:30.490 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-09 16:12:30.490 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-09 16:15:57.307 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 16:15:57.330 INFO  [main] InfernalBotManagerClientSettings - Loaded settings from settings.ini
+2018-03-09 16:15:57.697 ERROR [main] GlobalVariableService - Client is outdated (v0.5.3)
+2018-03-09 16:15:57.697 INFO  [main] GlobalVariableService - Updating to new version (v0.5.2)
+2018-03-09 16:15:57.707 INFO  [main] ProgramUtil - Update download complete
+2018-03-09 16:15:57.802 INFO  [main] ProgramUtil - Update download complete
+2018-03-09 16:15:57.807 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-09 16:15:57.808 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-09 16:15:57.808 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-09 16:18:52.443 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 16:18:52.467 INFO  [main] InfernalBotManagerClientSettings - Loaded settings from settings.ini
+2018-03-09 16:18:52.831 ERROR [main] GlobalVariableService - Client is outdated (v0.5.3)
+2018-03-09 16:18:52.832 INFO  [main] GlobalVariableService - Updating to new version (v0.5.2)
+2018-03-09 16:18:52.839 INFO  [main] ProgramUtil - Update download complete
+2018-03-09 16:18:52.936 INFO  [main] ProgramUtil - Update download complete
+2018-03-09 16:18:52.961 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-09 16:18:52.962 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-09 16:18:52.962 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-09 16:53:11.090 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 16:53:11.113 INFO  [main] InfernalBotManagerClientSettings - Loaded settings from settings.ini
+2018-03-09 16:53:11.489 ERROR [main] GlobalVariableService - Client is outdated (v0.5.2)
+2018-03-09 16:53:11.489 INFO  [main] GlobalVariableService - Updating to new version (v0.5.3)
+2018-03-09 16:53:11.500 INFO  [main] ProgramUtil - Update download complete
+2018-03-09 16:53:11.605 INFO  [main] ProgramUtil - Update download complete
+2018-03-09 16:53:11.613 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-09 16:53:11.613 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-09 16:55:02.785 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 16:55:02.808 INFO  [main] InfernalBotManagerClientSettings - Loaded settings from settings.ini
+2018-03-09 16:55:03.147 ERROR [main] GlobalVariableService - Client is outdated (v0.5.2)
+2018-03-09 16:55:03.147 INFO  [main] GlobalVariableService - Updating to new version (v0.5.3)
+2018-03-09 16:55:03.156 INFO  [main] ProgramUtil - Update download complete
+2018-03-09 16:55:03.245 INFO  [main] ProgramUtil - Update download complete
+2018-03-09 16:55:03.254 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-09 16:55:03.255 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-09 16:55:58.267 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 16:55:58.289 INFO  [main] InfernalBotManagerClientSettings - Loaded settings from settings.ini
+2018-03-09 16:55:58.627 ERROR [main] GlobalVariableService - Client is outdated (v0.5.2)
+2018-03-09 16:55:58.628 INFO  [main] GlobalVariableService - Updating to new version (v0.5.3)
+2018-03-09 16:55:58.637 INFO  [main] ProgramUtil - Update download complete
+2018-03-09 16:55:58.726 INFO  [main] ProgramUtil - Update download complete
+2018-03-09 16:55:58.733 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-09 16:55:58.734 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-09 16:57:32.156 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 16:57:32.179 INFO  [main] InfernalBotManagerClientSettings - Loaded settings from settings.ini
+2018-03-09 16:57:32.534 ERROR [main] GlobalVariableService - Client is outdated (v0.5.2)
+2018-03-09 16:57:32.535 INFO  [main] GlobalVariableService - Updating to new version (v0.5.3)
+2018-03-09 16:57:32.541 INFO  [main] ProgramUtil - Update download complete
+2018-03-09 16:57:32.624 INFO  [main] ProgramUtil - Update download complete
+2018-03-09 16:57:32.639 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-09 16:57:32.640 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-09 16:58:14.970 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-09 16:58:14.991 INFO  [main] InfernalBotManagerClientSettings - Loaded settings from settings.ini
+2018-03-09 16:58:15.342 ERROR [main] GlobalVariableService - Client is outdated (v0.5.2)
+2018-03-09 16:58:15.343 INFO  [main] GlobalVariableService - Updating to new version (v0.5.3)
+2018-03-09 16:58:15.352 INFO  [main] ProgramUtil - Update download complete
+2018-03-09 16:58:15.435 INFO  [main] ProgramUtil - Update download complete
+2018-03-09 16:58:15.441 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-09 16:58:15.441 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-09 16:58:15.441 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program

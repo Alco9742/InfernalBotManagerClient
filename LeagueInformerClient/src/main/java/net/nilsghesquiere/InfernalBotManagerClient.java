@@ -8,8 +8,10 @@ import java.nio.file.StandardCopyOption;
 
 import lombok.Data;
 import net.nilsghesquiere.entities.InfernalBotManagerClientSettings;
+import net.nilsghesquiere.services.GlobalVariableService;
 import net.nilsghesquiere.services.InfernalSettingsService;
 import net.nilsghesquiere.services.LolAccountService;
+import net.nilsghesquiere.util.ProgramUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +20,9 @@ import org.springframework.web.client.ResourceAccessException;
 @Data
 public class InfernalBotManagerClient {
 	private static final Logger LOGGER = LoggerFactory.getLogger(InfernalBotManagerClient.class);
+	private static final String UPDATER_NAME = "updater.bat";
+	private static final String PROGRAM_NAME = "InfernalBotManagerClient.jar";
+	
 	private InfernalBotManagerClientSettings clientSettings;
 	
 	public InfernalBotManagerClient(InfernalBotManagerClientSettings clientSettings) {
@@ -39,38 +44,41 @@ public class InfernalBotManagerClient {
 
 	//Connection Check
 	public boolean checkConnection(){
-		//TODO try /catch
-		//Process p1 = java.lang.Runtime.getRuntime().exec("ping -n 1 8.8.8.8");
-		if (clientSettings.getBypassDevChecks() == false){
-			try{
-				Process p1 = java.lang.Runtime.getRuntime().exec("ping -n 1 8.8.8.8");
-				int returnVal = p1.waitFor();
-				boolean reachable = (returnVal==0);
-				if (reachable){
-					LOGGER.info("Connected to network");
-					//this way doesn't work, do it with REST
-					Process p2 = java.lang.Runtime.getRuntime().exec("ping -n 1 " + clientSettings.getWebServer());
-					int returnVal2 = p2.waitFor();
-					boolean reachable2 = (returnVal2==0);
-					if (reachable2){
-						LOGGER.info("Connected to the InfernalBotManager server");
-					} else {
-						LOGGER.error("Failure connecting to the InfernalBotManager server");
-						return false;
-					}
-				} else {
-					LOGGER.error("Error connecting to network");
-					return false;
-				}
-			}catch (IOException | InterruptedException e ){
-				LOGGER.error("Failure establishing connection");
-				LOGGER.debug(e.getMessage());
-				return false;
+		try{
+			GlobalVariableService globalVariableService = new GlobalVariableService(clientSettings);
+			boolean connected =  globalVariableService.checkConnection();
+			if(!connected){
+				LOGGER.error("Failure connecting to the InfernalBotManager server.");
 			}
+			return globalVariableService.checkConnection();
+		} catch (ResourceAccessException e) {
+			LOGGER.error("Failure connecting to the InfernalBotManager server.");
+			LOGGER.debug(e.getMessage());
+				return false;
 		}
-		return true;
 	}
 	
+	public boolean checkVersion(){
+		try{
+			GlobalVariableService globalVariableService = new GlobalVariableService(clientSettings);
+			return globalVariableService.checkVersion();
+		} catch (ResourceAccessException e) {
+			LOGGER.error("Failure retrieving the requested resource.");
+			LOGGER.debug(e.getMessage());
+				return false;
+		} 
+	}
+	
+	public boolean checkKillSwitch(){
+		try{
+			GlobalVariableService globalVariableService = new GlobalVariableService(clientSettings);
+			return globalVariableService.checkKillSwitch();
+		} catch (ResourceAccessException e) {
+			LOGGER.error("Failure retrieving the requested resource.");
+			LOGGER.debug(e.getMessage());
+				return false;
+		} 
+	}
 	//LolAccount methods
 	public boolean accountExchange(){
 		try{
@@ -118,9 +126,9 @@ public class InfernalBotManagerClient {
 	public boolean backUpInfernalDatabase(){
 		if(checkDir()){
 			LOGGER.info("Located Infernalbot");
-			Path backupDir = Paths.get(clientSettings.getInfernalMap() + "InfernalManager") ;
+			Path backupDir = Paths.get(clientSettings.getInfernalMap() + "InfernalBotManager") ;
 			Path file = Paths.get(clientSettings.getInfernalMap() + "InfernalDatabase.sqlite") ;
-			Path backupFile = Paths.get(clientSettings.getInfernalMap() + "InfernalManager/InfernalDatabase.bak") ;
+			Path backupFile = Paths.get(clientSettings.getInfernalMap() + "InfernalBotManager/InfernalDatabase.bak") ;
 			if(!Files.exists(backupDir)){
 				try {
 					Files.createDirectories(backupDir);
@@ -149,8 +157,41 @@ public class InfernalBotManagerClient {
 	}
 	
 	private boolean checkDir(){
-		Path infernalPath = Paths.get(clientSettings.getInfernalMap() + clientSettings.getInfernalProg());
+		Path infernalPath = Paths.get(clientSettings.getInfernalMap() + clientSettings.getInfernalProgramName());
 		return Files.exists(infernalPath);
+	}
+
+	public void updateClient() {
+		if(ProgramUtil.downloadFileFromUrl(clientSettings, UPDATER_NAME)){
+			if(ProgramUtil.downloadFileFromUrl(clientSettings, PROGRAM_NAME)){
+				//batch args:
+				//1: current program path 
+				//2: backup program path
+				//3: new program path
+				String managerMap = System.getProperty("user.dir");
+				String batlocation = managerMap + "\\backup\\updater.bat";
+				String param1 = managerMap + "\\" + PROGRAM_NAME;
+				String param2 = managerMap + "\\backup\\" + PROGRAM_NAME + ".bak";
+				String param3 = managerMap + "\\backup\\" + PROGRAM_NAME;
+				String commandString = "\"" + batlocation + "\" \"" +param1 + "\" \"" + param2 + "\" \"" + param3 + "\"";
+				try {
+					Process proc = Runtime.getRuntime().exec(new String[] {"cmd.exe","/c start",commandString});
+				//	 int exitVal = proc.exitValue();
+					 try {
+						 System.out.println(proc.waitFor());
+					 } catch (InterruptedException e){
+						 LOGGER.error("Failure, updater got interrupted");
+					 }
+				} catch (IOException e) {
+					LOGGER.error("Failed to start the updater");
+					LOGGER.debug(e.getMessage());
+				}
+			} else{
+				LOGGER.error("Failed to download the update");
+			}
+		} else {
+			LOGGER.error("Failed to download the updater");
+		}
 	}
 	
 }

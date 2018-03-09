@@ -3,7 +3,6 @@ package net.nilsghesquiere.entities;
 import java.io.Serializable;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import net.nilsghesquiere.enums.ProxyType;
 
 @Data

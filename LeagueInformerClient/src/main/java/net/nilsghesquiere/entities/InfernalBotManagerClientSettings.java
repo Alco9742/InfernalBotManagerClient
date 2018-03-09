@@ -2,7 +2,6 @@ package net.nilsghesquiere.entities;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import lombok.Data;
 import net.nilsghesquiere.enums.Region;
@@ -15,10 +14,9 @@ import org.slf4j.LoggerFactory;
 @Data
 public class InfernalBotManagerClientSettings {
 	private static final Logger LOGGER = LoggerFactory.getLogger(InfernalBotManagerClientSettings.class);
-	private static final String INFERNAL_PROCESS_NAME ="notepad.exe";
 	private Long userId;
 	private String infernalMap;
-	private String infernalProg;
+	private String infernalProgramName;
 	private Integer accountAmount;
 	private Integer accountBuffer;
 	private Boolean uploadNewAccounts;
@@ -35,7 +33,7 @@ public class InfernalBotManagerClientSettings {
 
 
 	
-	public InfernalBotManagerClientSettings(Long userId, String infernalMap, String infernalProgname,
+	public InfernalBotManagerClientSettings(Long userId, String infernalMap, String infernalProgramName,
 			Integer accountAmount,Integer accountBuffer, Boolean uploadNewAccounts, String clientTag, Region clientRegion,
 			String webServer, String port, Boolean reboot, Integer rebootTime,
 			Boolean fetchSettings, Boolean overwriteSettings, Map<String, String> settingsOverwriteMap,
@@ -43,7 +41,7 @@ public class InfernalBotManagerClientSettings {
 		super();
 		this.userId = userId;
 		this.infernalMap = infernalMap;
-		this.infernalProg = infernalProgname;
+		this.infernalProgramName = infernalProgramName;
 		this.accountAmount = accountAmount;
 		this.accountBuffer = accountBuffer;
 		this.uploadNewAccounts = uploadNewAccounts;
@@ -63,6 +61,7 @@ public class InfernalBotManagerClientSettings {
 		boolean hasError = false;
 		Long userId = ini.get("main", "userid", Long.class);
 		String infernalMap = ini.get("main", "infernalmap", String.class);
+		String infernalProgramName = ini.get("main", "infernalprogramname", String.class);
 		Integer numberOfAccounts = ini.get("main", "accounts", Integer.class);
 		Integer accountBuffer = ini.get("main", "accountbuffer", Integer.class);
 		Boolean uploadNewAccounts = ini.get("main","uploadnewaccounts", boolean.class);
@@ -83,6 +82,10 @@ public class InfernalBotManagerClientSettings {
 		}
 		if(infernalMap == null){
 			LOGGER.error("Bad value in settings.ini: value '" + infernalMap + "' is not accepted for infernalmap");
+			hasError = true;
+		}
+		if(infernalProgramName == null){
+			LOGGER.error("Bad value in settings.ini: value '" + infernalProgramName + "' is not accepted for infernalprogramname");
 			hasError = true;
 		}
 		if(numberOfAccounts == null){
@@ -158,7 +161,7 @@ public class InfernalBotManagerClientSettings {
 		
 		
 		if(!hasError){
-			InfernalBotManagerClientSettings settings = new InfernalBotManagerClientSettings(userId,infernalMap,INFERNAL_PROCESS_NAME,numberOfAccounts,accountBuffer, uploadNewAccounts, clientTag, clientRegion, webServer,port, reboot, rebootTime, fetchSettings, overwriteSettings, settingsOverwriteMap, bypassDevChecks);
+			InfernalBotManagerClientSettings settings = new InfernalBotManagerClientSettings(userId,infernalMap,infernalProgramName,numberOfAccounts,accountBuffer, uploadNewAccounts, clientTag, clientRegion, webServer,port, reboot, rebootTime, fetchSettings, overwriteSettings, settingsOverwriteMap, bypassDevChecks);
 			LOGGER.info("Loaded settings from settings.ini");
 			return settings;
 		} else {

@@ -11,8 +11,9 @@ plugins {
 }
 
 jar {
-    baseName = 'LeagueInformerClient'
-    version =  '0.1.0'
+   // baseName = 'LeagueInformerClient'
+    //version =  '0.1.0'
+    archiveName 'InfernalBotManagerClient.jar'
     manifest {
         attributes "Main-Class": "net.nilsghesquiere.Main"
     }

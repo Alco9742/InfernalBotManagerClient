@@ -2,16 +2,11 @@ package net.nilsghesquiere.entities;
 
 import java.io.Serializable;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 import lombok.Data;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Data
 public class AppUser implements Serializable{

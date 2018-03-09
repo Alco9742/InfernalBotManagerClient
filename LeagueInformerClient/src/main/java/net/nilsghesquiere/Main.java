@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import net.nilsghesquiere.entities.InfernalBotManagerClientSettings;
 import net.nilsghesquiere.hooks.GracefulExitHook;
@@ -18,6 +19,7 @@ import org.slf4j.LoggerFactory;
 
 public class Main {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
+	public static final String CLIENT_VERSION = "0.5.2";
 	private static final String INI_NAME = "settings.ini";
 	public static Map<Thread, Runnable> threadMap = new HashMap<>();
 	
@@ -37,13 +39,63 @@ public class Main {
 		LOGGER.info("Starting InfernalBotManager Client");
 		Runtime.getRuntime().addShutdownHook(new GracefulExitHook());
 		InfernalBotManagerClient client= buildClient();
-		if (client != null){ 
-			//start infernalbot checker in a thread
-			InfernalBotManagerRunnable infernalRunnable = new InfernalBotManagerRunnable(client);
-			Thread infernalThread = new Thread(infernalRunnable);
-			threadMap.put(infernalThread, infernalRunnable);
-			infernalThread.setDaemon(false); 
-			infernalThread.start();
+		if (client != null){
+			boolean upToDate = true;
+			boolean connected = false;
+			boolean killSwitchOff = true;
+			while(!connected){
+				connected = client.checkConnection();
+				if (connected){
+					if(client.checkKillSwitch()){
+						killSwitchOff = false;
+					} else {
+						if(!client.checkVersion()){
+							upToDate = false;
+						}
+					}
+				}
+				if(!connected){
+					LOGGER.info("Retrying in 1 minute..");
+					try {
+						TimeUnit.MINUTES.sleep(1);
+					} catch (InterruptedException e2) {
+						LOGGER.error("Failure during sleep");
+						LOGGER.debug(e2.getMessage());
+					}
+				}
+			}
+			if (killSwitchOff){
+				if (upToDate){
+					client.scheduleReboot();
+					//check for update
+					//initial checks
+					//Attempt to get accounts, retry if fail
+					boolean initDone = client.checkConnection() &&  client.backUpInfernalDatabase() && client.setInfernalSettings() && client.accountExchange();
+					while (!initDone){
+						try {
+							LOGGER.info("Retrying in 1 minute...");
+							TimeUnit.MINUTES.sleep(1);
+							initDone = (client.checkConnection() && client.backUpInfernalDatabase() && client.setInfernalSettings() && client.accountExchange());
+						} catch (InterruptedException e) {
+							LOGGER.error("Failure during sleep");
+							LOGGER.debug(e.getMessage());
+						}
+					}
+					//start infernalbot checker in a thread
+					InfernalBotManagerRunnable infernalRunnable = new InfernalBotManagerRunnable(client);
+					Thread infernalThread = new Thread(infernalRunnable);
+					threadMap.put(infernalThread, infernalRunnable);
+					infernalThread.setDaemon(false); 
+					infernalThread.start();
+				} else {
+					client.updateClient();
+					LOGGER.info("Closing InfernalBotManager Client");
+					System.exit(0);
+				}
+			} else {
+				LOGGER.info("Closing InfernalBotManager Client");
+				System.exit(0);
+			}
 		} else {
 			LOGGER.info("Closing InfernalBotManager Client");
 			System.exit(0);

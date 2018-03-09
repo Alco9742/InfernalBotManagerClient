@@ -22,30 +22,15 @@ public class InfernalBotManagerRunnable implements Runnable {
 
 	@Override
 	public void run() {
-		client.scheduleReboot();
-		//Attempt to get accounts, retry if fail
-		boolean connected = client.checkConnection() && client.backUpInfernalDatabase() && client.setInfernalSettings() && client.accountExchange();
-		while (!connected && !stop){
-			try {
-				LOGGER.info("Retrying in 1 minute...");
-				TimeUnit.MINUTES.sleep(1);
-				connected = (client.checkConnection() && client.backUpInfernalDatabase() && client.setInfernalSettings() && client.accountExchange());
-			} catch (InterruptedException e) {
-				LOGGER.error("Failure during sleep");
-				LOGGER.debug(e.getMessage());
-			}
+		runInfernalbot();
+		LOGGER.info("Sleeping for 5 minutes");
+		try {
+			TimeUnit.MINUTES.sleep(5);
+		} catch (InterruptedException e2) {
+			LOGGER.error("Failure during sleep");
+			LOGGER.debug(e2.getMessage());
 		}
-		if (!stop){
-			runInfernalbot();
-			LOGGER.info("Sleeping for 5 minutes");
-			try {
-				TimeUnit.MINUTES.sleep(5);
-			} catch (InterruptedException e2) {
-				LOGGER.error("Failure during sleep");
-				LOGGER.debug(e2.getMessage());
-			}
-			LOGGER.info("Starting InfernalBot crash checker");
-		}
+		LOGGER.info("Starting InfernalBot crash checker");
 		while (!stop){
 			String line ="";
 			String pidInfo ="";
@@ -57,7 +42,7 @@ public class InfernalBotManagerRunnable implements Runnable {
 					pidInfo+=line; 
 				}
 				input.close();
-				if(!pidInfo.contains(client.getClientSettings().getInfernalProg())){
+				if(!pidInfo.contains(client.getClientSettings().getInfernalProgramName())){
 					LOGGER.warn("InfernalBot process not found, restarting client");
 					if(client.checkConnection() && client.accountExchange()){
 						runInfernalbot();
@@ -83,7 +68,7 @@ public class InfernalBotManagerRunnable implements Runnable {
 	private void runInfernalbot(){
 		try {
 			@SuppressWarnings("unused")
-			Process process = new ProcessBuilder(client.getClientSettings().getInfernalMap() + client.getClientSettings().getInfernalProg()).start();
+			Process process = new ProcessBuilder(client.getClientSettings().getInfernalMap() + client.getClientSettings().getInfernalProgramName()).start();
 			LOGGER.info("InfernalBot started");
 		} catch (IOException e) {
 			LOGGER.info("Error starting infernalbot");

@@ -4,15 +4,7 @@ import java.io.IOException;
 
 import net.nilsghesquiere.entities.LolAccount;
 
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class UserRestClient {
 	private static final String URI_USERS = "http://localhost:8080/api/users";
