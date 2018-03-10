@@ -116,6 +116,8 @@ public class LolAccountService {
 						accountFromJDBC.setPriority(accountFromREST.getPriority());
 						//set assignedto Empty
 						accountFromJDBC.setAssignedTo("");
+						//set active flag (TODO figure this out completely)
+						accountFromJDBC.setActive(accountFromREST.isActive());
 						//Set accountstatus
 						if (accountFromJDBC.getAccountStatus() != AccountStatus.ERROR && accountFromJDBC.getAccountStatus() != AccountStatus.BANNED){
 							if (accountFromJDBC.getLevel() >= accountFromREST.getMaxLevel()){
@@ -123,6 +125,9 @@ public class LolAccountService {
 							} else {
 								accountFromJDBC.setAccountStatus(AccountStatus.READY_FOR_USE);
 							}
+						} else {
+							//temp attempt at a fix
+							accountFromJDBC.setActive(false);
 						}
 						lolAccountMap.add(accountFromJDBC.getId().toString(), accountFromJDBC);
 					}
