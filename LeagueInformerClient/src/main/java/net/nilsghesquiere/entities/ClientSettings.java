@@ -12,8 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Data
-public class InfernalBotManagerClientSettings {
-	private static final Logger LOGGER = LoggerFactory.getLogger(InfernalBotManagerClientSettings.class);
+public class ClientSettings {
+	private static final Logger LOGGER = LoggerFactory.getLogger(ClientSettings.class);
 	private Long userId;
 	private String infernalMap;
 	private String infernalProgramName;
@@ -33,7 +33,7 @@ public class InfernalBotManagerClientSettings {
 
 
 	
-	public InfernalBotManagerClientSettings(Long userId, String infernalMap, String infernalProgramName,
+	public ClientSettings(Long userId, String infernalMap, String infernalProgramName,
 			Integer accountAmount,Integer accountBuffer, Boolean uploadNewAccounts, String clientTag, Region clientRegion,
 			String webServer, String port, Boolean reboot, Integer rebootTime,
 			Boolean fetchSettings, Boolean overwriteSettings, Map<String, String> settingsOverwriteMap,
@@ -57,7 +57,7 @@ public class InfernalBotManagerClientSettings {
 		this.bypassDevChecks = bypassDevChecks;
 	}
 	
-	public static InfernalBotManagerClientSettings buildFromIni(Wini ini){
+	public static ClientSettings buildFromIni(Wini ini){
 		boolean hasError = false;
 		Long userId = ini.get("main", "userid", Long.class);
 		String infernalMap = ini.get("main", "infernalmap", String.class);
@@ -161,7 +161,7 @@ public class InfernalBotManagerClientSettings {
 		
 		
 		if(!hasError){
-			InfernalBotManagerClientSettings settings = new InfernalBotManagerClientSettings(userId,infernalMap,infernalProgramName,numberOfAccounts,accountBuffer, uploadNewAccounts, clientTag, clientRegion, webServer,port, reboot, rebootTime, fetchSettings, overwriteSettings, settingsOverwriteMap, bypassDevChecks);
+			ClientSettings settings = new ClientSettings(userId,infernalMap,infernalProgramName,numberOfAccounts,accountBuffer, uploadNewAccounts, clientTag, clientRegion, webServer,port, reboot, rebootTime, fetchSettings, overwriteSettings, settingsOverwriteMap, bypassDevChecks);
 			LOGGER.info("Loaded settings from settings.ini");
 			return settings;
 		} else {

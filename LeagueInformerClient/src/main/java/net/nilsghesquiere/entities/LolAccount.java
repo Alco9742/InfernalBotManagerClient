@@ -1,6 +1,8 @@
 package net.nilsghesquiere.entities;
 
 import java.io.Serializable;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import lombok.Data;
 import net.nilsghesquiere.enums.AccountStatus;
@@ -55,5 +57,25 @@ public class LolAccount implements Serializable{
 		this.info = info;
 	}
 	
-	
+	public static LolAccount buildFromResultSet(ResultSet resultSet) throws SQLException{
+		LolAccount lolAccount = new LolAccount();
+		lolAccount.setAccount(resultSet.getString("Account"));
+		lolAccount.setPassword(resultSet.getString("Password"));
+		lolAccount.setSummoner(resultSet.getString("Summoner"));
+		lolAccount.setRegion(Region.valueOf(resultSet.getString("Region")));
+		lolAccount.setLevel(resultSet.getInt("Level"));
+		lolAccount.setMaxLevel(resultSet.getInt("MaxLevel"));
+		lolAccount.setXp(resultSet.getInt("XP"));
+		lolAccount.setBe(resultSet.getInt("IP"));
+		lolAccount.setMaxBe(resultSet.getInt("MaxIP"));
+		lolAccount.setPriority(resultSet.getInt("Prioity"));
+		lolAccount.setPlayTime(resultSet.getInt("Playtime"));
+		lolAccount.setSleepTime(resultSet.getInt("Sleeptime"));
+		lolAccount.setActive(Boolean.valueOf(resultSet.getString("Active")));
+		String statusString = resultSet.getString("Status");
+		if (statusString != null && !statusString.isEmpty() && statusString.toLowerCase().contains("banned")){
+			lolAccount.setAccountStatus(AccountStatus.BANNED);
+		}
+		return lolAccount;	
+	}
 }

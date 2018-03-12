@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import net.nilsghesquiere.entities.InfernalSettings;
-import net.nilsghesquiere.enums.Region;
 import net.nilsghesquiere.util.ProgramUtil;
 
 import org.slf4j.Logger;
@@ -43,7 +42,7 @@ public class InfernalSettingsJDBCClient {
 			Statement statement = connection.createStatement();
 			ResultSet resultSet = statement.executeQuery(SELECT_DEFAULT_SQL);
 			while (resultSet.next()){
-				infernalSettings = buildInfernalSetting(resultSet);
+				infernalSettings = InfernalSettings.buildFromResultSet(resultSet);
 			}
 			if (infernalSettings != null){
 				LOGGER.info("Received the Default settings from InfernalBot.");
@@ -63,7 +62,7 @@ public class InfernalSettingsJDBCClient {
 			Statement statement = connection.createStatement();
 			ResultSet resultSet = statement.executeQuery(SELECT_INFERNALBOTMANAGER_SQL);
 			while (resultSet.next()){
-				infernalSettings = buildInfernalSetting(resultSet);
+				infernalSettings = InfernalSettings.buildFromResultSet(resultSet);
 			}
 			if (infernalSettings != null){
 				LOGGER.info("Received InfernalBotManager settings from InfernalBot.");
@@ -239,73 +238,5 @@ public class InfernalSettingsJDBCClient {
 			return key;
 		}
 	}
-	
-	private InfernalSettings buildInfernalSetting(ResultSet resultSet) throws SQLException {
-		InfernalSettings infernalSettings = new InfernalSettings();
-		infernalSettings.setId(resultSet.getLong("ID"));
-		infernalSettings.setSets(resultSet.getString("Sets"));
-		infernalSettings.setUsername(resultSet.getString("User"));
-		infernalSettings.setPassword(resultSet.getString("Password"));
-		infernalSettings.setGroups(resultSet.getInt("Groups"));
-		infernalSettings.setLevel(resultSet.getString("Level"));
-		infernalSettings.setClientPath(resultSet.getString("ClientPath"));
-		infernalSettings.setCurrentVersion(resultSet.getString("CurrentVersion"));
-		infernalSettings.setWildcard(resultSet.getString("Wildcard"));
-		infernalSettings.setMaxLevel(resultSet.getInt("MaxLevel"));
-		infernalSettings.setSleepTime(resultSet.getInt("Sleeptime"));
-		infernalSettings.setPlayTime(resultSet.getInt("Playtime"));
-		infernalSettings.setRegion(Region.valueOf(resultSet.getString("Region")));
-		infernalSettings.setPrio(resultSet.getInt("Prio"));
-		infernalSettings.setGrSize(resultSet.getInt("GrSize"));
-		infernalSettings.setClientUpdateSel(resultSet.getBoolean("ClientUpdateSel"));
-		infernalSettings.setReplaceConfig(resultSet.getBoolean("replaceConfig"));
-		infernalSettings.setLolHeight(resultSet.getInt("lolHeight"));
-		infernalSettings.setLolWidth(resultSet.getInt("lolWidth"));
-		infernalSettings.setMaxBe(resultSet.getInt("MaxIP"));
-		infernalSettings.setAktive(resultSet.getBoolean("Aktive"));
-		infernalSettings.setClientHide(resultSet.getBoolean("ClientHide"));
-		infernalSettings.setConsoleHide(resultSet.getBoolean("ConsoleHide"));
-		infernalSettings.setRamManager(resultSet.getBoolean("RamManager"));
-		infernalSettings.setRamMin(resultSet.getInt("RamMin"));
-		infernalSettings.setRamMax(resultSet.getInt("RamMax"));
-		infernalSettings.setLeaderHide(resultSet.getBoolean("LeaderHide"));
-		infernalSettings.setSurrender(resultSet.getBoolean("Surender"));
-		infernalSettings.setRenderDisable(resultSet.getBoolean("RenderDisable"));
-		infernalSettings.setLeaderRenderDisable(resultSet.getBoolean("LeaderRenderDisable"));
-		infernalSettings.setCpuBoost(resultSet.getBoolean("CPUBoost"));
-		infernalSettings.setLeaderCpuBoost(resultSet.getBoolean("LeaderCPUBoost"));
-		infernalSettings.setLevelToBeginnerBot(resultSet.getInt("LevelToBeginnerBot"));
-		infernalSettings.setTimeSpan(resultSet.getInt("TimeSpan"));
-		infernalSettings.setSoftEndDefault(resultSet.getBoolean("SoftEndDefault"));
-		infernalSettings.setSoftEndValue(resultSet.getInt("SoftEndValue"));
-		infernalSettings.setQueuerAutoClose(resultSet.getBoolean("QueuerAutoClose"));
-		infernalSettings.setQueueCloseValue(resultSet.getInt("QueuerCloseValue"));
-		infernalSettings.setWinReboot(resultSet.getBoolean("WinReboot"));
-		infernalSettings.setWinShutdown(resultSet.getBoolean("WinShutdown"));
-		infernalSettings.setTimeoutLogin(resultSet.getInt("TimeoutLogin"));
-		infernalSettings.setTimeoutLobby(resultSet.getInt("TimeoutLobby"));
-		infernalSettings.setTimeoutChamp(resultSet.getInt("TimeoutChamp"));
-		infernalSettings.setTimeoutMastery(resultSet.getInt("TimeoutMastery"));
-		infernalSettings.setTimeoutLoadGame(resultSet.getInt("TimeoutLoadGame"));
-		infernalSettings.setTimeoutInGame(resultSet.getInt("TimeoutIngame"));
-		infernalSettings.setTimeoutInGameFF(resultSet.getInt("TimeoutInGameFF"));
-		infernalSettings.setTimeoutEndOfGame(resultSet.getInt("TimeoutEndOfGame"));
-		infernalSettings.setTimeUntilCheck(resultSet.getBoolean("TimeUntilCheck"));
-		infernalSettings.setTimeUntilReboot(resultSet.getString("TimeUntiLReboot"));
-		infernalSettings.setServerCon(resultSet.getBoolean("ServerCON"));
-		infernalSettings.setServerPort(resultSet.getInt("ServerPORT"));
-		infernalSettings.setOpenChest(resultSet.getBoolean("OpenChest"));
-		infernalSettings.setOpenHexTech(resultSet.getBoolean("OpenHexTech"));
-		infernalSettings.setDisChest(resultSet.getBoolean("DisChest"));
-		infernalSettings.setApiClient(resultSet.getBoolean("APIClient"));
-		infernalSettings.setMySQLServer(resultSet.getString("MySQLServer"));
-		infernalSettings.setMySQLDatabase(resultSet.getString("MySQLDatabase"));
-		infernalSettings.setMySQLUser(resultSet.getString("MySQLUSer"));
-		infernalSettings.setMySQLPassword(resultSet.getString("MySQLPassword"));
-		infernalSettings.setMySQLQueueTable(resultSet.getString("MySQLQueueTable"));
-		infernalSettings.setMySQLAktivTable(resultSet.getString("MySQLAktivTable"));
-		return infernalSettings;
-	}
-	
 }
 

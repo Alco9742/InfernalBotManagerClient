@@ -8,9 +8,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import net.nilsghesquiere.entities.InfernalBotManagerClientSettings;
+import net.nilsghesquiere.entities.ClientSettings;
 import net.nilsghesquiere.hooks.GracefulExitHook;
 import net.nilsghesquiere.runnables.InfernalBotManagerRunnable;
+import net.nilsghesquiere.util.ProgramConstants;
 
 import org.ini4j.InvalidFileFormatException;
 import org.ini4j.Wini;
@@ -19,26 +20,24 @@ import org.slf4j.LoggerFactory;
 
 public class Main {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
-	public static final String CLIENT_VERSION = "0.5.2";
-	private static final String INI_NAME = "settings.ini";
+	private static InfernalBotManagerClient client;
 	public static Map<Thread, Runnable> threadMap = new HashMap<>();
 	
 	public static void main(String[] args){
-		program();
-		//test();
-	}
-	
-	private static void test(){
-		InfernalBotManagerClient client= buildClient();
-		client.setInfernalSettings();
-	}
-	
-	private static void program(){
-		System.out.println("---  InfernalBotManager (BETA) by NilsGhes  ---");
+		System.out.println("---    InfernalBotManager (BETA) by Alco    ---");
 		System.out.println("---PRESS CTRL + C TO SAFELY CLOSE THE CLIENT---");
 		LOGGER.info("Starting InfernalBotManager Client");
 		Runtime.getRuntime().addShutdownHook(new GracefulExitHook());
-		InfernalBotManagerClient client= buildClient();
+		client = buildClient();
+		//program();
+		test();
+	}
+	
+	private static void test(){
+		client.queuertest();
+	}
+	
+	private static void program(){
 		if (client != null){
 			boolean upToDate = true;
 			boolean connected = false;
@@ -70,12 +69,12 @@ public class Main {
 					//check for update
 					//initial checks
 					//Attempt to get accounts, retry if fail
-					boolean initDone = client.checkConnection() &&  client.backUpInfernalDatabase() && client.setInfernalSettings() && client.accountExchange();
+					boolean initDone = client.checkConnection() &&  client.backUpInfernalDatabase() && client.setInfernalSettings() && client.exchangeAccounts();
 					while (!initDone){
 						try {
 							LOGGER.info("Retrying in 1 minute...");
 							TimeUnit.MINUTES.sleep(1);
-							initDone = (client.checkConnection() && client.backUpInfernalDatabase() && client.setInfernalSettings() && client.accountExchange());
+							initDone = (client.checkConnection() && client.backUpInfernalDatabase() && client.setInfernalSettings() && client.exchangeAccounts());
 						} catch (InterruptedException e) {
 							LOGGER.error("Failure during sleep");
 							LOGGER.debug(e.getMessage());
@@ -102,13 +101,13 @@ public class Main {
 		}
 	}
 	private static InfernalBotManagerClient buildClient(){
-		String iniFile = System.getProperty("user.dir") + "\\" + INI_NAME;
+		String iniFile = System.getProperty("user.dir") + "\\" + ProgramConstants.INI_NAME;
 		Path iniFilePath = Paths.get(iniFile);
 		InfernalBotManagerClient client = null;
 		if(Files.exists(iniFilePath)){
 			try {
 				Wini ini = new Wini(new File(iniFile));
-				InfernalBotManagerClientSettings settings = InfernalBotManagerClientSettings.buildFromIni(ini);
+				ClientSettings settings = ClientSettings.buildFromIni(ini);
 				if (settings != null){
 					client = new InfernalBotManagerClient(settings);
 				}

@@ -3,7 +3,7 @@ package net.nilsghesquiere.services;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.nilsghesquiere.entities.InfernalBotManagerClientSettings;
+import net.nilsghesquiere.entities.ClientSettings;
 import net.nilsghesquiere.entities.LolAccount;
 import net.nilsghesquiere.enums.AccountStatus;
 import net.nilsghesquiere.enums.Region;
@@ -17,27 +17,28 @@ import org.springframework.web.client.ResourceAccessException;
 
 public class LolAccountService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(LolAccountService.class);
+	private final ClientSettings clientSettings;
 	private final LoLAccountJDBCClient jdbcClient;
 	private final LolAccountRestClient restClient;
-	private final InfernalBotManagerClientSettings clientSettings;
+
 	
-	public LolAccountService(InfernalBotManagerClientSettings clientSettings){
+	public LolAccountService(ClientSettings clientSettings){
 		this.jdbcClient =  new LoLAccountJDBCClient(clientSettings.getInfernalMap());
 		this.restClient = new LolAccountRestClient("http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort());
 		this.clientSettings = clientSettings;
 	}
 	
-	public boolean exchangeAccounts(Long userid, Region region, String clientTag, Integer amount) throws ResourceAccessException {
+	public boolean exchangeAccounts() throws ResourceAccessException {
 		//TODO fix bug: if for some reason both clients have same accs in infernalbot database:
 		//     Client1 uploads the accs and puts them on READY, after that loads them and puts them on IN USE;
 		//     Client2 uploads the accs and does the same!!!! --> solution: check on assigned to
-		LolMixedAccountMap sendMap = prepareAccountsToSend(userid);
+		LolMixedAccountMap sendMap = prepareAccountsToSend();
 		//lege map niet senden
-		if(sendMap == null || restClient.sendInfernalAccounts(userid, sendMap)){
+		if(sendMap == null || restClient.sendInfernalAccounts(clientSettings.getUserId(), sendMap)){
 			if(sendMap != null){
 				jdbcClient.deleteAccounts();
 			}
-			List<LolAccount> accountsForInfernal = restClient.getUsableAccounts(userid, region, amount);
+			List<LolAccount> accountsForInfernal = restClient.getUsableAccounts(clientSettings.getUserId(), clientSettings.getClientRegion(), clientSettings.getAccountAmount());
 			int addedInfernalAccounts = 0;
 			if (!accountsForInfernal.isEmpty()){
 				addedInfernalAccounts = jdbcClient.insertAccounts(accountsForInfernal, false);
@@ -45,12 +46,12 @@ public class LolAccountService {
 			if (addedInfernalAccounts > 0){
 				for (LolAccount lolAccount : accountsForInfernal){
 					lolAccount.setAccountStatus(AccountStatus.IN_USE);
-					lolAccount.setAssignedTo(clientTag);
+					lolAccount.setAssignedTo(clientSettings.getClientTag());
 				}
-				restClient.updateLolAccounts(userid, accountsForInfernal);
+				restClient.updateLolAccounts(clientSettings.getUserId(), accountsForInfernal);
 			}
 			if (clientSettings.getAccountBuffer() > 0){
-				List<LolAccount> accountsForInfernalBuffer = restClient.getBufferAccounts(userid, region, amount);
+				List<LolAccount> accountsForInfernalBuffer = restClient.getBufferAccounts(clientSettings.getUserId(), clientSettings.getClientRegion(), clientSettings.getAccountBuffer());
 				int addedInfernalBufferAccounts = 0;
 				if (!accountsForInfernalBuffer.isEmpty()){
 					addedInfernalBufferAccounts = jdbcClient.insertAccounts(accountsForInfernalBuffer, true);
@@ -58,9 +59,9 @@ public class LolAccountService {
 				if (addedInfernalBufferAccounts > 0){
 					for (LolAccount lolAccount : accountsForInfernalBuffer){
 						lolAccount.setAccountStatus(AccountStatus.IN_BUFFER);
-						lolAccount.setAssignedTo(clientTag);
+						lolAccount.setAssignedTo(clientSettings.getClientTag());
 					}
-					restClient.updateLolAccounts(userid, accountsForInfernalBuffer);
+					restClient.updateLolAccounts(clientSettings.getUserId(), accountsForInfernalBuffer);
 				}
 			}	
 		if (addedInfernalAccounts < 5) {
@@ -75,9 +76,9 @@ public class LolAccountService {
 		return true;
 	}
 	
-	public void setAccountsAsReadyForUse(Long userid) throws ResourceAccessException {
-		LolMixedAccountMap sendMap = prepareAccountsToSend(userid);
-		if(restClient.sendInfernalAccounts(userid, sendMap)){
+	public void setAccountsAsReadyForUse() throws ResourceAccessException {
+		LolMixedAccountMap sendMap = prepareAccountsToSend();
+		if(restClient.sendInfernalAccounts(clientSettings.getUserId(), sendMap)){
 			LOGGER.info("Updated accounts on server");
 			jdbcClient.deleteAccounts();
 		} else {
@@ -85,13 +86,13 @@ public class LolAccountService {
 		}
 	}
 	
-	private LolMixedAccountMap prepareAccountsToSend(Long userid){
+	private LolMixedAccountMap prepareAccountsToSend(){
 		LolMixedAccountMap lolAccountMap = new LolMixedAccountMap();
 		List<LolAccount> newAccounts = new ArrayList<>();
 		List<LolAccount> accountsFromJDBC = jdbcClient.getAccounts();
 		if (!accountsFromJDBC.isEmpty()){
 			for (LolAccount accountFromJDBC : accountsFromJDBC){
-				LolAccount accountFromREST = restClient.getByUserIdRegionAndAccount(userid, accountFromJDBC.getRegion(),accountFromJDBC.getAccount());
+				LolAccount accountFromREST = restClient.getByUserIdRegionAndAccount(clientSettings.getUserId(), accountFromJDBC.getRegion(),accountFromJDBC.getAccount());
 				//added here to only touch accounts not assigned to anyone or assigned to this client
 				if(accountFromREST != null){
 					boolean accountAssignedToOtherClient = true;

@@ -44,7 +44,7 @@ public class InfernalBotManagerRunnable implements Runnable {
 				input.close();
 				if(!pidInfo.contains(client.getClientSettings().getInfernalProgramName())){
 					LOGGER.warn("InfernalBot process not found, restarting client");
-					if(client.checkConnection() && client.accountExchange()){
+					if(client.checkConnection() && client.exchangeAccounts()){
 						runInfernalbot();
 					} else {
 						LOGGER.info("Retrying in 1 minute..");

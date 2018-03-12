@@ -13,7 +13,7 @@ import java.nio.file.Paths;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.nilsghesquiere.entities.InfernalBotManagerClientSettings;
+import net.nilsghesquiere.entities.ClientSettings;
 import net.nilsghesquiere.services.GlobalVariableService;
 
 
@@ -24,7 +24,7 @@ public class ProgramUtil {
 		return boolString.substring(0, 1).toUpperCase() + boolString.substring(1);
 	}
 	
-	public static boolean downloadFileFromUrl(InfernalBotManagerClientSettings clientSettings, String filename) {
+	public static boolean downloadFileFromUrl(ClientSettings clientSettings, String filename) {
 		if(creatBackupDir()){
 			String managerMap = System.getProperty("user.dir");
 			String filePath = managerMap + "\\backup\\" + filename;

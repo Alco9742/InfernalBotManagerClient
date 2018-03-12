@@ -1,8 +1,9 @@
 package net.nilsghesquiere.services;
 
 import net.nilsghesquiere.Main;
-import net.nilsghesquiere.entities.InfernalBotManagerClientSettings;
+import net.nilsghesquiere.entities.ClientSettings;
 import net.nilsghesquiere.restclients.GlobalVariableRestClient;
+import net.nilsghesquiere.util.ProgramConstants;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,18 +12,18 @@ public class GlobalVariableService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(GlobalVariableService.class);
 	private final GlobalVariableRestClient restClient;
 	
-	public GlobalVariableService(InfernalBotManagerClientSettings clientSettings){
+	public GlobalVariableService(ClientSettings clientSettings){
 		this.restClient = new GlobalVariableRestClient("http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort());
 		
 	}
 	
 	public boolean checkVersion(){
 		String currentVersion = getClientVersion();
-		if(Main.CLIENT_VERSION.equals(currentVersion)){
+		if(ProgramConstants.CLIENT_VERSION.equals(currentVersion)){
 			LOGGER.info("Client up to date (v" + currentVersion +")");
 			return true;
 		} else {
-			LOGGER.error("Client is outdated (v" + Main.CLIENT_VERSION +")");
+			LOGGER.error("Client is outdated (v" + ProgramConstants.CLIENT_VERSION +")");
 			LOGGER.info("Updating to new version (v" +currentVersion +")");
 			return false;
 		}

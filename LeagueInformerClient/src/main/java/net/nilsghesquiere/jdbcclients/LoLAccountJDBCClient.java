@@ -46,7 +46,7 @@ public class LoLAccountJDBCClient {
 			Statement statement = connection.createStatement();
 			ResultSet resultSet = statement.executeQuery(SELECT_SQL);
 			while (resultSet.next()){
-				LolAccount lolAccount = buildLolAccount(resultSet);
+				LolAccount lolAccount = LolAccount.buildFromResultSet(resultSet);
 				lolAccounts.add(lolAccount);
 			}
 			if (lolAccounts.size() > 0){
@@ -115,29 +115,4 @@ public class LoLAccountJDBCClient {
 		}
 		return aantalToegevoegdeAccounts; 
 	}
-	
-	private LolAccount buildLolAccount(ResultSet resultSet) throws SQLException {
-		LolAccount lolAccount = new LolAccount();
-		lolAccount.setAccount(resultSet.getString("Account"));
-		lolAccount.setPassword(resultSet.getString("Password"));
-		lolAccount.setSummoner(resultSet.getString("Summoner"));
-		lolAccount.setRegion(Region.valueOf(resultSet.getString("Region")));
-		lolAccount.setLevel(resultSet.getInt("Level"));
-		lolAccount.setMaxLevel(resultSet.getInt("MaxLevel"));
-		lolAccount.setXp(resultSet.getInt("XP"));
-		lolAccount.setBe(resultSet.getInt("IP"));
-		lolAccount.setMaxBe(resultSet.getInt("MaxIP"));
-		lolAccount.setPriority(resultSet.getInt("Prioity"));
-		lolAccount.setPlayTime(resultSet.getInt("Playtime"));
-		lolAccount.setSleepTime(resultSet.getInt("Sleeptime"));
-		lolAccount.setActive(Boolean.valueOf(resultSet.getString("Active")));
-		String statusString = resultSet.getString("Status");
-		if (statusString != null && !statusString.isEmpty() && statusString.toLowerCase().contains("banned")){
-			//TODO: dit verfijnen
-			lolAccount.setAccountStatus(AccountStatus.BANNED);
-			LOGGER.warn(lolAccount.getAccount() + " has been banned");
-		}
-		return lolAccount;
-	}
-	
 }

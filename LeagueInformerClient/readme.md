@@ -3,9 +3,7 @@
 <h3>TODO BEFORE BETA:</h3>	
 <ul>
 <li>Spring security -> Log in to server</li>
-<li>Fix network connection checks</li>
-<li>version checker</li>
-<li>Autoupdater (once the version checker works)</li>
+<li>Autoupdater finish (copy overwrite)</li>
 <li>Register clients and make a thread ping every 5 minutes to check which clients are running (possibly with a status?)</li>
 <li>java2exe + encryption</li>
 <li>Crash: regedit stuff from script: closing infernalbot on errorlevel?</li>

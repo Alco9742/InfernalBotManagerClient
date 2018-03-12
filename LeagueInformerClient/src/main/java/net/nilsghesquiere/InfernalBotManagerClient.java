@@ -7,10 +7,12 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 import lombok.Data;
-import net.nilsghesquiere.entities.InfernalBotManagerClientSettings;
+import net.nilsghesquiere.entities.ClientData;
+import net.nilsghesquiere.entities.ClientSettings;
 import net.nilsghesquiere.services.GlobalVariableService;
 import net.nilsghesquiere.services.InfernalSettingsService;
 import net.nilsghesquiere.services.LolAccountService;
+import net.nilsghesquiere.services.ClientDataService;
 import net.nilsghesquiere.util.ProgramUtil;
 
 import org.slf4j.Logger;
@@ -23,17 +25,29 @@ public class InfernalBotManagerClient {
 	private static final String UPDATER_NAME = "updater.bat";
 	private static final String PROGRAM_NAME = "InfernalBotManagerClient.jar";
 	
-	private InfernalBotManagerClientSettings clientSettings;
+	private ClientSettings clientSettings;
+	private ClientData clientData;
 	
-	public InfernalBotManagerClient(InfernalBotManagerClientSettings clientSettings) {
+	private GlobalVariableService globalVariableService;
+	private LolAccountService accountService;
+	private InfernalSettingsService infernalSettingsService;
+	private ClientDataService clientDataService;
+
+	public InfernalBotManagerClient(ClientSettings clientSettings) {
 		this.clientSettings = clientSettings;
+		this.clientData = new ClientData(clientSettings.getUserId(), clientSettings.getClientTag());
+		this.globalVariableService = new GlobalVariableService(clientSettings);
+		this.accountService = new LolAccountService(clientSettings);
+		this.infernalSettingsService = new InfernalSettingsService(clientSettings);
+		this.clientDataService = new ClientDataService(clientSettings, clientData);
 	}
 	
 	//Schedule Reboot
 	public void scheduleReboot(){
 		if (clientSettings.getReboot()){
 			try {
-				Process p = Runtime.getRuntime().exec("shutdown -r -t " + clientSettings.getRebootTime());
+				//Process p = Runtime.getRuntime().exec("shutdown -r -t " + clientSettings.getRebootTime());
+				Runtime.getRuntime().exec("shutdown -r -t " + clientSettings.getRebootTime());
 			} catch (IOException e) {
 				LOGGER.error("Error scheduling reboot");
 				LOGGER.debug(e.getMessage().toString());
@@ -42,10 +56,9 @@ public class InfernalBotManagerClient {
 		}
 	}
 
-	//Connection Check
+	//GlobalVariables methods
 	public boolean checkConnection(){
 		try{
-			GlobalVariableService globalVariableService = new GlobalVariableService(clientSettings);
 			boolean connected =  globalVariableService.checkConnection();
 			if(!connected){
 				LOGGER.error("Failure connecting to the InfernalBotManager server.");
@@ -60,7 +73,6 @@ public class InfernalBotManagerClient {
 	
 	public boolean checkVersion(){
 		try{
-			GlobalVariableService globalVariableService = new GlobalVariableService(clientSettings);
 			return globalVariableService.checkVersion();
 		} catch (ResourceAccessException e) {
 			LOGGER.error("Failure retrieving the requested resource.");
@@ -71,7 +83,6 @@ public class InfernalBotManagerClient {
 	
 	public boolean checkKillSwitch(){
 		try{
-			GlobalVariableService globalVariableService = new GlobalVariableService(clientSettings);
 			return globalVariableService.checkKillSwitch();
 		} catch (ResourceAccessException e) {
 			LOGGER.error("Failure retrieving the requested resource.");
@@ -79,38 +90,12 @@ public class InfernalBotManagerClient {
 				return false;
 		} 
 	}
-	//LolAccount methods
-	public boolean accountExchange(){
-		try{
-			LolAccountService lolAccountService = new LolAccountService(clientSettings);
-			return lolAccountService.exchangeAccounts(clientSettings.getUserId(), clientSettings.getClientRegion(), clientSettings.getClientTag(), clientSettings.getAccountAmount());
-		} catch (ResourceAccessException e) {
-			LOGGER.error("Failure retrieving the requested resource");
-			LOGGER.debug(e.getMessage());
-				return false;
-		} 
-	}
 	
-	public boolean setAccountsAsReadyForUse(){
-		try{
-			LolAccountService lolAccountService = new LolAccountService(clientSettings);
-			lolAccountService.setAccountsAsReadyForUse(clientSettings.getUserId());
-			return true;
-		} catch (ResourceAccessException e) {
-			LOGGER.error("Failure retrieving the requested resource");
-			LOGGER.debug(e.getMessage());
-			return false;
-		} 
-	}
-
 	//InfernalSettings methods
 	public boolean setInfernalSettings(){
 		if (clientSettings.getFetchSettings()){
 			try{
-				InfernalSettingsService infernalSettingsService = new InfernalSettingsService(clientSettings);
 				infernalSettingsService.updateInfernalSettings(clientSettings.getUserId());
-				//get the settings here and overwrite them if in ini has the values, this should probably be done in the service
-				//--> boolean for overwrite and values in a map --> pass to the method
 				return true;
 			} catch (ResourceAccessException e) {
 				LOGGER.error("Failure retrieving the requested resource");
@@ -123,6 +108,34 @@ public class InfernalBotManagerClient {
 		}
 	}
 	
+	//LolAccount methods
+	public boolean exchangeAccounts(){
+		try{
+			return accountService.exchangeAccounts();
+		} catch (ResourceAccessException e) {
+			LOGGER.error("Failure retrieving the requested resource");
+			LOGGER.debug(e.getMessage());
+				return false;
+		} 
+	}
+	
+	public boolean setAccountsAsReadyForUse(){
+		try{
+			accountService.setAccountsAsReadyForUse();
+			return true;
+		} catch (ResourceAccessException e) {
+			LOGGER.error("Failure retrieving the requested resource");
+			LOGGER.debug(e.getMessage());
+			return false;
+		} 
+	}
+	
+	//Queuer methods
+	public void queuertest(){
+		clientDataService.sendData();
+	}
+	
+	//Backup database methods
 	public boolean backUpInfernalDatabase(){
 		if(checkDir()){
 			LOGGER.info("Located Infernalbot");
@@ -161,6 +174,7 @@ public class InfernalBotManagerClient {
 		return Files.exists(infernalPath);
 	}
 
+	//update client methods
 	public void updateClient() {
 		if(ProgramUtil.downloadFileFromUrl(clientSettings, UPDATER_NAME)){
 			if(ProgramUtil.downloadFileFromUrl(clientSettings, PROGRAM_NAME)){

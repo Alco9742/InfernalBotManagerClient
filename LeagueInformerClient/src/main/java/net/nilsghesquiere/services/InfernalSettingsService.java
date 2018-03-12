@@ -2,7 +2,7 @@ package net.nilsghesquiere.services;
 
 import java.util.Map.Entry;
 
-import net.nilsghesquiere.entities.InfernalBotManagerClientSettings;
+import net.nilsghesquiere.entities.ClientSettings;
 import net.nilsghesquiere.entities.InfernalSettings;
 import net.nilsghesquiere.jdbcclients.InfernalSettingsJDBCClient;
 import net.nilsghesquiere.restclients.InfernalSettingsRestClient;
@@ -15,9 +15,9 @@ public class InfernalSettingsService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(InfernalSettingsService.class);
 	private final InfernalSettingsJDBCClient jdbcClient;
 	private final InfernalSettingsRestClient restClient;
-	private final InfernalBotManagerClientSettings clientSettings;
+	private final ClientSettings clientSettings;
 	
-	public InfernalSettingsService(InfernalBotManagerClientSettings clientSettings){
+	public InfernalSettingsService(ClientSettings clientSettings){
 		this.jdbcClient =  new InfernalSettingsJDBCClient(clientSettings.getInfernalMap());
 		this.restClient = new InfernalSettingsRestClient("http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort());
 		this.clientSettings = clientSettings;
