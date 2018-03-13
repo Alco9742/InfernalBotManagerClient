@@ -21,10 +21,10 @@ public class Queuer implements Serializable{
 	private Integer winGames;
 	private Integer defeatGames;
 	//private ?? state;
-	private List<QueuerLolAccount> queuerAccounts;
+	private List<QueuerLolAccount> queuerLolAccounts;
 	
 	public Queuer() {
-		this.queuerAccounts = new ArrayList<>();
+		this.queuerLolAccounts = new ArrayList<>();
 	}
 	
 	public static Queuer buildFromResultSet(ResultSet resultSet) throws SQLException {

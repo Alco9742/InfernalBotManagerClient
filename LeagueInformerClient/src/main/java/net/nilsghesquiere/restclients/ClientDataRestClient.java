@@ -11,7 +11,14 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
+
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 
 public class ClientDataRestClient {
@@ -21,6 +28,16 @@ public class ClientDataRestClient {
 	
 	public ClientDataRestClient(String uriServer) {
 		this.URI_CLIENTS = uriServer +"/api/clients";
+		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.registerModule(new JavaTimeModule());
+		mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+		//Temp including these two properties to ignore content and link in json 
+		//TODO: find way to delete content and link
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		mapper.configure(MapperFeature.DEFAULT_VIEW_INCLUSION, false);
+		converter.setObjectMapper(mapper);
+		restTemplate.getMessageConverters().add(0,converter);
 	}
 	
 	public boolean sendClientData(Long userid, ClientDataMap map){

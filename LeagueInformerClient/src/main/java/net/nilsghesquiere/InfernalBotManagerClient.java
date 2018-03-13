@@ -35,7 +35,7 @@ public class InfernalBotManagerClient {
 
 	public InfernalBotManagerClient(ClientSettings clientSettings) {
 		this.clientSettings = clientSettings;
-		this.clientData = new ClientData(clientSettings.getUserId(), clientSettings.getClientTag());
+		this.clientData = new ClientData(clientSettings.getClientTag());
 		this.globalVariableService = new GlobalVariableService(clientSettings);
 		this.accountService = new LolAccountService(clientSettings);
 		this.infernalSettingsService = new InfernalSettingsService(clientSettings);

@@ -1,12 +1,12 @@
 package net.nilsghesquiere.services;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import net.nilsghesquiere.entities.ClientData;
 import net.nilsghesquiere.entities.ClientSettings;
-import net.nilsghesquiere.entities.ClientStatus;
 import net.nilsghesquiere.entities.Queuer;
 import net.nilsghesquiere.jdbcclients.QueuerJDBCClient;
 import net.nilsghesquiere.restclients.ClientDataRestClient;
@@ -47,13 +47,10 @@ public class ClientDataService {
 		ClientDataMap clientDataMap = new ClientDataMap();
 		List<Queuer> queuers = jdbcClient.getQueuers();
 		for (Queuer queuer : queuers){
-			queuer.setQueuerAccounts(jdbcClient.getQueuerAccounts(queuer));
+			queuer.setQueuerLolAccounts(jdbcClient.getQueuerAccounts(queuer));
 		}
 		clientData.setQueuers(queuers);
-		ClientStatus status = new ClientStatus();
-		status.setDate(LocalDate.now());
-		List<ClientStatus> statusList= new ArrayList<>();
-		clientData.setStatusList(statusList);
+		clientData.setStatus("Testing commenced");
 		System.out.println(clientData);
 		clientDataMap.add("0", clientData);
 		return clientDataMap;
