@@ -143,5 +143,6 @@ public class Main {
 			LOGGER.info("Failure trying to disable Windows error reporting UI");
 			LOGGER.debug(e.getMessage());
 		}
+		
 	}
 }

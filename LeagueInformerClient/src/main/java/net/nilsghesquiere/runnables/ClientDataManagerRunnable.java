@@ -55,6 +55,7 @@ public class ClientDataManagerRunnable implements Runnable {
 				LOGGER.error("Failure during sleep");
 				LOGGER.debug(e1.getMessage());
 			}
+			LOGGER.info(Boolean.toString(stop));
 		}
 		LOGGER.info("Successfully closed ClientData Updater thread");
 	}
