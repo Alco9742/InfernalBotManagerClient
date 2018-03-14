@@ -8,15 +8,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import org.ini4j.InvalidFileFormatException;
+import org.ini4j.Reg;
+import org.ini4j.Wini;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import net.nilsghesquiere.entities.ClientSettings;
 import net.nilsghesquiere.hooks.GracefulExitHook;
 import net.nilsghesquiere.runnables.InfernalBotManagerRunnable;
 import net.nilsghesquiere.util.ProgramConstants;
-
-import org.ini4j.InvalidFileFormatException;
-import org.ini4j.Wini;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class Main {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
@@ -126,6 +127,19 @@ public class Main {
 		} else {
 			LOGGER.error("settings.ini file not found at path: " + iniFilePath);
 		}
+		disableWindowsErrorReporting();
 		return client;
+	}
+	
+	private static void disableWindowsErrorReporting(){
+		Reg reg = new Reg();
+		Reg.Key key = reg.add("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\Windows Error Reporting");
+		key.put("DontShowUI", "1");
+		try {
+			reg.write();
+		} catch (IOException e) {
+			LOGGER.info("Failure trying to disable Windows error reporting UI");
+			LOGGER.debug(e.getMessage());
+		}
 	}
 }

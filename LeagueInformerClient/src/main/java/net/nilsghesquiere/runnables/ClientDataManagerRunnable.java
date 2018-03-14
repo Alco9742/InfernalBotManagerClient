@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.concurrent.TimeUnit;
 
 import net.nilsghesquiere.InfernalBotManagerClient;
+import net.nilsghesquiere.entities.ClientSettings;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,14 +35,18 @@ public class ClientDataManagerRunnable implements Runnable {
 		while (!stop){
 			client.getClientDataService().sendData();
 			if(!client.getClientDataService().hasActiveQueuer()){
-
 				if(client.getClientSettings().getRebootFromManager()){
 					LOGGER.info("No active queuers found");
 					rebootFromClientDataManagerClient = true;
 					System.exit(0);
 				} else {
 					LOGGER.info("No active queuers found, closing InfernalBot process");
-					//just kill the infernalbot process -> InfernalBotManagerRunnable will restart it
+					try {
+						Runtime.getRuntime().exec("taskkill /F /IM " + client.getClientSettings().getInfernalProgramName());
+					} catch (IOException e){
+						LOGGER.error("Failure trying to kill InfernalBot Process");
+						LOGGER.debug(e.getMessage());
+					}
 				}
 			}
 			try {

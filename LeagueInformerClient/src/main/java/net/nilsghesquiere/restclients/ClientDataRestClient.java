@@ -52,9 +52,6 @@ public class ClientDataRestClient {
 			result = false;
 			LOGGER.error("Failure updating Client data on the server: " + clientDataWrapper.getError());
 		}
-		if (result = true){
-			LOGGER.info("Updated Client data on the server");
-		}
 		return result;
 	}
 }

@@ -49,8 +49,9 @@ public class ClientDataService {
 		for (Queuer queuer : queuers){
 			queuer.setQueuerLolAccounts(jdbcClient.getQueuerAccounts(queuer));
 		}
+		clientData.setDate(LocalDateTime.now());
 		clientData.setQueuers(queuers);
-		clientData.setStatus("Testing commenced");
+		clientData.setStatus("Client Online");
 		clientDataMap.add("0", clientData);
 		return clientDataMap;
 	}
