@@ -3880,3 +3880,606 @@
 2018-03-14 16:54:18.013 INFO  [main] ClientDataRestClient - Updated Client data on the server
 2018-03-14 16:54:18.014 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
 2018-03-14 16:54:18.014 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-14 17:35:53.178 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-14 17:35:53.204 INFO  [main] ClientSettings - Loaded settings from settings.ini
+2018-03-14 17:35:53.781 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-14 17:35:53.781 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-14 17:36:50.503 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-14 17:36:50.526 INFO  [main] ClientSettings - Loaded settings from settings.ini
+2018-03-14 17:36:50.873 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-14 17:36:50.874 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-14 17:37:11.836 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-14 17:37:11.859 ERROR [main] ClientSettings - Bad value in settings.ini: value 'null' is not accepted for rebootfrommanager
+2018-03-14 17:37:11.859 ERROR [main] ClientSettings - Failure loading settings from settings.ini
+2018-03-14 17:37:11.859 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-14 17:37:11.860 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-14 17:37:11.861 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-14 17:37:41.439 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-14 17:37:41.462 ERROR [main] ClientSettings - Bad value in settings.ini: value 'null' is not accepted for rebootfrommanager
+2018-03-14 17:37:41.462 ERROR [main] ClientSettings - Failure loading settings from settings.ini
+2018-03-14 17:37:41.462 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-14 17:37:41.463 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-14 17:37:41.463 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-14 17:38:05.895 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-14 17:38:05.917 ERROR [main] ClientSettings - Bad value in settings.ini: value 'null' is not accepted for rebootfrommanager
+2018-03-14 17:38:05.917 ERROR [main] ClientSettings - Failure loading settings from settings.ini
+2018-03-14 17:38:05.917 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-14 17:38:05.917 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-14 17:38:05.917 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-14 17:38:19.922 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-14 17:38:19.943 INFO  [main] ClientSettings - Loaded settings from settings.ini
+2018-03-14 17:38:20.291 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-14 17:38:20.291 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-14 17:39:47.158 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-14 17:39:47.180 INFO  [main] ClientSettings - Loaded settings from settings.ini
+2018-03-14 17:39:47.551 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.557 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.564 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.572 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.580 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.587 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.594 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.602 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.611 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.619 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.630 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.638 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.646 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.652 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.658 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.665 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.671 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.676 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.682 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.688 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.694 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.702 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.709 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.715 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.722 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.729 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.735 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.741 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.748 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.754 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.760 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.766 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.772 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.780 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.787 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.796 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.805 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.812 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.820 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.827 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.834 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.841 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.847 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.852 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.858 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.864 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.870 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.878 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.886 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.893 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.900 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.907 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.913 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.919 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.924 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.931 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.937 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.942 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.949 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.956 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.963 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.971 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.978 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.985 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:47.993 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.000 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.007 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.014 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.021 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.028 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.035 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.042 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.048 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.057 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.063 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.070 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.077 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.084 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.092 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.099 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.105 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.112 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.118 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.126 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.133 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.139 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.146 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.153 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.160 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.168 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.174 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.181 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.189 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.196 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.202 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.209 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.216 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.223 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.230 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.237 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.244 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.251 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.259 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.265 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.272 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.279 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.285 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.291 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.297 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.304 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.310 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.318 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.325 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.333 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.341 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.349 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.355 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.362 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.369 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.376 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.382 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.388 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.394 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.400 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.406 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.413 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.421 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.427 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.433 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.439 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.444 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.451 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.456 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.462 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.469 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.476 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.484 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.490 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.495 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.501 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.506 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.512 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.519 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.526 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.533 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.539 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.544 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.550 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.556 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.561 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.567 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.572 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.577 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.584 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.590 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.595 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.601 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.607 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.613 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.619 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.625 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.632 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.637 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.644 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.653 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.659 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.664 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.670 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.675 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.682 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.688 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.695 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.702 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.707 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.713 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.719 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.725 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.732 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.739 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.745 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.750 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.756 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.761 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.768 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.774 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.780 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.786 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.792 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.798 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.804 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.811 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.819 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.826 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.832 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.838 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.845 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.852 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.859 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.864 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.874 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.880 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.887 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.893 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.903 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.911 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.918 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.924 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.931 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.937 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.942 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.947 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.953 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.959 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.966 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.972 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.979 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.985 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.991 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:48.996 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.003 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.009 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.014 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.022 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.033 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.052 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.061 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.074 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.086 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.093 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.102 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.112 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.121 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.128 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.136 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.141 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.149 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.156 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.164 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.174 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.180 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.188 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.204 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.213 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.220 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.229 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.236 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.246 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.254 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.262 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.272 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.282 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.294 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.304 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.312 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.320 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.328 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.342 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.349 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.355 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.361 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.368 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.373 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.379 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.386 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.392 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.398 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.406 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.413 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.419 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.425 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.432 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.440 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.448 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.456 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.464 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.473 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.480 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.488 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.494 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.501 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.508 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.514 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.522 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.530 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.537 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.545 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.552 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.558 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.564 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.571 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.576 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.582 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.589 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.595 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.602 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.610 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.616 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.622 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.628 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.634 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.641 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.648 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.655 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.661 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.669 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.676 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.732 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.741 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.747 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.754 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.759 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.764 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.772 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.779 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.785 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.792 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.798 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.807 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.814 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.821 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.827 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.832 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.840 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.846 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.852 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.858 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.864 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.871 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.878 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.886 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.892 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.898 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.905 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.911 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.917 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.923 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.929 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.935 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.940 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.945 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.950 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.956 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.963 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.968 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.974 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.978 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.983 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.988 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.994 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:49.998 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.004 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.010 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.019 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.025 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.030 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.036 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.042 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.048 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.055 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.060 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.065 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.070 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.075 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.080 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.085 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.090 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.095 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.100 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.105 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.111 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.116 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.124 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.130 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.135 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.140 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.145 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.150 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.155 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.160 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.165 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.171 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.176 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.182 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.187 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.192 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.198 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.205 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.211 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.216 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.222 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.227 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.233 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.239 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.245 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.253 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.260 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.267 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.274 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.280 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.288 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.295 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.301 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.308 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.314 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.322 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.328 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.335 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.342 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.350 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.358 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.364 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.370 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.378 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.385 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.395 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.401 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.407 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.413 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.418 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.426 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.433 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.441 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.447 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.455 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.464 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.471 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.479 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.488 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.495 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.502 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.509 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.514 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.522 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.574 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.579 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.585 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.589 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.593 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.597 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.603 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.607 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.611 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.615 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.619 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.623 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.629 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.635 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.641 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.648 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.653 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.658 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.663 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.669 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.675 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.680 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.686 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.691 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.697 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.701 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.705 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.710 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.714 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.719 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.723 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.726 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.729 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.733 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.737 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.741 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.745 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.749 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.753 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.756 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.761 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.765 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.770 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.774 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.779 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.783 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.791 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.796 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.803 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.807 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.812 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.818 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.824 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.829 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.835 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.841 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.847 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.852 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.858 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.862 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.869 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.874 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.879 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.884 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.890 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.895 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.900 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.904 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.908 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.911 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.915 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:39:50.918 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:40:05.242 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-14 17:40:05.264 INFO  [main] ClientSettings - Loaded settings from settings.ini
+2018-03-14 17:40:05.612 ERROR [main] Main - Bad configuration on the server, contact Alco
+2018-03-14 17:40:05.613 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-14 17:40:05.613 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-14 17:41:45.686 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-14 17:41:45.708 INFO  [main] ClientSettings - Loaded settings from settings.ini
+2018-03-14 17:41:46.073 INFO  [main] GlobalVariableService - Client up to date (v0.5.2)
+2018-03-14 17:41:46.094 INFO  [main] InfernalBotManagerClient - Located Infernalbot
+2018-03-14 17:41:46.134 INFO  [main] InfernalBotManagerClient - Backed up Infernalbot database
+2018-03-14 17:41:46.213 INFO  [main] InfernalSettingsRestClient - Received InfernalBot settings from the InfernalBotManager server.
+2018-03-14 17:41:46.214 DEBUG [main] InfernalSettingsRestClient - SettingsFromServer: InfernalSettings(id=1, sets=Default, username=null, password=null, groups=1, level=null, clientPath=C:\Riot Games\League of Legends, currentVersion=null, wildcard=:, maxLevel=30, sleepTime=0, playTime=24, region=null, prio=9, grSize=null, clientUpdateSel=null, replaceConfig=false, lolHeight=240, lolWidth=320, maxBe=30000, aktive=true, clientHide=true, consoleHide=true, ramManager=true, ramMin=200, ramMax=300, leaderHide=true, surrender=false, renderDisable=true, leaderRenderDisable=true, cpuBoost=true, leaderCpuBoost=true, levelToBeginnerBot=99, timeSpan=30, softEndDefault=true, softEndValue=5, queuerAutoClose=false, queueCloseValue=1, winReboot=true, winShutdown=false, timeoutLogin=5, timeoutLobby=5, timeoutChamp=5, timeoutMastery=5, timeoutLoadGame=5, timeoutInGame=60, timeoutInGameFF=17, timeoutEndOfGame=5, timeUntilCheck=false, timeUntilReboot=01:00, serverCon=false, serverPort=100, openChest=true, openHexTech=true, disChest=true, apiClient=null, mySQLServer=null, mySQLDatabase=null, mySQLUser=null, mySQLPassword=null, mySQLQueueTable=null, mySQLAktivTable=null)
+2018-03-14 17:41:46.565 INFO  [main] InfernalSettingsJDBCClient - Received the Default settings from InfernalBot.
+2018-03-14 17:41:46.953 INFO  [main] InfernalSettingsJDBCClient - Updated the Default settings in InfernalBot.
+2018-03-14 17:41:46.958 INFO  [main] LoLAccountJDBCClient - Received 7 accounts from InfernalBot.
+2018-03-14 17:41:47.129 DEBUG [main] LolAccountRestClient - getByUserIdRegionAndAccount:null
+2018-03-14 17:41:47.133 DEBUG [main] LolAccountRestClient - getByUserIdRegionAndAccount:null
+2018-03-14 17:41:47.138 DEBUG [main] LolAccountRestClient - getByUserIdRegionAndAccount:null
+2018-03-14 17:41:47.142 DEBUG [main] LolAccountRestClient - getByUserIdRegionAndAccount:null
+2018-03-14 17:41:47.146 DEBUG [main] LolAccountRestClient - getByUserIdRegionAndAccount:null
+2018-03-14 17:41:47.150 DEBUG [main] LolAccountRestClient - getByUserIdRegionAndAccount:null
+2018-03-14 17:41:47.154 DEBUG [main] LolAccountRestClient - getByUserIdRegionAndAccount:null
+2018-03-14 17:41:47.212 DEBUG [main] LolAccountRestClient - sendInfernalAccounts - existing:[]
+2018-03-14 17:41:47.212 DEBUG [main] LolAccountRestClient - sendInfernalAccounts - new:[]
+2018-03-14 17:41:47.212 INFO  [main] LolAccountRestClient - Updated accounts on the InfernalBotManager server
+2018-03-14 17:41:47.392 INFO  [main] LoLAccountJDBCClient - Deleted all accounts from InfernalBot.
+2018-03-14 17:41:47.435 WARN  [main] LolAccountRestClient - Only found 1 eligible accounts on the the InfernalBotManager server.
+2018-03-14 17:41:47.657 INFO  [main] LoLAccountJDBCClient - Inserted 1 accounts into InfernalBot.
+2018-03-14 17:41:47.661 DEBUG [main] LolAccountRestClient - updateLolAccounts (before):[LolAccount(id=1, account=Pismerito, password=EdGOY4Xt, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_USE, assignedTo=TESTJE5, info=)]
+2018-03-14 17:41:47.689 DEBUG [main] LolAccountRestClient - updateLolAccounts (after):[LolAccount(id=1, account=Pismerito, password=EdGOY4Xt, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_USE, assignedTo=TESTJE5, info=)]
+2018-03-14 17:41:47.697 WARN  [main] LolAccountRestClient - No eligible bufferaccounts on the the InfernalBotManager server.
+2018-03-14 17:41:47.698 ERROR [main] LolAccountService - Not enough accounts available on the server
+2018-03-14 17:41:47.698 INFO  [main] Main - Retrying in 1 minute...
+2018-03-14 17:42:35.014 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-14 17:42:35.037 INFO  [main] ClientSettings - Loaded settings from settings.ini
+2018-03-14 17:42:35.414 INFO  [main] GlobalVariableService - Client up to date (v0.5.2)
+2018-03-14 17:42:35.424 INFO  [main] InfernalBotManagerClient - Located Infernalbot
+2018-03-14 17:42:35.428 INFO  [main] InfernalBotManagerClient - Backed up Infernalbot database
+2018-03-14 17:42:35.451 INFO  [main] InfernalSettingsRestClient - Received InfernalBot settings from the InfernalBotManager server.
+2018-03-14 17:42:35.451 DEBUG [main] InfernalSettingsRestClient - SettingsFromServer: InfernalSettings(id=1, sets=Default, username=null, password=null, groups=1, level=null, clientPath=C:\Riot Games\League of Legends, currentVersion=null, wildcard=:, maxLevel=30, sleepTime=0, playTime=24, region=null, prio=9, grSize=null, clientUpdateSel=null, replaceConfig=false, lolHeight=240, lolWidth=320, maxBe=30000, aktive=true, clientHide=true, consoleHide=true, ramManager=true, ramMin=200, ramMax=300, leaderHide=true, surrender=false, renderDisable=true, leaderRenderDisable=true, cpuBoost=true, leaderCpuBoost=true, levelToBeginnerBot=99, timeSpan=30, softEndDefault=true, softEndValue=5, queuerAutoClose=false, queueCloseValue=1, winReboot=true, winShutdown=false, timeoutLogin=5, timeoutLobby=5, timeoutChamp=5, timeoutMastery=5, timeoutLoadGame=5, timeoutInGame=60, timeoutInGameFF=17, timeoutEndOfGame=5, timeUntilCheck=false, timeUntilReboot=01:00, serverCon=false, serverPort=100, openChest=true, openHexTech=true, disChest=true, apiClient=null, mySQLServer=null, mySQLDatabase=null, mySQLUser=null, mySQLPassword=null, mySQLQueueTable=null, mySQLAktivTable=null)
+2018-03-14 17:42:35.615 INFO  [main] InfernalSettingsJDBCClient - Received the Default settings from InfernalBot.
+2018-03-14 17:42:35.873 INFO  [main] InfernalSettingsJDBCClient - Updated the Default settings in InfernalBot.
+2018-03-14 17:42:35.879 INFO  [main] LoLAccountJDBCClient - Received 1 accounts from InfernalBot.
+2018-03-14 17:42:35.889 DEBUG [main] LolAccountRestClient - getByUserIdRegionAndAccount:LolAccount(id=1, account=Pismerito, password=EdGOY4Xt, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_USE, assignedTo=TESTJE5, info=)
+2018-03-14 17:42:35.927 DEBUG [main] LolAccountRestClient - sendInfernalAccounts - existing:[LolAccount(id=1, account=Pismerito, password=EdGOY4Xt, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=READY_FOR_USE, assignedTo=, info=)]
+2018-03-14 17:42:35.927 DEBUG [main] LolAccountRestClient - sendInfernalAccounts - new:[]
+2018-03-14 17:42:35.927 INFO  [main] LolAccountRestClient - Updated accounts on the InfernalBotManager server
+2018-03-14 17:42:36.050 INFO  [main] LoLAccountJDBCClient - Deleted all accounts from InfernalBot.
+2018-03-14 17:42:36.063 INFO  [main] LolAccountRestClient - Received 5 accounts from the InfernalBotManager server.
+2018-03-14 17:42:36.194 INFO  [main] LoLAccountJDBCClient - Inserted 5 accounts into InfernalBot.
+2018-03-14 17:42:36.195 DEBUG [main] LolAccountRestClient - updateLolAccounts (before):[LolAccount(id=2, account=test1, password=test1, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_USE, assignedTo=TESTJE5, info=), LolAccount(id=3, account=test2, password=test2, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_USE, assignedTo=TESTJE5, info=), LolAccount(id=4, account=test3, password=test3, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_USE, assignedTo=TESTJE5, info=), LolAccount(id=5, account=test4, password=test4, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_USE, assignedTo=TESTJE5, info=), LolAccount(id=6, account=test5, password=test5, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_USE, assignedTo=TESTJE5, info=)]
+2018-03-14 17:42:36.236 DEBUG [main] LolAccountRestClient - updateLolAccounts (after):[LolAccount(id=2, account=test1, password=test1, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_USE, assignedTo=TESTJE5, info=), LolAccount(id=3, account=test2, password=test2, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_USE, assignedTo=TESTJE5, info=), LolAccount(id=4, account=test3, password=test3, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_USE, assignedTo=TESTJE5, info=), LolAccount(id=5, account=test4, password=test4, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_USE, assignedTo=TESTJE5, info=), LolAccount(id=6, account=test5, password=test5, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_USE, assignedTo=TESTJE5, info=)]
+2018-03-14 17:42:36.246 INFO  [main] LolAccountRestClient - Received 2 bufferaccounts from the InfernalBotManager server.
+2018-03-14 17:42:36.371 INFO  [main] LoLAccountJDBCClient - Inserted 2 bufferaccounts into InfernalBot.
+2018-03-14 17:42:36.372 DEBUG [main] LolAccountRestClient - updateLolAccounts (before):[LolAccount(id=7, account=test6, password=test6, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_BUFFER, assignedTo=TESTJE5, info=), LolAccount(id=8, account=test7, password=test7, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_BUFFER, assignedTo=TESTJE5, info=)]
+2018-03-14 17:42:36.386 DEBUG [main] LolAccountRestClient - updateLolAccounts (after):[LolAccount(id=7, account=test6, password=test6, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_BUFFER, assignedTo=TESTJE5, info=), LolAccount(id=8, account=test7, password=test7, summoner=, region=EUW, level=0, maxLevel=30, xp=0, be=0, maxBe=30000, priority=9, playTime=24, sleepTime=0, active=true, accountStatus=IN_BUFFER, assignedTo=TESTJE5, info=)]
+2018-03-14 17:42:36.504 INFO  [Thread-1] InfernalBotManagerRunnable - InfernalBot started
+2018-03-14 17:42:36.505 INFO  [Thread-1] InfernalBotManagerRunnable - Starting InfernalBot crash checker in 5 minutes
+2018-03-14 17:42:36.505 INFO  [Thread-2] ClientDataManagerRunnable - Starting ClientData Updater in 5 minutes
+2018-03-14 17:47:36.518 INFO  [Thread-2] ClientDataManagerRunnable - Starting InfernalBot ClientData Updater
+2018-03-14 17:47:36.518 INFO  [Thread-1] InfernalBotManagerRunnable - Starting InfernalBot CrashChecker
+2018-03-14 17:47:36.711 INFO  [Thread-2] ClientDataRestClient - Updated Client data on the server
+2018-03-14 17:48:36.735 INFO  [Thread-2] ClientDataRestClient - Updated Client data on the server
+2018-03-14 17:49:36.757 INFO  [Thread-2] ClientDataRestClient - Updated Client data on the server
+2018-03-14 17:50:36.782 INFO  [Thread-2] ClientDataRestClient - Updated Client data on the server
+2018-03-14 17:51:36.798 INFO  [Thread-2] ClientDataRestClient - Updated Client data on the server

@@ -29,8 +29,8 @@ public class Main {
 		LOGGER.info("Starting InfernalBotManager Client");
 		Runtime.getRuntime().addShutdownHook(new GracefulExitHook());
 		client = buildClient();
-		//program();
-		test();
+		program();
+		//test();
 	}
 	
 	private static void test(){
@@ -43,24 +43,29 @@ public class Main {
 			boolean connected = false;
 			boolean killSwitchOff = true;
 			while(!connected){
-				connected = client.checkConnection();
-				if (connected){
-					if(client.checkKillSwitch()){
-						killSwitchOff = false;
-					} else {
-						if(!client.checkVersion()){
-							upToDate = false;
+				try{
+					connected = client.checkConnection();
+					if (connected){
+						if(client.checkKillSwitch()){
+							killSwitchOff = false;
+						} else {
+							if(!client.checkVersion()){
+								upToDate = false;
+							}
 						}
 					}
-				}
-				if(!connected){
-					LOGGER.info("Retrying in 1 minute..");
-					try {
-						TimeUnit.MINUTES.sleep(1);
-					} catch (InterruptedException e2) {
-						LOGGER.error("Failure during sleep");
-						LOGGER.debug(e2.getMessage());
+					if(!connected){
+						LOGGER.info("Retrying in 1 minute..");
+						try {
+							TimeUnit.MINUTES.sleep(1);
+						} catch (InterruptedException e2) {
+							LOGGER.error("Failure during sleep");
+							LOGGER.debug(e2.getMessage());
+						}
 					}
+				} catch (NullPointerException ex){
+					LOGGER.error("Bad configuration on the server, contact Alco");
+					System.exit(0);
 				}
 			}
 			if (killSwitchOff){
