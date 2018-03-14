@@ -51,7 +51,6 @@ public class ClientDataService {
 		}
 		clientData.setQueuers(queuers);
 		clientData.setStatus("Testing commenced");
-		System.out.println(clientData);
 		clientDataMap.add("0", clientData);
 		return clientDataMap;
 	}

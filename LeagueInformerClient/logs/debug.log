@@ -3833,3 +3833,50 @@
 2018-03-13 17:09:09.986 INFO  [main] ClientDataRestClient - Updated Client data on the server
 2018-03-13 17:09:09.987 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
 2018-03-13 17:09:09.987 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-14 14:58:37.970 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-14 14:58:38.092 INFO  [main] ClientSettings - Loaded settings from settings.ini
+2018-03-14 14:58:39.337 INFO  [main] ClientDataRestClient - Updated Client data on the server
+2018-03-14 14:58:39.337 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-14 14:58:39.337 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-14 15:03:09.145 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-14 15:03:09.165 INFO  [main] ClientSettings - Loaded settings from settings.ini
+2018-03-14 15:03:09.868 INFO  [main] ClientDataRestClient - Updated Client data on the server
+2018-03-14 15:03:09.878 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-14 15:03:09.878 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-14 16:26:19.305 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-14 16:26:19.328 INFO  [main] ClientSettings - Loaded settings from settings.ini
+2018-03-14 16:26:21.040 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-14 16:26:21.040 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-14 16:42:28.865 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-14 16:42:28.887 INFO  [main] ClientSettings - Loaded settings from settings.ini
+2018-03-14 16:42:29.652 INFO  [main] ClientDataRestClient - Updated Client data on the server
+2018-03-14 16:42:29.654 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-14 16:42:29.654 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-14 16:45:10.117 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-14 16:45:10.140 INFO  [main] ClientSettings - Loaded settings from settings.ini
+2018-03-14 16:45:10.906 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-14 16:45:10.907 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-14 16:48:02.233 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-14 16:48:02.256 INFO  [main] ClientSettings - Loaded settings from settings.ini
+2018-03-14 16:48:03.043 INFO  [main] ClientDataRestClient - Updated Client data on the server
+2018-03-14 16:48:03.044 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-14 16:48:03.044 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-14 16:51:01.785 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-14 16:51:01.806 INFO  [main] ClientSettings - Loaded settings from settings.ini
+2018-03-14 16:51:02.871 INFO  [main] ClientDataRestClient - Updated Client data on the server
+2018-03-14 16:51:02.872 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-14 16:51:02.872 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-14 16:52:30.186 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-14 16:52:30.208 INFO  [main] ClientSettings - Loaded settings from settings.ini
+2018-03-14 16:52:31.750 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-14 16:52:31.750 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-14 16:54:03.859 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-14 16:54:03.882 INFO  [main] ClientSettings - Loaded settings from settings.ini
+2018-03-14 16:54:05.263 INFO  [main] ClientDataRestClient - Updated Client data on the server
+2018-03-14 16:54:05.270 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-14 16:54:05.271 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-14 16:54:17.250 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-14 16:54:17.272 INFO  [main] ClientSettings - Loaded settings from settings.ini
+2018-03-14 16:54:18.013 INFO  [main] ClientDataRestClient - Updated Client data on the server
+2018-03-14 16:54:18.014 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-14 16:54:18.014 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
