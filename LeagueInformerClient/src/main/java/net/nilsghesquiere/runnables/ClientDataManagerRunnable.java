@@ -33,7 +33,7 @@ public class ClientDataManagerRunnable implements Runnable {
 		}
 		LOGGER.info("Starting InfernalBot ClientData Updater");
 		while (!stop){
-			client.getClientDataService().sendData();
+			client.getClientDataService().sendData("ClientData Update");
 			if(!client.getClientDataService().hasActiveQueuer()){
 				if(client.getClientSettings().getRebootFromManager()){
 					LOGGER.info("No active queuers found");

@@ -130,11 +130,6 @@ public class InfernalBotManagerClient {
 		} 
 	}
 	
-	//Queuer methods
-	public void queuertest(){
-		clientDataService.sendData();
-	}
-	
 	//Backup database methods
 	public boolean backUpInfernalDatabase(){
 		if(checkDir()){

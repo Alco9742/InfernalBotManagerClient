@@ -30,8 +30,8 @@ public class ClientDataService {
 		this.clientData = clientData;
 	}
 	
-	public void sendData(){
-		ClientDataMap sendmap = prepareData();
+	public void sendData(String status){
+		ClientDataMap sendmap = prepareData(status);
 		restClient.sendClientData(clientSettings.getUserId(), sendmap);
 	}
 	
@@ -43,7 +43,7 @@ public class ClientDataService {
 		return jdbcClient.countQueuers();
 	}
 	
-	private ClientDataMap prepareData(){
+	private ClientDataMap prepareData(String status){
 		ClientDataMap clientDataMap = new ClientDataMap();
 		List<Queuer> queuers = jdbcClient.getQueuers();
 		for (Queuer queuer : queuers){
@@ -51,7 +51,7 @@ public class ClientDataService {
 		}
 		clientData.setDate(LocalDateTime.now());
 		clientData.setQueuers(queuers);
-		clientData.setStatus("Client Online");
+		clientData.setStatus(status);
 		clientDataMap.add("0", clientData);
 		return clientDataMap;
 	}

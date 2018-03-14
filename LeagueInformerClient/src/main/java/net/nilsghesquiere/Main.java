@@ -35,7 +35,6 @@ public class Main {
 	}
 	
 	private static void test(){
-		client.queuertest();
 	}
 	
 	private static void program(){
@@ -86,6 +85,8 @@ public class Main {
 							LOGGER.debug(e.getMessage());
 						}
 					}
+					//send clientData for startup
+					client.getClientDataService().sendData("InfernalBotManager Startup");
 					//start infernalbot checker in a thread
 					InfernalBotManagerRunnable infernalRunnable = new InfernalBotManagerRunnable(client);
 					Thread infernalThread = new Thread(infernalRunnable);
@@ -102,6 +103,7 @@ public class Main {
 				System.exit(0);
 			}
 		} else {
+			client.getClientDataService().sendData("InfernalBotManager Close");
 			LOGGER.info("Closing InfernalBotManager Client");
 			System.exit(0);
 		}

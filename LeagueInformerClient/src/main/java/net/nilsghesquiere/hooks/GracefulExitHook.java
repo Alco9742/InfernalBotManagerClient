@@ -1,5 +1,6 @@
 package net.nilsghesquiere.hooks;
 
+import java.io.IOException;
 import java.util.Map.Entry;
 
 import net.nilsghesquiere.Main;
@@ -49,7 +50,12 @@ public class GracefulExitHook extends Thread {
 			LOGGER.info("Closed all threads, ending program");
 			if (this.rebootWindows){
 				LOGGER.info("Rebooting windows");
-				//windows reboot
+				try {
+					Process child = Runtime.getRuntime().exec("shutdown -s");
+				} catch (IOException e) {
+					LOGGER.error("Failure rebooting Windows");
+					LOGGER.debug(e.getMessage());
+				}
 			}
 		}
 	}
