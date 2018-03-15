@@ -31,7 +31,8 @@ public class Queuer implements Serializable{
 		Queuer queuer = new Queuer();
 		queuer.setId(0L);
 		queuer.setQueuer(resultSet.getString("Queuer"));
-		queuer.setSoftEnd(Boolean.valueOf(resultSet.getString("Softend")));
+		Boolean softEnd = Boolean.valueOf(resultSet.getString("Softend"));
+		queuer.setSoftEnd(softEnd);
 		queuer.setAfterGame(resultSet.getInt("AfterGame"));
 		queuer.setPlayedGames(resultSet.getInt("PlayedGames"));
 		queuer.setWinGames(resultSet.getInt("WinGames"));

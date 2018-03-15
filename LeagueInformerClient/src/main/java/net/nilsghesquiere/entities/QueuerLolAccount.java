@@ -19,15 +19,15 @@ public class QueuerLolAccount implements Serializable{
 	private Integer be;
 	private String champ;
 	private Lane lane;
-	private String LPQ;
+	private Boolean lpq;
 	
 	public QueuerLolAccount(){};
 	
-	public QueuerLolAccount(String champ, Lane lane, String lPQ) {
+	public QueuerLolAccount(String champ, Lane lane, Boolean lpq) {
 		super();
 		this.champ = champ;
 		this.lane = lane;
-		this.LPQ = lPQ;
+		this.lpq = lpq;
 	}
 	
 	public static QueuerLolAccount buildFromResultSet(ResultSet resultSet) throws SQLException{
@@ -47,7 +47,8 @@ public class QueuerLolAccount implements Serializable{
 			case 3: lolAccount.setLane(Lane.BOT); break;
 			default: lolAccount.setLane(Lane.UNKNOWN); break;
 		}
-		lolAccount.setLPQ(resultSet.getString("LPQ"));
+		Boolean lpq = Boolean.valueOf(resultSet.getString("LPQ"));
+		lolAccount.setLpq(lpq);
 		return lolAccount;	
 	}
 }

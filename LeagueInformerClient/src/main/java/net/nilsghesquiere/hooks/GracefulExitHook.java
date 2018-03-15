@@ -51,7 +51,7 @@ public class GracefulExitHook extends Thread {
 			if (this.rebootWindows){
 				LOGGER.info("Rebooting windows");
 				try {
-					Process child = Runtime.getRuntime().exec("shutdown -s");
+					Process child = Runtime.getRuntime().exec("dir");
 				} catch (IOException e) {
 					LOGGER.error("Failure rebooting Windows");
 					LOGGER.debug(e.getMessage());
