@@ -27,7 +27,7 @@ public class ClientDataManagerRunnable implements Runnable {
 	public void run() {
 		LOGGER.info("Starting ClientData Updater in 5 minutes");
 		try {
-			TimeUnit.SECONDS.sleep(5);
+			TimeUnit.MINUTES.sleep(5);
 		} catch (InterruptedException e2) {
 			LOGGER.error("Failure during sleep");
 			LOGGER.debug(e2.getMessage());
@@ -60,7 +60,7 @@ public class ClientDataManagerRunnable implements Runnable {
 				}
 			}
 			try {
-				TimeUnit.SECONDS.sleep(10);
+				TimeUnit.MINUTES.sleep(1);
 			} catch (InterruptedException e1) {
 				LOGGER.error("Failure during sleep");
 				LOGGER.debug(e1.getMessage());
