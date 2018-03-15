@@ -1,6 +1,8 @@
 package net.nilsghesquiere.hooks;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Map.Entry;
 
 import net.nilsghesquiere.Main;
@@ -51,7 +53,16 @@ public class GracefulExitHook extends Thread {
 			if (this.rebootWindows){
 				LOGGER.info("Rebooting windows");
 				try {
-					Process child = Runtime.getRuntime().exec("dir");
+					ProcessBuilder builder = new ProcessBuilder( "cmd.exe", "/c", "shutdown -r -t 0");
+					builder.redirectErrorStream(true);
+					Process p = builder.start();
+					BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+					String line;
+					while (true) {
+						line = r.readLine();
+						if (line == null) { break; }
+						LOGGER.debug(line);
+					}
 				} catch (IOException e) {
 					LOGGER.error("Failure rebooting Windows");
 					LOGGER.debug(e.getMessage());

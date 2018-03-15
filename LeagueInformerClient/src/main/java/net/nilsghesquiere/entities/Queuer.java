@@ -13,6 +13,7 @@ public class Queuer implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private Long id;
 	private String queuer;
+	//This is backwards: False is softEnd enabled
 	private Boolean softEnd;
 	private Integer afterGame;
 	//private ?? playTime;

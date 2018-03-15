@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.concurrent.TimeUnit;
 
 import net.nilsghesquiere.InfernalBotManagerClient;
+import net.nilsghesquiere.Main;
 import net.nilsghesquiere.entities.ClientSettings;
 
 import org.slf4j.Logger;
@@ -38,11 +39,20 @@ public class ClientDataManagerRunnable implements Runnable {
 				if(client.getClientSettings().getRebootFromManager()){
 					LOGGER.info("No active queuers found");
 					rebootFromClientDataManagerClient = true;
-					System.exit(0);
+					Main.exitWaitRunnable.exit();
 				} else {
 					LOGGER.info("No active queuers found, closing InfernalBot process");
 					try {
-						Runtime.getRuntime().exec("taskkill /F /IM " + client.getClientSettings().getInfernalProgramName());
+						ProcessBuilder builder = new ProcessBuilder( "cmd.exe", "/c", "taskkill /F /IM " + client.getClientSettings().getInfernalProgramName());
+						builder.redirectErrorStream(true);
+						Process p = builder.start();
+						BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+						String line;
+						while (true) {
+							line = r.readLine();
+							if (line == null) { break; }
+							LOGGER.debug(line);
+						}
 					} catch (IOException e){
 						LOGGER.error("Failure trying to kill InfernalBot Process");
 						LOGGER.debug(e.getMessage());
@@ -50,13 +60,13 @@ public class ClientDataManagerRunnable implements Runnable {
 				}
 			}
 			try {
-				TimeUnit.MINUTES.sleep(1);
+				TimeUnit.SECONDS.sleep(10);
 			} catch (InterruptedException e1) {
 				LOGGER.error("Failure during sleep");
 				LOGGER.debug(e1.getMessage());
 			}
-			LOGGER.info(Boolean.toString(stop));
 		}
+		client.getClientDataService().sendData("ClientDataUpdater Close");
 		LOGGER.info("Successfully closed ClientData Updater thread");
 	}
 

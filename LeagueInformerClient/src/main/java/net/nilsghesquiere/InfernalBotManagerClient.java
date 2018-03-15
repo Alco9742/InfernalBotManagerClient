@@ -1,6 +1,8 @@
 package net.nilsghesquiere;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -177,20 +179,26 @@ public class InfernalBotManagerClient {
 				//1: current program path 
 				//2: backup program path
 				//3: new program path
+				//4: ini path
 				String managerMap = System.getProperty("user.dir");
 				String batlocation = managerMap + "\\backup\\updater.bat";
 				String param1 = managerMap + "\\" + PROGRAM_NAME;
 				String param2 = managerMap + "\\backup\\" + PROGRAM_NAME + ".bak";
 				String param3 = managerMap + "\\backup\\" + PROGRAM_NAME;
-				String commandString = "\"" + batlocation + "\" \"" +param1 + "\" \"" + param2 + "\" \"" + param3 + "\"";
+				String param4 = Main.iniLocation;
+				String commandString = "cd " + managerMap +" && \"" + batlocation + "\" \"" +param1 + "\" \"" + param2 + "\" \"" + param3 + "\"" + "\"" + param4 + "\"";
 				try {
-					Process proc = Runtime.getRuntime().exec(new String[] {"cmd.exe","/c start",commandString});
-				//	 int exitVal = proc.exitValue();
-					 try {
-						 System.out.println(proc.waitFor());
-					 } catch (InterruptedException e){
-						 LOGGER.error("Failure, updater got interrupted");
-					 }
+					LOGGER.debug(commandString);
+					ProcessBuilder builder = new ProcessBuilder( "cmd.exe", "start /c", commandString);
+					builder.redirectErrorStream(true);
+					Process p = builder.start();
+					BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+					String line;
+					while (true) {
+						line = r.readLine();
+						if (line == null) { break; }
+						LOGGER.info(line);
+					}
 				} catch (IOException e) {
 					LOGGER.error("Failed to start the updater");
 					LOGGER.debug(e.getMessage());

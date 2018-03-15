@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import net.nilsghesquiere.entities.ClientSettings;
 import net.nilsghesquiere.hooks.GracefulExitHook;
+import net.nilsghesquiere.runnables.ExitWaitRunnable;
 import net.nilsghesquiere.runnables.InfernalBotManagerRunnable;
 import net.nilsghesquiere.util.ProgramConstants;
 
@@ -23,13 +24,21 @@ public class Main {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 	private static InfernalBotManagerClient client;
 	public static Map<Thread, Runnable> threadMap = new HashMap<>();
+	public static ExitWaitRunnable exitWaitRunnable;
+	public static Thread exitWaitThread;
+	public static String iniLocation;
 	
 	public static void main(String[] args){
 		System.out.println("---    InfernalBotManager (BETA) by Alco    ---");
 		System.out.println("---PRESS CTRL + C TO SAFELY CLOSE THE CLIENT---");
 		LOGGER.info("Starting InfernalBotManager Client");
 		Runtime.getRuntime().addShutdownHook(new GracefulExitHook());
-		client = buildClient();
+		try{
+			iniLocation = args[0];
+		} catch (ArrayIndexOutOfBoundsException e){
+			iniLocation = System.getProperty("user.dir") + "\\" + ProgramConstants.INI_NAME; 
+		}
+		client = buildClient(iniLocation);
 		program();
 		//test();
 	}
@@ -87,6 +96,11 @@ public class Main {
 					}
 					//send clientData for startup
 					client.getClientDataService().sendData("InfernalBotManager Startup");
+					//start the ExitWaiter
+					exitWaitRunnable = new ExitWaitRunnable();
+					exitWaitThread = new Thread(exitWaitRunnable);
+					exitWaitThread.setDaemon(false); 
+					exitWaitThread.start();
 					//start infernalbot checker in a thread
 					InfernalBotManagerRunnable infernalRunnable = new InfernalBotManagerRunnable(client);
 					Thread infernalThread = new Thread(infernalRunnable);
@@ -103,13 +117,11 @@ public class Main {
 				System.exit(0);
 			}
 		} else {
-			client.getClientDataService().sendData("InfernalBotManager Close");
 			LOGGER.info("Closing InfernalBotManager Client");
 			System.exit(0);
 		}
 	}
-	private static InfernalBotManagerClient buildClient(){
-		String iniFile = System.getProperty("user.dir") + "\\" + ProgramConstants.INI_NAME;
+	private static InfernalBotManagerClient buildClient(String iniFile){
 		Path iniFilePath = Paths.get(iniFile);
 		InfernalBotManagerClient client = null;
 		if(Files.exists(iniFilePath)){

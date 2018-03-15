@@ -28,9 +28,9 @@ public class InfernalBotManagerRunnable implements Runnable {
 	@Override
 	public void run() {
 		runInfernalbot();
-		LOGGER.info("Starting InfernalBot crash checker in 5 minutes");
+		LOGGER.info("Starting InfernalBot Crash Checker in 5 minutes");
 		try {
-			TimeUnit.MINUTES.sleep(5);
+			TimeUnit.SECONDS.sleep(5);
 		} catch (InterruptedException e2) {
 			LOGGER.error("Failure during sleep");
 			LOGGER.debug(e2.getMessage());
@@ -65,7 +65,7 @@ public class InfernalBotManagerRunnable implements Runnable {
 					}
 				}
 				try {
-					TimeUnit.MINUTES.sleep(1);
+					TimeUnit.SECONDS.sleep(10);
 				} catch (InterruptedException e1) {
 					LOGGER.error("Failure during sleep");
 					LOGGER.debug(e1.getMessage());
