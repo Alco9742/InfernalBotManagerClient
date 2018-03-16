@@ -5500,3 +5500,240 @@
 2018-03-15 20:50:53.345 INFO  [main] Main - Closing InfernalBotManager Client
 2018-03-15 20:50:53.345 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
 2018-03-15 20:50:53.345 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-16 10:48:37.485 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-16 10:48:37.657 INFO  [main] ClientSettings - Loaded settings from settings.ini
+2018-03-16 10:48:38.050 INFO  [main] Main - Failure trying to disable Windows error reporting UI
+2018-03-16 10:48:38.050 DEBUG [main] Main - ERROR: Error accessing the registry.
+2018-03-16 10:48:38.159 ERROR [main] GlobalVariableService - Client is outdated (v0.7.1)
+2018-03-16 10:48:38.159 INFO  [main] GlobalVariableService - Updating to new version (v0.7.2)
+2018-03-16 10:48:38.174 INFO  [main] ProgramUtil - Update download complete
+2018-03-16 10:48:38.206 INFO  [main] InfernalBotManagerClient - Starting updater
+2018-03-16 10:48:38.237 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-16 10:48:38.237 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-16 10:48:38.237 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-16 10:50:10.272 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-16 10:50:10.303 INFO  [main] ClientSettings - Loaded settings from settings.ini
+2018-03-16 10:50:10.693 INFO  [main] Main - Failure trying to disable Windows error reporting UI
+2018-03-16 10:50:10.693 DEBUG [main] Main - ERROR: Error accessing the registry.
+2018-03-16 10:50:10.802 ERROR [main] GlobalVariableService - Client is outdated (v0.7.1)
+2018-03-16 10:50:10.802 INFO  [main] GlobalVariableService - Updating to new version (v0.7.2)
+2018-03-16 10:50:10.818 INFO  [main] ProgramUtil - Update download complete
+2018-03-16 10:50:10.833 INFO  [main] InfernalBotManagerClient - Starting updater
+2018-03-16 10:50:10.833 INFO  [main] InfernalBotManagerClient - C:\Users\Nghesqui\git\LeagueInformerClient\LeagueInformerClient\InfernalBotManagerUpdater.jar C:\Users\Nghesqui\git\LeagueInformerClient\LeagueInformerClient http://localhost:8080/admin/files/
+2018-03-16 10:50:10.849 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-16 10:50:10.849 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-16 10:50:10.849 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-16 10:53:46.142 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-16 10:53:46.158 INFO  [main] ClientSettings - Loaded settings from settings.ini
+2018-03-16 10:53:46.595 INFO  [main] Main - Failure trying to disable Windows error reporting UI
+2018-03-16 10:53:46.595 DEBUG [main] Main - ERROR: Error accessing the registry.
+2018-03-16 10:53:46.688 ERROR [main] GlobalVariableService - Client is outdated (v0.7.1)
+2018-03-16 10:53:46.688 INFO  [main] GlobalVariableService - Updating to new version (v0.7.2)
+2018-03-16 10:53:46.704 INFO  [main] ProgramUtil - Update download complete
+2018-03-16 10:53:46.720 INFO  [main] InfernalBotManagerClient - Starting updater
+2018-03-16 10:53:46.720 INFO  [main] InfernalBotManagerClient - C:\Users\Nghesqui\git\LeagueInformerClient\LeagueInformerClient\InfernalBotManagerUpdater.jar C:\Users\Nghesqui\git\LeagueInformerClient\LeagueInformerClient http://localhost:8080/admin/files/
+2018-03-16 10:53:46.925 DEBUG [main] InfernalBotManagerClient - 10:53:46,832 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback-test.xml]
+2018-03-16 10:53:46.925 DEBUG [main] InfernalBotManagerClient - 10:53:46,832 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback.groovy]
+2018-03-16 10:53:46.925 DEBUG [main] InfernalBotManagerClient - 10:53:46,832 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback.xml] at [jar:file:/C:/Users/Nghesqui/git/LeagueInformerClient/LeagueInformerClient/InfernalBotManagerUpdater.jar!/logback.xml]
+2018-03-16 10:53:46.925 DEBUG [main] InfernalBotManagerClient - 10:53:46,847 |-INFO in ch.qos.logback.core.joran.spi.ConfigurationWatchList@2eafffde - URL [jar:file:/C:/Users/Nghesqui/git/LeagueInformerClient/LeagueInformerClient/InfernalBotManagerUpdater.jar!/logback.xml] is not of type file
+2018-03-16 10:53:46.925 DEBUG [main] InfernalBotManagerClient - 10:53:46,879 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - debug attribute not set
+2018-03-16 10:53:46.925 DEBUG [main] InfernalBotManagerClient - 10:53:46,879 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+2018-03-16 10:53:46.925 DEBUG [main] InfernalBotManagerClient - 10:53:46,879 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [STDOUT]
+2018-03-16 10:53:46.925 DEBUG [main] InfernalBotManagerClient - 10:53:46,894 |-ERROR in ch.qos.logback.core.joran.spi.Interpreter@5:9 - no applicable action for [file], current ElementPath  is [[configuration][appender][file]]
+2018-03-16 10:53:46.925 DEBUG [main] InfernalBotManagerClient - 10:53:46,894 |-INFO in ch.qos.logback.core.joran.action.NestedComplexPropertyIA - Assuming default type [ch.qos.logback.classic.encoder.PatternLayoutEncoder] for [encoder] property
+2018-03-16 10:53:46.925 DEBUG [main] InfernalBotManagerClient - 10:53:46,925 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.FileAppender]
+2018-03-16 10:53:46.925 DEBUG [main] InfernalBotManagerClient - 10:53:46,925 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [FILE]
+2018-03-16 10:53:46.925 DEBUG [main] InfernalBotManagerClient - 10:53:46,925 |-INFO in ch.qos.logback.core.joran.action.NestedComplexPropertyIA - Assuming default type [ch.qos.logback.classic.encoder.PatternLayoutEncoder] for [encoder] property
+2018-03-16 10:53:46.925 DEBUG [main] InfernalBotManagerClient - 10:53:46,925 |-INFO in ch.qos.logback.core.FileAppender[FILE] - File property is set to [logs/updater/debug.log]
+2018-03-16 10:53:46.925 DEBUG [main] InfernalBotManagerClient - 10:53:46,925 |-INFO in ch.qos.logback.classic.joran.action.RootLoggerAction - Setting level of ROOT logger to ERROR
+2018-03-16 10:53:46.925 DEBUG [main] InfernalBotManagerClient - 10:53:46,925 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[ROOT]
+2018-03-16 10:53:46.925 DEBUG [main] InfernalBotManagerClient - 10:53:46,925 |-INFO in ch.qos.logback.classic.joran.action.RootLoggerAction - Setting level of ROOT logger to DEBUG
+2018-03-16 10:53:46.925 DEBUG [main] InfernalBotManagerClient - 10:53:46,925 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [FILE] to Logger[ROOT]
+2018-03-16 10:53:46.925 DEBUG [main] InfernalBotManagerClient - 10:53:46,925 |-INFO in ch.qos.logback.classic.joran.action.LevelAction - org.springframework.web level set to INFO
+2018-03-16 10:53:46.925 DEBUG [main] InfernalBotManagerClient - 10:53:46,925 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [FILE] to Logger[org.springframework.web]
+2018-03-16 10:53:46.925 DEBUG [main] InfernalBotManagerClient - 10:53:46,925 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[org.springframework.web]
+2018-03-16 10:53:46.925 DEBUG [main] InfernalBotManagerClient - 10:53:46,925 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - End of configuration.
+2018-03-16 10:53:46.925 DEBUG [main] InfernalBotManagerClient - 10:53:46,925 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@59690aa4 - Registering current configuration as safe fallback point
+2018-03-16 10:53:46.925 DEBUG [main] InfernalBotManagerClient - 
+2018-03-16 10:53:47.035 DEBUG [main] InfernalBotManagerClient - 2018-03-16 10:53:47.035 INFO : InfernalBotManagerClient.jar download complete
+2018-03-16 10:53:47.035 DEBUG [main] InfernalBotManagerClient - 2018-03-16 10:53:47.035 ERROR: Old client not found
+2018-03-16 10:53:47.035 DEBUG [main] InfernalBotManagerClient - 2018-03-16 10:53:47.035 ERROR: New client not found
+2018-03-16 10:53:47.035 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-16 10:53:47.035 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-16 10:53:47.035 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-16 10:54:38.456 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-16 10:54:38.487 INFO  [main] ClientSettings - Loaded settings from settings.ini
+2018-03-16 10:54:38.877 INFO  [main] Main - Failure trying to disable Windows error reporting UI
+2018-03-16 10:54:38.877 DEBUG [main] Main - ERROR: Error accessing the registry.
+2018-03-16 10:54:38.987 ERROR [main] GlobalVariableService - Client is outdated (v0.7.1)
+2018-03-16 10:54:38.987 INFO  [main] GlobalVariableService - Updating to new version (v0.7.2)
+2018-03-16 10:54:39.002 INFO  [main] ProgramUtil - Update download complete
+2018-03-16 10:54:39.018 INFO  [main] InfernalBotManagerClient - Starting updater
+2018-03-16 10:54:39.018 INFO  [main] InfernalBotManagerClient - "C:\Users\Nghesqui\git\LeagueInformerClient\LeagueInformerClient\InfernalBotManagerUpdater.jar" "C:\Users\Nghesqui\git\LeagueInformerClient\LeagueInformerClient" "http://localhost:8080/admin/files/"
+2018-03-16 10:54:39.224 DEBUG [main] InfernalBotManagerClient - 10:54:39,130 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback-test.xml]
+2018-03-16 10:54:39.224 DEBUG [main] InfernalBotManagerClient - 10:54:39,130 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback.groovy]
+2018-03-16 10:54:39.224 DEBUG [main] InfernalBotManagerClient - 10:54:39,130 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback.xml] at [jar:file:/C:/Users/Nghesqui/git/LeagueInformerClient/LeagueInformerClient/InfernalBotManagerUpdater.jar!/logback.xml]
+2018-03-16 10:54:39.224 DEBUG [main] InfernalBotManagerClient - 10:54:39,146 |-INFO in ch.qos.logback.core.joran.spi.ConfigurationWatchList@2eafffde - URL [jar:file:/C:/Users/Nghesqui/git/LeagueInformerClient/LeagueInformerClient/InfernalBotManagerUpdater.jar!/logback.xml] is not of type file
+2018-03-16 10:54:39.224 DEBUG [main] InfernalBotManagerClient - 10:54:39,177 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - debug attribute not set
+2018-03-16 10:54:39.224 DEBUG [main] InfernalBotManagerClient - 10:54:39,177 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+2018-03-16 10:54:39.224 DEBUG [main] InfernalBotManagerClient - 10:54:39,177 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [STDOUT]
+2018-03-16 10:54:39.224 DEBUG [main] InfernalBotManagerClient - 10:54:39,177 |-ERROR in ch.qos.logback.core.joran.spi.Interpreter@5:9 - no applicable action for [file], current ElementPath  is [[configuration][appender][file]]
+2018-03-16 10:54:39.224 DEBUG [main] InfernalBotManagerClient - 10:54:39,192 |-INFO in ch.qos.logback.core.joran.action.NestedComplexPropertyIA - Assuming default type [ch.qos.logback.classic.encoder.PatternLayoutEncoder] for [encoder] property
+2018-03-16 10:54:39.224 DEBUG [main] InfernalBotManagerClient - 10:54:39,208 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.FileAppender]
+2018-03-16 10:54:39.224 DEBUG [main] InfernalBotManagerClient - 10:54:39,224 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [FILE]
+2018-03-16 10:54:39.224 DEBUG [main] InfernalBotManagerClient - 10:54:39,224 |-INFO in ch.qos.logback.core.joran.action.NestedComplexPropertyIA - Assuming default type [ch.qos.logback.classic.encoder.PatternLayoutEncoder] for [encoder] property
+2018-03-16 10:54:39.224 DEBUG [main] InfernalBotManagerClient - 10:54:39,224 |-INFO in ch.qos.logback.core.FileAppender[FILE] - File property is set to [logs/updater/debug.log]
+2018-03-16 10:54:39.224 DEBUG [main] InfernalBotManagerClient - 10:54:39,224 |-INFO in ch.qos.logback.classic.joran.action.RootLoggerAction - Setting level of ROOT logger to ERROR
+2018-03-16 10:54:39.224 DEBUG [main] InfernalBotManagerClient - 10:54:39,224 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[ROOT]
+2018-03-16 10:54:39.224 DEBUG [main] InfernalBotManagerClient - 10:54:39,224 |-INFO in ch.qos.logback.classic.joran.action.RootLoggerAction - Setting level of ROOT logger to DEBUG
+2018-03-16 10:54:39.224 DEBUG [main] InfernalBotManagerClient - 10:54:39,224 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [FILE] to Logger[ROOT]
+2018-03-16 10:54:39.224 DEBUG [main] InfernalBotManagerClient - 10:54:39,224 |-INFO in ch.qos.logback.classic.joran.action.LevelAction - org.springframework.web level set to INFO
+2018-03-16 10:54:39.224 DEBUG [main] InfernalBotManagerClient - 10:54:39,224 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [FILE] to Logger[org.springframework.web]
+2018-03-16 10:54:39.224 DEBUG [main] InfernalBotManagerClient - 10:54:39,224 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to Logger[org.springframework.web]
+2018-03-16 10:54:39.224 DEBUG [main] InfernalBotManagerClient - 10:54:39,224 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - End of configuration.
+2018-03-16 10:54:39.224 DEBUG [main] InfernalBotManagerClient - 10:54:39,224 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@59690aa4 - Registering current configuration as safe fallback point
+2018-03-16 10:54:39.224 DEBUG [main] InfernalBotManagerClient - 
+2018-03-16 10:54:39.333 DEBUG [main] InfernalBotManagerClient - 2018-03-16 10:54:39.333 INFO : InfernalBotManagerClient.jar download complete
+2018-03-16 10:54:39.333 DEBUG [main] InfernalBotManagerClient - 2018-03-16 10:54:39.333 ERROR: Old client not found
+2018-03-16 10:54:39.333 DEBUG [main] InfernalBotManagerClient - 2018-03-16 10:54:39.333 ERROR: New client not found
+2018-03-16 10:54:39.333 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-16 10:54:39.333 INFO  [Thread-0] GracefulShutdownHook - Shutting down all threads
+2018-03-16 10:54:39.333 INFO  [Thread-0] GracefulShutdownHook - Closed all threads, ending program
+2018-03-16 16:04:12.716 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-16 16:04:12.756 INFO  [main] ClientSettings - Loaded settings from settings.ini
+2018-03-16 16:04:13.346 INFO  [main] Main - Failure trying to disable Windows error reporting UI
+2018-03-16 16:04:13.346 DEBUG [main] Main - ERROR: Error accessing the registry.
+2018-03-16 16:04:14.498 ERROR [main] InfernalBotManagerClient - Failure connecting to the InfernalBotManager server.
+2018-03-16 16:04:14.498 DEBUG [main] InfernalBotManagerClient - I/O error on GET request for "http://localhost:8080/api/admin/globalvars/name/connection": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2018-03-16 16:04:14.498 INFO  [main] Main - Retrying in 1 minute..
+2018-03-16 16:04:47.298 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-16 16:04:47.318 INFO  [main] ClientSettings - Loaded settings from settings.ini
+2018-03-16 16:04:47.680 INFO  [main] Main - Failure trying to disable Windows error reporting UI
+2018-03-16 16:04:47.680 DEBUG [main] Main - ERROR: Error accessing the registry.
+2018-03-16 16:04:48.856 ERROR [main] InfernalBotManagerClient - Failure connecting to the InfernalBotManager server.
+2018-03-16 16:04:48.856 DEBUG [main] InfernalBotManagerClient - I/O error on GET request for "http://localhost:8080/api/admin/globalvars/name/connection": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2018-03-16 16:04:48.856 INFO  [main] Main - Retrying in 1 minute..
+2018-03-16 16:04:53.591 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-16 16:04:53.611 INFO  [main] ClientSettings - Loaded settings from settings.ini
+2018-03-16 16:04:54.001 INFO  [main] Main - Failure trying to disable Windows error reporting UI
+2018-03-16 16:04:54.001 DEBUG [main] Main - ERROR: Error accessing the registry.
+2018-03-16 16:04:55.114 ERROR [main] InfernalBotManagerClient - Failure connecting to the InfernalBotManager server.
+2018-03-16 16:04:55.114 DEBUG [main] InfernalBotManagerClient - I/O error on GET request for "http://localhost:8080/api/admin/globalvars/name/connection": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2018-03-16 16:04:55.114 INFO  [main] Main - Retrying in 1 minute..
+2018-03-16 16:05:07.893 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-16 16:05:07.923 INFO  [main] ClientSettings - Loaded settings from settings.ini
+2018-03-16 16:05:08.303 INFO  [main] Main - Failure trying to disable Windows error reporting UI
+2018-03-16 16:05:08.303 DEBUG [main] Main - ERROR: Error accessing the registry.
+2018-03-16 16:05:09.404 ERROR [main] InfernalBotManagerClient - Failure connecting to the InfernalBotManager server.
+2018-03-16 16:05:09.404 DEBUG [main] InfernalBotManagerClient - I/O error on GET request for "http://localhost:8080/api/admin/globalvars/name/connection": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2018-03-16 16:05:09.404 INFO  [main] Main - Retrying in 1 minute..
+2018-03-16 16:05:15.502 ERROR [main] InfernalBotManagerClient - Failure connecting to the InfernalBotManager server.
+2018-03-16 16:05:15.502 DEBUG [main] InfernalBotManagerClient - I/O error on GET request for "http://localhost:8080/api/admin/globalvars/name/connection": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2018-03-16 16:05:15.502 INFO  [main] Main - Retrying in 1 minute..
+2018-03-16 16:05:47.863 INFO  [main] Main - Starting InfernalBotManager Client
+2018-03-16 16:05:47.902 INFO  [main] ClientSettings - Loaded settings from settings.ini
+2018-03-16 16:05:48.280 INFO  [main] Main - Failure trying to disable Windows error reporting UI
+2018-03-16 16:05:48.280 DEBUG [main] Main - ERROR: Error accessing the registry.
+2018-03-16 16:05:49.390 ERROR [main] InfernalBotManagerClient - Failure connecting to the InfernalBotManager server.
+2018-03-16 16:05:49.390 DEBUG [main] InfernalBotManagerClient - I/O error on GET request for "http://localhost:8080/api/admin/globalvars/name/connection": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2018-03-16 16:05:49.390 INFO  [main] Main - Retrying in 1 minute..
+2018-03-16 16:05:49.871 ERROR [main] InfernalBotManagerClient - Failure connecting to the InfernalBotManager server.
+2018-03-16 16:05:49.871 DEBUG [main] InfernalBotManagerClient - I/O error on GET request for "http://localhost:8080/api/admin/globalvars/name/connection": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2018-03-16 16:05:49.871 INFO  [main] Main - Retrying in 1 minute..
+2018-03-16 16:05:56.116 ERROR [main] InfernalBotManagerClient - Failure connecting to the InfernalBotManager server.
+2018-03-16 16:05:56.116 DEBUG [main] InfernalBotManagerClient - I/O error on GET request for "http://localhost:8080/api/admin/globalvars/name/connection": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2018-03-16 16:05:56.116 INFO  [main] Main - Retrying in 1 minute..
+2018-03-16 16:06:10.425 ERROR [main] InfernalBotManagerClient - Failure connecting to the InfernalBotManager server.
+2018-03-16 16:06:10.425 DEBUG [main] InfernalBotManagerClient - I/O error on GET request for "http://localhost:8080/api/admin/globalvars/name/connection": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2018-03-16 16:06:10.425 INFO  [main] Main - Retrying in 1 minute..
+2018-03-16 16:06:16.509 ERROR [main] InfernalBotManagerClient - Failure connecting to the InfernalBotManager server.
+2018-03-16 16:06:16.509 DEBUG [main] InfernalBotManagerClient - I/O error on GET request for "http://localhost:8080/api/admin/globalvars/name/connection": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2018-03-16 16:06:16.509 INFO  [main] Main - Retrying in 1 minute..
+2018-03-16 16:06:50.398 ERROR [main] InfernalBotManagerClient - Failure connecting to the InfernalBotManager server.
+2018-03-16 16:06:50.398 DEBUG [main] InfernalBotManagerClient - I/O error on GET request for "http://localhost:8080/api/admin/globalvars/name/connection": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2018-03-16 16:06:50.398 INFO  [main] Main - Retrying in 1 minute..
+2018-03-16 16:06:50.878 ERROR [main] InfernalBotManagerClient - Failure connecting to the InfernalBotManager server.
+2018-03-16 16:06:50.878 DEBUG [main] InfernalBotManagerClient - I/O error on GET request for "http://localhost:8080/api/admin/globalvars/name/connection": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2018-03-16 16:06:50.878 INFO  [main] Main - Retrying in 1 minute..
+2018-03-16 16:06:57.116 ERROR [main] InfernalBotManagerClient - Failure connecting to the InfernalBotManager server.
+2018-03-16 16:06:57.116 DEBUG [main] InfernalBotManagerClient - I/O error on GET request for "http://localhost:8080/api/admin/globalvars/name/connection": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2018-03-16 16:06:57.116 INFO  [main] Main - Retrying in 1 minute..
+2018-03-16 16:07:11.431 ERROR [main] InfernalBotManagerClient - Failure connecting to the InfernalBotManager server.
+2018-03-16 16:07:11.431 DEBUG [main] InfernalBotManagerClient - I/O error on GET request for "http://localhost:8080/api/admin/globalvars/name/connection": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2018-03-16 16:07:11.431 INFO  [main] Main - Retrying in 1 minute..
+2018-03-16 16:07:17.509 ERROR [main] InfernalBotManagerClient - Failure connecting to the InfernalBotManager server.
+2018-03-16 16:07:17.509 DEBUG [main] InfernalBotManagerClient - I/O error on GET request for "http://localhost:8080/api/admin/globalvars/name/connection": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2018-03-16 16:07:17.509 INFO  [main] Main - Retrying in 1 minute..
+2018-03-16 16:07:51.405 ERROR [main] InfernalBotManagerClient - Failure connecting to the InfernalBotManager server.
+2018-03-16 16:07:51.405 DEBUG [main] InfernalBotManagerClient - I/O error on GET request for "http://localhost:8080/api/admin/globalvars/name/connection": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2018-03-16 16:07:51.405 INFO  [main] Main - Retrying in 1 minute..
+2018-03-16 16:07:51.886 ERROR [main] InfernalBotManagerClient - Failure connecting to the InfernalBotManager server.
+2018-03-16 16:07:51.886 DEBUG [main] InfernalBotManagerClient - I/O error on GET request for "http://localhost:8080/api/admin/globalvars/name/connection": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2018-03-16 16:07:51.886 INFO  [main] Main - Retrying in 1 minute..
+2018-03-16 16:07:58.119 ERROR [main] InfernalBotManagerClient - Failure connecting to the InfernalBotManager server.
+2018-03-16 16:07:58.119 DEBUG [main] InfernalBotManagerClient - I/O error on GET request for "http://localhost:8080/api/admin/globalvars/name/connection": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2018-03-16 16:07:58.119 INFO  [main] Main - Retrying in 1 minute..
+2018-03-16 16:08:12.446 ERROR [main] InfernalBotManagerClient - Failure connecting to the InfernalBotManager server.
+2018-03-16 16:08:12.446 DEBUG [main] InfernalBotManagerClient - I/O error on GET request for "http://localhost:8080/api/admin/globalvars/name/connection": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2018-03-16 16:08:12.446 INFO  [main] Main - Retrying in 1 minute..
+2018-03-16 16:08:18.508 ERROR [main] InfernalBotManagerClient - Failure connecting to the InfernalBotManager server.
+2018-03-16 16:08:18.508 DEBUG [main] InfernalBotManagerClient - I/O error on GET request for "http://localhost:8080/api/admin/globalvars/name/connection": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2018-03-16 16:08:18.508 INFO  [main] Main - Retrying in 1 minute..
+2018-03-16 16:08:52.414 ERROR [main] InfernalBotManagerClient - Failure connecting to the InfernalBotManager server.
+2018-03-16 16:08:52.414 DEBUG [main] InfernalBotManagerClient - I/O error on GET request for "http://localhost:8080/api/admin/globalvars/name/connection": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2018-03-16 16:08:52.414 INFO  [main] Main - Retrying in 1 minute..
+2018-03-16 16:08:52.894 ERROR [main] InfernalBotManagerClient - Failure connecting to the InfernalBotManager server.
+2018-03-16 16:08:52.894 DEBUG [main] InfernalBotManagerClient - I/O error on GET request for "http://localhost:8080/api/admin/globalvars/name/connection": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2018-03-16 16:08:52.894 INFO  [main] Main - Retrying in 1 minute..
+2018-03-16 16:08:59.104 ERROR [main] InfernalBotManagerClient - Failure connecting to the InfernalBotManager server.
+2018-03-16 16:08:59.104 DEBUG [main] InfernalBotManagerClient - I/O error on GET request for "http://localhost:8080/api/admin/globalvars/name/connection": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2018-03-16 16:08:59.104 INFO  [main] Main - Retrying in 1 minute..
+2018-03-16 16:09:13.425 ERROR [main] InfernalBotManagerClient - Failure connecting to the InfernalBotManager server.
+2018-03-16 16:09:13.425 DEBUG [main] InfernalBotManagerClient - I/O error on GET request for "http://localhost:8080/api/admin/globalvars/name/connection": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2018-03-16 16:09:13.425 INFO  [main] Main - Retrying in 1 minute..
+2018-03-16 16:09:19.498 ERROR [main] InfernalBotManagerClient - Failure connecting to the InfernalBotManager server.
+2018-03-16 16:09:19.498 DEBUG [main] InfernalBotManagerClient - I/O error on GET request for "http://localhost:8080/api/admin/globalvars/name/connection": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2018-03-16 16:09:19.498 INFO  [main] Main - Retrying in 1 minute..
+2018-03-16 16:09:52.849 ERROR [main] GlobalVariableService - Client is outdated (v0.7.1)
+2018-03-16 16:09:52.849 INFO  [main] GlobalVariableService - Updating to new version (v0.7.2)
+2018-03-16 16:09:52.949 ERROR [main] GlobalVariableService - Client is outdated (v0.7.1)
+2018-03-16 16:09:52.949 INFO  [main] GlobalVariableService - Updating to new version (v0.7.2)
+2018-03-16 16:09:53.279 INFO  [main] ProgramUtil - Update download complete
+2018-03-16 16:09:53.279 INFO  [main] ProgramUtil - Update download complete
+2018-03-16 16:09:53.289 INFO  [main] InfernalBotManagerClient - Starting updater
+2018-03-16 16:09:53.289 ERROR [main] InfernalBotManagerClient - Failure moving the updater
+2018-03-16 16:09:53.289 DEBUG [main] InfernalBotManagerClient - C:\Users\Nghesqui\git\LeagueInformerClient\LeagueInformerClient\downloads\InfernalBotManagerUpdater.jar -> C:\Users\Nghesqui\git\LeagueInformerClient\LeagueInformerClient\InfernalBotManagerUpdater.jar: The process cannot access the file because it is being used by another process.
+
+2018-03-16 16:09:53.289 INFO  [main] InfernalBotManagerClient - Starting updater
+2018-03-16 16:09:53.289 INFO  [main] InfernalBotManagerClient - "C:\Users\Nghesqui\git\LeagueInformerClient\LeagueInformerClient\InfernalBotManagerUpdater.jar" "C:\Users\Nghesqui\git\LeagueInformerClient\LeagueInformerClient" "http://localhost:8080/admin/files/"
+2018-03-16 16:09:53.289 INFO  [main] InfernalBotManagerClient - "C:\Users\Nghesqui\git\LeagueInformerClient\LeagueInformerClient\InfernalBotManagerUpdater.jar" "C:\Users\Nghesqui\git\LeagueInformerClient\LeagueInformerClient" "http://localhost:8080/admin/files/"
+2018-03-16 16:09:53.289 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-16 16:09:53.289 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-16 16:09:53.289 INFO  [Thread-2] GracefulShutdownHook - Shutting down all threads
+2018-03-16 16:09:53.289 INFO  [Thread-2] GracefulShutdownHook - Closed all threads, ending program
+2018-03-16 16:09:53.289 INFO  [Thread-2] GracefulShutdownHook - Shutting down all threads
+2018-03-16 16:09:53.299 INFO  [Thread-2] GracefulShutdownHook - Closed all threads, ending program
+2018-03-16 16:09:59.169 ERROR [main] GlobalVariableService - Client is outdated (v0.7.1)
+2018-03-16 16:09:59.169 INFO  [main] GlobalVariableService - Updating to new version (v0.7.2)
+2018-03-16 16:09:59.189 INFO  [main] ProgramUtil - Update download complete
+2018-03-16 16:09:59.199 INFO  [main] InfernalBotManagerClient - Starting updater
+2018-03-16 16:09:59.199 INFO  [main] InfernalBotManagerClient - "C:\Users\Nghesqui\git\LeagueInformerClient\LeagueInformerClient\InfernalBotManagerUpdater.jar" "C:\Users\Nghesqui\git\LeagueInformerClient\LeagueInformerClient" "http://localhost:8080/admin/files/"
+2018-03-16 16:09:59.199 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-16 16:09:59.199 INFO  [Thread-2] GracefulShutdownHook - Shutting down all threads
+2018-03-16 16:09:59.199 INFO  [Thread-2] GracefulShutdownHook - Closed all threads, ending program
+2018-03-16 16:10:13.498 ERROR [main] GlobalVariableService - Client is outdated (v0.7.1)
+2018-03-16 16:10:13.508 INFO  [main] GlobalVariableService - Updating to new version (v0.7.2)
+2018-03-16 16:10:13.528 INFO  [main] ProgramUtil - Update download complete
+2018-03-16 16:10:13.558 INFO  [main] InfernalBotManagerClient - Starting updater
+2018-03-16 16:10:13.558 INFO  [main] InfernalBotManagerClient - "C:\Users\Nghesqui\git\LeagueInformerClient\LeagueInformerClient\InfernalBotManagerUpdater.jar" "C:\Users\Nghesqui\git\LeagueInformerClient\LeagueInformerClient" "http://localhost:8080/admin/files/"
+2018-03-16 16:10:13.558 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-16 16:10:13.558 INFO  [Thread-2] GracefulShutdownHook - Shutting down all threads
+2018-03-16 16:10:13.558 INFO  [Thread-2] GracefulShutdownHook - Closed all threads, ending program
+2018-03-16 16:10:19.565 ERROR [main] GlobalVariableService - Client is outdated (v0.7.1)
+2018-03-16 16:10:19.565 INFO  [main] GlobalVariableService - Updating to new version (v0.7.2)
+2018-03-16 16:10:19.595 INFO  [main] ProgramUtil - Update download complete
+2018-03-16 16:10:19.605 INFO  [main] InfernalBotManagerClient - Starting updater
+2018-03-16 16:10:19.605 INFO  [main] InfernalBotManagerClient - "C:\Users\Nghesqui\git\LeagueInformerClient\LeagueInformerClient\InfernalBotManagerUpdater.jar" "C:\Users\Nghesqui\git\LeagueInformerClient\LeagueInformerClient" "http://localhost:8080/admin/files/"
+2018-03-16 16:10:19.605 INFO  [main] Main - Closing InfernalBotManager Client
+2018-03-16 16:10:19.605 INFO  [Thread-2] GracefulShutdownHook - Shutting down all threads
+2018-03-16 16:10:19.605 INFO  [Thread-2] GracefulShutdownHook - Closed all threads, ending program

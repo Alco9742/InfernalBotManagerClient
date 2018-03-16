@@ -3,12 +3,9 @@
 <h3>TODO BEFORE BETA:</h3>	
 <ul>
 <li>Spring security -> Log in to server</li>
-<li>Autoupdater finish (copy overwrite)</li>
-<li>Register clients and make a thread ping every 5 minutes to check which clients are running (possibly with a status?)</li>
+<li>Autoupdater fix --> May work with the new Swing Console GUI --> Test home</li>
 <li>java2exe + encryption</li>
-<li>Crash: regedit stuff from script: closing infernalbot on errorlevel?</li>
-<li>Seperate thread check for queuers -->reboot from manager client instead of from infernalbot (safely closing threads)</li>
-<li>implement a Console window in Swing<li>
+<li>Crash: regedit stuff from script</li>
 </ul>
 
 
@@ -16,7 +13,6 @@
 <ul>
 <li>Client settings fetch from server</li>
 <li>Check server for riot server status --> add to network checks</li>
-<li>implement a Console window in Swing<li>
 <li>JavaFX front-end -- optional </li>
 <li>Change from nullchecks to Optionals</li>
 </ul>

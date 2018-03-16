@@ -1,6 +1,7 @@
 package net.nilsghesquiere;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
@@ -24,7 +25,7 @@ import org.springframework.web.client.ResourceAccessException;
 @Data
 public class InfernalBotManagerClient {
 	private static final Logger LOGGER = LoggerFactory.getLogger(InfernalBotManagerClient.class);
-	private static final String UPDATER_NAME = "updater.bat";
+	private static final String UPDATER_NAME = "InfernalBotManagerUpdater.jar";
 	private static final String PROGRAM_NAME = "InfernalBotManagerClient.jar";
 	
 	private ClientSettings clientSettings;
@@ -174,41 +175,37 @@ public class InfernalBotManagerClient {
 	//update client methods
 	public void updateClient() {
 		if(ProgramUtil.downloadFileFromUrl(clientSettings, UPDATER_NAME)){
-			if(ProgramUtil.downloadFileFromUrl(clientSettings, PROGRAM_NAME)){
-				//batch args:
-				//1: current program path 
-				//2: backup program path
-				//3: new program path
-				//4: ini path
-				String managerMap = System.getProperty("user.dir");
-				String batlocation = managerMap + "\\backup\\updater.bat";
-				String param1 = managerMap + "\\" + PROGRAM_NAME;
-				String param2 = managerMap + "\\backup\\" + PROGRAM_NAME + ".bak";
-				String param3 = managerMap + "\\backup\\" + PROGRAM_NAME;
-				String param4 = Main.iniLocation;
-				String commandString = "cd " + managerMap +" && \"" + batlocation + "\" \"" +param1 + "\" \"" + param2 + "\" \"" + param3 + "\"" + "\"" + param4 + "\"";
-				try {
-					LOGGER.debug(commandString);
-					ProcessBuilder builder = new ProcessBuilder( "cmd.exe", "start /c", commandString);
-					builder.redirectErrorStream(true);
-					Process p = builder.start();
-					BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
-					String line;
-					while (true) {
-						line = r.readLine();
-						if (line == null) { break; }
-						LOGGER.info(line);
-					}
+			//vars
+			String managerMap = System.getProperty("user.dir");
+			Path updaterDownloadPath = Paths.get(managerMap + "\\downloads\\" + UPDATER_NAME);
+			Path updaterPath = Paths.get(managerMap + "\\" + UPDATER_NAME);
+			
+			//move the updater
+			try {
+				Files.copy(updaterDownloadPath,updaterPath, StandardCopyOption.REPLACE_EXISTING);
+			} catch (IOException e) {
+				LOGGER.error("Failure moving the updater");
+				LOGGER.debug(e.getMessage());
+			}
+			try{
+				//build the args
+				String arg0 = managerMap;
+				String arg1 = "http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort() + "/admin/files/";
+				String command = "\"" + updaterPath.toString() + "\" \"" + arg0 + "\" \"" + arg1 + "\"";
+	
+				//Start the updater
+				LOGGER.info("Starting updater");
+				LOGGER.info(command);
+				ProcessBuilder pb = new ProcessBuilder("java", "-jar", command);
+				pb.directory(new File(managerMap));
+				Process p = pb.start();
 				} catch (IOException e) {
 					LOGGER.error("Failed to start the updater");
 					LOGGER.debug(e.getMessage());
 				}
-			} else{
-				LOGGER.error("Failed to download the update");
-			}
-		} else {
+		} else{
 			LOGGER.error("Failed to download the updater");
 		}
 	}
-	
 }
+

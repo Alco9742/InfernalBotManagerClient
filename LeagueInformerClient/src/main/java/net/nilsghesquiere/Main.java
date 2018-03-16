@@ -1,12 +1,20 @@
 package net.nilsghesquiere;
+import java.awt.BorderLayout;
+import java.awt.TextArea;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 import org.ini4j.InvalidFileFormatException;
 import org.ini4j.Reg;
@@ -15,12 +23,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.nilsghesquiere.entities.ClientSettings;
+import net.nilsghesquiere.gui.swing.TextAreaOutputStream;
 import net.nilsghesquiere.hooks.GracefulExitHook;
 import net.nilsghesquiere.runnables.ExitWaitRunnable;
 import net.nilsghesquiere.runnables.InfernalBotManagerRunnable;
 import net.nilsghesquiere.util.ProgramConstants;
 
-public class Main {
+public class Main{
 	private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 	private static InfernalBotManagerClient client;
 	public static Map<Thread, Runnable> threadMap = new HashMap<>();
@@ -28,9 +37,23 @@ public class Main {
 	public static Thread exitWaitThread;
 	public static String iniLocation;
 	
-	public static void main(String[] args){
-		System.out.println("---    InfernalBotManager (BETA) by Alco    ---");
-		System.out.println("---PRESS CTRL + C TO SAFELY CLOSE THE CLIENT---");
+	public static void main(String[] args) throws InterruptedException{
+		if(ProgramConstants.useSwingGUI){
+			JFrame frame = new JFrame();
+			frame.add( new JLabel("InfernalBotManager By Alco" ), BorderLayout.NORTH );
+	
+			JTextArea ta = new JTextArea();
+			TextAreaOutputStream taos = new TextAreaOutputStream( ta, 60 );
+			PrintStream ps = new PrintStream( taos );
+			System.setOut( ps );
+			System.setErr( ps );
+			
+			frame.add( new JScrollPane( ta )  );
+	
+			frame.pack();
+			frame.setVisible( true );
+			frame.setSize(600,400);
+		}
 		LOGGER.info("Starting InfernalBotManager Client");
 		Runtime.getRuntime().addShutdownHook(new GracefulExitHook());
 		try{

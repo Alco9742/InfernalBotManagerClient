@@ -19,15 +19,16 @@ import net.nilsghesquiere.services.GlobalVariableService;
 
 public class ProgramUtil {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProgramUtil.class);
+	
 	public static String getCapitalizedString(boolean bool){
 		String boolString = String.valueOf(bool);
 		return boolString.substring(0, 1).toUpperCase() + boolString.substring(1);
 	}
 	
 	public static boolean downloadFileFromUrl(ClientSettings clientSettings, String filename) {
-		if(creatBackupDir()){
+		if(createDownloadsDir()){
 			String managerMap = System.getProperty("user.dir");
-			String filePath = managerMap + "\\backup\\" + filename;
+			String filePath = managerMap + "\\downloads\\" + filename;
 			// Sample Url Location
 			String url = "http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort() + "/admin/files/" + filename; 
 			URL urlObj = null;
@@ -55,7 +56,7 @@ public class ProgramUtil {
 				fOutStream.getChannel().transferFrom(rbcObj, 0, Long.MAX_VALUE);
 				LOGGER.info("Update download complete");
 			} catch (IOException e) {
-				LOGGER.error("Problem occured while downloading the update");
+				LOGGER.error("Problem occured while downloading " + filename);
 				LOGGER.debug(e.getMessage());
 				return false;
 			} finally {
@@ -79,8 +80,8 @@ public class ProgramUtil {
 		return true;
 	}
 	
-	private static boolean creatBackupDir(){
-		Path backupDir = Paths.get(System.getProperty("user.dir") + "\\backup\\");
+	private static boolean createDownloadsDir(){
+		Path backupDir = Paths.get(System.getProperty("user.dir") + "\\downloads\\");
 		if(!Files.exists(backupDir)){
 			try {
 				Files.createDirectories(backupDir);
