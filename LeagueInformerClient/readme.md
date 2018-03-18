@@ -6,6 +6,7 @@
 <li>Autoupdater fix --> May work with the new Swing Console GUI --> Test home</li>
 <li>java2exe + encryption</li>
 <li>Crash: regedit stuff from script</li>
+<li>delete queuer tables + empty queuerextend before starting infernal</li>
 </ul>
 
 
