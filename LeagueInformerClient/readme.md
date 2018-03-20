@@ -3,10 +3,8 @@
 <h3>TODO BEFORE BETA:</h3>	
 <ul>
 <li>Spring security -> Log in to server</li>
-<li>Autoupdater fix --> May work with the new Swing Console GUI --> Test home</li>
 <li>java2exe + encryption</li>
-<li>Crash: regedit stuff from script</li>
-<li>delete queuer tables + empty queuerextend before starting infernal</li>
+<li>API system from infernal</li>
 </ul>
 
 
@@ -16,6 +14,7 @@
 <li>Check server for riot server status --> add to network checks</li>
 <li>JavaFX front-end -- optional </li>
 <li>Change from nullchecks to Optionals</li>
+<li>API system from infernal</li>
 </ul>
 
 <h3>Client server connection map(for LolAccounts</h3>

@@ -6,7 +6,6 @@ import java.util.List;
 import net.nilsghesquiere.entities.ClientSettings;
 import net.nilsghesquiere.entities.LolAccount;
 import net.nilsghesquiere.enums.AccountStatus;
-import net.nilsghesquiere.enums.Region;
 import net.nilsghesquiere.jdbcclients.LoLAccountJDBCClient;
 import net.nilsghesquiere.restclients.LolAccountRestClient;
 import net.nilsghesquiere.util.wrappers.LolMixedAccountMap;
@@ -28,7 +27,7 @@ public class LolAccountService {
 		this.clientSettings = clientSettings;
 	}
 	
-	public boolean exchangeAccounts() throws ResourceAccessException {
+	public boolean exchangeAccounts(){
 		//TODO fix bug: if for some reason both clients have same accs in infernalbot database:
 		//     Client1 uploads the accs and puts them on READY, after that loads them and puts them on IN USE;
 		//     Client2 uploads the accs and does the same!!!! --> solution: check on assigned to
@@ -64,11 +63,11 @@ public class LolAccountService {
 					restClient.updateLolAccounts(clientSettings.getUserId(), accountsForInfernalBuffer);
 				}
 			}	
-		if (addedInfernalAccounts < 5) {
-			//not enough for one group (TODO check if it needs 1 queuer minimum or amount from groups)
-			LOGGER.error("Not enough accounts available on the server");
-			return false;
-		}
+			if (addedInfernalAccounts < 5) {
+				//not enough for one group (TODO check if it needs 1 queuer minimum or amount from groups)
+				LOGGER.error("Not enough accounts available on the server");
+				return false;
+			}
 		} else {
 			LOGGER.error("Failed to update accounts on server.");
 			return false;
@@ -76,14 +75,22 @@ public class LolAccountService {
 		return true;
 	}
 	
-	public void setAccountsAsReadyForUse() throws ResourceAccessException {
+	public boolean setAccountsAsReadyForUse(){
 		LolMixedAccountMap sendMap = prepareAccountsToSend();
-		if(restClient.sendInfernalAccounts(clientSettings.getUserId(), sendMap)){
-			LOGGER.info("Updated accounts on server");
-			jdbcClient.deleteAccounts();
-		} else {
-			LOGGER.error("Failure updating accounts on server.");
+		try{
+			if(restClient.sendInfernalAccounts(clientSettings.getUserId(), sendMap)){
+				LOGGER.info("Updated accounts on server");
+				jdbcClient.deleteAccounts();
+			} else {
+				LOGGER.error("Failure updating accounts on server.");
+				return false;
+			}
+		} catch (ResourceAccessException e){
+			LOGGER.warn("Failure getting bufferaccounts from the server");
+			LOGGER.debug(e.getMessage());
+			return false;
 		}
+		return true;
 	}
 	
 	private LolMixedAccountMap prepareAccountsToSend(){

@@ -25,14 +25,15 @@ public class ClientDataManagerRunnable implements Runnable {
 
 	@Override
 	public void run() {
-		LOGGER.info("Starting ClientData Updater in 5 minutes");
+		LOGGER.info("Starting ClientData Updater in 3 minutes");
 		try {
-			TimeUnit.MINUTES.sleep(5);
+			TimeUnit.MINUTES.sleep(3);
 		} catch (InterruptedException e2) {
-			LOGGER.error("Failure during sleep");
 			LOGGER.debug(e2.getMessage());
 		}
-		LOGGER.info("Starting InfernalBot ClientData Updater");
+		if (!stop) {
+			LOGGER.info("Starting InfernalBot ClientData Updater");
+		}
 		while (!stop){
 			client.getClientDataService().sendData("ClientData Update");
 			if(!client.getClientDataService().hasActiveQueuer()){
@@ -62,7 +63,6 @@ public class ClientDataManagerRunnable implements Runnable {
 			try {
 				TimeUnit.MINUTES.sleep(1);
 			} catch (InterruptedException e1) {
-				LOGGER.error("Failure during sleep");
 				LOGGER.debug(e1.getMessage());
 			}
 		}

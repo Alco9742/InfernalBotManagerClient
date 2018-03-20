@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 import net.nilsghesquiere.InfernalBotManagerClient;
 import net.nilsghesquiere.Main;
+import net.nilsghesquiere.util.ProgramUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,51 +29,38 @@ public class InfernalBotManagerRunnable implements Runnable {
 	@Override
 	public void run() {
 		runInfernalbot();
-		LOGGER.info("Starting InfernalBot Crash Checker in 5 minutes");
+		LOGGER.info("Starting InfernalBot Crash Checker in 2 minutes");
 		try {
-			TimeUnit.MINUTES.sleep(5);
+			TimeUnit.MINUTES.sleep(2);
 		} catch (InterruptedException e2) {
-			LOGGER.error("Failure during sleep");
 			LOGGER.debug(e2.getMessage());
 		}
-		LOGGER.info("Starting InfernalBot CrashChecker");
+		if (!stop) {
+			LOGGER.info("Starting InfernalBot CrashChecker");
+		}
 		while (!stop){
-			String line ="";
-			String pidInfo ="";
-			Process p;
+			if(ProgramUtil.isProcessRunning(client.getClientSettings().getInfernalProgramName())){
+				LOGGER.warn("InfernalBot process not found, restarting client");
+				for(Entry<Thread,ClientDataManagerRunnable> entry : dataThreadMap.entrySet()){
+					entry.getKey().interrupt();
+					entry.getValue().stop();
+					try {
+						entry.getKey().join();
+					} catch (InterruptedException e) {
+						LOGGER.error("Failure closing thread");
+						LOGGER.debug(e.getMessage());
+					}
+				}
+				if(client.checkConnection() && client.exchangeAccounts()){
+					runInfernalbot();
+				} else {
+					LOGGER.info("Retrying in 1 minute..");
+				}
+			}
 			try {
-				p = Runtime.getRuntime().exec(System.getenv("windir") +"\\system32\\"+"tasklist.exe");
-				BufferedReader input =  new BufferedReader(new InputStreamReader(p.getInputStream()));
-				while ((line = input.readLine()) != null) {
-					pidInfo+=line; 
-				}
-				input.close();
-				if(!pidInfo.contains(client.getClientSettings().getInfernalProgramName())){
-					LOGGER.warn("InfernalBot process not found, restarting client");
-					for(Entry<Thread,ClientDataManagerRunnable> entry : dataThreadMap.entrySet()){
-						entry.getValue().stop();
-						try {
-							entry.getKey().join();
-						} catch (InterruptedException e) {
-							LOGGER.error("Failure closing thread");
-							LOGGER.debug(e.getMessage());
-						}
-					}
-					if(client.checkConnection() && client.exchangeAccounts()){
-						runInfernalbot();
-					} else {
-						LOGGER.info("Retrying in 1 minute..");
-					}
-				}
-				try {
-					TimeUnit.MINUTES.sleep(1);
-				} catch (InterruptedException e1) {
-					LOGGER.error("Failure during sleep");
-					LOGGER.debug(e1.getMessage());
-				}
-			} catch (IOException e) {
-				LOGGER.error("Failure checking task list");
-				LOGGER.debug(e.getMessage());
+				TimeUnit.MINUTES.sleep(1);
+			} catch (InterruptedException e1) {
+				LOGGER.debug(e1.getMessage());
 			}
 		}
 		client.setAccountsAsReadyForUse();

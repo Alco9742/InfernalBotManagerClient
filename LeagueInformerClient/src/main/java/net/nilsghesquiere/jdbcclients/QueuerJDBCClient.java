@@ -22,6 +22,7 @@ public class QueuerJDBCClient {
 	private Properties config;
 	private static final String SELECT_SQL = "SELECT * FROM QeuerExtent";
 	private static final String COUNT_SQL = "SELECT COUNT(*) AS rows FROM QeuerExtent";
+	private static final String DELETE_SQL = "DELETE FROM QeuerExtent";
 	
 	
 	public QueuerJDBCClient(String infernalMap){
@@ -89,4 +90,30 @@ public class QueuerJDBCClient {
 		return queuerCount;
 	}
 	
+	public void deleteQueuerExtent(){
+		try(Connection connection = DriverManager.getConnection(DATABASE_URI)){
+			connection.setAutoCommit(false);
+			Statement statement = connection.createStatement();
+			statement.executeUpdate(DELETE_SQL);
+			connection.commit();
+			LOGGER.info("Deleted all queuers from InfernalBot.");
+		} catch (SQLException e) {
+			LOGGER.error("Failure deleting queuers from InfernalBot .");
+			LOGGER.debug(e.getMessage());
+		} 
+	}
+	
+	public void deleteQueuer(Queuer queuer){
+		try(Connection connection = DriverManager.getConnection(DATABASE_URI)){
+			connection.setAutoCommit(false);
+			Statement statement = connection.createStatement();
+			String dropQueuerSQL = "DROP TABLE " + queuer.getQueuer();
+			statement.executeUpdate(dropQueuerSQL);
+			connection.commit();
+			LOGGER.info("Deleted " + queuer.getQueuer() + " from InfernalBot.");
+		} catch (SQLException e) {
+			LOGGER.error("Failure deleting "+ queuer.getQueuer() + " from InfernalBot .");
+			LOGGER.debug(e.getMessage());
+		} 
+	}
 }

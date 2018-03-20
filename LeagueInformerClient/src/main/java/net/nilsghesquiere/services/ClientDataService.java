@@ -1,8 +1,6 @@
 package net.nilsghesquiere.services;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import net.nilsghesquiere.entities.ClientData;
@@ -55,4 +53,13 @@ public class ClientDataService {
 		clientDataMap.add("0", clientData);
 		return clientDataMap;
 	}
+	
+	public void deleteAllQueuers(){
+		List<Queuer> queuers = jdbcClient.getQueuers();
+		for (Queuer queuer : queuers){
+			jdbcClient.deleteQueuer(queuer);
+		}
+		jdbcClient.deleteQueuerExtent();
+	}
+	
 } 

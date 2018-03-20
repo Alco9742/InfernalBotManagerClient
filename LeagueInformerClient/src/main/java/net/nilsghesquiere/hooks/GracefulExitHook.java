@@ -23,6 +23,7 @@ public class GracefulExitHook extends Thread {
 			if (entry.getValue() instanceof InfernalBotManagerRunnable){
 				InfernalBotManagerRunnable infernalBotManagerRunnable =(InfernalBotManagerRunnable) entry.getValue();
 				LOGGER.info("Gracefully shutting down InfernalBot CrashChecker, please don't close the program");
+				entry.getKey().interrupt();
 				infernalBotManagerRunnable.stop();
 				try {
 					entry.getKey().join();
@@ -38,6 +39,7 @@ public class GracefulExitHook extends Thread {
 				if(clientDataManagerRunnable.isRebootFromManager()){
 					this.rebootWindows = true;
 				}
+				entry.getKey().interrupt();
 				clientDataManagerRunnable.stop();
 				try {
 					entry.getKey().join();
@@ -69,5 +71,7 @@ public class GracefulExitHook extends Thread {
 				}
 			}
 		}
+		LOGGER.info("Closing InfernalBotManager Client");
+		System.exit(0);
 	}
 }

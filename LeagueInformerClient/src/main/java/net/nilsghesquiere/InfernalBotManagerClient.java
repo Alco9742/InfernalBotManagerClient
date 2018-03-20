@@ -1,9 +1,7 @@
 package net.nilsghesquiere;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -12,10 +10,10 @@ import java.nio.file.StandardCopyOption;
 import lombok.Data;
 import net.nilsghesquiere.entities.ClientData;
 import net.nilsghesquiere.entities.ClientSettings;
+import net.nilsghesquiere.services.ClientDataService;
 import net.nilsghesquiere.services.GlobalVariableService;
 import net.nilsghesquiere.services.InfernalSettingsService;
 import net.nilsghesquiere.services.LolAccountService;
-import net.nilsghesquiere.services.ClientDataService;
 import net.nilsghesquiere.util.ProgramUtil;
 
 import org.slf4j.Logger;
@@ -75,36 +73,17 @@ public class InfernalBotManagerClient {
 	}
 	
 	public boolean checkVersion(){
-		try{
-			return globalVariableService.checkVersion();
-		} catch (ResourceAccessException e) {
-			LOGGER.error("Failure retrieving the requested resource.");
-			LOGGER.debug(e.getMessage());
-				return false;
-		} 
+		return globalVariableService.checkVersion();
 	}
 	
 	public boolean checkKillSwitch(){
-		try{
-			return globalVariableService.checkKillSwitch();
-		} catch (ResourceAccessException e) {
-			LOGGER.error("Failure retrieving the requested resource.");
-			LOGGER.debug(e.getMessage());
-				return false;
-		} 
+		return globalVariableService.checkKillSwitch();
 	}
 	
 	//InfernalSettings methods
 	public boolean setInfernalSettings(){
 		if (clientSettings.getFetchSettings()){
-			try{
-				infernalSettingsService.updateInfernalSettings(clientSettings.getUserId());
-				return true;
-			} catch (ResourceAccessException e) {
-				LOGGER.error("Failure retrieving the requested resource");
-				LOGGER.debug(e.getMessage());
-				return false;
-			}
+			return infernalSettingsService.updateInfernalSettings(clientSettings.getUserId());
 		} else {
 			LOGGER.info("Not requesting settings from the InfernalBotManager Server, using InfernalBots own settings.");
 			return true;
@@ -113,24 +92,16 @@ public class InfernalBotManagerClient {
 	
 	//LolAccount methods
 	public boolean exchangeAccounts(){
-		try{
-			return accountService.exchangeAccounts();
-		} catch (ResourceAccessException e) {
-			LOGGER.error("Failure retrieving the requested resource");
-			LOGGER.debug(e.getMessage());
-				return false;
-		} 
+		return accountService.exchangeAccounts();
 	}
 	
 	public boolean setAccountsAsReadyForUse(){
-		try{
-			accountService.setAccountsAsReadyForUse();
-			return true;
-		} catch (ResourceAccessException e) {
-			LOGGER.error("Failure retrieving the requested resource");
-			LOGGER.debug(e.getMessage());
-			return false;
-		} 
+		return accountService.setAccountsAsReadyForUse();
+	}
+	
+	//Queuer methods
+	public void deleteAllQueuers(){
+		clientDataService.deleteAllQueuers();
 	}
 	
 	//Backup database methods

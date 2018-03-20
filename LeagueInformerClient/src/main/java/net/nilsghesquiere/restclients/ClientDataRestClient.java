@@ -12,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -40,18 +41,28 @@ public class ClientDataRestClient {
 		restTemplate.getMessageConverters().add(0,converter);
 	}
 	
+	//TODO: catch IOExceptions(probably) for when the server doesn't respond to a rest call(ALL REST REQUESTS) (see below)
+	
 	public boolean sendClientData(Long userid, ClientDataMap map){
 		boolean result = true;
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<ClientDataMap> request = new HttpEntity<>(map, headers);
-		HttpEntity<ClientDataWrapper> response = restTemplate.exchange(URI_CLIENTS + "/user/" + userid,  HttpMethod.POST,request, ClientDataWrapper.class);
-		ClientDataWrapper clientDataWrapper = response.getBody();
-		if (!clientDataWrapper.getError().equals((""))){
-			result = false;
-			LOGGER.error("Failure updating Client data on the server: " + clientDataWrapper.getError());
+		try{ 
+			HttpEntity<ClientDataWrapper> response = restTemplate.exchange(URI_CLIENTS + "/user/" + userid,  HttpMethod.POST,request, ClientDataWrapper.class);
+			ClientDataWrapper clientDataWrapper = response.getBody();
+			if (!clientDataWrapper.getError().equals((""))){
+				result = false;
+				LOGGER.error("Failure updating Client data on the server: " + clientDataWrapper.getError());
+			} else {
+				LOGGER.debug("Client data updated: " + clientDataWrapper.getMap());
+			}
+			return result;
+		} catch (ResourceAccessException e){
+			LOGGER.warn("Failure sending ClientData to server");
+			LOGGER.debug(e.getMessage());
+			return false;
 		}
-		return result;
 	}
 }

@@ -1,9 +1,6 @@
 package net.nilsghesquiere;
-import java.awt.BorderLayout;
-import java.awt.TextArea;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -11,10 +8,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+import net.nilsghesquiere.entities.ClientSettings;
+import net.nilsghesquiere.gui.swing.InfernalBotManagerGUI;
+import net.nilsghesquiere.hooks.GracefulExitHook;
+import net.nilsghesquiere.runnables.ExitWaitRunnable;
+import net.nilsghesquiere.runnables.InfernalBotManagerRunnable;
+import net.nilsghesquiere.util.ProgramConstants;
 
 import org.ini4j.InvalidFileFormatException;
 import org.ini4j.Reg;
@@ -22,40 +21,28 @@ import org.ini4j.Wini;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.nilsghesquiere.entities.ClientSettings;
-import net.nilsghesquiere.gui.swing.TextAreaOutputStream;
-import net.nilsghesquiere.hooks.GracefulExitHook;
-import net.nilsghesquiere.runnables.ExitWaitRunnable;
-import net.nilsghesquiere.runnables.InfernalBotManagerRunnable;
-import net.nilsghesquiere.util.ProgramConstants;
-
 public class Main{
 	private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 	private static InfernalBotManagerClient client;
 	public static Map<Thread, Runnable> threadMap = new HashMap<>();
 	public static ExitWaitRunnable exitWaitRunnable;
 	public static Thread exitWaitThread;
+	public static Thread gracefullExitHook;
 	public static String iniLocation;
 	
 	public static void main(String[] args) throws InterruptedException{
+		gracefullExitHook = new GracefulExitHook();
+		Runtime.getRuntime().addShutdownHook(gracefullExitHook);
+		//start the ExitWaiter
+		exitWaitRunnable = new ExitWaitRunnable();
+		exitWaitThread = new Thread(exitWaitRunnable);
+		exitWaitThread.setDaemon(false); 
+		exitWaitThread.start();
 		if(ProgramConstants.useSwingGUI){
-			JFrame frame = new JFrame();
-			frame.add( new JLabel("InfernalBotManager By Alco" ), BorderLayout.NORTH );
-	
-			JTextArea ta = new JTextArea();
-			TextAreaOutputStream taos = new TextAreaOutputStream( ta, 60 );
-			PrintStream ps = new PrintStream( taos );
-			System.setOut( ps );
-			System.setErr( ps );
-			
-			frame.add( new JScrollPane( ta )  );
-	
-			frame.pack();
-			frame.setVisible( true );
-			frame.setSize(600,400);
+			InfernalBotManagerGUI gui = new InfernalBotManagerGUI();
 		}
 		LOGGER.info("Starting InfernalBotManager Client");
-		Runtime.getRuntime().addShutdownHook(new GracefulExitHook());
+		
 		try{
 			iniLocation = args[0];
 		} catch (ArrayIndexOutOfBoundsException e){
@@ -63,10 +50,11 @@ public class Main{
 		}
 		client = buildClient(iniLocation);
 		program();
-		//test();
 	}
 	
 	private static void test(){
+		LOGGER.info("TEST");
+		disableWindowsErrorReporting();
 	}
 	
 	private static void program(){
@@ -102,34 +90,38 @@ public class Main{
 			}
 			if (killSwitchOff){
 				if (upToDate){
-					client.scheduleReboot();
-					//check for update
-					//initial checks
-					//Attempt to get accounts, retry if fail
-					boolean initDone = client.checkConnection() &&  client.backUpInfernalDatabase() && client.setInfernalSettings() && client.exchangeAccounts();
-					while (!initDone){
-						try {
-							LOGGER.info("Retrying in 1 minute...");
-							TimeUnit.MINUTES.sleep(1);
-							initDone = (client.checkConnection() && client.backUpInfernalDatabase() && client.setInfernalSettings() && client.exchangeAccounts());
-						} catch (InterruptedException e) {
-							LOGGER.error("Failure during sleep");
-							LOGGER.debug(e.getMessage());
+					//backup sqllite file
+					if(client.backUpInfernalDatabase()){
+						//check for update
+						//initial checks
+						//Attempt to get accounts, retry if fail
+						boolean initDone = client.checkConnection() && client.setInfernalSettings() && client.exchangeAccounts();
+						while (!initDone){
+							try {
+								LOGGER.info("Retrying in 1 minute...");
+								TimeUnit.MINUTES.sleep(1);
+								initDone = (client.checkConnection() && client.setInfernalSettings() && client.exchangeAccounts());
+							} catch (InterruptedException e) {
+								LOGGER.error("Failure during sleep");
+								LOGGER.debug(e.getMessage());
+							}
 						}
+						//schedule reboot
+						client.scheduleReboot();
+						//empty queuers
+						client.deleteAllQueuers();
+						//send clientData for startup
+						client.getClientDataService().sendData("InfernalBotManager Startup");
+						//start infernalbot checker in a thread
+						InfernalBotManagerRunnable infernalRunnable = new InfernalBotManagerRunnable(client);
+						Thread infernalThread = new Thread(infernalRunnable);
+						threadMap.put(infernalThread, infernalRunnable);
+						infernalThread.setDaemon(false); 
+						infernalThread.start();
+					} else {
+						LOGGER.info("Closing InfernalBotManager Client");
+						System.exit(0);
 					}
-					//send clientData for startup
-					client.getClientDataService().sendData("InfernalBotManager Startup");
-					//start the ExitWaiter
-					exitWaitRunnable = new ExitWaitRunnable();
-					exitWaitThread = new Thread(exitWaitRunnable);
-					exitWaitThread.setDaemon(false); 
-					exitWaitThread.start();
-					//start infernalbot checker in a thread
-					InfernalBotManagerRunnable infernalRunnable = new InfernalBotManagerRunnable(client);
-					Thread infernalThread = new Thread(infernalRunnable);
-					threadMap.put(infernalThread, infernalRunnable);
-					infernalThread.setDaemon(false); 
-					infernalThread.start();
 				} else {
 					client.updateClient();
 					LOGGER.info("Closing InfernalBotManager Client");
@@ -171,11 +163,12 @@ public class Main{
 	private static void disableWindowsErrorReporting(){
 		Reg reg = new Reg();
 		Reg.Key key = reg.add("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\Windows Error Reporting");
-		key.put("DontShowUI", "1");
+		key.put("DontShowUI", 1);
+		key.putType("DontShowUI", Reg.Type.REG_DWORD);
 		try {
 			reg.write();
 		} catch (IOException e) {
-			LOGGER.info("Failure trying to disable Windows error reporting UI");
+			LOGGER.debug("Failure trying to disable Windows error reporting UI");
 			LOGGER.debug(e.getMessage());
 		}
 		

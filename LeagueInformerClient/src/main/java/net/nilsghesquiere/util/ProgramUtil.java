@@ -1,8 +1,10 @@
 package net.nilsghesquiere.util;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
@@ -10,11 +12,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import net.nilsghesquiere.entities.ClientSettings;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import net.nilsghesquiere.entities.ClientSettings;
-import net.nilsghesquiere.services.GlobalVariableService;
 
 
 public class ProgramUtil {
@@ -24,6 +25,30 @@ public class ProgramUtil {
 		String boolString = String.valueOf(bool);
 		return boolString.substring(0, 1).toUpperCase() + boolString.substring(1);
 	}
+	
+	
+	public static boolean isProcessRunning(String processName){
+		String line ="";
+		String pidInfo ="";
+		Process p;
+		try {
+			p = Runtime.getRuntime().exec(System.getenv("windir") +"\\system32\\"+"tasklist.exe");
+			BufferedReader input =  new BufferedReader(new InputStreamReader(p.getInputStream()));
+			while ((line = input.readLine()) != null) {
+				pidInfo+=line; 
+			}
+			input.close();
+			if(!pidInfo.contains(processName)){
+				return true;
+			}
+		} catch (IOException e){
+			LOGGER.error("Failure checking task list");
+			LOGGER.debug(e.getMessage());
+			return false;
+		}
+		return false;
+	}
+	
 	
 	public static boolean downloadFileFromUrl(ClientSettings clientSettings, String filename) {
 		if(createDownloadsDir()){

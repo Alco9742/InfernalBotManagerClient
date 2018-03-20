@@ -17,6 +17,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 
@@ -40,44 +41,56 @@ public class LolAccountRestClient {
 	}
 	
 	public List<LolAccount> getUsableAccounts(Long userid, Region region, Integer amount){
-		LolAccountWrapper jsonResponse = restTemplate.getForObject(URI_ACCOUNTS + "/user/" + userid + "/region/" + region + "/limit/" + amount, LolAccountWrapper.class);
-		List<LolAccount> returnAccounts = jsonResponse.getMap().get("data");
-		if (returnAccounts.size() == amount){
-			LOGGER.info("Received " + returnAccounts.size() + " accounts from the InfernalBotManager server.");
-		} else {
-			if(returnAccounts.size() > 0){
-				LOGGER.warn("Only found " + returnAccounts.size() + " eligible accounts on the the InfernalBotManager server.");
+		try{
+			LolAccountWrapper jsonResponse = restTemplate.getForObject(URI_ACCOUNTS + "/user/" + userid + "/region/" + region + "/limit/" + amount, LolAccountWrapper.class);
+			List<LolAccount> returnAccounts = jsonResponse.getMap().get("data");
+			if (returnAccounts.size() == amount){
+				LOGGER.info("Received " + returnAccounts.size() + " accounts from the InfernalBotManager server.");
 			} else {
-				LOGGER.error("No eligible accounts on the the InfernalBotManager server.");
+				if(returnAccounts.size() > 0){
+					LOGGER.warn("Only found " + returnAccounts.size() + " eligible accounts on the the InfernalBotManager server.");
+				} else {
+					LOGGER.error("No eligible accounts on the the InfernalBotManager server.");
+				}
 			}
+			return returnAccounts;
+		} catch (ResourceAccessException e){
+			LOGGER.warn("Failure getting accounts from the server");
+			LOGGER.debug(e.getMessage());
+			return null;
 		}
-		return returnAccounts;
 	}
 	
 	public List<LolAccount> getBufferAccounts(Long userid, Region region, Integer amount){
-		LolAccountWrapper jsonResponse = restTemplate.getForObject(URI_ACCOUNTS + "/user/" + userid + "/region/" + region + "/limit/" + amount + "/buffer/", LolAccountWrapper.class);
-		List<LolAccount> returnAccounts = jsonResponse.getMap().get("data");
-		if (returnAccounts.size() == amount){
-			LOGGER.info("Received " + returnAccounts.size() + " bufferaccounts from the InfernalBotManager server.");
-		} else {
-			if(returnAccounts.size() > 0){
-				LOGGER.warn("Only found " + returnAccounts.size() + " eligible bufferaccounts on the the InfernalBotManager server.");
+		try{
+			LolAccountWrapper jsonResponse = restTemplate.getForObject(URI_ACCOUNTS + "/user/" + userid + "/region/" + region + "/limit/" + amount + "/buffer/", LolAccountWrapper.class);
+			List<LolAccount> returnAccounts = jsonResponse.getMap().get("data");
+			if (returnAccounts.size() == amount){
+				LOGGER.info("Received " + returnAccounts.size() + " bufferaccounts from the InfernalBotManager server.");
 			} else {
-				LOGGER.warn("No eligible bufferaccounts on the the InfernalBotManager server.");
+				if(returnAccounts.size() > 0){
+					LOGGER.warn("Only found " + returnAccounts.size() + " eligible bufferaccounts on the the InfernalBotManager server.");
+				} else {
+					LOGGER.warn("No eligible bufferaccounts on the the InfernalBotManager server.");
+				}
 			}
+			return returnAccounts;
+		} catch (ResourceAccessException e){
+			LOGGER.warn("Failure getting bufferaccounts from the server");
+			LOGGER.debug(e.getMessage());
+			return null;
 		}
-		return returnAccounts;
-	}
-	
-	public String getUsableAccountsJSON(Long userid, Region region, Integer amount){
-		String lolAccounts = restTemplate.getForObject(URI_ACCOUNTS + "/user/" + userid + "/region/" + region + "/limit/" + amount, String.class);
-		return lolAccounts;
 	}
 	
 	public LolAccount getByUserIdRegionAndAccount(Long userid, Region region, String account){
-		LolAccount lolAccount = restTemplate.getForObject(URI_ACCOUNTS + "/user/" + userid + "/region/" + region + "/account/" + account, LolAccount.class);
-		LOGGER.debug("getByUserIdRegionAndAccount:" + lolAccount);
-		return lolAccount;
+		try{
+			LolAccount lolAccount = restTemplate.getForObject(URI_ACCOUNTS + "/user/" + userid + "/region/" + region + "/account/" + account, LolAccount.class);
+			LOGGER.debug("getByUserIdRegionAndAccount:" + lolAccount);
+			return lolAccount;
+		} catch (ResourceAccessException e){
+			LOGGER.debug(e.getMessage());
+			return null;
+		}
 	}
 
 	public List<LolAccount> updateLolAccounts(Long userid, List<LolAccount> lolAccounts) {
@@ -85,38 +98,50 @@ public class LolAccountRestClient {
 		for(LolAccount lolAccount : lolAccounts){
 			lolAccountMap.add(lolAccount.getId().toString(), lolAccount);
 		}
-		LOGGER.debug("updateLolAccounts (before):" + lolAccountMap.getMap().values());
-		HttpHeaders headers = new HttpHeaders();
-		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-		headers.setContentType(MediaType.APPLICATION_JSON);
-		HttpEntity<LolAccountMap> request = new HttpEntity<>(lolAccountMap, headers);
-		HttpEntity<LolAccountWrapper> response = restTemplate.exchange(URI_ACCOUNTS + "/user/" + userid, HttpMethod.PUT,request, LolAccountWrapper.class);
-		LolAccountWrapper lolAccountWrapperResponse = response.getBody();
-		List<LolAccount> returnAccounts = lolAccountWrapperResponse.getMap().get("data");
-		LOGGER.debug("updateLolAccounts (after):" + returnAccounts);
-		return returnAccounts;
+		try{
+			LOGGER.debug("updateLolAccounts (before):" + lolAccountMap.getMap().values());
+			HttpHeaders headers = new HttpHeaders();
+			headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			HttpEntity<LolAccountMap> request = new HttpEntity<>(lolAccountMap, headers);
+			HttpEntity<LolAccountWrapper> response = restTemplate.exchange(URI_ACCOUNTS + "/user/" + userid, HttpMethod.PUT,request, LolAccountWrapper.class);
+			LolAccountWrapper lolAccountWrapperResponse = response.getBody();
+			List<LolAccount> returnAccounts = lolAccountWrapperResponse.getMap().get("data");
+			LOGGER.debug("updateLolAccounts (after):" + returnAccounts);
+			return returnAccounts;
+		} catch (ResourceAccessException e){
+			LOGGER.warn("Failure updating accounts on the server");
+			LOGGER.debug(e.getMessage());
+			return null;
+		}
 	} 
 	
 	public boolean sendInfernalAccounts(Long userid, LolMixedAccountMap map){
-		boolean result = true;
-		HttpHeaders headers = new HttpHeaders();
-		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-		headers.setContentType(MediaType.APPLICATION_JSON);
-		HttpEntity<LolMixedAccountMap> request = new HttpEntity<>(map, headers);
-		HttpEntity<StringResponseMap> response = restTemplate.exchange(URI_ACCOUNTS + "/user/" + userid + "/infernalImport", HttpMethod.PUT,request, StringResponseMap.class);
-		StringResponseMap stringResponseMap = response.getBody();
-		LOGGER.debug("sendInfernalAccounts - existing:" + map.getMap().values());
-		LOGGER.debug("sendInfernalAccounts - new:" + map.getNewAccs());
-		for(Entry<String,String> entry : stringResponseMap.getMap().entrySet()){
-			if(!entry.getValue().equals("OK")){
-				LOGGER.warn("Error(" + entry.getKey() + ": " + entry.getValue() + ")");
-				result = false;
+		try{
+			boolean result = true;
+			HttpHeaders headers = new HttpHeaders();
+			headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			HttpEntity<LolMixedAccountMap> request = new HttpEntity<>(map, headers);
+			HttpEntity<StringResponseMap> response = restTemplate.exchange(URI_ACCOUNTS + "/user/" + userid + "/infernalImport", HttpMethod.PUT,request, StringResponseMap.class);
+			StringResponseMap stringResponseMap = response.getBody();
+			LOGGER.debug("sendInfernalAccounts - existing:" + map.getMap().values());
+			LOGGER.debug("sendInfernalAccounts - new:" + map.getNewAccs());
+			for(Entry<String,String> entry : stringResponseMap.getMap().entrySet()){
+				if(!entry.getValue().equals("OK")){
+					LOGGER.warn("Error(" + entry.getKey() + ": " + entry.getValue() + ")");
+					result = false;
+				}
 			}
+			if (result = true){
+				LOGGER.info("Updated accounts on the InfernalBotManager server");
+			}
+			return result;
+		} catch (ResourceAccessException e){
+			LOGGER.warn("Failure updating accounts on the server");
+			LOGGER.debug(e.getMessage());
+			return false;
 		}
-		if (result = true){
-			LOGGER.info("Updated accounts on the InfernalBotManager server");
-		}
-		return result;
 	}
 	
 	public void test(){

@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.concurrent.TimeUnit;
 
 import net.nilsghesquiere.InfernalBotManagerClient;
+import net.nilsghesquiere.Main;
 import net.nilsghesquiere.entities.ClientSettings;
 import net.nilsghesquiere.hooks.GracefulExitHook;
 
@@ -30,8 +31,7 @@ public class ExitWaitRunnable implements Runnable {
 				LOGGER.debug(e2.getMessage());
 			}
 		}
-		Thread exitHook = new Thread(new GracefulExitHook());
-		exitHook.start();
+		Main.gracefullExitHook.start();
 	}
 
 	public void exit(){

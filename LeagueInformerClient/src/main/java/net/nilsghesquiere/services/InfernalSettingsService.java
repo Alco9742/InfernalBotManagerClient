@@ -24,7 +24,7 @@ public class InfernalSettingsService {
 		
 	}
 	
-	public boolean updateInfernalSettings(Long userid) throws ResourceAccessException {
+	public boolean updateInfernalSettings(Long userid){
 		InfernalSettings infernalSettingsFromREST = restClient.getUserInfernalSettings(userid);
 		//Disabled this for now: It is always the default set atm
 		//InfernalSettings infernalSettingsFromJDBC = jdbcClient.getInfernalBotManagerInfernalSettings();
@@ -58,7 +58,7 @@ public class InfernalSettingsService {
 				}
 			}
 		} else {
-			LOGGER.error("Failure retrieving InfernalSettings from the InfernalBotManager server");
+			LOGGER.error("Failure retrieving Infernal settings from the InfernalBotManager server");
 			return false;
 		}
 		return true;
