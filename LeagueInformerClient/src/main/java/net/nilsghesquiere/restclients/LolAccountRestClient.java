@@ -145,6 +145,5 @@ public class LolAccountRestClient {
 	
 	public void test(){
 		HttpHeaders httpHeaders = restTemplate.headForHeaders("http://localhost:8080/api/accounts/user/3");
-		System.out.println(httpHeaders.toString());
 	}
 }
