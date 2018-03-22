@@ -5,6 +5,7 @@ import net.nilsghesquiere.util.wrappers.GlobalVariableSingleWrapper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.client.support.BasicAuthorizationInterceptor;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
@@ -14,8 +15,9 @@ public class GlobalVariableRestClient {
 	private final String URI_GLOBALVARIABLES;
 	private RestTemplate restTemplate = new RestTemplate();
 	
-	public GlobalVariableRestClient(String uriServer) {
+	public GlobalVariableRestClient(String uriServer, String username, String password) {
 		this.URI_GLOBALVARIABLES = uriServer +"api/admin/globalvars";
+		restTemplate.getInterceptors().add(new BasicAuthorizationInterceptor(username, password));
 	}
 	public GlobalVariable getGlobalVariableByName(String name){
 		try{

@@ -15,6 +15,8 @@ import org.slf4j.LoggerFactory;
 public class ClientSettings {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ClientSettings.class);
 	private Long userId;
+	private String username;
+	private String password;
 	private String infernalMap;
 	private String infernalProgramName;
 	private Integer accountAmount;
@@ -34,13 +36,15 @@ public class ClientSettings {
 
 
 	
-	public ClientSettings(Long userId, String infernalMap, String infernalProgramName,
+	public ClientSettings(String username, String password, String infernalMap, String infernalProgramName,
 			Integer accountAmount,Integer accountBuffer, Boolean uploadNewAccounts, String clientTag, Region clientRegion,
 			String webServer, String port, Boolean reboot, Integer rebootTime,
 			Boolean fetchSettings, Boolean overwriteSettings, Map<String, String> settingsOverwriteMap,
 			Boolean bypassDevChecks, boolean rebootFromManager) {
 		super();
-		this.userId = userId;
+		this.userId = -1L;
+		this.username = username;
+		this.password = password;
 		this.infernalMap = infernalMap;
 		this.infernalProgramName = infernalProgramName;
 		this.accountAmount = accountAmount;
@@ -61,26 +65,39 @@ public class ClientSettings {
 	
 	public static ClientSettings buildFromIni(Wini ini){
 		boolean hasError = false;
-		Long userId = ini.get("main", "userid", Long.class);
-		String infernalMap = ini.get("main", "infernalmap", String.class);
-		String infernalProgramName = ini.get("main", "infernalprogramname", String.class);
-		Integer numberOfAccounts = ini.get("main", "accounts", Integer.class);
-		Integer accountBuffer = ini.get("main", "accountbuffer", Integer.class);
-		Boolean uploadNewAccounts = ini.get("main","uploadnewaccounts", Boolean.class);
-		String clientTag = ini.get("main", "clienttag", String.class);
-		Region clientRegion = ini.get("main", "region", Region.class);
-		String webServer = ini.get("main", "webserver", String.class);
-		String port = ini.get("main", "port", String.class);
-		Boolean reboot = ini.get("main", "reboot", Boolean.class);
-		Integer rebootTime = ini.get("main", "reboottime", Integer.class);
-		Boolean fetchSettings = ini.get("main","fetchsettings", Boolean.class);
-		Boolean overwriteSettings = ini.get("main","overwritesettings", Boolean.class);
-		Map<String, String> settingsOverwriteMap = new HashMap<>();
-		Boolean bypassDevChecks = ini.get("main", "bypassdev", Boolean.class);
-		Boolean rebootFromManager = ini.get("main", "rebootfrommanager", Boolean.class);
 		
-		if(userId == null){
-			LOGGER.error("Bad value in settings.ini: value '" + userId + "' is not accepted for userid");
+		//login
+		String username = ini.get("login", "username", String.class);
+		String password = ini.get("login", "password", String.class);
+		
+		//clientifno
+		String clientTag = ini.get("clientinfo", "clienttag", String.class);
+		Region clientRegion = ini.get("clientinfo", "region", Region.class);
+		
+		//clientsettings
+		String infernalMap = ini.get("clientsettings", "infernalmap", String.class);
+		String infernalProgramName = ini.get("clientsettings", "infernalprogramname", String.class);
+		Integer numberOfAccounts = ini.get("clientsettings", "accounts", Integer.class);
+		Integer accountBuffer = ini.get("clientsettings", "accountbuffer", Integer.class);
+		Boolean uploadNewAccounts = ini.get("clientsettings","uploadnewaccounts", Boolean.class);
+		Boolean reboot = ini.get("clientsettings", "reboot", Boolean.class);
+		Integer rebootTime = ini.get("clientsettings", "reboottime", Integer.class);
+		Boolean fetchSettings = ini.get("clientsettings","fetchsettings", Boolean.class);
+		Boolean overwriteSettings = ini.get("clientsettings","overwritesettings", Boolean.class);
+		Map<String, String> settingsOverwriteMap = new HashMap<>();
+		Boolean rebootFromManager = ini.get("clientsettings", "rebootfrommanager", Boolean.class);
+		
+		//dev
+		String webServer = ini.get("dev", "webserver", String.class);
+		String port = ini.get("dev", "port", String.class);
+		Boolean bypassDevChecks = ini.get("dev", "bypassdev", Boolean.class);
+		
+		if(username == null || username.isEmpty()){
+			LOGGER.error("Bad value in settings.ini: value '" + username + "' is not accepted for username");
+			hasError = true;
+		}
+		if(password == null || username.isEmpty()){
+			LOGGER.error("Bad value in settings.ini: value '" + password + "' is not accepted for password");
 			hasError = true;
 		}
 		if(infernalMap == null){
@@ -154,6 +171,7 @@ public class ClientSettings {
 				}
 			} else {
 				if (overwriteSettings){
+					//botsettings
 					Section section = ini.get("botsettings");
 					for (String optionKey: section.keySet()) {
 						settingsOverwriteMap.put(optionKey, section.get(optionKey));
@@ -168,7 +186,7 @@ public class ClientSettings {
 		}
 		
 		if(!hasError){
-			ClientSettings settings = new ClientSettings(userId,infernalMap,infernalProgramName,numberOfAccounts,accountBuffer, uploadNewAccounts, clientTag, clientRegion, webServer,port, reboot, rebootTime, fetchSettings, overwriteSettings, settingsOverwriteMap, bypassDevChecks, rebootFromManager);
+			ClientSettings settings = new ClientSettings(username,password,infernalMap,infernalProgramName,numberOfAccounts,accountBuffer, uploadNewAccounts, clientTag, clientRegion, webServer,port, reboot, rebootTime, fetchSettings, overwriteSettings, settingsOverwriteMap, bypassDevChecks, rebootFromManager);
 			LOGGER.info("Loaded settings from settings.ini");
 			return settings;
 		} else {

@@ -23,7 +23,7 @@ public class ClientDataService {
 	
 	public ClientDataService(ClientSettings clientSettings,ClientData clientData){
 		this.jdbcClient =  new QueuerJDBCClient(clientSettings.getInfernalMap());
-		this.restClient = new ClientDataRestClient("http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort());
+		this.restClient = new ClientDataRestClient("http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort(), clientSettings.getUsername(), clientSettings.getPassword());
 		this.clientSettings = clientSettings;
 		this.clientData = clientData;
 	}

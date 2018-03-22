@@ -2,31 +2,34 @@ package net.nilsghesquiere.restclients;
 
 import java.io.IOException;
 
+import net.nilsghesquiere.entities.GlobalVariable;
 import net.nilsghesquiere.entities.LolAccount;
+import net.nilsghesquiere.util.wrappers.GlobalVariableSingleWrapper;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.client.support.BasicAuthorizationInterceptor;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 public class UserRestClient {
-	private static final String URI_USERS = "http://localhost:8080/api/users";
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserRestClient.class);
+	private final String URI_USERS;
 	private RestTemplate restTemplate = new RestTemplate();
 	
-	public LolAccount[] getAllAppUsers(){
-		LolAccount[] lolAccounts = restTemplate.getForObject(URI_USERS, LolAccount[].class);
-		return lolAccounts;
-	}
-
-	public LolAccount getAppUserById(Long id){
-		LolAccount lolAccount = restTemplate.getForObject(URI_USERS + "/" + id, LolAccount.class);
-		return lolAccount;
+	public UserRestClient(String uriServer, String username, String password) {
+		this.URI_USERS = uriServer +"/api/users";
+		restTemplate.getInterceptors().add(new BasicAuthorizationInterceptor(username, password));
 	}
 	
-	public String getAllAppUsersJSON(){
-		String response = restTemplate.getForObject(URI_USERS, String.class);
-		return response;
-	}
-
-	public String getAppUserByIdJSON(Long id) throws IOException{
-		String response = restTemplate.getForObject(URI_USERS +"/" + id, String.class);
-		return response;
+	public Long getUserIdByUsername(String username){
+		try{
+			Long jsonResponse = restTemplate.getForObject(URI_USERS + "/username/" + username, Long.class);
+			return jsonResponse;
+		} catch (ResourceAccessException e){
+			LOGGER.warn("Failure getting user ID from the server");
+			LOGGER.debug(e.getMessage());
+			return null;
+		}
 	}
 }

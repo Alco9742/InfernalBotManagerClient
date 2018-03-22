@@ -1,7 +1,6 @@
 package net.nilsghesquiere.restclients;
 
-import java.util.Collections;
-
+import net.nilsghesquiere.util.ProgramUtil;
 import net.nilsghesquiere.util.wrappers.ClientDataMap;
 import net.nilsghesquiere.util.wrappers.ClientDataWrapper;
 
@@ -10,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
+import org.springframework.http.client.support.BasicAuthorizationInterceptor;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
@@ -26,8 +25,9 @@ public class ClientDataRestClient {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ClientDataRestClient.class);
 	private final String URI_CLIENTS;
 	private RestTemplate restTemplate = new RestTemplate();
+	private HttpHeaders headers;
 	
-	public ClientDataRestClient(String uriServer) {
+	public ClientDataRestClient(String uriServer, String username, String password) {
 		this.URI_CLIENTS = uriServer +"/api/clients";
 		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
 		ObjectMapper mapper = new ObjectMapper();
@@ -39,15 +39,16 @@ public class ClientDataRestClient {
 		mapper.configure(MapperFeature.DEFAULT_VIEW_INCLUSION, false);
 		converter.setObjectMapper(mapper);
 		restTemplate.getMessageConverters().add(0,converter);
+		//set auth
+		restTemplate.getInterceptors().add(new BasicAuthorizationInterceptor(username,password));
+		//set headers
+		headers = ProgramUtil.buildHttpHeaders(username,password);
 	}
 	
 	//TODO: catch IOExceptions(probably) for when the server doesn't respond to a rest call(ALL REST REQUESTS) (see below)
 	
 	public boolean sendClientData(Long userid, ClientDataMap map){
 		boolean result = true;
-		HttpHeaders headers = new HttpHeaders();
-		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-		headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<ClientDataMap> request = new HttpEntity<>(map, headers);
 		try{ 
 			HttpEntity<ClientDataWrapper> response = restTemplate.exchange(URI_CLIENTS + "/user/" + userid,  HttpMethod.POST,request, ClientDataWrapper.class);

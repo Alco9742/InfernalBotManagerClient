@@ -14,6 +14,7 @@ import net.nilsghesquiere.services.ClientDataService;
 import net.nilsghesquiere.services.GlobalVariableService;
 import net.nilsghesquiere.services.InfernalSettingsService;
 import net.nilsghesquiere.services.LolAccountService;
+import net.nilsghesquiere.services.UserService;
 import net.nilsghesquiere.util.ProgramUtil;
 
 import org.slf4j.Logger;
@@ -29,6 +30,7 @@ public class InfernalBotManagerClient {
 	private ClientSettings clientSettings;
 	private ClientData clientData;
 	
+	private UserService userService;
 	private GlobalVariableService globalVariableService;
 	private LolAccountService accountService;
 	private InfernalSettingsService infernalSettingsService;
@@ -37,6 +39,7 @@ public class InfernalBotManagerClient {
 	public InfernalBotManagerClient(ClientSettings clientSettings) {
 		this.clientSettings = clientSettings;
 		this.clientData = new ClientData(clientSettings.getClientTag());
+		this.userService = new UserService(clientSettings);
 		this.globalVariableService = new GlobalVariableService(clientSettings);
 		this.accountService = new LolAccountService(clientSettings);
 		this.infernalSettingsService = new InfernalSettingsService(clientSettings);
@@ -56,7 +59,27 @@ public class InfernalBotManagerClient {
 			LOGGER.info("Shutdown scheduled in " + clientSettings.getRebootTime() + " seconds");
 		}
 	}
-
+	//User methods
+	public boolean setUserId() {
+		try{
+			Long id = userService.getUserId(clientSettings.getUsername());
+			if (id == null){
+				LOGGER.error("User '" +clientSettings.getUsername() +  "' not found on the server.");
+				return false;
+			} else {
+				clientSettings.setUserId(id);
+				return true;
+			}
+		} catch (ResourceAccessException e) {
+			LOGGER.error("Failure connecting to the InfernalBotManager server.");
+			LOGGER.debug(e.getMessage());
+				return false;
+		}
+	}
+	public Long getUserId(){
+		return userService.getUserId(clientSettings.getUsername());
+	}
+	
 	//GlobalVariables methods
 	public boolean checkConnection(){
 		try{
@@ -178,5 +201,7 @@ public class InfernalBotManagerClient {
 			LOGGER.error("Failed to download the updater");
 		}
 	}
+
+
 }
 

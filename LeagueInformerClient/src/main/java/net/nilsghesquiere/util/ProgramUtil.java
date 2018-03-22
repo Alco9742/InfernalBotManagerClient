@@ -11,11 +11,15 @@ import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Base64;
+import java.util.Collections;
 
 import net.nilsghesquiere.entities.ClientSettings;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 
 
 public class ProgramUtil {
@@ -116,4 +120,29 @@ public class ProgramUtil {
 		}
 		return Files.exists(backupDir);
 	}
+
+
+	public static HttpHeaders buildHttpHeaders(String username, String password){
+		HttpHeaders headers = new HttpHeaders();
+		//accept
+		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+		//contenttype
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		//authentication
+		String plainCreds  = username + ":" + password;
+		byte[] plainCredsBytes = plainCreds.getBytes();
+		byte[] base64CredsBytes = Base64.getEncoder().encode(plainCredsBytes);
+		String authHeader = "Basic " + new String(base64CredsBytes);
+		headers.add("Authorization", authHeader);
+		return headers;
+	}
+	
+	public static HttpHeaders buildHttpHeaders(){
+		HttpHeaders headers = new HttpHeaders();
+		//accept
+		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+		//contenttype
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		return headers;
+	}	
 }

@@ -1,10 +1,12 @@
 package net.nilsghesquiere.restclients;
 
 import net.nilsghesquiere.entities.InfernalSettings;
+import net.nilsghesquiere.util.ProgramUtil;
 import net.nilsghesquiere.util.wrappers.InfernalSettingsWrapper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.client.support.BasicAuthorizationInterceptor;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
@@ -14,8 +16,10 @@ public class InfernalSettingsRestClient {
 	private final String URI_INFERNALSETTINGS;
 	private RestTemplate restTemplate = new RestTemplate();
 	
-	public InfernalSettingsRestClient(String uriServer) {
+	public InfernalSettingsRestClient(String uriServer, String username, String password) {
 		this.URI_INFERNALSETTINGS = uriServer +"api/infernalsettings";
+		//set auth
+		restTemplate.getInterceptors().add(new BasicAuthorizationInterceptor(username,password));
 	}
 	public InfernalSettings getUserInfernalSettings(Long userid){
 		try{

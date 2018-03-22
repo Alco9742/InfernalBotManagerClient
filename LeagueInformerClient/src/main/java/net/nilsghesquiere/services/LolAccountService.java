@@ -23,7 +23,7 @@ public class LolAccountService {
 	
 	public LolAccountService(ClientSettings clientSettings){
 		this.jdbcClient =  new LoLAccountJDBCClient(clientSettings.getInfernalMap());
-		this.restClient = new LolAccountRestClient("http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort());
+		this.restClient = new LolAccountRestClient("http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort(), clientSettings.getUsername(), clientSettings.getPassword());
 		this.clientSettings = clientSettings;
 	}
 	

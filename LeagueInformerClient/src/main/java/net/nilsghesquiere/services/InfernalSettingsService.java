@@ -19,7 +19,7 @@ public class InfernalSettingsService {
 	
 	public InfernalSettingsService(ClientSettings clientSettings){
 		this.jdbcClient =  new InfernalSettingsJDBCClient(clientSettings.getInfernalMap());
-		this.restClient = new InfernalSettingsRestClient("http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort());
+		this.restClient = new InfernalSettingsRestClient("http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort(), clientSettings.getUsername(), clientSettings.getPassword());
 		this.clientSettings = clientSettings;
 		
 	}

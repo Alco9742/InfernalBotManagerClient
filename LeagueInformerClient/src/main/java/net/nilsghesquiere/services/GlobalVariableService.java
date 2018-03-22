@@ -13,7 +13,7 @@ public class GlobalVariableService {
 	private final GlobalVariableRestClient restClient;
 	
 	public GlobalVariableService(ClientSettings clientSettings){
-		this.restClient = new GlobalVariableRestClient("http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort());
+		this.restClient = new GlobalVariableRestClient("http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort(), clientSettings.getUsername(), clientSettings.getPassword());
 		
 	}
 	

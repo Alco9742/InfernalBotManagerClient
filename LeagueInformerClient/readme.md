@@ -2,9 +2,7 @@
 <h2>InfernalManagerClient</h2>
 <h3>TODO BEFORE BETA:</h3>	
 <ul>
-<li>Spring security -> Log in to server</li>
 <li>java2exe + encryption</li>
-<li>API system from infernal</li>
 </ul>
 
 
@@ -12,9 +10,10 @@
 <ul>
 <li>Client settings fetch from server</li>
 <li>Check server for riot server status --> add to network checks</li>
-<li>JavaFX front-end -- optional </li>
+<li>JavaFX front-end  </li>
 <li>Change from nullchecks to Optionals</li>
 <li>API system from infernal</li>
+<li>OAuth2 authentication</li>
 </ul>
 
 <h3>Client server connection map(for LolAccounts</h3>

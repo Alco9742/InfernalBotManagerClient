@@ -20,6 +20,7 @@ import org.ini4j.Reg;
 import org.ini4j.Wini;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.client.HttpClientErrorException;
 
 public class Main{
 	private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
@@ -49,12 +50,22 @@ public class Main{
 			iniLocation = System.getProperty("user.dir") + "\\" + ProgramConstants.INI_NAME; 
 		}
 		client = buildClient(iniLocation);
-		program();
+		try{
+			program();
+		} catch(HttpClientErrorException e){
+			//AuthenticationException
+			LOGGER.debug("Received the following response from the server: " + e.getMessage());
+			if (e.getMessage().toLowerCase().contains("unauthorized")){
+				LOGGER.error("Failure authenticating to the server, check your credentials");
+				exitWaitRunnable.exit();
+			}
+		}
 	}
 	
 	private static void test(){
 		LOGGER.info("TEST");
-		disableWindowsErrorReporting();
+		Long userId = client.getUserId();
+		LOGGER.info(userId.toString());
 	}
 	
 	private static void program(){
@@ -89,13 +100,13 @@ public class Main{
 				}
 			}
 			if (killSwitchOff){
+				//check for update
 				if (upToDate){
 					//backup sqllite file
 					if(client.backUpInfernalDatabase()){
-						//check for update
 						//initial checks
 						//Attempt to get accounts, retry if fail
-						boolean initDone = client.checkConnection() && client.setInfernalSettings() && client.exchangeAccounts();
+						boolean initDone = client.checkConnection() && client.setUserId() && client.setInfernalSettings() && client.exchangeAccounts();
 						while (!initDone){
 							try {
 								LOGGER.info("Retrying in 1 minute...");
