@@ -39,7 +39,7 @@ public class InfernalBotManagerRunnable implements Runnable {
 			LOGGER.info("Starting InfernalBot CrashChecker");
 		}
 		while (!stop){
-			if(ProgramUtil.isProcessRunning(client.getClientSettings().getInfernalProgramName())){
+			if(ProgramUtil.isProcessRunning(client.getClientSettings().getInfernalProcessName())){
 				LOGGER.warn("InfernalBot process not found, restarting client");
 				for(Entry<Thread,ClientDataManagerRunnable> entry : dataThreadMap.entrySet()){
 					entry.getKey().interrupt();

@@ -19,6 +19,7 @@ public class ClientSettings {
 	private String password;
 	private String infernalMap;
 	private String infernalProgramName;
+	private String infernalProcessName;
 	private Integer accountAmount;
 	private Integer accountBuffer;
 	private Boolean uploadNewAccounts;
@@ -36,7 +37,7 @@ public class ClientSettings {
 
 
 	
-	public ClientSettings(String username, String password, String infernalMap, String infernalProgramName,
+	public ClientSettings(String username, String password, String infernalMap, String infernalProgramName, String infernalProcessName,
 			Integer accountAmount,Integer accountBuffer, Boolean uploadNewAccounts, String clientTag, Region clientRegion,
 			String webServer, String port, Boolean reboot, Integer rebootTime,
 			Boolean fetchSettings, Boolean overwriteSettings, Map<String, String> settingsOverwriteMap,
@@ -47,6 +48,7 @@ public class ClientSettings {
 		this.password = password;
 		this.infernalMap = infernalMap;
 		this.infernalProgramName = infernalProgramName;
+		this.infernalProcessName = infernalProcessName;
 		this.accountAmount = accountAmount;
 		this.accountBuffer = accountBuffer;
 		this.uploadNewAccounts = uploadNewAccounts;
@@ -77,6 +79,7 @@ public class ClientSettings {
 		//clientsettings
 		String infernalMap = ini.get("clientsettings", "infernalmap", String.class);
 		String infernalProgramName = ini.get("clientsettings", "infernalprogramname", String.class);
+		String infernalProcessName = ini.get("clientsettings", "infernalprocessname", String.class);
 		Integer numberOfAccounts = ini.get("clientsettings", "accounts", Integer.class);
 		Integer accountBuffer = ini.get("clientsettings", "accountbuffer", Integer.class);
 		Boolean uploadNewAccounts = ini.get("clientsettings","uploadnewaccounts", Boolean.class);
@@ -106,6 +109,10 @@ public class ClientSettings {
 		}
 		if(infernalProgramName == null){
 			LOGGER.error("Bad value in settings.ini: value '" + infernalProgramName + "' is not accepted for infernalprogramname");
+			hasError = true;
+		}
+		if(infernalProcessName == null){
+			LOGGER.error("Bad value in settings.ini: value '" + infernalProcessName + "' is not accepted for infernalprocessname");
 			hasError = true;
 		}
 		if(numberOfAccounts == null){
@@ -186,7 +193,7 @@ public class ClientSettings {
 		}
 		
 		if(!hasError){
-			ClientSettings settings = new ClientSettings(username,password,infernalMap,infernalProgramName,numberOfAccounts,accountBuffer, uploadNewAccounts, clientTag, clientRegion, webServer,port, reboot, rebootTime, fetchSettings, overwriteSettings, settingsOverwriteMap, bypassDevChecks, rebootFromManager);
+			ClientSettings settings = new ClientSettings(username,password,infernalMap,infernalProgramName,infernalProcessName,numberOfAccounts,accountBuffer, uploadNewAccounts, clientTag, clientRegion, webServer,port, reboot, rebootTime, fetchSettings, overwriteSettings, settingsOverwriteMap, bypassDevChecks, rebootFromManager);
 			LOGGER.info("Loaded settings from settings.ini");
 			return settings;
 		} else {

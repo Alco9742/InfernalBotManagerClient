@@ -44,7 +44,7 @@ public class ClientDataManagerRunnable implements Runnable {
 				} else {
 					LOGGER.info("No active queuers found, closing InfernalBot process");
 					try {
-						ProcessBuilder builder = new ProcessBuilder( "cmd.exe", "/c", "taskkill /F /IM " + client.getClientSettings().getInfernalProgramName());
+						ProcessBuilder builder = new ProcessBuilder( "cmd.exe", "/c", "taskkill /F /IM " + client.getClientSettings().getInfernalProcessName());
 						builder.redirectErrorStream(true);
 						Process p = builder.start();
 						BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
