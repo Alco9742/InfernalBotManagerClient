@@ -76,7 +76,7 @@ public class ProgramUtil {
 			String managerMap = System.getProperty("user.dir");
 			String filePath = managerMap + "\\downloads\\" + filename;
 			// Sample Url Location
-			String url = "http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort() + "/admin/files/" + filename; 
+			String url = "http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort() + "/downloads/" + filename; 
 			URL urlObj = null;
 			ReadableByteChannel rbcObj = null;
 			FileOutputStream fOutStream  = null;
