@@ -96,7 +96,7 @@ public class Main{
 					}
 				} catch (NullPointerException ex){
 					LOGGER.error("Bad configuration on the server, contact Alco");
-					System.exit(0);
+					exitWaitRunnable.exit();
 				}
 			}
 			if (killSwitchOff){
@@ -131,20 +131,20 @@ public class Main{
 						infernalThread.start();
 					} else {
 						LOGGER.info("Closing InfernalBotManager Client");
-						System.exit(0);
+						exitWaitRunnable.exit();
 					}
 				} else {
 					client.updateClient();
 					LOGGER.info("Closing InfernalBotManager Client");
-					System.exit(0);
+					exitWaitRunnable.exit();
 				}
 			} else {
 				LOGGER.info("Closing InfernalBotManager Client");
-				System.exit(0);
+				exitWaitRunnable.exit();
 			}
 		} else {
 			LOGGER.info("Closing InfernalBotManager Client");
-			System.exit(0);
+			exitWaitRunnable.exit();
 		}
 	}
 	private static InfernalBotManagerClient buildClient(String iniFile){

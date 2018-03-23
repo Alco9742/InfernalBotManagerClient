@@ -50,6 +50,19 @@ public class GracefulExitHook extends Thread {
 				}
 			}
 		}
+		//Stop the runnable without launching hook
+		if (Main.exitWaitThread.isAlive()){
+			Main.exitWaitThread.interrupt();
+			Main.exitWaitRunnable.dontLaunchHook();
+			Main.exitWaitRunnable.exit();
+			try {
+				Main.exitWaitThread.join();
+			} catch (InterruptedException e) {
+				fail = true;
+				LOGGER.error("Failure closing threads");
+				LOGGER.debug(e.getMessage());
+			}
+		}
 		if(!fail){
 			LOGGER.info("Closed all threads, ending program");
 			if (this.rebootWindows){

@@ -16,6 +16,8 @@ import java.util.Collections;
 
 import net.nilsghesquiere.entities.ClientSettings;
 
+import org.ini4j.InvalidFileFormatException;
+import org.ini4j.Wini;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -51,6 +53,21 @@ public class ProgramUtil {
 			return false;
 		}
 		return false;
+	}
+	
+	public static String getInfernalProcessname(String infernalMap){
+		String newProcessName = "";
+		try {
+			Wini ini = new Wini(new File(infernalMap + "/configs/settings.ini" ));
+			newProcessName = ini.get("Programs", "Launcher", String.class);
+		} catch (InvalidFileFormatException e2) {
+			LOGGER.error("Failure reading the infernal settings.ini");
+			LOGGER.debug(e2.getMessage());
+		} catch (IOException e2) {
+			LOGGER.error("Failure reading the infernal settings.ini");
+			LOGGER.debug(e2.getMessage());
+		}
+		return newProcessName;
 	}
 	
 	

@@ -1,9 +1,6 @@
 package net.nilsghesquiere.runnables;
 
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -13,8 +10,6 @@ import net.nilsghesquiere.InfernalBotManagerClient;
 import net.nilsghesquiere.Main;
 import net.nilsghesquiere.util.ProgramUtil;
 
-import org.ini4j.InvalidFileFormatException;
-import org.ini4j.Wini;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,6 +18,8 @@ public class InfernalBotManagerRunnable implements Runnable {
 	private final InfernalBotManagerClient client;
 	private volatile boolean stop = false;
 	public static Map<Thread, ClientDataManagerRunnable> dataThreadMap = new HashMap<>();
+	private String processName = "";
+	private String oldProcessName = "";
 	
 	public InfernalBotManagerRunnable(InfernalBotManagerClient client) {
 		super();
@@ -45,34 +42,31 @@ public class InfernalBotManagerRunnable implements Runnable {
 			//get the process name from the infernal settings.configs file
 			//TODO add checks here for available location etc
 			//TODO fix try/catch
-			try {
-				Wini ini = new Wini(new File(client.getClientSettings().getInfernalMap() + "/configs/settings.ini" ));
-				String newProcessName = ini.get("Programs", "Launcher", String.class);
-				LOGGER.info("Process name set to " + newProcessName);
-				client.getClientSettings().setInfernalProcessName(newProcessName);
-			} catch (InvalidFileFormatException e2) {
-				// TODO Auto-generated catch block
-				e2.printStackTrace();
-			} catch (IOException e2) {
-				// TODO Auto-generated catch block
-				e2.printStackTrace();
+			oldProcessName = processName;
+			processName = ProgramUtil.getInfernalProcessname(client.getClientSettings().getInfernalMap());
+			if(!processName.equals(oldProcessName)){
+				LOGGER.info("Infernal bot process name updated to: " + processName);
 			}
-			if(ProgramUtil.isProcessRunning(client.getClientSettings().getInfernalProcessName())){
-				LOGGER.warn("InfernalBot process not found, restarting client");
-				for(Entry<Thread,ClientDataManagerRunnable> entry : dataThreadMap.entrySet()){
-					entry.getKey().interrupt();
-					entry.getValue().stop();
-					try {
-						entry.getKey().join();
-					} catch (InterruptedException e) {
-						LOGGER.error("Failure closing thread");
-						LOGGER.debug(e.getMessage());
+			if(!processName.isEmpty()){
+				if(ProgramUtil.isProcessRunning(processName)){
+					LOGGER.warn("InfernalBot process not found, restarting client");
+					for(Entry<Thread,ClientDataManagerRunnable> entry : dataThreadMap.entrySet()){
+						entry.getKey().interrupt();
+						entry.getValue().stop();
+						try {
+							entry.getKey().join();
+						} catch (InterruptedException e) {
+							LOGGER.error("Failure closing thread");
+							LOGGER.debug(e.getMessage());
+						}
 					}
-				}
-				if(client.checkConnection() && client.exchangeAccounts()){
-					runInfernalbot();
+					if(client.checkConnection() && client.exchangeAccounts()){
+						runInfernalbot();
+					} else {
+						LOGGER.info("Retrying in 1 minute..");
+					}
 				} else {
-					LOGGER.info("Retrying in 1 minute..");
+					LOGGER.error("Failure finding current InfernalBot process name");
 				}
 			}
 			try {

@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 public class ExitWaitRunnable implements Runnable {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ExitWaitRunnable.class);
 	private volatile boolean exit = false;
+	private volatile boolean launchHook = true;
 	
 	public ExitWaitRunnable() {
 		super();
@@ -31,11 +32,21 @@ public class ExitWaitRunnable implements Runnable {
 				LOGGER.debug(e2.getMessage());
 			}
 		}
-		Main.gracefullExitHook.start();
+		if (launchHook){
+			Main.gracefullExitHook.start();
+		}
 	}
 
 	public void exit(){
 		exit = true;
+	}
+
+	public boolean getExit(){
+		return exit;
+	}
+	
+	public void dontLaunchHook(){
+		launchHook = false;
 	}
 
 }

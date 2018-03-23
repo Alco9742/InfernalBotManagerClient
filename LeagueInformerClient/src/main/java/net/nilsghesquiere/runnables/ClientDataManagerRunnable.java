@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 import net.nilsghesquiere.InfernalBotManagerClient;
 import net.nilsghesquiere.Main;
-import net.nilsghesquiere.entities.ClientSettings;
+import net.nilsghesquiere.util.ProgramUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,15 +44,20 @@ public class ClientDataManagerRunnable implements Runnable {
 				} else {
 					LOGGER.info("No active queuers found, closing InfernalBot process");
 					try {
-						ProcessBuilder builder = new ProcessBuilder( "cmd.exe", "/c", "taskkill /F /IM " + client.getClientSettings().getInfernalProcessName());
-						builder.redirectErrorStream(true);
-						Process p = builder.start();
-						BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
-						String line;
-						while (true) {
-							line = r.readLine();
-							if (line == null) { break; }
-							LOGGER.debug(line);
+						String processName = ProgramUtil.getInfernalProcessname(client.getClientSettings().getInfernalMap());
+						if(!processName.isEmpty()){
+							ProcessBuilder builder = new ProcessBuilder( "cmd.exe", "/c", "taskkill /F /IM " + processName);
+							builder.redirectErrorStream(true);
+							Process p = builder.start();
+							BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+							String line;
+							while (true) {
+								line = r.readLine();
+								if (line == null) { break; }
+								LOGGER.debug(line);
+							}
+						} else {
+							LOGGER.error("Failure finding current InfernalBot process name");
 						}
 					} catch (IOException e){
 						LOGGER.error("Failure trying to kill InfernalBot Process");
