@@ -37,7 +37,6 @@ public class Main{
 		//start the ExitWaiter
 		exitWaitRunnable = new ExitWaitRunnable();
 		exitWaitThread = new Thread(exitWaitRunnable);
-		exitWaitThread.setDaemon(false); 
 		exitWaitThread.start();
 		if(ProgramConstants.useSwingGUI){
 			InfernalBotManagerGUI gui = new InfernalBotManagerGUI();

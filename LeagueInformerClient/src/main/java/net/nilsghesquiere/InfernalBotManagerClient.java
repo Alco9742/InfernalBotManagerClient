@@ -184,13 +184,14 @@ public class InfernalBotManagerClient {
 			try{
 				//build the args
 				String arg0 = managerMap;
-				String arg1 = "http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort() + "/admin/files/";
+				String arg1 = "http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort() + "/downloads/";
 				String command = "\"" + updaterPath.toString() + "\" \"" + arg0 + "\" \"" + arg1 + "\"";
 	
 				//Start the updater
 				LOGGER.info("Starting updater");
 				LOGGER.info(command);
 				ProcessBuilder pb = new ProcessBuilder("java", "-jar", command);
+				
 				pb.directory(new File(managerMap));
 				Process p = pb.start();
 				} catch (IOException e) {
