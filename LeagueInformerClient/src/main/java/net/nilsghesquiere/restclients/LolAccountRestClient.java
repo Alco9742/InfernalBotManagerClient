@@ -17,6 +17,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.client.support.BasicAuthorizationInterceptor;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
@@ -28,7 +29,7 @@ public class LolAccountRestClient {
 	private HttpHeaders headers;
 	
 	public LolAccountRestClient(String uriServer, String username, String password) {
-		this.URI_ACCOUNTS = uriServer +"api/accounts";
+		this.URI_ACCOUNTS = uriServer +"/api/accounts";
 		//set auth
 		restTemplate.getInterceptors().add(new BasicAuthorizationInterceptor(username,password));
 		//set headers
@@ -122,6 +123,7 @@ public class LolAccountRestClient {
 		try{
 			boolean result = true;
 			HttpEntity<LolMixedAccountMap> request = new HttpEntity<>(map, headers);
+			LOGGER.debug(URI_ACCOUNTS + "/user/" + userid + "/infernalImport");
 			HttpEntity<StringResponseMap> response = restTemplate.exchange(URI_ACCOUNTS + "/user/" + userid + "/infernalImport", HttpMethod.PUT,request, StringResponseMap.class);
 			StringResponseMap stringResponseMap = response.getBody();
 			LOGGER.debug("sendInfernalAccounts - existing:" + map.getMap().values());

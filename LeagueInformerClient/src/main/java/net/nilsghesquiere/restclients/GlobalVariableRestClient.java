@@ -16,12 +16,12 @@ public class GlobalVariableRestClient {
 	private RestTemplate restTemplate = new RestTemplate();
 	
 	public GlobalVariableRestClient(String uriServer, String username, String password) {
-		this.URI_GLOBALVARIABLES = uriServer +"api/admin/globalvars";
+		this.URI_GLOBALVARIABLES = uriServer +"api/vars";
 		restTemplate.getInterceptors().add(new BasicAuthorizationInterceptor(username, password));
 	}
 	public GlobalVariable getGlobalVariableByName(String name){
 		try{
-			GlobalVariableSingleWrapper jsonResponse = restTemplate.getForObject(URI_GLOBALVARIABLES + "/name/" + name, GlobalVariableSingleWrapper.class);
+			GlobalVariableSingleWrapper jsonResponse = restTemplate.getForObject(URI_GLOBALVARIABLES + "/" + name, GlobalVariableSingleWrapper.class);
 			GlobalVariable globalVariable = jsonResponse.getMap().get("data");
 			return globalVariable;
 		} catch (ResourceAccessException e){

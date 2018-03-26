@@ -56,8 +56,11 @@ public class Main{
 			LOGGER.debug("Received the following response from the server: " + e.getMessage());
 			if (e.getMessage().toLowerCase().contains("unauthorized")){
 				LOGGER.error("Failure authenticating to the server, check your credentials");
-				exitWaitRunnable.exit();
 			}
+			if (e.getMessage().toLowerCase().contains("not found")){
+				LOGGER.error("Something went wrong, contact Alco");
+			}
+			exitWaitRunnable.exit();
 		}
 	}
 	
@@ -96,6 +99,12 @@ public class Main{
 				} catch (NullPointerException ex){
 					LOGGER.error("Bad configuration on the server, contact Alco");
 					exitWaitRunnable.exit();
+					try {
+						TimeUnit.SECONDS.sleep(10);
+					} catch (InterruptedException e) {
+						LOGGER.error("Failure during sleep");
+						LOGGER.debug(e.getMessage());
+					}
 				}
 			}
 			if (killSwitchOff){

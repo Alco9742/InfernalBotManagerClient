@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.PrintStream;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -13,6 +14,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.text.DefaultCaret;
 
 import net.nilsghesquiere.Main;
 
@@ -40,20 +42,21 @@ public class InfernalBotManagerGUI extends JFrame {
 			LOGGER.debug(e.getMessage());
 		}
 		
-		BufferedImage icon = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB_PRE);
+		ImageIcon icon = createImageIcon("/league.png","InfernalBotManagerClient");
 		this.setTitle("InfernalBotManager");
-		this.setIconImage(icon);
+		this.setIconImage(icon.getImage());
 		
 		JTabbedPane tabbedPane = new JTabbedPane();
 
 		JPanel consolePanel = new JPanel(false);
-		
 		consolePanel.setLayout(new GridLayout(1, 1));
 		JTextArea ta = new JTextArea();
 		//Set background black
 		ta.setBackground(Color.BLACK); 
 		//Set Foreground(text) white
 		ta.setForeground(Color.WHITE);
+		DefaultCaret caret = (DefaultCaret)ta.getCaret();
+		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 		TextAreaOutputStream taos = new TextAreaOutputStream( ta, 60 );
 		PrintStream ps = new PrintStream( taos );
 		System.setOut( ps );
@@ -76,5 +79,15 @@ public class InfernalBotManagerGUI extends JFrame {
 			}
 		});
 		
+	}
+	
+	protected ImageIcon createImageIcon(String path,String description) {
+			java.net.URL imgURL = getClass().getResource(path);
+			if (imgURL != null) {
+				return new ImageIcon(imgURL, description);
+			} else {
+				System.err.println("Couldn't find file: " + path);
+				return null;
+			}
 	}
 }
