@@ -1,7 +1,7 @@
 package net.nilsghesquiere.util;
 
 public class ProgramConstants {
-	public static final String CLIENT_VERSION = "0.8.2";
+	public static final String CLIENT_VERSION = "0.8.3";
 	public static final String INI_NAME = "settings.ini";
 	public static final String WEBSERVER = "infernalbot-manager.herokuapp.com" ;
 	public static final String PORT = "";

@@ -65,9 +65,9 @@ public class InfernalBotManagerRunnable implements Runnable {
 					} else {
 						LOGGER.info("Retrying in 1 minute..");
 					}
-				} else {
-					LOGGER.error("Failure finding current InfernalBot process name");
 				}
+			} else {
+				LOGGER.error("Failure finding current InfernalBot process name");
 			}
 			try {
 				TimeUnit.MINUTES.sleep(1);
