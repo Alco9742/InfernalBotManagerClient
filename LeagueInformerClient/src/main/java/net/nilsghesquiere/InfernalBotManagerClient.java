@@ -25,7 +25,6 @@ import org.springframework.web.client.ResourceAccessException;
 public class InfernalBotManagerClient {
 	private static final Logger LOGGER = LoggerFactory.getLogger(InfernalBotManagerClient.class);
 	private static final String UPDATER_NAME = "InfernalBotManagerUpdater.jar";
-	private static final String PROGRAM_NAME = "InfernalBotManagerClient.jar";
 	
 	private ClientSettings clientSettings;
 	private ClientData clientData;
@@ -50,7 +49,6 @@ public class InfernalBotManagerClient {
 	public void scheduleReboot(){
 		if (clientSettings.getReboot()){
 			try {
-				//Process p = Runtime.getRuntime().exec("shutdown -r -t " + clientSettings.getRebootTime());
 				Runtime.getRuntime().exec("shutdown -r -t " + clientSettings.getRebootTime());
 			} catch (IOException e) {
 				LOGGER.error("Error scheduling reboot");

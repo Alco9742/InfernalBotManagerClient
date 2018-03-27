@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Map.Entry;
+import java.util.concurrent.TimeUnit;
 
 import net.nilsghesquiere.Main;
 import net.nilsghesquiere.runnables.ClientDataManagerRunnable;
@@ -84,7 +85,13 @@ public class GracefulExitHook extends Thread {
 				}
 			}
 		}
-		LOGGER.info("Closing InfernalBotManager Client");
+		LOGGER.info("Closing InfernalBotManager Client in 5 seconds");
+		try {
+			TimeUnit.SECONDS.sleep(5);
+		} catch (InterruptedException e) {
+			LOGGER.error("Failure during sleep");
+			LOGGER.debug(e.getMessage());
+		}
 		System.exit(0);
 	}
 }

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import lombok.Data;
 import net.nilsghesquiere.enums.Region;
+import net.nilsghesquiere.util.ProgramConstants;
 
 import org.ini4j.Profile.Section;
 import org.ini4j.Wini;
@@ -24,23 +25,24 @@ public class ClientSettings {
 	private Boolean uploadNewAccounts;
 	private String clientTag;
 	private Region clientRegion;
-	private String webServer;
-	private String port;
 	private Boolean reboot;
 	private Integer rebootTime;
 	private Boolean fetchSettings;
 	private Boolean overwriteSettings;
 	Map<String, String> settingsOverwriteMap;
-	private Boolean bypassDevChecks;
 	private Boolean rebootFromManager;
+	private Boolean enableDevMode;
+	private Boolean bypassDevChecks;
+	private String webServer;
+	private String port;
 
 
 	
 	public ClientSettings(String username, String password, String infernalMap, String infernalProgramName,
 			Integer accountAmount,Integer accountBuffer, Boolean uploadNewAccounts, String clientTag, Region clientRegion,
-			String webServer, String port, Boolean reboot, Integer rebootTime,
+			Boolean reboot, Integer rebootTime,
 			Boolean fetchSettings, Boolean overwriteSettings, Map<String, String> settingsOverwriteMap,
-			Boolean bypassDevChecks, boolean rebootFromManager) {
+			Boolean rebootFromManager,Boolean enableDevMode, Boolean bypassDevChecks, String webServer, String port) {
 		super();
 		this.userId = -1L;
 		this.username = username;
@@ -52,15 +54,16 @@ public class ClientSettings {
 		this.uploadNewAccounts = uploadNewAccounts;
 		this.clientTag = clientTag;
 		this.clientRegion = clientRegion;
-		this.webServer = webServer;
-		this.port = port;
 		this.reboot = reboot;
 		this.rebootTime = rebootTime;
 		this.fetchSettings = fetchSettings;
 		this.overwriteSettings = overwriteSettings;
 		this.settingsOverwriteMap = settingsOverwriteMap;
-		this.bypassDevChecks = bypassDevChecks;
 		this.rebootFromManager = rebootFromManager;
+		this.enableDevMode = enableDevMode;
+		this.bypassDevChecks = bypassDevChecks;
+		this.webServer = webServer;
+		this.port = port;
 	}
 	
 	public static ClientSettings buildFromIni(Wini ini){
@@ -88,9 +91,11 @@ public class ClientSettings {
 		Boolean rebootFromManager = ini.get("clientsettings", "rebootfrommanager", Boolean.class);
 		
 		//dev
+		Boolean enableDevMode = ini.get("dev", "devmode", Boolean.class);
+		Boolean bypassDevChecks = ini.get("dev", "bypassdev", Boolean.class);
 		String webServer = ini.get("dev", "webserver", String.class);
 		String port = ini.get("dev", "port", String.class);
-		Boolean bypassDevChecks = ini.get("dev", "bypassdev", Boolean.class);
+
 		
 		if(username == null || username.isEmpty()){
 			LOGGER.error("Bad value in settings.ini: value '" + username + "' is not accepted for username");
@@ -128,14 +133,6 @@ public class ClientSettings {
 			LOGGER.error("Bad value in settings.ini: value '" + clientRegion + "' is not accepted for region");
 			hasError = true;
 		}
-		if(webServer == null){
-			LOGGER.error("Bad value in settings.ini: value '" + webServer + "' is not accepted for webserver");
-			hasError = true;
-		}
-		if(port == null){
-			LOGGER.error("Bad value in settings.ini: value '" + port + "' is not accepted for port");
-			hasError = true;
-		}
 		if(reboot == null){
 			LOGGER.error("Bad value in settings.ini: value '" + reboot + "' is not accepted for reboot");
 			hasError = true;
@@ -151,9 +148,7 @@ public class ClientSettings {
 			LOGGER.error("Bad value in settings.ini: value '" + infernalMap + "' is not accepted for infernalmap");
 			hasError = true;
 		}
-		if(bypassDevChecks == null){
-			bypassDevChecks = false;
-		}
+
 		if(fetchSettings == null){
 			LOGGER.error("Bad value in settings.ini: value '" + fetchSettings + "' is not accepted for fetchsettings");
 			hasError = true;
@@ -185,8 +180,27 @@ public class ClientSettings {
 			hasError = true;
 		}
 		
+		if(enableDevMode != null && enableDevMode){
+			if(bypassDevChecks == null){
+				bypassDevChecks = false;
+			}
+			
+			if(webServer == null){
+				LOGGER.error("Bad value in settings.ini: value '" + webServer + "' is not accepted for webserver");
+				hasError = true;
+			}
+			if(port == null){
+				LOGGER.error("Bad value in settings.ini: value '" + port + "' is not accepted for port");
+				hasError = true;
+			}
+		} else {
+			bypassDevChecks = false;
+			webServer = ProgramConstants.WEBSERVER;
+			port = ProgramConstants.PORT;
+		}
+
 		if(!hasError){
-			ClientSettings settings = new ClientSettings(username,password,infernalMap,infernalProgramName,numberOfAccounts,accountBuffer, uploadNewAccounts, clientTag, clientRegion, webServer,port, reboot, rebootTime, fetchSettings, overwriteSettings, settingsOverwriteMap, bypassDevChecks, rebootFromManager);
+			ClientSettings settings = new ClientSettings(username,password,infernalMap,infernalProgramName,numberOfAccounts,accountBuffer, uploadNewAccounts, clientTag, clientRegion, reboot, rebootTime, fetchSettings, overwriteSettings, settingsOverwriteMap, rebootFromManager, enableDevMode, bypassDevChecks, webServer, port);
 			LOGGER.info("Loaded settings from settings.ini");
 			return settings;
 		} else {

@@ -39,6 +39,7 @@ public class Main{
 		exitWaitThread = new Thread(exitWaitRunnable);
 		exitWaitThread.start();
 		if(ProgramConstants.useSwingGUI){
+			@SuppressWarnings("unused")
 			InfernalBotManagerGUI gui = new InfernalBotManagerGUI();
 		}
 		LOGGER.info("Starting InfernalBotManager Client");
@@ -64,6 +65,7 @@ public class Main{
 		}
 	}
 	
+	@SuppressWarnings("unused")
 	private static void test(){
 		LOGGER.info("TEST");
 		Long userId = client.getUserId();
@@ -174,6 +176,8 @@ public class Main{
 			}
 		} else {
 			LOGGER.error("settings.ini file not found at path: " + iniFilePath);
+			LOGGER.info("Generating default settings.ini file");
+			generateDefaultSettings(iniFile);
 		}
 		disableWindowsErrorReporting();
 		return client;
@@ -191,5 +195,46 @@ public class Main{
 			LOGGER.debug(e.getMessage());
 		}
 		
+	}
+	
+	private static void generateDefaultSettings(String iniFile) {
+		try {
+			File file = new File(iniFile);
+			file.createNewFile();
+			Wini ini = new Wini(new File(iniFile));
+			
+			//login
+			ini.put("login", "username", "managerusername");
+			ini.put("login", "password", "managerpassword");
+			
+			//clientinfo
+			ini.put("clientinfo", "clienttag", "clienttag");
+			ini.put("clientinfo", "region", "EUW");
+		
+			//clientsettings
+			ini.put("clientsettings", "infernalmap", "C:/PATH/TO/INFERNAL/MAP");
+			ini.put("clientsettings", "infernalprogramname", "Infernal-Start.exe");
+			ini.put("clientsettings", "accounts", "5");
+			ini.put("clientsettings", "accountbuffer", "2");
+			ini.put("clientsettings","uploadnewaccounts", "false");
+			ini.put("clientsettings", "reboot", "false");
+			ini.put("clientsettings", "reboottime", "10800");
+			ini.put("clientsettings","fetchsettings", "true");
+			ini.put("clientsettings","overwritesettings", "false");
+			ini.put("clientsettings", "rebootfrommanager", "false");
+
+			//botsettings
+			ini.put("botsettings", "groups", "2");
+			ini.put("botsettings", "clientpath", "C:/PATH/TO/LOL/MAP");
+			
+			//write
+			ini.store();
+		} catch (InvalidFileFormatException e) {
+			LOGGER.error("Error reading settings.ini file");
+			LOGGER.debug(e.getMessage());
+		} catch (IOException e) {
+			LOGGER.error("Failure creating file");
+			LOGGER.debug(e.getMessage());
+		}
 	}
 }

@@ -3,6 +3,8 @@
 <h3>TODO BEFORE BETA:</h3>	
 <ul>
 <li>java2exe + encryption</li>
+<li>generate ini file if not found</li>
+<li>clean up settings file (static server reference)</li>
 </ul>
 
 
