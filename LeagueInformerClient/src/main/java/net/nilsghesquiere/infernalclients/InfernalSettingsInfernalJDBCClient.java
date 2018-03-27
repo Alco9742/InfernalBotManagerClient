@@ -1,4 +1,4 @@
-package net.nilsghesquiere.jdbcclients;
+package net.nilsghesquiere.infernalclients;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,25 +14,26 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 //TODO Transactions
-public class InfernalSettingsJDBCClient {
-	private static final Logger LOGGER = LoggerFactory.getLogger(InfernalSettingsJDBCClient.class);
+public class InfernalSettingsInfernalJDBCClient implements InfernalSettingsInfernalClient{
+	private static final Logger LOGGER = LoggerFactory.getLogger(InfernalSettingsInfernalJDBCClient.class);
 	private final String DATABASE_URI;
 	private static final String SELECT_DEFAULT_SQL = "SELECT * FROM Settings WHERE Sets='Default'";
-	private static final String SELECT_INFERNALBOTMANAGER_SQL = "SELECT * FROM Settings WHERE Sets='InfernalBotManager'";
 	private static final String INSERT_SQL = "INSERT INTO Settings(Sets,User,Password,Groups,Level,ClientPath,CurrentVersion,Wildcard,MaxLevel,Sleeptime,Playtime,Region,Prio,GrSize,ClientUpdateSel,replaceConfig,lolHeight,lolWidth,MaxIP,Aktive,ClientHide,ConsoleHide,RamManager,RamMin,RamMax,LeaderHide,Surender,RenderDisable,LeaderRenderDisable,CPUBoost,LeaderCPUBoost,LevelToBeginnerBot,TimeSpan,SoftEndDefault,SoftEndValue,QueuerAutoClose,QueuerCloseValue,WinReboot,WinShutdown,TimeoutLogin,TimeoutLobby,TimeoutChamp,TimeoutMastery,TimeoutLoadGame,TimeoutInGame,TimeoutInGameFF,TimeoutEndOfGame,TimeUntilCheck,TimeUntilReboot,ServerCON,ServerPORT,OpenChest,OpenHexTech,DisChest,APIClient,MySQLServer,MySQLDatabase,MySQLUSer,MySQLPassword,MySQLQueueTable,MySqlAktivTable) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 	private static final String UPDATE_SQL = "REPLACE INTO Settings(ID,Sets,User,Password,Groups,Level,ClientPath,CurrentVersion,Wildcard,MaxLevel,Sleeptime,Playtime,Region,Prio,GrSize,ClientUpdateSel,replaceConfig,lolHeight,lolWidth,MaxIP,Aktive,ClientHide,ConsoleHide,RamManager,RamMin,RamMax,LeaderHide,Surender,RenderDisable,LeaderRenderDisable,CPUBoost,LeaderCPUBoost,LevelToBeginnerBot,TimeSpan,SoftEndDefault,SoftEndValue,QueuerAutoClose,QueuerCloseValue,WinReboot,WinShutdown,TimeoutLogin,TimeoutLobby,TimeoutChamp,TimeoutMastery,TimeoutLoadGame,TimeoutInGame,TimeoutInGameFF,TimeoutEndOfGame,TimeUntilCheck,TimeUntilReboot,ServerCON,ServerPORT,OpenChest,OpenHexTech,DisChest,APIClient,MySQLServer,MySQLDatabase,MySQLUSer,MySQLPassword,MySQLQueueTable,MySqlAktivTable) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 	
 	
-	public InfernalSettingsJDBCClient(String infernalMap){
+	public InfernalSettingsInfernalJDBCClient(String infernalMap){
 		this.DATABASE_URI = "jdbc:sqlite:" + infernalMap +"InfernalDatabase.sqlite";
 	}
 	
-	public void connect(){
+	public boolean connect(){
 		try(Connection connection = DriverManager.getConnection(DATABASE_URI)){
 			LOGGER.info("Connected to InfernalBot database.");
+			return true;
 		} catch (SQLException e) {
 			LOGGER.error("Failure connecting to InfernalBot database.");
 			LOGGER.debug(e.getMessage());
+			return false;
 		} 
 	}
 	
@@ -51,26 +52,6 @@ public class InfernalSettingsJDBCClient {
 			}
 		} catch (SQLException e) {
 			LOGGER.error("Failure receiving the default settings from InfernalBot.");
-			LOGGER.debug(e.getMessage());
-		} 
-		return infernalSettings;
-	}
-	
-	public InfernalSettings getInfernalBotManagerInfernalSettings(){
-		InfernalSettings infernalSettings = null;
-		try(Connection connection = DriverManager.getConnection(DATABASE_URI)){
-			Statement statement = connection.createStatement();
-			ResultSet resultSet = statement.executeQuery(SELECT_INFERNALBOTMANAGER_SQL);
-			while (resultSet.next()){
-				infernalSettings = InfernalSettings.buildFromResultSet(resultSet);
-			}
-			if (infernalSettings != null){
-				LOGGER.info("Received InfernalBotManager settings from InfernalBot.");
-			} else {
-				//LOGGER.warn("InfernalBotManager settings not found in the InfernalBot database, creating new set.");
-			}
-		} catch (SQLException e) {
-			LOGGER.error("Failure receiving the InfernalBotManager settings from InfernalBot.");
 			LOGGER.debug(e.getMessage());
 		} 
 		return infernalSettings;
@@ -225,7 +206,6 @@ public class InfernalSettingsJDBCClient {
 			statement.setString(62,infernalSettings.getMySQLAktivTable());
 			statement.executeUpdate();
 			LOGGER.info("Updated the Default settings in InfernalBot.");
-			//LOGGER.info("Successfully updated InfernalBotManager settings in the InfernalBot database.");
 			ResultSet rs = statement.getGeneratedKeys();
 			if (rs != null && rs.next()) {
 				key = rs.getLong(1);
@@ -233,7 +213,6 @@ public class InfernalSettingsJDBCClient {
 			return key;
 		} catch (SQLException e) {
 			LOGGER.error("Failure updating the Default settings in InfernalBot.");
-			//LOGGER.info("Error updating InfernalBotManager settings in the InfernalBot database.");
 			LOGGER.debug(e.getMessage());
 			return key;
 		}

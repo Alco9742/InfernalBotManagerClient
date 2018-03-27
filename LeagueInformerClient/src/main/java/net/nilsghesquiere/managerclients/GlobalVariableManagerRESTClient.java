@@ -1,4 +1,4 @@
-package net.nilsghesquiere.restclients;
+package net.nilsghesquiere.managerclients;
 
 import net.nilsghesquiere.entities.GlobalVariable;
 import net.nilsghesquiere.util.wrappers.GlobalVariableSingleWrapper;
@@ -10,12 +10,12 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 
-public class GlobalVariableRestClient {
-	private static final Logger LOGGER = LoggerFactory.getLogger(GlobalVariableRestClient.class);
+public class GlobalVariableManagerRESTClient implements GlobalVariableManagerClient{
+	private static final Logger LOGGER = LoggerFactory.getLogger(GlobalVariableManagerRESTClient.class);
 	private final String URI_GLOBALVARIABLES;
 	private RestTemplate restTemplate = new RestTemplate();
 	
-	public GlobalVariableRestClient(String uriServer, String username, String password) {
+	public GlobalVariableManagerRESTClient(String uriServer, String username, String password) {
 		this.URI_GLOBALVARIABLES = uriServer +"api/vars";
 		restTemplate.getInterceptors().add(new BasicAuthorizationInterceptor(username, password));
 	}

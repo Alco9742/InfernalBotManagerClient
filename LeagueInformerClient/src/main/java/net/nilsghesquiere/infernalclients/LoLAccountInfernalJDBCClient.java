@@ -1,4 +1,4 @@
-package net.nilsghesquiere.jdbcclients;
+package net.nilsghesquiere.infernalclients;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -9,23 +9,21 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.nilsghesquiere.entities.LolAccount;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.nilsghesquiere.entities.LolAccount;
-import net.nilsghesquiere.enums.AccountStatus;
-import net.nilsghesquiere.enums.Region;
-
 //TODO Transactions
-public class LoLAccountJDBCClient {
-	private static final Logger LOGGER = LoggerFactory.getLogger(LoLAccountJDBCClient.class);
+public class LoLAccountInfernalJDBCClient implements LolAccountInfernalClient {
+	private static final Logger LOGGER = LoggerFactory.getLogger(LoLAccountInfernalJDBCClient.class);
 	private final String DATABASE_URI;
 	private static final String SELECT_SQL = "SELECT * FROM Accountlist";
 	private static final String DELETE_SQL = "DELETE FROM Accountlist";
 	private static final String INSERT_SQL = "INSERT INTO Accountlist(Account,Password,Summoner,Region,Level,MaxLevel,XP,IP,MaxIP,Prioity,Status,Playtime,Sleeptime,Active) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 	
 	
-	public LoLAccountJDBCClient(String infernalMap){
+	public LoLAccountInfernalJDBCClient(String infernalMap){
 		this.DATABASE_URI = "jdbc:sqlite:" + infernalMap +"InfernalDatabase.sqlite";
 	}
 	
@@ -61,7 +59,7 @@ public class LoLAccountJDBCClient {
 		return lolAccounts;
 	}
 
-	public void deleteAccounts(){
+	public void deleteAllAccounts(){
 		try(Connection connection = DriverManager.getConnection(DATABASE_URI)){
 			connection.setAutoCommit(false);
 			Statement statement = connection.createStatement();

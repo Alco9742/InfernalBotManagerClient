@@ -4,36 +4,37 @@ import java.util.Map.Entry;
 
 import net.nilsghesquiere.entities.ClientSettings;
 import net.nilsghesquiere.entities.InfernalSettings;
-import net.nilsghesquiere.jdbcclients.InfernalSettingsJDBCClient;
-import net.nilsghesquiere.restclients.InfernalSettingsRestClient;
+import net.nilsghesquiere.infernalclients.InfernalSettingsInfernalClient;
+import net.nilsghesquiere.infernalclients.InfernalSettingsInfernalJDBCClient;
+import net.nilsghesquiere.managerclients.InfernalSettingsManagerClient;
+import net.nilsghesquiere.managerclients.InfernalSettingsManagerRESTClient;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.client.ResourceAccessException;
 
 public class InfernalSettingsService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(InfernalSettingsService.class);
-	private final InfernalSettingsJDBCClient jdbcClient;
-	private final InfernalSettingsRestClient restClient;
+	private final InfernalSettingsInfernalClient infernalClient;
+	private final InfernalSettingsManagerClient managerClient;
 	private final ClientSettings clientSettings;
 	
 	public InfernalSettingsService(ClientSettings clientSettings){
-		this.jdbcClient =  new InfernalSettingsJDBCClient(clientSettings.getInfernalMap());
-		this.restClient = new InfernalSettingsRestClient("http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort(), clientSettings.getUsername(), clientSettings.getPassword());
+		this.infernalClient =  new InfernalSettingsInfernalJDBCClient(clientSettings.getInfernalMap());
+		this.managerClient = new InfernalSettingsManagerRESTClient("http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort(), clientSettings.getUsername(), clientSettings.getPassword());
 		this.clientSettings = clientSettings;
 		
 	}
 	
 	public boolean updateInfernalSettings(Long userid){
-		InfernalSettings infernalSettingsFromREST = restClient.getUserInfernalSettings(userid);
+		InfernalSettings infernalSettingsFromREST = managerClient.getUserInfernalSettings(userid);
 		//Disabled this for now: It is always the default set atm
 		//InfernalSettings infernalSettingsFromJDBC = jdbcClient.getInfernalBotManagerInfernalSettings();
-		InfernalSettings infernalSettingsFromJDBC = jdbcClient.getDefaultInfernalSettings();
+		InfernalSettings infernalSettingsFromJDBC = infernalClient.getDefaultInfernalSettings();
 		if (infernalSettingsFromREST != null){
 			if (infernalSettingsFromJDBC != null){
 				//TODO update every field from the jdbc setting with the settings from rest and update
 				InfernalSettings infernalSettingsForUpdate = prepareInfernalSettingsForJDBC(infernalSettingsFromJDBC, infernalSettingsFromREST);
-				Long newId = jdbcClient.updateInfernalSettings(infernalSettingsForUpdate);
+				Long newId = infernalClient.updateInfernalSettings(infernalSettingsForUpdate);
 				if (newId == infernalSettingsForUpdate.getId()){
 					return true;
 				} else{
@@ -41,12 +42,12 @@ public class InfernalSettingsService {
 					return false;
 				}
 			} else {
-				InfernalSettings infernalSettingsDefaultFromJDBC = jdbcClient.getDefaultInfernalSettings();
+				InfernalSettings infernalSettingsDefaultFromJDBC = infernalClient.getDefaultInfernalSettings();
 				if (infernalSettingsDefaultFromJDBC != null){
 					//TODO update every field from the jdbc setting with the settings from rest and update, set ID to -1
 					infernalSettingsDefaultFromJDBC.setId(-1L);
 					InfernalSettings infernalSettingsForInsert = prepareInfernalSettingsForJDBC(infernalSettingsDefaultFromJDBC, infernalSettingsFromREST);
-					Long newId = jdbcClient.insertInfernalSettings(infernalSettingsForInsert);
+					Long newId = infernalClient.insertInfernalSettings(infernalSettingsForInsert);
 					if(newId != -1L){
 						//LOGGER.info("Successfully created InfernalBotManager setting in the InfernalBot database");
 					} else {

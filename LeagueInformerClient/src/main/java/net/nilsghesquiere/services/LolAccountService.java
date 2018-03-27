@@ -6,8 +6,10 @@ import java.util.List;
 import net.nilsghesquiere.entities.ClientSettings;
 import net.nilsghesquiere.entities.LolAccount;
 import net.nilsghesquiere.enums.AccountStatus;
-import net.nilsghesquiere.jdbcclients.LoLAccountJDBCClient;
-import net.nilsghesquiere.restclients.LolAccountRestClient;
+import net.nilsghesquiere.infernalclients.LoLAccountInfernalJDBCClient;
+import net.nilsghesquiere.infernalclients.LolAccountInfernalClient;
+import net.nilsghesquiere.managerclients.LolAccountManagerClient;
+import net.nilsghesquiere.managerclients.LolAccountManagerRESTClient;
 import net.nilsghesquiere.util.wrappers.LolMixedAccountMap;
 
 import org.slf4j.Logger;
@@ -17,13 +19,13 @@ import org.springframework.web.client.ResourceAccessException;
 public class LolAccountService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(LolAccountService.class);
 	private final ClientSettings clientSettings;
-	private final LoLAccountJDBCClient jdbcClient;
-	private final LolAccountRestClient restClient;
+	private final LolAccountInfernalClient infernalClient;
+	private final LolAccountManagerClient managerClient;
 
 	
 	public LolAccountService(ClientSettings clientSettings){
-		this.jdbcClient =  new LoLAccountJDBCClient(clientSettings.getInfernalMap());
-		this.restClient = new LolAccountRestClient("http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort(), clientSettings.getUsername(), clientSettings.getPassword());
+		this.infernalClient =  new LoLAccountInfernalJDBCClient(clientSettings.getInfernalMap());
+		this.managerClient = new LolAccountManagerRESTClient("http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort(), clientSettings.getUsername(), clientSettings.getPassword());
 		this.clientSettings = clientSettings;
 	}
 	
@@ -33,34 +35,34 @@ public class LolAccountService {
 		//     Client2 uploads the accs and does the same!!!! --> solution: check on assigned to
 		LolMixedAccountMap sendMap = prepareAccountsToSend();
 		//lege map niet senden
-		if(sendMap == null || restClient.sendInfernalAccounts(clientSettings.getUserId(), sendMap)){
+		if(sendMap == null || managerClient.sendInfernalAccounts(clientSettings.getUserId(), sendMap)){
 			if(sendMap != null){
-				jdbcClient.deleteAccounts();
+				infernalClient.deleteAllAccounts();
 			}
-			List<LolAccount> accountsForInfernal = restClient.getUsableAccounts(clientSettings.getUserId(), clientSettings.getClientRegion(), clientSettings.getAccountAmount());
+			List<LolAccount> accountsForInfernal = managerClient.getUsableAccounts(clientSettings.getUserId(), clientSettings.getClientRegion(), clientSettings.getAccountAmount());
 			int addedInfernalAccounts = 0;
 			if (!accountsForInfernal.isEmpty()){
-				addedInfernalAccounts = jdbcClient.insertAccounts(accountsForInfernal, false);
+				addedInfernalAccounts = infernalClient.insertAccounts(accountsForInfernal, false);
 			}
 			if (addedInfernalAccounts > 0){
 				for (LolAccount lolAccount : accountsForInfernal){
 					lolAccount.setAccountStatus(AccountStatus.IN_USE);
 					lolAccount.setAssignedTo(clientSettings.getClientTag());
 				}
-				restClient.updateLolAccounts(clientSettings.getUserId(), accountsForInfernal);
+				managerClient.updateLolAccounts(clientSettings.getUserId(), accountsForInfernal);
 			}
 			if (clientSettings.getAccountBuffer() > 0){
-				List<LolAccount> accountsForInfernalBuffer = restClient.getBufferAccounts(clientSettings.getUserId(), clientSettings.getClientRegion(), clientSettings.getAccountBuffer());
+				List<LolAccount> accountsForInfernalBuffer = managerClient.getBufferAccounts(clientSettings.getUserId(), clientSettings.getClientRegion(), clientSettings.getAccountBuffer());
 				int addedInfernalBufferAccounts = 0;
 				if (!accountsForInfernalBuffer.isEmpty()){
-					addedInfernalBufferAccounts = jdbcClient.insertAccounts(accountsForInfernalBuffer, true);
+					addedInfernalBufferAccounts = infernalClient.insertAccounts(accountsForInfernalBuffer, true);
 				}
 				if (addedInfernalBufferAccounts > 0){
 					for (LolAccount lolAccount : accountsForInfernalBuffer){
 						lolAccount.setAccountStatus(AccountStatus.IN_BUFFER);
 						lolAccount.setAssignedTo(clientSettings.getClientTag());
 					}
-					restClient.updateLolAccounts(clientSettings.getUserId(), accountsForInfernalBuffer);
+					managerClient.updateLolAccounts(clientSettings.getUserId(), accountsForInfernalBuffer);
 				}
 			}	
 			if (addedInfernalAccounts < 5) {
@@ -78,9 +80,9 @@ public class LolAccountService {
 	public boolean setAccountsAsReadyForUse(){
 		LolMixedAccountMap sendMap = prepareAccountsToSend();
 		try{
-			if(restClient.sendInfernalAccounts(clientSettings.getUserId(), sendMap)){
+			if(managerClient.sendInfernalAccounts(clientSettings.getUserId(), sendMap)){
 				LOGGER.info("Updated accounts on server");
-				jdbcClient.deleteAccounts();
+				infernalClient.deleteAllAccounts();
 			} else {
 				LOGGER.error("Failure updating accounts on server.");
 				return false;
@@ -96,10 +98,10 @@ public class LolAccountService {
 	private LolMixedAccountMap prepareAccountsToSend(){
 		LolMixedAccountMap lolAccountMap = new LolMixedAccountMap();
 		List<LolAccount> newAccounts = new ArrayList<>();
-		List<LolAccount> accountsFromJDBC = jdbcClient.getAccounts();
+		List<LolAccount> accountsFromJDBC = infernalClient.getAccounts();
 		if (!accountsFromJDBC.isEmpty()){
 			for (LolAccount accountFromJDBC : accountsFromJDBC){
-				LolAccount accountFromREST = restClient.getByUserIdRegionAndAccount(clientSettings.getUserId(), accountFromJDBC.getRegion(),accountFromJDBC.getAccount());
+				LolAccount accountFromREST = managerClient.getByUserIdRegionAndAccount(clientSettings.getUserId(), accountFromJDBC.getRegion(),accountFromJDBC.getAccount());
 				//added here to only touch accounts not assigned to anyone or assigned to this client
 				if(accountFromREST != null){
 					boolean accountAssignedToOtherClient = true;

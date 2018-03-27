@@ -1,23 +1,22 @@
 package net.nilsghesquiere.services;
 
-import net.nilsghesquiere.Main;
 import net.nilsghesquiere.entities.ClientSettings;
-import net.nilsghesquiere.restclients.GlobalVariableRestClient;
-import net.nilsghesquiere.restclients.UserRestClient;
-import net.nilsghesquiere.util.ProgramConstants;
+import net.nilsghesquiere.managerclients.UserManagerClient;
+import net.nilsghesquiere.managerclients.UserManagerRESTClient;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class UserService {
+	@SuppressWarnings("unused")
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
-	private final UserRestClient restClient;
+	private final UserManagerClient managerClient;
 	
 	public UserService(ClientSettings clientSettings){
-		this.restClient = new UserRestClient("http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort(), clientSettings.getUsername(), clientSettings.getPassword());
+		this.managerClient = new UserManagerRESTClient("http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort(), clientSettings.getUsername(), clientSettings.getPassword());
 	}
 	
 	public Long getUserId(String username){
-		return restClient.getUserIdByUsername(username);
+		return managerClient.getUserIdByUsername(username);
 	}
 }

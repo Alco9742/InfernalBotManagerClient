@@ -1,10 +1,4 @@
-package net.nilsghesquiere.restclients;
-
-import java.io.IOException;
-
-import net.nilsghesquiere.entities.GlobalVariable;
-import net.nilsghesquiere.entities.LolAccount;
-import net.nilsghesquiere.util.wrappers.GlobalVariableSingleWrapper;
+package net.nilsghesquiere.managerclients;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,12 +6,12 @@ import org.springframework.http.client.support.BasicAuthorizationInterceptor;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
-public class UserRestClient {
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserRestClient.class);
+public class UserManagerRESTClient implements UserManagerClient{
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserManagerRESTClient.class);
 	private final String URI_USERS;
 	private RestTemplate restTemplate = new RestTemplate();
 	
-	public UserRestClient(String uriServer, String username, String password) {
+	public UserManagerRESTClient(String uriServer, String username, String password) {
 		this.URI_USERS = uriServer +"/api/users";
 		restTemplate.getInterceptors().add(new BasicAuthorizationInterceptor(username, password));
 	}

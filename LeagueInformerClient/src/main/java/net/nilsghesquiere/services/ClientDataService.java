@@ -6,31 +6,34 @@ import java.util.List;
 import net.nilsghesquiere.entities.ClientData;
 import net.nilsghesquiere.entities.ClientSettings;
 import net.nilsghesquiere.entities.Queuer;
-import net.nilsghesquiere.jdbcclients.QueuerJDBCClient;
-import net.nilsghesquiere.restclients.ClientDataRestClient;
+import net.nilsghesquiere.infernalclients.ClientDataInfernalClient;
+import net.nilsghesquiere.infernalclients.ClientDataInfernalJDBCClient;
+import net.nilsghesquiere.managerclients.ClientDataManagerClient;
+import net.nilsghesquiere.managerclients.ClientDataManagerRESTClient;
 import net.nilsghesquiere.util.wrappers.ClientDataMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ClientDataService {
+	@SuppressWarnings("unused")
 	private static final Logger LOGGER = LoggerFactory.getLogger(ClientDataService.class);
 	private final ClientSettings clientSettings;
 	private final ClientData clientData;
-	private final ClientDataRestClient restClient;
-	private final QueuerJDBCClient jdbcClient;
+	private final ClientDataManagerClient managerClient;
+	private final ClientDataInfernalClient infernalClient;
 	
 	
 	public ClientDataService(ClientSettings clientSettings,ClientData clientData){
-		this.jdbcClient =  new QueuerJDBCClient(clientSettings.getInfernalMap());
-		this.restClient = new ClientDataRestClient("http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort(), clientSettings.getUsername(), clientSettings.getPassword());
+		this.infernalClient =  new ClientDataInfernalJDBCClient(clientSettings.getInfernalMap());
+		this.managerClient = new ClientDataManagerRESTClient("http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort(), clientSettings.getUsername(), clientSettings.getPassword());
 		this.clientSettings = clientSettings;
 		this.clientData = clientData;
 	}
 	
 	public void sendData(String status){
 		ClientDataMap sendmap = prepareData(status);
-		restClient.sendClientData(clientSettings.getUserId(), sendmap);
+		managerClient.sendClientData(clientSettings.getUserId(), sendmap);
 	}
 	
 	public boolean hasActiveQueuer(){
@@ -38,14 +41,14 @@ public class ClientDataService {
 	}
 	
 	public Integer activeQueuerAmount(){
-		return jdbcClient.countQueuers();
+		return infernalClient.countQueuers();
 	}
 	
 	private ClientDataMap prepareData(String status){
 		ClientDataMap clientDataMap = new ClientDataMap();
-		List<Queuer> queuers = jdbcClient.getQueuers();
+		List<Queuer> queuers = infernalClient.getQueuers();
 		for (Queuer queuer : queuers){
-			queuer.setQueuerLolAccounts(jdbcClient.getQueuerAccounts(queuer));
+			queuer.setQueuerLolAccounts(infernalClient.getQueuerAccounts(queuer));
 		}
 		clientData.setDate(LocalDateTime.now());
 		clientData.setQueuers(queuers);
@@ -55,11 +58,10 @@ public class ClientDataService {
 	}
 	
 	public void deleteAllQueuers(){
-		List<Queuer> queuers = jdbcClient.getQueuers();
+		List<Queuer> queuers = infernalClient.getQueuers();
 		for (Queuer queuer : queuers){
-			jdbcClient.deleteQueuer(queuer);
+			infernalClient.deleteQueuer(queuer);
 		}
-		jdbcClient.deleteQueuerExtent();
+		infernalClient.deleteQueuerExtent();
 	}
-	
 } 

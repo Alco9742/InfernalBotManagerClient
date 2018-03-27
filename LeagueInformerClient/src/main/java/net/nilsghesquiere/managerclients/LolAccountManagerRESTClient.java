@@ -1,4 +1,4 @@
-package net.nilsghesquiere.restclients;
+package net.nilsghesquiere.managerclients;
 
 import java.util.List;
 import java.util.Map.Entry;
@@ -17,18 +17,17 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.client.support.BasicAuthorizationInterceptor;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 
-public class LolAccountRestClient {
-	private static final Logger LOGGER = LoggerFactory.getLogger(LolAccountRestClient.class);
+public class LolAccountManagerRESTClient implements LolAccountManagerClient {
+	private static final Logger LOGGER = LoggerFactory.getLogger(LolAccountManagerRESTClient.class);
 	private final String URI_ACCOUNTS;
 	private RestTemplate restTemplate = new RestTemplate();
 	private HttpHeaders headers;
 	
-	public LolAccountRestClient(String uriServer, String username, String password) {
+	public LolAccountManagerRESTClient(String uriServer, String username, String password) {
 		this.URI_ACCOUNTS = uriServer +"/api/accounts";
 		//set auth
 		restTemplate.getInterceptors().add(new BasicAuthorizationInterceptor(username,password));
@@ -39,11 +38,6 @@ public class LolAccountRestClient {
 	public List<LolAccount> getUserLolAccounts(Long userid){
 		LolAccountWrapper jsonResponse = restTemplate.getForObject(URI_ACCOUNTS + "/user/" + userid, LolAccountWrapper.class);
 		return jsonResponse.getMap().get("data");
-	}
-	
-	public String getUserLolAccountsJSON(Long userid){
-		String lolAccounts = restTemplate.getForObject(URI_ACCOUNTS + "/user/" + userid, String.class);
-		return lolAccounts;
 	}
 	
 	public List<LolAccount> getUsableAccounts(Long userid, Region region, Integer amount){
@@ -143,9 +137,5 @@ public class LolAccountRestClient {
 			LOGGER.debug(e.getMessage());
 			return false;
 		}
-	}
-	
-	public void test(){
-		HttpHeaders httpHeaders = restTemplate.headForHeaders("http://localhost:8080/api/accounts/user/3");
 	}
 }

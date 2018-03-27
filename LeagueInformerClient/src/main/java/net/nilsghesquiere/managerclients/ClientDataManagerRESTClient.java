@@ -1,4 +1,4 @@
-package net.nilsghesquiere.restclients;
+package net.nilsghesquiere.managerclients;
 
 import net.nilsghesquiere.util.ProgramUtil;
 import net.nilsghesquiere.util.wrappers.ClientDataMap;
@@ -21,13 +21,13 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 
-public class ClientDataRestClient {
-	private static final Logger LOGGER = LoggerFactory.getLogger(ClientDataRestClient.class);
+public class ClientDataManagerRESTClient implements ClientDataManagerClient {
+	private static final Logger LOGGER = LoggerFactory.getLogger(ClientDataManagerRESTClient.class);
 	private final String URI_CLIENTS;
 	private RestTemplate restTemplate = new RestTemplate();
 	private HttpHeaders headers;
 	
-	public ClientDataRestClient(String uriServer, String username, String password) {
+	public ClientDataManagerRESTClient(String uriServer, String username, String password) {
 		this.URI_CLIENTS = uriServer +"/api/clients";
 		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
 		ObjectMapper mapper = new ObjectMapper();

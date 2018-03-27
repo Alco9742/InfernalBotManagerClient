@@ -1,4 +1,4 @@
-package net.nilsghesquiere.jdbcclients;
+package net.nilsghesquiere.infernalclients;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -16,8 +16,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 //TODO Transactions
-public class QueuerJDBCClient {
-	private static final Logger LOGGER = LoggerFactory.getLogger(QueuerJDBCClient.class);
+public class ClientDataInfernalJDBCClient implements ClientDataInfernalClient{
+	private static final Logger LOGGER = LoggerFactory.getLogger(ClientDataInfernalJDBCClient.class);
 	private final String DATABASE_URI;
 	private Properties config;
 	private static final String SELECT_SQL = "SELECT * FROM QeuerExtent";
@@ -25,7 +25,7 @@ public class QueuerJDBCClient {
 	private static final String DELETE_SQL = "DELETE FROM QeuerExtent";
 	
 	
-	public QueuerJDBCClient(String infernalMap){
+	public ClientDataInfernalJDBCClient(String infernalMap){
 		this.DATABASE_URI = "jdbc:sqlite:" + infernalMap +"InfernalDatabase.sqlite";
 		config = new Properties();
 		config.setProperty("open_mode", "1"); // 1 == readonly

@@ -1,8 +1,8 @@
 package net.nilsghesquiere.services;
 
-import net.nilsghesquiere.Main;
 import net.nilsghesquiere.entities.ClientSettings;
-import net.nilsghesquiere.restclients.GlobalVariableRestClient;
+import net.nilsghesquiere.managerclients.GlobalVariableManagerClient;
+import net.nilsghesquiere.managerclients.GlobalVariableManagerRESTClient;
 import net.nilsghesquiere.util.ProgramConstants;
 
 import org.slf4j.Logger;
@@ -10,10 +10,10 @@ import org.slf4j.LoggerFactory;
 
 public class GlobalVariableService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(GlobalVariableService.class);
-	private final GlobalVariableRestClient restClient;
+	private final GlobalVariableManagerClient managerClient;
 	
 	public GlobalVariableService(ClientSettings clientSettings){
-		this.restClient = new GlobalVariableRestClient("http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort(), clientSettings.getUsername(), clientSettings.getPassword());
+		this.managerClient = new GlobalVariableManagerRESTClient("http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort(), clientSettings.getUsername(), clientSettings.getPassword());
 		
 	}
 	
@@ -49,18 +49,18 @@ public class GlobalVariableService {
 	}
 	
 	private String getClientVersion(){
-		return restClient.getGlobalVariableByName("clientVersion").getValue();
+		return managerClient.getGlobalVariableByName("clientVersion").getValue();
 	}
 	
 	private String getKillSwitch(){
-		return restClient.getGlobalVariableByName("killSwitch").getValue().toLowerCase();
+		return managerClient.getGlobalVariableByName("killSwitch").getValue().toLowerCase();
 	}
 	
 	private String getKillSwitchMessage(){
-		return restClient.getGlobalVariableByName("killSwitchMessage").getValue();
+		return managerClient.getGlobalVariableByName("killSwitchMessage").getValue();
 	}
 	
 	private String getConnection(){
-		return restClient.getGlobalVariableByName("connection").getValue();
+		return managerClient.getGlobalVariableByName("connection").getValue();
 	}
 }
