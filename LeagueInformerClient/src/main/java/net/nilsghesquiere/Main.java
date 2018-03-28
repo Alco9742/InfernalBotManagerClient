@@ -51,14 +51,6 @@ public class Main{
 			iniLocation = System.getProperty("user.dir") + "\\" + ProgramConstants.INI_NAME; 
 		}
 		client = buildClient(iniLocation);
-		if (client.getClientSettings().getEnableDevMode()){
-			//start the ThreadChecker
-			ThreadCheckerRunnable threadCheckerRunnable = new ThreadCheckerRunnable();
-			Thread threadCheckerThread = new Thread(threadCheckerRunnable);
-			threadMap.put(threadCheckerThread, threadCheckerRunnable);
-			threadCheckerThread.setDaemon(false); 
-			threadCheckerThread.start();
-		}
 		try{
 			program();
 		} catch(HttpClientErrorException e){
@@ -83,6 +75,14 @@ public class Main{
 	
 	private static void program(){
 		if (client != null){
+			if (client.getClientSettings().getEnableDevMode()){
+				//start the ThreadChecker
+				ThreadCheckerRunnable threadCheckerRunnable = new ThreadCheckerRunnable();
+				Thread threadCheckerThread = new Thread(threadCheckerRunnable);
+				threadMap.put(threadCheckerThread, threadCheckerRunnable);
+				threadCheckerThread.setDaemon(false); 
+				threadCheckerThread.start();
+			}
 			boolean upToDate = true;
 			boolean connected = false;
 			boolean killSwitchOff = true;
