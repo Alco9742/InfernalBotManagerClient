@@ -16,10 +16,11 @@ import org.slf4j.LoggerFactory;
 public class ClientSettings {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ClientSettings.class);
 	private Long userId;
+	
 	private String username;
 	private String password;
+	
 	private String infernalMap;
-	private String infernalProgramName;
 	private Integer accountAmount;
 	private Integer accountBuffer;
 	private Boolean uploadNewAccounts;
@@ -31,24 +32,25 @@ public class ClientSettings {
 	private Boolean overwriteSettings;
 	Map<String, String> settingsOverwriteMap;
 	private Boolean rebootFromManager;
+	
 	private Boolean enableDevMode;
 	private Boolean bypassDevChecks;
+	private String infernalProgramName;
 	private String webServer;
 	private String port;
 
-
+	private Boolean readme;
 	
-	public ClientSettings(String username, String password, String infernalMap, String infernalProgramName,
+	public ClientSettings(String username, String password, String infernalMap,
 			Integer accountAmount,Integer accountBuffer, Boolean uploadNewAccounts, String clientTag, Region clientRegion,
 			Boolean reboot, Integer rebootTime,
 			Boolean fetchSettings, Boolean overwriteSettings, Map<String, String> settingsOverwriteMap,
-			Boolean rebootFromManager,Boolean enableDevMode, Boolean bypassDevChecks, String webServer, String port) {
+			Boolean rebootFromManager,Boolean enableDevMode, Boolean bypassDevChecks, String infernalProgramName, String webServer, String port, Boolean readme) {
 		super();
 		this.userId = -1L;
 		this.username = username;
 		this.password = password;
 		this.infernalMap = infernalMap;
-		this.infernalProgramName = infernalProgramName;
 		this.accountAmount = accountAmount;
 		this.accountBuffer = accountBuffer;
 		this.uploadNewAccounts = uploadNewAccounts;
@@ -62,13 +64,15 @@ public class ClientSettings {
 		this.rebootFromManager = rebootFromManager;
 		this.enableDevMode = enableDevMode;
 		this.bypassDevChecks = bypassDevChecks;
+		this.infernalProgramName = infernalProgramName;
 		this.webServer = webServer;
 		this.port = port;
+		this.readme = readme;
 	}
 	
 	public static ClientSettings buildFromIni(Wini ini){
 		boolean hasError = false;
-		
+		boolean readmeRead = false;
 		//login
 		String username = ini.get("login", "username", String.class);
 		String password = ini.get("login", "password", String.class);
@@ -79,7 +83,6 @@ public class ClientSettings {
 		
 		//clientsettings
 		String infernalMap = ini.get("clientsettings", "infernalmap", String.class);
-		String infernalProgramName = ini.get("clientsettings", "infernalprogramname", String.class);
 		Integer numberOfAccounts = ini.get("clientsettings", "accounts", Integer.class);
 		Integer accountBuffer = ini.get("clientsettings", "accountbuffer", Integer.class);
 		Boolean uploadNewAccounts = ini.get("clientsettings","uploadnewaccounts", Boolean.class);
@@ -93,9 +96,11 @@ public class ClientSettings {
 		//dev
 		Boolean enableDevMode = ini.get("dev", "devmode", Boolean.class);
 		Boolean bypassDevChecks = ini.get("dev", "bypassdev", Boolean.class);
+		String infernalProgramName = ini.get("dev", "infernalprogramname", String.class);
 		String webServer = ini.get("dev", "webserver", String.class);
 		String port = ini.get("dev", "port", String.class);
 
+		String readme = ini.get("extra", "readme", String.class);
 		
 		if(username == null || username.isEmpty()){
 			LOGGER.error("Bad value in settings.ini: value '" + username + "' is not accepted for username");
@@ -107,10 +112,6 @@ public class ClientSettings {
 		}
 		if(infernalMap == null){
 			LOGGER.error("Bad value in settings.ini: value '" + infernalMap + "' is not accepted for infernalmap");
-			hasError = true;
-		}
-		if(infernalProgramName == null){
-			LOGGER.error("Bad value in settings.ini: value '" + infernalProgramName + "' is not accepted for infernalprogramname");
 			hasError = true;
 		}
 		if(numberOfAccounts == null){
@@ -184,23 +185,32 @@ public class ClientSettings {
 			if(bypassDevChecks == null){
 				bypassDevChecks = false;
 			}
-			
 			if(webServer == null){
-				LOGGER.error("Bad value in settings.ini: value '" + webServer + "' is not accepted for webserver");
-				hasError = true;
+				webServer = ProgramConstants.WEBSERVER;
 			}
 			if(port == null){
-				LOGGER.error("Bad value in settings.ini: value '" + port + "' is not accepted for port");
-				hasError = true;
+				port = ProgramConstants.PORT;
 			}
+			if(infernalProgramName == null){
+				infernalProgramName = ProgramConstants.INFERNAL_PROG_NAME;
+			}
+			
 		} else {
 			bypassDevChecks = false;
 			webServer = ProgramConstants.WEBSERVER;
 			port = ProgramConstants.PORT;
+			infernalProgramName = ProgramConstants.INFERNAL_PROG_NAME;
 		}
-
+		
+		if(readme == null || !readme.equals("read")){
+			LOGGER.error("Bad value in settings.ini: value '" + readme + "' is not accepted for readme");
+			hasError = true;
+		} else {
+			readmeRead = true;
+		}
+		
 		if(!hasError){
-			ClientSettings settings = new ClientSettings(username,password,infernalMap,infernalProgramName,numberOfAccounts,accountBuffer, uploadNewAccounts, clientTag, clientRegion, reboot, rebootTime, fetchSettings, overwriteSettings, settingsOverwriteMap, rebootFromManager, enableDevMode, bypassDevChecks, webServer, port);
+			ClientSettings settings = new ClientSettings(username,password,infernalMap,numberOfAccounts,accountBuffer, uploadNewAccounts, clientTag, clientRegion, reboot, rebootTime, fetchSettings, overwriteSettings, settingsOverwriteMap, rebootFromManager, enableDevMode, bypassDevChecks, infernalProgramName, webServer, port, readmeRead);
 			LOGGER.info("Loaded settings from settings.ini");
 			return settings;
 		} else {

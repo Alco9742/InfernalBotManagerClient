@@ -9,6 +9,8 @@ import java.util.concurrent.TimeUnit;
 import net.nilsghesquiere.Main;
 import net.nilsghesquiere.runnables.ClientDataManagerRunnable;
 import net.nilsghesquiere.runnables.InfernalBotManagerRunnable;
+import net.nilsghesquiere.runnables.ThreadCheckerRunnable;
+import net.nilsghesquiere.util.ProgramUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,6 +52,20 @@ public class GracefulExitHook extends Thread {
 					LOGGER.debug(e.getMessage());
 				}
 			}
+			
+			if (entry.getValue() instanceof ThreadCheckerRunnable){
+				ThreadCheckerRunnable threadCheckerRunnable =(ThreadCheckerRunnable) entry.getValue();
+				LOGGER.info("Gracefully shutting down ThreadChecker, please don't close the program");
+				entry.getKey().interrupt();
+				threadCheckerRunnable.stop();
+				try {
+					entry.getKey().join();
+				} catch (InterruptedException e) {
+					fail = true;
+					LOGGER.error("Failure closing threads");
+					LOGGER.debug(e.getMessage());
+				}
+			}
 		}
 		//Stop the runnable without launching hook
 		if (Main.exitWaitThread.isAlive()){
@@ -67,9 +83,10 @@ public class GracefulExitHook extends Thread {
 		if(!fail){
 			LOGGER.info("Closed all threads, ending program");
 			if (this.rebootWindows){
+				//Reboot windows
 				LOGGER.info("Rebooting windows");
 				try {
-					ProcessBuilder builder = new ProcessBuilder( "cmd.exe", "/c", "shutdown -r -t 0");
+					ProcessBuilder builder = new ProcessBuilder( "cmd.exe", "/c", "shutdown -r -t 20");
 					builder.redirectErrorStream(true);
 					Process p = builder.start();
 					BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));

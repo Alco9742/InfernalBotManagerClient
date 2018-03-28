@@ -55,6 +55,8 @@ public class InfernalBotManagerRunnable implements Runnable {
 						entry.getValue().stop();
 						try {
 							entry.getKey().join();
+							dataThreadMap.remove(entry.getKey());
+							Main.threadMap.remove(entry.getKey());
 						} catch (InterruptedException e) {
 							LOGGER.error("Failure closing thread");
 							LOGGER.debug(e.getMessage());

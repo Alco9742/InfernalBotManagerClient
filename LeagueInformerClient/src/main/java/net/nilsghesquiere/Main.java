@@ -13,6 +13,7 @@ import net.nilsghesquiere.gui.swing.InfernalBotManagerGUI;
 import net.nilsghesquiere.hooks.GracefulExitHook;
 import net.nilsghesquiere.runnables.ExitWaitRunnable;
 import net.nilsghesquiere.runnables.InfernalBotManagerRunnable;
+import net.nilsghesquiere.runnables.ThreadCheckerRunnable;
 import net.nilsghesquiere.util.ProgramConstants;
 
 import org.ini4j.InvalidFileFormatException;
@@ -50,6 +51,14 @@ public class Main{
 			iniLocation = System.getProperty("user.dir") + "\\" + ProgramConstants.INI_NAME; 
 		}
 		client = buildClient(iniLocation);
+		if (client.getClientSettings().getEnableDevMode()){
+			//start the ThreadChecker
+			ThreadCheckerRunnable threadCheckerRunnable = new ThreadCheckerRunnable();
+			Thread threadCheckerThread = new Thread(threadCheckerRunnable);
+			threadMap.put(threadCheckerThread, threadCheckerRunnable);
+			threadCheckerThread.setDaemon(false); 
+			threadCheckerThread.start();
+		}
 		try{
 			program();
 		} catch(HttpClientErrorException e){
@@ -213,7 +222,6 @@ public class Main{
 		
 			//clientsettings
 			ini.put("clientsettings", "infernalmap", "C:/PATH/TO/INFERNAL/MAP");
-			ini.put("clientsettings", "infernalprogramname", "Infernal-Start.exe");
 			ini.put("clientsettings", "accounts", "5");
 			ini.put("clientsettings", "accountbuffer", "2");
 			ini.put("clientsettings","uploadnewaccounts", "false");
@@ -226,6 +234,9 @@ public class Main{
 			//botsettings
 			ini.put("botsettings", "groups", "2");
 			ini.put("botsettings", "clientpath", "C:/PATH/TO/LOL/MAP");
+			
+			//extra
+			ini.put("extra", "readme", "readthereadme!!!!");
 			
 			//write
 			ini.store();
