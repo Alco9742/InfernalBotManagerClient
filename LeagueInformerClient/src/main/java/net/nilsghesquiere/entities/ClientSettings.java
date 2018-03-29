@@ -193,9 +193,10 @@ public class ClientSettings {
 			}
 			if(infernalProgramName == null){
 				infernalProgramName = ProgramConstants.INFERNAL_PROG_NAME;
-			}
+			} 
 			
 		} else {
+			enableDevMode = false;
 			bypassDevChecks = false;
 			webServer = ProgramConstants.WEBSERVER;
 			port = ProgramConstants.PORT;
