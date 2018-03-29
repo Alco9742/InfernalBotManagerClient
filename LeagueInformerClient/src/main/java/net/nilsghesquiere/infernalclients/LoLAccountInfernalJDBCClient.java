@@ -18,6 +18,8 @@ import org.slf4j.LoggerFactory;
 public class LoLAccountInfernalJDBCClient implements LolAccountInfernalClient {
 	private static final Logger LOGGER = LoggerFactory.getLogger(LoLAccountInfernalJDBCClient.class);
 	private final String DATABASE_URI;
+	private static final String VERSION_PRAGMASTRING = "0IDINTEGER1null11AccountVARCHAR(100)0null02PasswordVARCHAR(100)0null03SummonerVARCHAR(100)0null04RegionVARCHAR(100)0null05LevelVARCHAR(100)0null06MaxLevelVARCHAR(100)0null07XPVARCHAR(100)0null08IPVARCHAR(100)0null09MaxIPVARCHAR(100)0null010PrioityVARCHAR(100)0null011StatusVARCHAR(100)0null012TotaltimeVARCHAR(100)0null013CurrenttimeVARCHAR(100)0null014PlaytimeVARCHAR(100)0null015SleeptimeVARCHAR(100)0null016ActiveVARCHAR(5)0null0";
+	private static final String PRAGMA_SQL = "PRAGMA table_info(AccountList)";
 	private static final String SELECT_SQL = "SELECT * FROM Accountlist";
 	private static final String DELETE_SQL = "DELETE FROM Accountlist";
 	private static final String INSERT_SQL = "INSERT INTO Accountlist(Account,Password,Summoner,Region,Level,MaxLevel,XP,IP,MaxIP,Prioity,Status,Playtime,Sleeptime,Active) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -36,6 +38,37 @@ public class LoLAccountInfernalJDBCClient implements LolAccountInfernalClient {
 			LOGGER.debug(e.getMessage());
 			return false;
 		} 
+	}
+	
+	public boolean checkPragmas() {
+		if (getPragmaString().equals(VERSION_PRAGMASTRING)){
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public String getPragmaString(){
+		String result= "";
+		try(Connection connection = DriverManager.getConnection(DATABASE_URI)){
+			Statement statement = connection.createStatement();
+			ResultSet resultSet = statement.executeQuery(PRAGMA_SQL);
+			StringBuilder sb=new StringBuilder("");  
+			while (resultSet.next()){
+				sb.append(resultSet.getLong("cid"));
+				sb.append(resultSet.getString("Name"));
+				sb.append(resultSet.getString("Type"));
+				sb.append(resultSet.getString("notnull"));
+				sb.append(resultSet.getString("dflt_value"));
+				sb.append(resultSet.getString("pk"));
+			}
+			result = sb.toString();
+		} catch (SQLException e) {
+			LOGGER.error("Failure receiving account table pragmas from InfernalBot.");
+			LOGGER.debug(e.getMessage());
+			return result;
+		} 
+		return result;
 	}
 	
 	public List<LolAccount> getAccounts(){

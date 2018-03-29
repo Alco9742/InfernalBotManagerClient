@@ -38,4 +38,16 @@ public class LoLAccountInfernalRESTClient implements LolAccountInfernalClient {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+	@Override
+	public boolean checkPragmas() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String getPragmaString() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

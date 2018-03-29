@@ -72,7 +72,15 @@ public class InfernalSettings implements Serializable{
 	private String mySQLPassword;
 	private String mySQLQueueTable;
 	private String mySQLAktivTable;
-
+	//new 29/03/2018
+	private Boolean enableAutoExport;
+	private String exportPath;
+	private String exportWildCard;
+	private Boolean exportRegion;
+	private Boolean exportLevel;
+	private Boolean exportBE;
+	
+	
 	public InfernalSettings(){} 
 	
 	public static InfernalSettings buildFromResultSet(ResultSet resultSet) throws SQLException {
@@ -139,6 +147,13 @@ public class InfernalSettings implements Serializable{
 		infernalSettings.setMySQLPassword(resultSet.getString("MySQLPassword"));
 		infernalSettings.setMySQLQueueTable(resultSet.getString("MySQLQueueTable"));
 		infernalSettings.setMySQLAktivTable(resultSet.getString("MySQLAktivTable"));
+		//new 29/03/2018
+		infernalSettings.setEnableAutoExport(resultSet.getBoolean("EnableAutoExport"));
+		infernalSettings.setExportPath(resultSet.getString("ExportPath"));
+		infernalSettings.setExportWildCard(resultSet.getString("ExportWildCard"));
+		infernalSettings.setExportRegion(resultSet.getBoolean("ExportRegion"));
+		infernalSettings.setExportLevel(resultSet.getBoolean("ExportLevel"));
+		infernalSettings.setExportBE(resultSet.getBoolean("ExportBE"));
 		return infernalSettings;
 	}
 	

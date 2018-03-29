@@ -26,6 +26,9 @@ public class InfernalBotManagerClient {
 	private static final Logger LOGGER = LoggerFactory.getLogger(InfernalBotManagerClient.class);
 	private static final String UPDATER_NAME = "InfernalBotManagerUpdater.jar";
 	
+	private boolean infernalSettingsPragmasOK;
+	private boolean lolAccountPragmasOK;
+	
 	private ClientSettings clientSettings;
 	private ClientData clientData;
 	
@@ -57,6 +60,14 @@ public class InfernalBotManagerClient {
 			LOGGER.info("Shutdown scheduled in " + clientSettings.getRebootTime() + " seconds");
 		}
 	}
+	
+	//Check if tables have been edited since last version (don't do any updates to settings or accounts if so)
+	public void checkTables(){
+		infernalSettingsPragmasOK = infernalSettingsService.checkPragmas();
+		lolAccountPragmasOK = accountService.checkPragmas();
+	}
+	
+	
 	//User methods
 	public boolean setUserId() {
 		try{
@@ -104,7 +115,13 @@ public class InfernalBotManagerClient {
 	//InfernalSettings methods
 	public boolean setInfernalSettings(){
 		if (clientSettings.getFetchSettings()){
-			return infernalSettingsService.updateInfernalSettings(clientSettings.getUserId());
+			if(infernalSettingsPragmasOK){
+				return infernalSettingsService.updateInfernalSettings(clientSettings.getUserId());
+			} else {
+				LOGGER.info("InfernalBot settings table has changed since latest InfernalBotManager version");
+				LOGGER.info("Falling back to InfernalBots own settings until updated.");
+				return true;
+			}
 		} else {
 			LOGGER.info("Not requesting settings from the InfernalBotManager Server, using InfernalBots own settings.");
 			return true;
@@ -113,11 +130,22 @@ public class InfernalBotManagerClient {
 	
 	//LolAccount methods
 	public boolean exchangeAccounts(){
-		return accountService.exchangeAccounts();
+		if (lolAccountPragmasOK){
+			return accountService.exchangeAccounts();
+		} else {
+			LOGGER.info("InfernalBot accountlist table has changed since latest InfernalBotManager version");
+			LOGGER.info("Falling back to InfernalBots own accounts until updated.");
+			return true;
+		}
 	}
 	
 	public boolean setAccountsAsReadyForUse(){
-		return accountService.setAccountsAsReadyForUse();
+		if (lolAccountPragmasOK){
+			return accountService.setAccountsAsReadyForUse();
+		} else {
+			//No need to repeat logger info
+			return true;
+		}
 	}
 	
 	//Queuer methods

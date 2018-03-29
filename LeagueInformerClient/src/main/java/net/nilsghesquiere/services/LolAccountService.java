@@ -29,6 +29,10 @@ public class LolAccountService {
 		this.clientSettings = clientSettings;
 	}
 	
+	public boolean checkPragmas(){
+		return infernalClient.checkPragmas();
+	}
+	
 	public boolean exchangeAccounts(){
 		//TODO fix bug: if for some reason both clients have same accs in infernalbot database:
 		//     Client1 uploads the accs and puts them on READY, after that loads them and puts them on IN USE;

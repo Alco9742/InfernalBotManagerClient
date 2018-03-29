@@ -25,6 +25,10 @@ public class InfernalSettingsService {
 		
 	}
 	
+	public boolean checkPragmas(){
+		return infernalClient.checkPragmas();
+	}
+	
 	public boolean updateInfernalSettings(Long userid){
 		InfernalSettings infernalSettingsFromREST = managerClient.getUserInfernalSettings(userid);
 		//Disabled this for now: It is always the default set atm
@@ -65,6 +69,7 @@ public class InfernalSettingsService {
 		return true;
 	}
 
+	//todo welke velden de API velden beheren en toevoegen
 	private InfernalSettings prepareInfernalSettingsForJDBC(InfernalSettings infernalSettingsFromJDBC, InfernalSettings infernalSettingsFromREST) {
 		//update all settings from JDBC with settings from REST
 	//	infernalSettingsFromJDBC.setSets(infernalSettingsFromREST.getSets());
@@ -133,6 +138,13 @@ public class InfernalSettingsService {
 	//	infernalSettingsFromJDBC.setMySQLPassword(infernalSettingsFromREST.getMySQLPassword());
 	//	infernalSettingsFromJDBC.setMySQLQueueTable(infernalSettingsFromREST.getMySQLQueueTable());
 	//	infernalSettingsFromJDBC.setMySQLAktivTable(infernalSettingsFromREST.getMySQLAktivTable());
+		//new 29/03/2018
+		infernalSettingsFromJDBC.setEnableAutoExport(infernalSettingsFromREST.getEnableAutoExport());
+		infernalSettingsFromJDBC.setExportPath(infernalSettingsFromREST.getExportPath());
+		infernalSettingsFromJDBC.setExportWildCard(infernalSettingsFromREST.getExportWildCard());
+		infernalSettingsFromJDBC.setExportRegion(infernalSettingsFromREST.getExportRegion());
+		infernalSettingsFromJDBC.setExportLevel(infernalSettingsFromREST.getExportLevel());
+		infernalSettingsFromJDBC.setExportBE(infernalSettingsFromREST.getExportBE());
 	//	Set Region from the settings in the ini
 		infernalSettingsFromJDBC.setRegion(clientSettings.getClientRegion());
 		if (clientSettings.getOverwriteSettings()){

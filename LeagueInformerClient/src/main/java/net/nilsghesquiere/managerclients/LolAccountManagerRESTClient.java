@@ -117,7 +117,6 @@ public class LolAccountManagerRESTClient implements LolAccountManagerClient {
 		try{
 			boolean result = true;
 			HttpEntity<LolMixedAccountMap> request = new HttpEntity<>(map, headers);
-			LOGGER.debug(URI_ACCOUNTS + "/user/" + userid + "/infernalImport");
 			HttpEntity<StringResponseMap> response = restTemplate.exchange(URI_ACCOUNTS + "/user/" + userid + "/infernalImport", HttpMethod.PUT,request, StringResponseMap.class);
 			StringResponseMap stringResponseMap = response.getBody();
 			LOGGER.debug("sendInfernalAccounts - existing:" + map.getMap().values());

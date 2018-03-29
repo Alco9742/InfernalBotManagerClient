@@ -53,6 +53,7 @@ public class Main{
 		client = buildClient(iniLocation);
 		try{
 			program();
+			//test();
 		} catch(HttpClientErrorException e){
 			//AuthenticationException
 			LOGGER.debug("Received the following response from the server: " + e.getMessage());
@@ -68,9 +69,7 @@ public class Main{
 	
 	@SuppressWarnings("unused")
 	private static void test(){
-		LOGGER.info("TEST");
-		Long userId = client.getUserId();
-		LOGGER.info(userId.toString());
+		client.checkTables();
 	}
 	
 	private static void program(){
@@ -124,6 +123,8 @@ public class Main{
 					//backup sqllite file
 					if(client.backUpInfernalDatabase()){
 						//initial checks
+						//Check if infernalbot tables have been changed since last version
+						client.checkTables();
 						//Attempt to get accounts, retry if fail
 						boolean initDone = client.checkConnection() && client.setUserId() && client.setInfernalSettings() && client.exchangeAccounts();
 						while (!initDone){

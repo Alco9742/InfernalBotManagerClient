@@ -35,6 +35,18 @@ public class InfernalSettingsInfernalRESTClient implements InfernalSettingsInfer
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public boolean checkPragmas() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String getPragmaString() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 }
