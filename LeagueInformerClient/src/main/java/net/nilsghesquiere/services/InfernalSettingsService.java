@@ -6,6 +6,7 @@ import net.nilsghesquiere.entities.ClientSettings;
 import net.nilsghesquiere.entities.InfernalSettings;
 import net.nilsghesquiere.infernalclients.InfernalSettingsInfernalClient;
 import net.nilsghesquiere.infernalclients.InfernalSettingsInfernalJDBCClient;
+import net.nilsghesquiere.managerclients.ClientDataManagerRESTClient;
 import net.nilsghesquiere.managerclients.InfernalSettingsManagerClient;
 import net.nilsghesquiere.managerclients.InfernalSettingsManagerRESTClient;
 
@@ -20,9 +21,12 @@ public class InfernalSettingsService {
 	
 	public InfernalSettingsService(ClientSettings clientSettings){
 		this.infernalClient =  new InfernalSettingsInfernalJDBCClient(clientSettings.getInfernalMap());
-		this.managerClient = new InfernalSettingsManagerRESTClient("http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort(), clientSettings.getUsername(), clientSettings.getPassword());
+		if(clientSettings.getPort().equals("")){
+			this.managerClient = new InfernalSettingsManagerRESTClient("http://" + clientSettings.getWebServer(), clientSettings.getUsername(), clientSettings.getPassword());
+		} else {
+			this.managerClient = new InfernalSettingsManagerRESTClient("http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort(), clientSettings.getUsername(), clientSettings.getPassword());
+		}
 		this.clientSettings = clientSettings;
-		
 	}
 	
 	public boolean checkPragmas(){

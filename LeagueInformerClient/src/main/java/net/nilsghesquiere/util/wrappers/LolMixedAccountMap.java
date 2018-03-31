@@ -9,9 +9,11 @@ import net.nilsghesquiere.entities.LolAccount;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class LolMixedAccountMap{
 	private Map<String, LolAccount> map;
+	@JsonProperty("newAccs")
 	private List<LolAccount> newAccs;
 
 	public LolMixedAccountMap() {

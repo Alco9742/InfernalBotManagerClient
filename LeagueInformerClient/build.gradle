@@ -2,24 +2,48 @@ buildscript {
 	repositories {
 		mavenCentral()
 	}
+	
+	dependencies {
+		classpath("com.github.jengelman.gradle.plugins:shadow:2.0.3")
+		classpath("net.sf.proguard:proguard-gradle:6.0.1")
+	}
 }
 
 plugins {
 	id 'java'
 	id 'eclipse'
 	id "io.franzbecker.gradle-lombok" version "1.11"
+	id 'com.github.johnrengelman.shadow' version '2.0.3'
 }
 
 jar {
-   // baseName = 'LeagueInformerClient'
-    //version =  '0.1.0'
-    archiveName 'InfernalBotManagerClient.jar'
+    archiveName 'InfernalBotManagerClient-plain.jar'
     manifest {
         attributes "Main-Class": "net.nilsghesquiere.Main"
     }
- 
-    from {
-        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+}
+
+task obfuscate(type: proguard.gradle.ProGuardTask) {
+	group 'encryption'
+	configuration 'proguard.conf'
+	injars jar
+	outjars 'build/libs/InfernalBotManagerClient-obfuscated.jar'
+}
+
+shadowJar {
+   baseName = "InfernalBotManagerClient-fat"
+   classifier = 'plain'
+   version = null
+}
+
+task shadowJarObf ( type: com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar ){
+   group 'shadow'
+   baseName = "InfernalBotManagerClient"
+   version= null
+   from obfuscate
+   configurations = [project.configurations.compile]
+    manifest {
+        attributes "Main-Class": "net.nilsghesquiere.Main"
     }
 }
 
@@ -53,12 +77,17 @@ dependencies {
 	compile(group: 'org.springframework', name: 'spring-web', version: '5.0.3.RELEASE')
 	compile(group: 'org.xerial', name: 'sqlite-jdbc', version: '3.21.0.1')
 	compile(group: 'org.ini4j', name: 'ini4j', version: '0.5.1')
+	compile(group: 'com.github.zg2pro', name: 'spring-rest-basis', version: '0.4')
 	compile(group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25')
 	compile(group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3')
+	compile fileTree(dir: 'libs', include: '*.jar')
 	testCompile(group: 'junit', name: 'junit', version: '4.+')
 }
 
 test {
     systemProperties 'property': 'value'
 }
+
+build.dependsOn(shadowJarObf)
+shadowJarObf.dependsOn(obfuscate)
 

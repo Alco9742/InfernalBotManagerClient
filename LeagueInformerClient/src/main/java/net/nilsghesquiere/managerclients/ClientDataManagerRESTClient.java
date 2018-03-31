@@ -56,9 +56,7 @@ public class ClientDataManagerRESTClient implements ClientDataManagerClient {
 			if (!clientDataWrapper.getError().equals((""))){
 				result = false;
 				LOGGER.error("Failure updating Client data on the server: " + clientDataWrapper.getError());
-			} else {
-				LOGGER.debug("Client data updated: " + clientDataWrapper.getMap());
-			}
+			} 
 			return result;
 		} catch (ResourceAccessException e){
 			LOGGER.warn("Failure sending ClientData to server");

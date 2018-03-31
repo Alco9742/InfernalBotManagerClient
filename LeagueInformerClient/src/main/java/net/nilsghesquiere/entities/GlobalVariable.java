@@ -1,7 +1,6 @@
 package net.nilsghesquiere.entities;
 
 import java.io.Serializable;
-
 import lombok.Data;
 @Data
 public class GlobalVariable implements Serializable{

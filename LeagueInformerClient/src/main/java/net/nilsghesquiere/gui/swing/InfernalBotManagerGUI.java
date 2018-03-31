@@ -48,22 +48,11 @@ public class InfernalBotManagerGUI extends JFrame {
 		
 		JTabbedPane tabbedPane = new JTabbedPane();
 
-		JPanel consolePanel = new JPanel(false);
-		consolePanel.setLayout(new GridLayout(1, 1));
-		JTextArea ta = new JTextArea();
-		//Set background black
-		ta.setBackground(Color.BLACK); 
-		//Set Foreground(text) white
-		ta.setForeground(Color.WHITE);
-		DefaultCaret caret = (DefaultCaret)ta.getCaret();
-		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
-		TextAreaOutputStream taos = new TextAreaOutputStream( ta, 60 );
-		PrintStream ps = new PrintStream( taos );
-		System.setOut( ps );
-		System.setErr( ps );
-		consolePanel.add( new JScrollPane( ta )  );
+		JPanel consolePanel = new InfernalManagerConsolePanel();
+		//JPanel settingsPanel = new InfernalManagerSettingsPanel();
 		
 		tabbedPane.addTab("Console", consolePanel);
+		//tabbedPane.addTab("Settings", settingsPanel);
 		tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
 		
 		this.add(tabbedPane);
@@ -75,10 +64,10 @@ public class InfernalBotManagerGUI extends JFrame {
 		this.addWindowListener(new java.awt.event.WindowAdapter() {
 			@Override
 			public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+				LOGGER.info("Commencing InfernalBotManager close");
 				Main.exitWaitRunnable.exit();
 			}
 		});
-		
 	}
 	
 	protected ImageIcon createImageIcon(String path,String description) {

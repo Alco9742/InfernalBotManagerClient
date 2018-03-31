@@ -9,10 +9,12 @@ import net.nilsghesquiere.entities.GlobalVariable;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class GlobalVariableWrapper implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private Map<String, List<GlobalVariable>> map;
+	@JsonProperty("error")
 	private String error;
 
 	public GlobalVariableWrapper() {

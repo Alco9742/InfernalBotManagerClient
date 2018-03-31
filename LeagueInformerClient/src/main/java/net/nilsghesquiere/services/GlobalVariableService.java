@@ -1,8 +1,10 @@
 package net.nilsghesquiere.services;
 
 import net.nilsghesquiere.entities.ClientSettings;
+import net.nilsghesquiere.managerclients.ClientDataManagerRESTClient;
 import net.nilsghesquiere.managerclients.GlobalVariableManagerClient;
 import net.nilsghesquiere.managerclients.GlobalVariableManagerRESTClient;
+import net.nilsghesquiere.managerclients.InfernalSettingsManagerRESTClient;
 import net.nilsghesquiere.util.ProgramConstants;
 
 import org.slf4j.Logger;
@@ -13,8 +15,11 @@ public class GlobalVariableService {
 	private final GlobalVariableManagerClient managerClient;
 	
 	public GlobalVariableService(ClientSettings clientSettings){
-		this.managerClient = new GlobalVariableManagerRESTClient("http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort(), clientSettings.getUsername(), clientSettings.getPassword());
-		
+		if(clientSettings.getPort().equals("")){
+			this.managerClient = new GlobalVariableManagerRESTClient("http://" + clientSettings.getWebServer(), clientSettings.getUsername(), clientSettings.getPassword());
+		} else {
+			this.managerClient = new GlobalVariableManagerRESTClient("http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort(), clientSettings.getUsername(), clientSettings.getPassword());
+		}
 	}
 	
 	public boolean checkVersion(){

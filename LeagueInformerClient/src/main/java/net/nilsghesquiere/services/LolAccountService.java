@@ -8,6 +8,7 @@ import net.nilsghesquiere.entities.LolAccount;
 import net.nilsghesquiere.enums.AccountStatus;
 import net.nilsghesquiere.infernalclients.LoLAccountInfernalJDBCClient;
 import net.nilsghesquiere.infernalclients.LolAccountInfernalClient;
+import net.nilsghesquiere.managerclients.GlobalVariableManagerRESTClient;
 import net.nilsghesquiere.managerclients.LolAccountManagerClient;
 import net.nilsghesquiere.managerclients.LolAccountManagerRESTClient;
 import net.nilsghesquiere.util.wrappers.LolMixedAccountMap;
@@ -25,7 +26,11 @@ public class LolAccountService {
 	
 	public LolAccountService(ClientSettings clientSettings){
 		this.infernalClient =  new LoLAccountInfernalJDBCClient(clientSettings.getInfernalMap());
-		this.managerClient = new LolAccountManagerRESTClient("http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort(), clientSettings.getUsername(), clientSettings.getPassword());
+		if(clientSettings.getPort().equals("")){
+			this.managerClient = new LolAccountManagerRESTClient("http://" + clientSettings.getWebServer(), clientSettings.getUsername(), clientSettings.getPassword());
+		} else {
+			this.managerClient = new LolAccountManagerRESTClient("http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort(), clientSettings.getUsername(), clientSettings.getPassword());
+		}
 		this.clientSettings = clientSettings;
 	}
 	

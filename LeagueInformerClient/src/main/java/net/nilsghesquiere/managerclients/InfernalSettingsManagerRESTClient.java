@@ -16,7 +16,7 @@ public class InfernalSettingsManagerRESTClient implements InfernalSettingsManage
 	private RestTemplate restTemplate = new RestTemplate();
 	
 	public InfernalSettingsManagerRESTClient(String uriServer, String username, String password) {
-		this.URI_INFERNALSETTINGS = uriServer +"api/infernalsettings";
+		this.URI_INFERNALSETTINGS = uriServer +"/api/infernalsettings";
 		//set auth
 		restTemplate.getInterceptors().add(new BasicAuthorizationInterceptor(username,password));
 	}
@@ -26,7 +26,6 @@ public class InfernalSettingsManagerRESTClient implements InfernalSettingsManage
 			InfernalSettings infernalSettings = jsonResponse.getMap().get("data");
 			if (infernalSettings != null){
 				LOGGER.info("Received InfernalBot settings from the InfernalBotManager server.");
-				LOGGER.debug("SettingsFromServer: " + infernalSettings);
 			}
 			return infernalSettings;
 		} catch (ResourceAccessException e){

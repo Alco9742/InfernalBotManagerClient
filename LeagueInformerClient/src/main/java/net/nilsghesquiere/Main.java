@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
 import java.util.concurrent.TimeUnit;
 
 import net.nilsghesquiere.entities.ClientSettings;
@@ -42,6 +43,7 @@ public class Main{
 		if(ProgramConstants.useSwingGUI){
 			@SuppressWarnings("unused")
 			InfernalBotManagerGUI gui = new InfernalBotManagerGUI();
+			TimeUnit.SECONDS.sleep(5);
 		}
 		LOGGER.info("Starting InfernalBotManager Client");
 		

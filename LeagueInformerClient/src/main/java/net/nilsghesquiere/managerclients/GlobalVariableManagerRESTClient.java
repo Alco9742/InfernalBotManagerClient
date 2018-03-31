@@ -16,11 +16,13 @@ public class GlobalVariableManagerRESTClient implements GlobalVariableManagerCli
 	private RestTemplate restTemplate = new RestTemplate();
 	
 	public GlobalVariableManagerRESTClient(String uriServer, String username, String password) {
-		this.URI_GLOBALVARIABLES = uriServer +"api/vars";
+		this.URI_GLOBALVARIABLES = uriServer +"/api/vars";
 		restTemplate.getInterceptors().add(new BasicAuthorizationInterceptor(username, password));
 	}
 	public GlobalVariable getGlobalVariableByName(String name){
 		try{
+			//tests
+			String jsonResponse2 = restTemplate.getForObject(URI_GLOBALVARIABLES + "/" + name, String.class);
 			GlobalVariableSingleWrapper jsonResponse = restTemplate.getForObject(URI_GLOBALVARIABLES + "/" + name, GlobalVariableSingleWrapper.class);
 			GlobalVariable globalVariable = jsonResponse.getMap().get("data");
 			return globalVariable;
