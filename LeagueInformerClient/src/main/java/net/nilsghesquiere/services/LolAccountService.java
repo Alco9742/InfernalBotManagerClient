@@ -58,6 +58,8 @@ public class LolAccountService {
 					lolAccount.setAccountStatus(AccountStatus.IN_USE);
 					lolAccount.setAssignedTo(clientSettings.getClientTag());
 				}
+				LOGGER.debug("accountsForInfernal");
+				LOGGER.debug(accountsForInfernal.toString());
 				managerClient.updateLolAccounts(clientSettings.getUserId(), accountsForInfernal);
 			}
 			if (clientSettings.getAccountBuffer() > 0){
@@ -88,6 +90,7 @@ public class LolAccountService {
 	
 	public boolean setAccountsAsReadyForUse(){
 		LolMixedAccountMap sendMap = prepareAccountsToSend();
+		LOGGER.debug(sendMap.getMap().toString());
 		try{
 			if(managerClient.sendInfernalAccounts(clientSettings.getUserId(), sendMap)){
 				LOGGER.info("Updated accounts on server");

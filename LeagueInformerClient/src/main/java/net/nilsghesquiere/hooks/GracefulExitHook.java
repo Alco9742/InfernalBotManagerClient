@@ -6,14 +6,13 @@ import java.io.InputStreamReader;
 import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import net.nilsghesquiere.Main;
 import net.nilsghesquiere.runnables.ClientDataManagerRunnable;
 import net.nilsghesquiere.runnables.InfernalBotManagerRunnable;
 import net.nilsghesquiere.runnables.ThreadCheckerRunnable;
-import net.nilsghesquiere.util.ProgramUtil;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class GracefulExitHook extends Thread {
 	private static final Logger LOGGER = LoggerFactory.getLogger("GracefulShutdownHook");
@@ -86,7 +85,8 @@ public class GracefulExitHook extends Thread {
 				//Reboot windows
 				LOGGER.info("Rebooting windows");
 				try {
-					ProcessBuilder builder = new ProcessBuilder( "cmd.exe", "/c", "shutdown -r -t 20");
+					//remove old reboot schedule
+					ProcessBuilder builder = new ProcessBuilder( "cmd.exe", "/c", "shutdown -a");
 					builder.redirectErrorStream(true);
 					Process p = builder.start();
 					BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -95,6 +95,17 @@ public class GracefulExitHook extends Thread {
 						line = r.readLine();
 						if (line == null) { break; }
 						LOGGER.debug(line);
+					}
+					//initiate reboot
+					ProcessBuilder builder2 = new ProcessBuilder( "cmd.exe", "/c", "shutdown -r -t 20");
+					builder2.redirectErrorStream(true);
+					Process p2 = builder2.start();
+					BufferedReader r2 = new BufferedReader(new InputStreamReader(p2.getInputStream()));
+					String line2;
+					while (true) {
+						line2 = r2.readLine();
+						if (line2 == null) { break; }
+						LOGGER.debug(line2);
 					}
 				} catch (IOException e) {
 					LOGGER.error("Failure rebooting Windows");

@@ -15,6 +15,7 @@ import java.util.Base64;
 import java.util.Collections;
 
 import net.nilsghesquiere.entities.ClientSettings;
+import net.nilsghesquiere.managerclients.ClientDataManagerRESTClient;
 
 import org.ini4j.InvalidFileFormatException;
 import org.ini4j.Wini;
@@ -76,7 +77,12 @@ public class ProgramUtil {
 			String managerMap = System.getProperty("user.dir");
 			String filePath = managerMap + "\\downloads\\" + filename;
 			// Sample Url Location
-			String url = "http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort() + "/downloads/" + filename; 
+			String url = "";
+			if(clientSettings.getPort().equals("")){
+				url = "http://" + clientSettings.getWebServer() + "/downloads/" + filename; 
+			} else {
+				url = "http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort() + "/downloads/" + filename; 
+			}
 			URL urlObj = null;
 			ReadableByteChannel rbcObj = null;
 			FileOutputStream fOutStream  = null;

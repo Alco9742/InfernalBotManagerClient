@@ -7,6 +7,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.client.ResourceAccessException;
+
 import lombok.Data;
 import net.nilsghesquiere.entities.ClientData;
 import net.nilsghesquiere.entities.ClientSettings;
@@ -15,16 +19,12 @@ import net.nilsghesquiere.services.GlobalVariableService;
 import net.nilsghesquiere.services.InfernalSettingsService;
 import net.nilsghesquiere.services.LolAccountService;
 import net.nilsghesquiere.services.UserService;
+import net.nilsghesquiere.util.ProgramConstants;
 import net.nilsghesquiere.util.ProgramUtil;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.web.client.ResourceAccessException;
 
 @Data
 public class InfernalBotManagerClient {
 	private static final Logger LOGGER = LoggerFactory.getLogger(InfernalBotManagerClient.class);
-	private static final String UPDATER_NAME = "InfernalBotManagerUpdater.jar";
 	
 	private boolean infernalSettingsPragmasOK;
 	private boolean lolAccountPragmasOK;
@@ -194,11 +194,11 @@ public class InfernalBotManagerClient {
 
 	//update client methods
 	public void updateClient() {
-		if(ProgramUtil.downloadFileFromUrl(clientSettings, UPDATER_NAME)){
+		if(ProgramUtil.downloadFileFromUrl(clientSettings, ProgramConstants.UPDATER_NAME)){
 			//vars
 			String managerMap = System.getProperty("user.dir");
-			Path updaterDownloadPath = Paths.get(managerMap + "\\downloads\\" + UPDATER_NAME);
-			Path updaterPath = Paths.get(managerMap + "\\" + UPDATER_NAME);
+			Path updaterDownloadPath = Paths.get(managerMap + "\\downloads\\" + ProgramConstants.UPDATER_NAME);
+			Path updaterPath = Paths.get(managerMap + "\\" + ProgramConstants.UPDATER_NAME);
 			
 			//move the updater
 			try {
@@ -210,14 +210,18 @@ public class InfernalBotManagerClient {
 			try{
 				//build the args
 				String arg0 = managerMap;
-				String arg1 = "http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort() + "/downloads/";
+				String arg1 = "";
+				if(clientSettings.getPort().equals("")){
+					arg1 = "http://" + clientSettings.getWebServer() + "/downloads/"; 
+				} else {
+					arg1 = "http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort() + "/downloads/"; 
+				}
 				String command = "\"" + updaterPath.toString() + "\" \"" + arg0 + "\" \"" + arg1 + "\"";
 	
 				//Start the updater
 				LOGGER.info("Starting updater");
 				LOGGER.info(command);
-				ProcessBuilder pb = new ProcessBuilder("java", "-jar", command);
-				
+				ProcessBuilder pb = new ProcessBuilder(command);
 				pb.directory(new File(managerMap));
 				Process p = pb.start();
 				} catch (IOException e) {

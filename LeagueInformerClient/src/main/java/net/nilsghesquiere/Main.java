@@ -43,7 +43,7 @@ public class Main{
 		if(ProgramConstants.useSwingGUI){
 			@SuppressWarnings("unused")
 			InfernalBotManagerGUI gui = new InfernalBotManagerGUI();
-			TimeUnit.SECONDS.sleep(5);
+			TimeUnit.SECONDS.sleep(2);
 		}
 		LOGGER.info("Starting InfernalBotManager Client");
 		

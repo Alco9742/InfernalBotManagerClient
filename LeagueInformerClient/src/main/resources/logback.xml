@@ -16,13 +16,26 @@
 			<level>DEBUG</level>
 		</filter>
 		<encoder>
-			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] - %msg%n</pattern>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{0} - %msg%n</pattern>
 		</encoder>
 	</appender>
 	<root level="ERROR">
 		<appender-ref ref="STDOUT" />
 	</root>
+<!-- HTTP file log appender -->
+	<appender name="HTTPFILE" class="ch.qos.logback.core.FileAppender">
+		<file>logs/http.log</file>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>DEBUG</level>
+		</filter>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{0} - %msg%n</pattern>
+		</encoder>
+	</appender>
 	
+	<root level="ERROR">
+		<appender-ref ref="STDOUT" />
+	</root>
 	<root level="DEBUG">
 		<appender-ref ref="FILE" />
 	</root>
@@ -32,4 +45,10 @@
 		<appender-ref ref="FILE" />
 		<appender-ref ref="STDOUT" />
 	</logger>
+	
+	<logger name="org.hobsoft.spring.resttemplatelogger.LoggingCustomizer" additivity="false">
+		<level value="DEBUG" />
+		<appender-ref ref="HTTPFILE" />
+	</logger>
+	
 </configuration>

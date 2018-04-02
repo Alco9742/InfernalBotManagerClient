@@ -13,20 +13,18 @@ import net.nilsghesquiere.util.wrappers.LolAccountWrapper;
 import net.nilsghesquiere.util.wrappers.LolMixedAccountMap;
 import net.nilsghesquiere.util.wrappers.StringResponseMap;
 
+import org.hobsoft.spring.resttemplatelogger.LoggingCustomizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
-import org.springframework.http.client.HttpComponentsAsyncClientHttpRequestFactory;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.http.client.support.BasicAuthorizationInterceptor;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
-import com.github.zg2pro.spring.rest.basis.logs.LoggingRequestFactoryFactory;
 
 
 public class LolAccountManagerRESTClient implements LolAccountManagerClient {
@@ -39,13 +37,12 @@ public class LolAccountManagerRESTClient implements LolAccountManagerClient {
 		this.URI_ACCOUNTS = uriServer +"/api/accounts";
 		
 		//Logging 
-		restTemplate.setRequestFactory(LoggingRequestFactoryFactory.build());
+		restTemplate = new RestTemplateBuilder()
+				.customizers(new LoggingCustomizer())
+				.build();
 		
-		//create interceptors for restTemplate
-		restTemplate = new RestTemplate();
-		List<ClientHttpRequestInterceptor> interceptors = new ArrayList<ClientHttpRequestInterceptor>();
-		interceptors.add(new BasicAuthorizationInterceptor(username,password));
-		restTemplate.setInterceptors(interceptors);
+		//authentication
+		restTemplate.getInterceptors().add(new BasicAuthorizationInterceptor(username,password));
 		
 		//set headers
 		headers = ProgramUtil.buildHttpHeaders();
@@ -112,6 +109,9 @@ public class LolAccountManagerRESTClient implements LolAccountManagerClient {
 		LolAccountMap lolAccountMap = new LolAccountMap();
 		for(LolAccount lolAccount : lolAccounts){
 			lolAccountMap.add(lolAccount.getId().toString(), lolAccount);
+			LOGGER.debug("updateLolAccounts");
+			LOGGER.debug(lolAccount.toString());
+			LOGGER.debug(lolAccountMap.getMap().get(lolAccount.getId().toString()).toString());
 		}
 		try{
 			HttpEntity<LolAccountMap> request = new HttpEntity<>(lolAccountMap, headers);

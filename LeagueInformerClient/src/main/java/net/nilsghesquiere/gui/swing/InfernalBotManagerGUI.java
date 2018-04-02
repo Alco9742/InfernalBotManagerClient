@@ -42,7 +42,7 @@ public class InfernalBotManagerGUI extends JFrame {
 			LOGGER.debug(e.getMessage());
 		}
 		
-		ImageIcon icon = createImageIcon("/league.png","InfernalBotManagerClient");
+		ImageIcon icon = createImageIcon("/i.png","InfernalBotManagerClient");
 		this.setTitle("InfernalBotManager");
 		this.setIconImage(icon.getImage());
 		
