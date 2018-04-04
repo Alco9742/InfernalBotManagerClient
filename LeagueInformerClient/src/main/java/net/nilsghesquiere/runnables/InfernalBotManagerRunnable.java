@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 import net.nilsghesquiere.InfernalBotManagerClient;
 import net.nilsghesquiere.Main;
+import net.nilsghesquiere.util.ProgramConstants;
 import net.nilsghesquiere.util.ProgramUtil;
 
 import org.slf4j.Logger;
@@ -41,14 +42,13 @@ public class InfernalBotManagerRunnable implements Runnable {
 		while (!stop){
 			//get the process name from the infernal settings.configs file
 			//TODO add checks here for available location etc
-			//TODO fix try/catch
 			oldProcessName = processName;
 			processName = ProgramUtil.getInfernalProcessname(client.getClientSettings().getInfernalMap());
 			if(!processName.equals(oldProcessName)){
 				LOGGER.info("Infernal bot process name updated to: " + processName);
 			}
 			if(!processName.isEmpty()){
-				if(ProgramUtil.isProcessRunning(processName)){
+				if(!ProgramUtil.isProcessRunning(processName) && !ProgramUtil.isProcessRunning(ProgramConstants.LEGACY_LAUNCHER_NAME)){ //Check legacy launchername aswel (launches this after updates)
 					LOGGER.warn("InfernalBot process not found, restarting client");
 					for(Entry<Thread,ClientDataManagerRunnable> entry : dataThreadMap.entrySet()){
 						entry.getKey().interrupt();

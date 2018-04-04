@@ -45,7 +45,7 @@ public class ProgramUtil {
 				pidInfo+=line; 
 			}
 			input.close();
-			if(!pidInfo.contains(processName)){
+			if(pidInfo.contains(processName)){
 				return true;
 			}
 		} catch (IOException e){
