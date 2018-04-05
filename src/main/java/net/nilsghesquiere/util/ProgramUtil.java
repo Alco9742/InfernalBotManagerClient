@@ -79,9 +79,9 @@ public class ProgramUtil {
 			// Sample Url Location
 			String url = "";
 			if(clientSettings.getPort().equals("")){
-				url = "http://" + clientSettings.getWebServer() + "/downloads/" + filename; 
+				url = clientSettings.getWebServer() + "/downloads/" + filename; 
 			} else {
-				url = "http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort() + "/downloads/" + filename; 
+				url = clientSettings.getWebServer() + ":" + clientSettings.getPort() + "/downloads/" + filename; 
 			}
 			URL urlObj = null;
 			ReadableByteChannel rbcObj = null;

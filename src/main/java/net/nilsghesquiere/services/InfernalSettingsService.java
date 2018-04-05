@@ -21,9 +21,9 @@ public class InfernalSettingsService {
 	public InfernalSettingsService(ClientSettings clientSettings){
 		this.infernalClient =  new InfernalSettingsInfernalJDBCClient(clientSettings.getInfernalMap());
 		if(clientSettings.getPort().equals("")){
-			this.managerClient = new InfernalSettingsManagerRESTClient("http://" + clientSettings.getWebServer(), clientSettings.getUsername(), clientSettings.getPassword());
+			this.managerClient = new InfernalSettingsManagerRESTClient(clientSettings.getWebServer(), clientSettings.getUsername(), clientSettings.getPassword());
 		} else {
-			this.managerClient = new InfernalSettingsManagerRESTClient("http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort(), clientSettings.getUsername(), clientSettings.getPassword());
+			this.managerClient = new InfernalSettingsManagerRESTClient(clientSettings.getWebServer() + ":" + clientSettings.getPort(), clientSettings.getUsername(), clientSettings.getPassword());
 		}
 		this.clientSettings = clientSettings;
 	}

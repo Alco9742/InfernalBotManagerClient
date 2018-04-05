@@ -26,9 +26,9 @@ public class LolAccountService {
 	public LolAccountService(ClientSettings clientSettings){
 		this.infernalClient =  new LoLAccountInfernalJDBCClient(clientSettings.getInfernalMap());
 		if(clientSettings.getPort().equals("")){
-			this.managerClient = new LolAccountManagerRESTClient("http://" + clientSettings.getWebServer(), clientSettings.getUsername(), clientSettings.getPassword());
+			this.managerClient = new LolAccountManagerRESTClient(clientSettings.getWebServer(), clientSettings.getUsername(), clientSettings.getPassword());
 		} else {
-			this.managerClient = new LolAccountManagerRESTClient("http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort(), clientSettings.getUsername(), clientSettings.getPassword());
+			this.managerClient = new LolAccountManagerRESTClient(clientSettings.getWebServer() + ":" + clientSettings.getPort(), clientSettings.getUsername(), clientSettings.getPassword());
 		}
 		this.clientSettings = clientSettings;
 	}

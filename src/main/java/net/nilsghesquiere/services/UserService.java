@@ -15,9 +15,9 @@ public class UserService {
 	
 	public UserService(ClientSettings clientSettings){
 		if(clientSettings.getPort().equals("")){
-			this.managerClient = new UserManagerRESTClient("http://" + clientSettings.getWebServer(), clientSettings.getUsername(), clientSettings.getPassword());
+			this.managerClient = new UserManagerRESTClient(clientSettings.getWebServer(), clientSettings.getUsername(), clientSettings.getPassword());
 		} else {
-			this.managerClient = new UserManagerRESTClient("http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort(), clientSettings.getUsername(), clientSettings.getPassword());
+			this.managerClient = new UserManagerRESTClient(clientSettings.getWebServer() + ":" + clientSettings.getPort(), clientSettings.getUsername(), clientSettings.getPassword());
 		}
 	}
 	

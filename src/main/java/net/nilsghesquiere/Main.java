@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -51,7 +54,12 @@ public class Main{
 		} catch (ArrayIndexOutOfBoundsException e){
 			iniLocation = System.getProperty("user.dir") + "\\" + ProgramConstants.INI_NAME; 
 		}
-		client = buildClient(iniLocation);
+		try {
+			client = buildClient(iniLocation);
+		} catch (KeyManagementException | NoSuchAlgorithmException | KeyStoreException e1) {
+			LOGGER.info("Failure setting up SSL.");
+			LOGGER.debug(e1.getMessage());
+		}
 		try{
 			if(client.getClientSettings().getTestMode()){
 				test();
@@ -172,7 +180,7 @@ public class Main{
 			exitWaitRunnable.exit();
 		}
 	}
-	private static InfernalBotManagerClient buildClient(String iniFile){
+	private static InfernalBotManagerClient buildClient(String iniFile) throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException{
 		Path iniFilePath = Paths.get(iniFile);
 		InfernalBotManagerClient client = null;
 		if(Files.exists(iniFilePath)){

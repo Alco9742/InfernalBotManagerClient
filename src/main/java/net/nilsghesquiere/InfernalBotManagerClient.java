@@ -6,6 +6,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 
 import lombok.Data;
 import net.nilsghesquiere.entities.ClientData;
@@ -38,7 +41,7 @@ public class InfernalBotManagerClient {
 	private InfernalSettingsService infernalSettingsService;
 	private ClientDataService clientDataService;
 
-	public InfernalBotManagerClient(ClientSettings clientSettings) {
+	public InfernalBotManagerClient(ClientSettings clientSettings) throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
 		this.clientSettings = clientSettings;
 		this.clientData = new ClientData(clientSettings.getClientTag());
 		this.userService = new UserService(clientSettings);
@@ -234,9 +237,9 @@ public class InfernalBotManagerClient {
 				String arg0 = managerMap;
 				String arg1 = "";
 				if(clientSettings.getPort().equals("")){
-					arg1 = "http://" + clientSettings.getWebServer() + "/downloads/"; 
+					arg1 = clientSettings.getWebServer() + "/downloads/"; 
 				} else {
-					arg1 = "http://" + clientSettings.getWebServer() + ":" + clientSettings.getPort() + "/downloads/"; 
+					arg1 = clientSettings.getWebServer() + ":" + clientSettings.getPort() + "/downloads/"; 
 				}
 				String command = "\"" + updaterPath.toString() + "\" \"" + arg0 + "\" \"" + arg1 + "\"";
 	
