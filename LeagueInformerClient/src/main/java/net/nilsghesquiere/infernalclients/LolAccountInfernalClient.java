@@ -11,4 +11,6 @@ public interface LolAccountInfernalClient {
 	public List<LolAccount> getAccounts();
 	public void deleteAllAccounts();
 	public int insertAccounts(List<LolAccount> lolAccounts, Boolean buffer);
+	public String getOldPragmas();
+	public String getNewPragmas();
 }

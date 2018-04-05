@@ -6,7 +6,6 @@ import net.nilsghesquiere.entities.ClientSettings;
 import net.nilsghesquiere.entities.InfernalSettings;
 import net.nilsghesquiere.infernalclients.InfernalSettingsInfernalClient;
 import net.nilsghesquiere.infernalclients.InfernalSettingsInfernalJDBCClient;
-import net.nilsghesquiere.managerclients.ClientDataManagerRESTClient;
 import net.nilsghesquiere.managerclients.InfernalSettingsManagerClient;
 import net.nilsghesquiere.managerclients.InfernalSettingsManagerRESTClient;
 
@@ -165,5 +164,20 @@ public class InfernalSettingsService {
 			}
 		}
 		return infernalSettingsFromJDBC;
+	}
+	
+	//TEST METHODS
+	public void testPragmas(){
+		String oldPragmas = infernalClient.getOldPragmas();
+		String newPragmas = infernalClient.getNewPragmas();
+		if (newPragmas.equals(oldPragmas)){
+			LOGGER.info("Settings pragmas identitical");
+			LOGGER.debug("Old settings pragmas: " + oldPragmas);
+			LOGGER.debug("New settings pragmas: " + newPragmas);
+		} else {
+			LOGGER.info("Settings pragmas changed");
+			LOGGER.info("Old settings pragmas: " + oldPragmas);
+			LOGGER.info("New settings pragmas: " + newPragmas);
+		}
 	}
 }

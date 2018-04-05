@@ -8,7 +8,6 @@ import net.nilsghesquiere.entities.LolAccount;
 import net.nilsghesquiere.enums.AccountStatus;
 import net.nilsghesquiere.infernalclients.LoLAccountInfernalJDBCClient;
 import net.nilsghesquiere.infernalclients.LolAccountInfernalClient;
-import net.nilsghesquiere.managerclients.GlobalVariableManagerRESTClient;
 import net.nilsghesquiere.managerclients.LolAccountManagerClient;
 import net.nilsghesquiere.managerclients.LolAccountManagerRESTClient;
 import net.nilsghesquiere.util.wrappers.LolMixedAccountMap;
@@ -166,5 +165,20 @@ public class LolAccountService {
 			lolAccountMap = null;
 		}
 	return lolAccountMap;
+	}
+
+	//TEST METHODS
+	public void testPragmas(){
+		String oldPragmas = infernalClient.getOldPragmas();
+		String newPragmas = infernalClient.getNewPragmas();
+		if (newPragmas.equals(oldPragmas)){
+			LOGGER.info("Accounts pragmas identitical");
+			LOGGER.debug("Old accounts pragmas: " + oldPragmas);
+			LOGGER.debug("New accounts pragmas: " + newPragmas);
+		} else {
+			LOGGER.info("Accounts pragmas changed");
+			LOGGER.info("Old accounts pragmas: " + oldPragmas);
+			LOGGER.info("New accounts pragmas: " + newPragmas);
+		}
 	}
 } 

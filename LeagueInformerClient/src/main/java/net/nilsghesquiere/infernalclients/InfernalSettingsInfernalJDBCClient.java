@@ -263,5 +263,14 @@ public class InfernalSettingsInfernalJDBCClient implements InfernalSettingsInfer
 			return key;
 		}
 	}
+	
+	//TEST Methods
+	public String getOldPragmas(){
+		return VERSION_PRAGMASTRING;
+	}
+	
+	public String getNewPragmas(){
+		return getPragmaString();
+	}
 }
 

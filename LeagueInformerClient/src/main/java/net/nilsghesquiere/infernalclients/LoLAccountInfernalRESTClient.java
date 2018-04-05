@@ -50,4 +50,16 @@ public class LoLAccountInfernalRESTClient implements LolAccountInfernalClient {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public String getOldPragmas() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getNewPragmas() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

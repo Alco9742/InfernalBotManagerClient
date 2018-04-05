@@ -35,6 +35,7 @@ public class ClientSettings {
 	
 	private Boolean enableDevMode;
 	private Boolean bypassDevChecks;
+	private Boolean testMode;
 	private String infernalProgramName;
 	private String webServer;
 	private String port;
@@ -45,7 +46,7 @@ public class ClientSettings {
 			Integer accountAmount,Integer accountBuffer, Boolean uploadNewAccounts, String clientTag, Region clientRegion,
 			Boolean reboot, Integer rebootTime,
 			Boolean fetchSettings, Boolean overwriteSettings, Map<String, String> settingsOverwriteMap,
-			Boolean rebootFromManager,Boolean enableDevMode, Boolean bypassDevChecks, String infernalProgramName, String webServer, String port, Boolean readme) {
+			Boolean rebootFromManager,Boolean enableDevMode, Boolean bypassDevChecks, Boolean testMode, String infernalProgramName, String webServer, String port, Boolean readme) {
 		super();
 		this.userId = -1L;
 		this.username = username;
@@ -64,6 +65,7 @@ public class ClientSettings {
 		this.rebootFromManager = rebootFromManager;
 		this.enableDevMode = enableDevMode;
 		this.bypassDevChecks = bypassDevChecks;
+		this.testMode = testMode;
 		this.infernalProgramName = infernalProgramName;
 		this.webServer = webServer;
 		this.port = port;
@@ -96,6 +98,7 @@ public class ClientSettings {
 		//dev
 		Boolean enableDevMode = ini.get("dev", "devmode", Boolean.class);
 		Boolean bypassDevChecks = ini.get("dev", "bypassdev", Boolean.class);
+		Boolean testMode = ini.get("dev", "testmode", Boolean.class);
 		String infernalProgramName = ini.get("dev", "infernalprogramname", String.class);
 		String webServer = ini.get("dev", "webserver", String.class);
 		String port = ini.get("dev", "port", String.class);
@@ -185,6 +188,9 @@ public class ClientSettings {
 			if(bypassDevChecks == null){
 				bypassDevChecks = false;
 			}
+			if(testMode == null){
+				testMode = false;
+			}
 			if(webServer == null){
 				webServer = ProgramConstants.WEBSERVER;
 			}
@@ -198,6 +204,7 @@ public class ClientSettings {
 		} else {
 			enableDevMode = false;
 			bypassDevChecks = false;
+			testMode = false;
 			webServer = ProgramConstants.WEBSERVER;
 			port = ProgramConstants.PORT;
 			infernalProgramName = ProgramConstants.INFERNAL_PROG_NAME;
@@ -211,7 +218,7 @@ public class ClientSettings {
 		}
 		
 		if(!hasError){
-			ClientSettings settings = new ClientSettings(username,password,infernalMap,numberOfAccounts,accountBuffer, uploadNewAccounts, clientTag, clientRegion, reboot, rebootTime, fetchSettings, overwriteSettings, settingsOverwriteMap, rebootFromManager, enableDevMode, bypassDevChecks, infernalProgramName, webServer, port, readmeRead);
+			ClientSettings settings = new ClientSettings(username,password,infernalMap,numberOfAccounts,accountBuffer, uploadNewAccounts, clientTag, clientRegion, reboot, rebootTime, fetchSettings, overwriteSettings, settingsOverwriteMap, rebootFromManager, enableDevMode, bypassDevChecks,testMode, infernalProgramName, webServer, port, readmeRead);
 			LOGGER.info("Loaded settings from settings.ini");
 			return settings;
 		} else {

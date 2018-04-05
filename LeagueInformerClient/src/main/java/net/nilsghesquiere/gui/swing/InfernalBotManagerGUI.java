@@ -1,20 +1,13 @@
 package net.nilsghesquiere.gui.swing;
 
-import java.awt.Color;
-import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.io.PrintStream;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.JTextArea;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.text.DefaultCaret;
 
 import net.nilsghesquiere.Main;
 
@@ -24,7 +17,7 @@ import org.slf4j.LoggerFactory;
 public class InfernalBotManagerGUI extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private static final Logger LOGGER = LoggerFactory.getLogger(InfernalBotManagerGUI.class);
-
+	
 	public InfernalBotManagerGUI(){
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -64,8 +57,10 @@ public class InfernalBotManagerGUI extends JFrame {
 		this.addWindowListener(new java.awt.event.WindowAdapter() {
 			@Override
 			public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-				LOGGER.info("Commencing InfernalBotManager close");
-				Main.exitWaitRunnable.exit();
+				if (!Main.exitWaitRunnable.getExit()){
+					LOGGER.info("Commencing InfernalBotManager close");
+					Main.exitWaitRunnable.exit();
+				}
 			}
 		});
 	}

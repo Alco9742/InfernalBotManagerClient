@@ -7,10 +7,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.web.client.ResourceAccessException;
-
 import lombok.Data;
 import net.nilsghesquiere.entities.ClientData;
 import net.nilsghesquiere.entities.ClientSettings;
@@ -21,6 +17,10 @@ import net.nilsghesquiere.services.LolAccountService;
 import net.nilsghesquiere.services.UserService;
 import net.nilsghesquiere.util.ProgramConstants;
 import net.nilsghesquiere.util.ProgramUtil;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.client.ResourceAccessException;
 
 @Data
 public class InfernalBotManagerClient {
@@ -67,6 +67,28 @@ public class InfernalBotManagerClient {
 		lolAccountPragmasOK = accountService.checkPragmas();
 	}
 	
+	//Check connection to riot server, infernalbot server & infernalbotmanager server
+	public boolean checkConnectionComplete(){
+		//TODO implements checks for riot & infernal connection
+		boolean connectedToRiot = true;
+		boolean connectedToInfernal = true;
+		boolean connectedToManager = checkConnection();
+		if(connectedToRiot && connectedToInfernal && connectedToManager){
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	//check if lol is up to date TODO implement
+	public boolean lolUpToDate(){
+		return true;
+	}
+	
+	//check if infernal is up to date TODO implement
+	public boolean infernalUpToDate(){
+		return true;
+	}
 	
 	//User methods
 	public boolean setUserId() {
@@ -223,6 +245,7 @@ public class InfernalBotManagerClient {
 				LOGGER.info(command);
 				ProcessBuilder pb = new ProcessBuilder(command);
 				pb.directory(new File(managerMap));
+				@SuppressWarnings("unused")
 				Process p = pb.start();
 				} catch (IOException e) {
 					LOGGER.error("Failed to start the updater");
@@ -233,6 +256,12 @@ public class InfernalBotManagerClient {
 		}
 	}
 
+	//TEST methods
+	
+	public void testPragmas(){
+		infernalSettingsService.testPragmas();
+		accountService.testPragmas();
+	}
 
 }
 

@@ -9,4 +9,6 @@ public interface InfernalSettingsInfernalClient {
 	public InfernalSettings getDefaultInfernalSettings();
 	public Long insertInfernalSettings(InfernalSettings infernalSettings);
 	public Long updateInfernalSettings(InfernalSettings infernalSettings);
+	public String getOldPragmas();
+	public String getNewPragmas();
 }

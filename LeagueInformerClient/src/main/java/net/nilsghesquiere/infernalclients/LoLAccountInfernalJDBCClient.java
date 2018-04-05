@@ -146,4 +146,13 @@ public class LoLAccountInfernalJDBCClient implements LolAccountInfernalClient {
 		}
 		return aantalToegevoegdeAccounts; 
 	}
+	
+	//TEST Methods
+	public String getOldPragmas(){
+		return VERSION_PRAGMASTRING;
+	}
+	
+	public String getNewPragmas(){
+		return getPragmaString();
+	}
 }

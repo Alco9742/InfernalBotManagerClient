@@ -6,7 +6,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Timer;
 import java.util.concurrent.TimeUnit;
 
 import net.nilsghesquiere.entities.ClientSettings;
@@ -54,7 +53,11 @@ public class Main{
 		}
 		client = buildClient(iniLocation);
 		try{
-			program();
+			if(client.getClientSettings().getTestMode()){
+				test();
+			} else {
+				program();
+			}
 			//test();
 		} catch(HttpClientErrorException e){
 			//AuthenticationException
@@ -69,9 +72,9 @@ public class Main{
 		}
 	}
 	
-	@SuppressWarnings("unused")
 	private static void test(){
-		client.checkTables();
+		client.testPragmas();
+		exitWaitRunnable.exit();
 	}
 	
 	private static void program(){
