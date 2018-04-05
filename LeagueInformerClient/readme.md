@@ -2,17 +2,15 @@
 <h2>InfernalManagerClient</h2>
 <h3>TODO BEFORE BETA:</h3>	
 <ul>
-<li>java2exe + encryption</li>
 <li>generate ini file if not found</li>
-<li>clean up settings file (static server reference)</li>
 </ul>
 
 
 <h3>TODO DURING BETA:</h3>	
 <ul>
 <li>Client settings fetch from server</li>
+<li>Register clients + simple commands</li>
 <li>Check server for riot server status --> add to network checks</li>
-<li>JavaFX front-end  </li>
 <li>Change from nullchecks to Optionals</li>
 <li>API system from infernal</li>
 <li>OAuth2 authentication</li>
