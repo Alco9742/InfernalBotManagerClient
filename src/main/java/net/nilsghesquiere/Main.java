@@ -26,6 +26,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.client.HttpClientErrorException;
 
+import ch.qos.logback.classic.Level;
+
 public class Main{
 	private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 	private static InfernalBotManagerClient client;
@@ -54,12 +56,7 @@ public class Main{
 		} catch (ArrayIndexOutOfBoundsException e){
 			iniLocation = System.getProperty("user.dir") + "\\" + ProgramConstants.INI_NAME; 
 		}
-		try {
-			client = buildClient(iniLocation);
-		} catch (KeyManagementException | NoSuchAlgorithmException | KeyStoreException e1) {
-			LOGGER.info("Failure setting up SSL.");
-			LOGGER.debug(e1.getMessage());
-		}
+		client = buildClient(iniLocation);
 		try{
 			if(client.getClientSettings().getTestMode()){
 				test();
@@ -115,7 +112,6 @@ public class Main{
 						try {
 							TimeUnit.MINUTES.sleep(1);
 						} catch (InterruptedException e2) {
-							LOGGER.error("Failure during sleep");
 							LOGGER.debug(e2.getMessage());
 						}
 					}
@@ -125,7 +121,6 @@ public class Main{
 					try {
 						TimeUnit.SECONDS.sleep(10);
 					} catch (InterruptedException e) {
-						LOGGER.error("Failure during sleep");
 						LOGGER.debug(e.getMessage());
 					}
 				}
@@ -146,7 +141,6 @@ public class Main{
 								TimeUnit.MINUTES.sleep(1);
 								initDone = (client.checkConnection() && client.setInfernalSettings() && client.exchangeAccounts());
 							} catch (InterruptedException e) {
-								LOGGER.error("Failure during sleep");
 								LOGGER.debug(e.getMessage());
 							}
 						}
@@ -180,7 +174,7 @@ public class Main{
 			exitWaitRunnable.exit();
 		}
 	}
-	private static InfernalBotManagerClient buildClient(String iniFile) throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException{
+	private static InfernalBotManagerClient buildClient(String iniFile){
 		Path iniFilePath = Paths.get(iniFile);
 		InfernalBotManagerClient client = null;
 		if(Files.exists(iniFilePath)){

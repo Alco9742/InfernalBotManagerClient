@@ -15,7 +15,7 @@ import net.nilsghesquiere.runnables.InfernalBotManagerRunnable;
 import net.nilsghesquiere.runnables.ThreadCheckerRunnable;
 
 public class GracefulExitHook extends Thread {
-	private static final Logger LOGGER = LoggerFactory.getLogger("GracefulShutdownHook");
+	private static final Logger LOGGER = LoggerFactory.getLogger(GracefulExitHook.class);
 	private boolean rebootWindows = false;
 	@Override
 	public void run(){
@@ -117,7 +117,6 @@ public class GracefulExitHook extends Thread {
 		try {
 			TimeUnit.SECONDS.sleep(5);
 		} catch (InterruptedException e) {
-			LOGGER.error("Failure during sleep");
 			LOGGER.debug(e.getMessage());
 		}
 		System.exit(0);

@@ -27,9 +27,9 @@ public class ClientDataService {
 	public ClientDataService(ClientSettings clientSettings,ClientData clientData){
 		this.infernalClient =  new ClientDataInfernalJDBCClient(clientSettings.getInfernalMap());
 		if(clientSettings.getPort().equals("")){
-			this.managerClient = new ClientDataManagerRESTClient(clientSettings.getWebServer(), clientSettings.getUsername(), clientSettings.getPassword());
+			this.managerClient = new ClientDataManagerRESTClient(clientSettings.getWebServer(), clientSettings.getUsername(), clientSettings.getPassword(), clientSettings.getDebugHTTP());
 		} else {
-			this.managerClient = new ClientDataManagerRESTClient(clientSettings.getWebServer() + ":" + clientSettings.getPort(), clientSettings.getUsername(), clientSettings.getPassword());
+			this.managerClient = new ClientDataManagerRESTClient(clientSettings.getWebServer() + ":" + clientSettings.getPort(), clientSettings.getUsername(), clientSettings.getPassword(), clientSettings.getDebugHTTP());
 		}
 		this.clientSettings = clientSettings;
 		this.clientData = clientData;

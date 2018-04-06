@@ -1,5 +1,10 @@
 package net.nilsghesquiere.managerclients;
 
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+
+import net.nilsghesquiere.security.SSLBasicAuthenticationRestTemplate;
 import net.nilsghesquiere.util.ProgramUtil;
 import net.nilsghesquiere.util.wrappers.ClientDataMap;
 import net.nilsghesquiere.util.wrappers.ClientDataWrapper;
@@ -24,11 +29,18 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 public class ClientDataManagerRESTClient implements ClientDataManagerClient {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ClientDataManagerRESTClient.class);
 	private final String URI_CLIENTS;
-	private RestTemplate restTemplate = new RestTemplate();
+	private RestTemplate restTemplate;
 	private HttpHeaders headers;
 	
-	public ClientDataManagerRESTClient(String uriServer, String username, String password) {
+	public ClientDataManagerRESTClient(String uriServer, String username, String password, Boolean debugHTTP) {
 		this.URI_CLIENTS = uriServer +"/api/clients";
+		
+		try {
+			this.restTemplate = new SSLBasicAuthenticationRestTemplate(username,password,debugHTTP);
+		} catch (KeyManagementException | NoSuchAlgorithmException | KeyStoreException e) {
+			LOGGER.debug(e.getMessage());
+		}	
+		
 		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.registerModule(new JavaTimeModule());
@@ -39,10 +51,6 @@ public class ClientDataManagerRESTClient implements ClientDataManagerClient {
 		mapper.configure(MapperFeature.DEFAULT_VIEW_INCLUSION, false);
 		converter.setObjectMapper(mapper);
 		restTemplate.getMessageConverters().add(0,converter);
-		//set auth
-		restTemplate.getInterceptors().add(new BasicAuthorizationInterceptor(username,password));
-		//set headers
-		headers = ProgramUtil.buildHttpHeaders(username,password);
 	}
 	
 	//TODO: catch IOExceptions(probably) for when the server doesn't respond to a rest call(ALL REST REQUESTS) (see below)

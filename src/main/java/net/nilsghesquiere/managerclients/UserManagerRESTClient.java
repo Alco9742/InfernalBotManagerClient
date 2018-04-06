@@ -1,5 +1,11 @@
 package net.nilsghesquiere.managerclients;
 
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+
+import net.nilsghesquiere.security.SSLBasicAuthenticationRestTemplate;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.client.support.BasicAuthorizationInterceptor;
@@ -9,11 +15,15 @@ import org.springframework.web.client.RestTemplate;
 public class UserManagerRESTClient implements UserManagerClient{
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserManagerRESTClient.class);
 	private final String URI_USERS;
-	private RestTemplate restTemplate = new RestTemplate();
+	private RestTemplate restTemplate;
 	
-	public UserManagerRESTClient(String uriServer, String username, String password) {
+	public UserManagerRESTClient(String uriServer, String username, String password, Boolean debugHTTP) {
 		this.URI_USERS = uriServer +"/api/users";
-		restTemplate.getInterceptors().add(new BasicAuthorizationInterceptor(username, password));
+		try {
+			this.restTemplate = new SSLBasicAuthenticationRestTemplate(username,password,debugHTTP);
+		} catch (KeyManagementException | NoSuchAlgorithmException | KeyStoreException e) {
+			LOGGER.debug(e.getMessage());
+		}	
 	}
 	
 	public Long getUserIdByUsername(String username){

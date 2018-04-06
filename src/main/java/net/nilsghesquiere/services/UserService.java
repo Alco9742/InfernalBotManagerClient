@@ -1,7 +1,6 @@
 package net.nilsghesquiere.services;
 
 import net.nilsghesquiere.entities.ClientSettings;
-import net.nilsghesquiere.managerclients.LolAccountManagerRESTClient;
 import net.nilsghesquiere.managerclients.UserManagerClient;
 import net.nilsghesquiere.managerclients.UserManagerRESTClient;
 
@@ -15,9 +14,9 @@ public class UserService {
 	
 	public UserService(ClientSettings clientSettings){
 		if(clientSettings.getPort().equals("")){
-			this.managerClient = new UserManagerRESTClient(clientSettings.getWebServer(), clientSettings.getUsername(), clientSettings.getPassword());
+			this.managerClient = new UserManagerRESTClient(clientSettings.getWebServer(), clientSettings.getUsername(), clientSettings.getPassword(), clientSettings.getDebugHTTP());
 		} else {
-			this.managerClient = new UserManagerRESTClient(clientSettings.getWebServer() + ":" + clientSettings.getPort(), clientSettings.getUsername(), clientSettings.getPassword());
+			this.managerClient = new UserManagerRESTClient(clientSettings.getWebServer() + ":" + clientSettings.getPort(), clientSettings.getUsername(), clientSettings.getPassword(), clientSettings.getDebugHTTP());
 		}
 	}
 	

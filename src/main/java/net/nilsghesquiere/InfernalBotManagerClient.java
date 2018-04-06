@@ -41,7 +41,7 @@ public class InfernalBotManagerClient {
 	private InfernalSettingsService infernalSettingsService;
 	private ClientDataService clientDataService;
 
-	public InfernalBotManagerClient(ClientSettings clientSettings) throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
+	public InfernalBotManagerClient(ClientSettings clientSettings){
 		this.clientSettings = clientSettings;
 		this.clientData = new ClientData(clientSettings.getClientTag());
 		this.userService = new UserService(clientSettings);

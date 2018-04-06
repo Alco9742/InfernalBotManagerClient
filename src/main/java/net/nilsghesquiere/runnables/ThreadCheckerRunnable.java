@@ -20,7 +20,6 @@ public class ThreadCheckerRunnable implements Runnable {
 			try {
 				TimeUnit.MINUTES.sleep(1);
 			} catch (InterruptedException e2) {
-				LOGGER.error("Failure during sleep");
 				LOGGER.debug(e2.getMessage());
 			}
 			Set<Thread> threadSet = Thread.getAllStackTraces().keySet();

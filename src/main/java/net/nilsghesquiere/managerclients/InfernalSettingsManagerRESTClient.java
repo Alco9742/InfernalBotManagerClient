@@ -1,11 +1,15 @@
 package net.nilsghesquiere.managerclients;
 
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+
 import net.nilsghesquiere.entities.InfernalSettings;
+import net.nilsghesquiere.security.SSLBasicAuthenticationRestTemplate;
 import net.nilsghesquiere.util.wrappers.InfernalSettingsWrapper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.client.support.BasicAuthorizationInterceptor;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
@@ -13,12 +17,15 @@ import org.springframework.web.client.RestTemplate;
 public class InfernalSettingsManagerRESTClient implements InfernalSettingsManagerClient{
 	private static final Logger LOGGER = LoggerFactory.getLogger(InfernalSettingsManagerRESTClient.class);
 	private final String URI_INFERNALSETTINGS;
-	private RestTemplate restTemplate = new RestTemplate();
+	private RestTemplate restTemplate;
 	
-	public InfernalSettingsManagerRESTClient(String uriServer, String username, String password) {
+	public InfernalSettingsManagerRESTClient(String uriServer, String username, String password, Boolean debugHTTP) {
 		this.URI_INFERNALSETTINGS = uriServer +"/api/infernalsettings";
-		//set auth
-		restTemplate.getInterceptors().add(new BasicAuthorizationInterceptor(username,password));
+		try {
+			this.restTemplate = new SSLBasicAuthenticationRestTemplate(username,password,debugHTTP);
+		} catch (KeyManagementException | NoSuchAlgorithmException | KeyStoreException e) {
+			LOGGER.debug(e.getMessage());
+		}	
 	}
 	public InfernalSettings getUserInfernalSettings(Long userid){
 		try{

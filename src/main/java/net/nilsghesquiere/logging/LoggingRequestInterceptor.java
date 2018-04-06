@@ -1,4 +1,4 @@
-package net.nilsghesquiere.util.logging;
+package net.nilsghesquiere.logging;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,14 +11,13 @@ import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 
-import net.nilsghesquiere.managerclients.LolAccountManagerRESTClient;
 
 public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
-	private static final Logger LOGGER = LoggerFactory.getLogger(ClientHttpRequestInterceptor.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(LoggingRequestInterceptor.class);
 
     @Override
     public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
-        traceRequest(request, body);
+    	traceRequest(request, body);
         ClientHttpResponse response = execution.execute(request, body);
         traceResponse(response);
         return response;
@@ -48,6 +47,7 @@ public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
         LOGGER.debug("Headers      : {}", response.getHeaders());
         LOGGER.debug("Response body: {}", inputStringBuilder.toString());
         LOGGER.debug("=======================response end=================================================");
+        LOGGER.debug(""); //Added extra line for visibility in file
     }
 
 }

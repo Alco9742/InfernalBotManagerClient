@@ -1,27 +1,25 @@
 package net.nilsghesquiere.managerclients;
 
-import java.util.ArrayList;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Map.Entry;
 
 import net.nilsghesquiere.entities.LolAccount;
 import net.nilsghesquiere.enums.Region;
+import net.nilsghesquiere.security.SSLBasicAuthenticationRestTemplate;
 import net.nilsghesquiere.util.ProgramUtil;
-import net.nilsghesquiere.util.logging.LoggingRequestInterceptor;
 import net.nilsghesquiere.util.wrappers.LolAccountMap;
 import net.nilsghesquiere.util.wrappers.LolAccountWrapper;
 import net.nilsghesquiere.util.wrappers.LolMixedAccountMap;
 import net.nilsghesquiere.util.wrappers.StringResponseMap;
 
-import org.hobsoft.spring.resttemplatelogger.LoggingCustomizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.client.ClientHttpRequestInterceptor;
-import org.springframework.http.client.support.BasicAuthorizationInterceptor;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
@@ -33,16 +31,14 @@ public class LolAccountManagerRESTClient implements LolAccountManagerClient {
 	private RestTemplate restTemplate;
 	private HttpHeaders headers;
 	
-	public LolAccountManagerRESTClient(String uriServer, String username, String password) {
+	public LolAccountManagerRESTClient(String uriServer, String username, String password, Boolean debugHTTP) {
 		this.URI_ACCOUNTS = uriServer +"/api/accounts";
 		
-		//Logging 
-		restTemplate = new RestTemplateBuilder()
-				.customizers(new LoggingCustomizer())
-				.build();
-		
-		//authentication
-		restTemplate.getInterceptors().add(new BasicAuthorizationInterceptor(username,password));
+		try {
+			this.restTemplate = new SSLBasicAuthenticationRestTemplate(username,password,debugHTTP);
+		} catch (KeyManagementException | NoSuchAlgorithmException | KeyStoreException e) {
+			LOGGER.debug(e.getMessage());
+		}	
 		
 		//set headers
 		headers = ProgramUtil.buildHttpHeaders();

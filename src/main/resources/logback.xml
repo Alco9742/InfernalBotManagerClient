@@ -12,9 +12,6 @@
 <!-- Normal file log appender -->
 	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
 		<file>logs/debug.log</file>
-		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-			<level>DEBUG</level>
-		</filter>
 		<encoder>
 			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{0} - %msg%n</pattern>
 		</encoder>
@@ -25,28 +22,42 @@
 <!-- HTTP file log appender -->
 	<appender name="HTTPFILE" class="ch.qos.logback.core.FileAppender">
 		<file>logs/http.log</file>
-		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-			<level>DEBUG</level>
-		</filter>
 		<encoder>
 			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{0} - %msg%n</pattern>
 		</encoder>
 	</appender>
 	
-	<root level="ERROR">
+	<root level="INFO">
 		<appender-ref ref="STDOUT" />
 	</root>
 	<root level="DEBUG">
 		<appender-ref ref="FILE" />
 	</root>
-
-	<logger name="org.springframework.web">
+	<root level="ERROR">
+		<appender-ref ref="HTTPFILE" />
+	</root>
+	
+	<logger name="net.nilsghesquiere" additivity="false">
 		<level value="INFO" />
-		<appender-ref ref="FILE" />
 		<appender-ref ref="STDOUT" />
 	</logger>
 	
-	<logger name="org.hobsoft.spring.resttemplatelogger.LoggingCustomizer" additivity="false">
+	<logger name="net.nilsghesquiere" additivity="false">
+		<level value="DEBUG" />
+		<appender-ref ref="FILE" />
+	</logger>
+	
+	<logger name="org.apache.http" additivity="false">
+		<level value="ERROR" />
+		<appender-ref ref="HTTPFILE" />
+	</logger>
+	
+	<logger name="net.nilsghesquiere.security" additivity="false">
+		<level value="OFF" />
+		<appender-ref ref="HTTPFILE" />
+	</logger>
+	
+	<logger name="net.nilsghesquiere.logging" additivity="false">
 		<level value="DEBUG" />
 		<appender-ref ref="HTTPFILE" />
 	</logger>

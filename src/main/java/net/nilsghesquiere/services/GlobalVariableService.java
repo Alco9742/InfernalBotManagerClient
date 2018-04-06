@@ -1,14 +1,8 @@
 package net.nilsghesquiere.services;
 
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-
 import net.nilsghesquiere.entities.ClientSettings;
-import net.nilsghesquiere.managerclients.ClientDataManagerRESTClient;
 import net.nilsghesquiere.managerclients.GlobalVariableManagerClient;
 import net.nilsghesquiere.managerclients.GlobalVariableManagerRESTClient;
-import net.nilsghesquiere.managerclients.InfernalSettingsManagerRESTClient;
 import net.nilsghesquiere.util.ProgramConstants;
 
 import org.slf4j.Logger;
@@ -18,11 +12,11 @@ public class GlobalVariableService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(GlobalVariableService.class);
 	private final GlobalVariableManagerClient managerClient;
 	
-	public GlobalVariableService(ClientSettings clientSettings) throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException{
+	public GlobalVariableService(ClientSettings clientSettings){
 		if(clientSettings.getPort().equals("")){
-			this.managerClient = new GlobalVariableManagerRESTClient(clientSettings.getWebServer(), clientSettings.getUsername(), clientSettings.getPassword());
+			this.managerClient = new GlobalVariableManagerRESTClient(clientSettings.getWebServer(), clientSettings.getUsername(), clientSettings.getPassword(), clientSettings.getDebugHTTP());
 		} else {
-			this.managerClient = new GlobalVariableManagerRESTClient(clientSettings.getWebServer() + ":" + clientSettings.getPort(), clientSettings.getUsername(), clientSettings.getPassword());
+			this.managerClient = new GlobalVariableManagerRESTClient(clientSettings.getWebServer() + ":" + clientSettings.getPort(), clientSettings.getUsername(), clientSettings.getPassword(), clientSettings.getDebugHTTP());
 		}
 	}
 	

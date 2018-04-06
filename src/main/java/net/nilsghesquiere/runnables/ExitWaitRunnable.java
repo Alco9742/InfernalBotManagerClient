@@ -28,7 +28,6 @@ public class ExitWaitRunnable implements Runnable {
 			try {
 				TimeUnit.SECONDS.sleep(5);
 			} catch (InterruptedException e2) {
-				LOGGER.error("Failure during sleep");
 				LOGGER.debug(e2.getMessage());
 			}
 		}
