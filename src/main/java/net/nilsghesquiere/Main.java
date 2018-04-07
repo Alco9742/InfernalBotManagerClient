@@ -57,24 +57,31 @@ public class Main{
 			iniLocation = System.getProperty("user.dir") + "\\" + ProgramConstants.INI_NAME; 
 		}
 		client = buildClient(iniLocation);
-		try{
-			if(client.getClientSettings().getTestMode()){
-				test();
-			} else {
-				program();
-			}
-			//test();
-		} catch(HttpClientErrorException e){
-			//AuthenticationException
-			LOGGER.debug("Received the following response from the server: " + e.getMessage());
-			if (e.getMessage().toLowerCase().contains("unauthorized")){
-				LOGGER.error("Failure authenticating to the server, check your credentials");
-			}
-			if (e.getMessage().toLowerCase().contains("not found")){
-				LOGGER.error("Something went wrong, contact Alco");
-			}
+		if(client != null){
+			try{
+				if(client.getClientSettings().getTestMode()){
+					test();
+				} else {
+					program();
+				}
+				//test();
+			} catch(HttpClientErrorException e){
+				//AuthenticationException
+				LOGGER.debug("Received the following response from the server: " + e.getMessage());
+				if (e.getMessage().toLowerCase().contains("unauthorized")){
+					LOGGER.error("Failure authenticating to the server, check your credentials");
+				}
+				if (e.getMessage().toLowerCase().contains("not found")){
+					LOGGER.error("Something went wrong, contact Alco");
+				}
+				LOGGER.info("Closing InfernalBotManager Client");
+				exitWaitRunnable.exit();
+			} 
+		} else {
+			LOGGER.info("Closing InfernalBotManager Client");
 			exitWaitRunnable.exit();
 		}
+
 	}
 	
 	private static void test(){
@@ -83,89 +90,84 @@ public class Main{
 	}
 	
 	private static void program(){
-		if (client != null){
-			if (client.getClientSettings().getEnableDevMode()){
-				//start the ThreadChecker
-				ThreadCheckerRunnable threadCheckerRunnable = new ThreadCheckerRunnable();
-				Thread threadCheckerThread = new Thread(threadCheckerRunnable);
-				threadMap.put(threadCheckerThread, threadCheckerRunnable);
-				threadCheckerThread.setDaemon(false); 
-				threadCheckerThread.start();
-			}
-			boolean upToDate = true;
-			boolean connected = false;
-			boolean killSwitchOff = true;
-			while(!connected){
-				try{
-					connected = client.checkConnection();
-					if (connected){
-						if(client.checkKillSwitch()){
-							killSwitchOff = false;
-						} else {
-							if(!client.checkVersion()){
-								upToDate = false;
-							}
+		if (client.getClientSettings().getEnableDevMode()){
+			//start the ThreadChecker
+			ThreadCheckerRunnable threadCheckerRunnable = new ThreadCheckerRunnable();
+			Thread threadCheckerThread = new Thread(threadCheckerRunnable);
+			threadMap.put(threadCheckerThread, threadCheckerRunnable);
+			threadCheckerThread.setDaemon(false); 
+			threadCheckerThread.start();
+		}
+		boolean upToDate = true;
+		boolean connected = false;
+		boolean killSwitchOff = true;
+		while(!connected){
+			try{
+				connected = client.checkConnection();
+				if (connected){
+					if(client.checkKillSwitch()){
+						killSwitchOff = false;
+					} else {
+						if(!client.checkVersion()){
+							upToDate = false;
 						}
-					}
-					if(!connected){
-						LOGGER.info("Retrying in 1 minute..");
-						try {
-							TimeUnit.MINUTES.sleep(1);
-						} catch (InterruptedException e2) {
-							LOGGER.debug(e2.getMessage());
-						}
-					}
-				} catch (NullPointerException ex){
-					LOGGER.error("Bad configuration on the server, contact Alco");
-					exitWaitRunnable.exit();
-					try {
-						TimeUnit.SECONDS.sleep(10);
-					} catch (InterruptedException e) {
-						LOGGER.debug(e.getMessage());
 					}
 				}
-			}
-			if (killSwitchOff){
-				//check for update
-				if (upToDate){
-					//backup sqllite file
-					if(client.backUpInfernalDatabase()){
-						//initial checks
-						//Check if infernalbot tables have been changed since last version
-						client.checkTables();
-						//Attempt to get accounts, retry if fail
-						boolean initDone = client.checkConnection() && client.setUserId() && client.setInfernalSettings() && client.exchangeAccounts();
-						while (!initDone){
-							try {
-								LOGGER.info("Retrying in 1 minute...");
-								TimeUnit.MINUTES.sleep(1);
-								initDone = (client.checkConnection() && client.setInfernalSettings() && client.exchangeAccounts());
-							} catch (InterruptedException e) {
-								LOGGER.debug(e.getMessage());
-							}
-						}
-						//schedule reboot
-						client.scheduleReboot();
-						//empty queuers
-						client.deleteAllQueuers();
-						//send clientData for startup
-						client.getClientDataService().sendData("InfernalBotManager Startup");
-						//start infernalbot checker in a thread
-						InfernalBotManagerRunnable infernalRunnable = new InfernalBotManagerRunnable(client);
-						Thread infernalThread = new Thread(infernalRunnable);
-						threadMap.put(infernalThread, infernalRunnable);
-						infernalThread.setDaemon(false); 
-						infernalThread.start();
-					} else {
-						LOGGER.info("Closing InfernalBotManager Client");
-						exitWaitRunnable.exit();
+				if(!connected){
+					LOGGER.info("Retrying in 1 minute..");
+					try {
+						TimeUnit.MINUTES.sleep(1);
+					} catch (InterruptedException e2) {
+						LOGGER.debug(e2.getMessage());
 					}
+				}
+			} catch (NullPointerException ex){
+				LOGGER.error("Bad configuration on the server, contact Alco");
+				exitWaitRunnable.exit();
+				try {
+					TimeUnit.SECONDS.sleep(10);
+				} catch (InterruptedException e) {
+					LOGGER.debug(e.getMessage());
+				}
+			}
+		}
+		if (killSwitchOff){
+			//check for update
+			if (upToDate){
+				//backup sqllite file
+				if(client.backUpInfernalDatabase()){
+					//initial checks
+					//Check if infernalbot tables have been changed since last version
+					client.checkTables();
+					//Attempt to get accounts, retry if fail
+					boolean initDone = client.checkConnection() && client.setUserId() && client.setInfernalSettings() && client.exchangeAccounts();
+					while (!initDone){
+						try {
+							LOGGER.info("Retrying in 1 minute...");
+							TimeUnit.MINUTES.sleep(1);
+							initDone = (client.checkConnection() && client.setInfernalSettings() && client.exchangeAccounts());
+						} catch (InterruptedException e) {
+							LOGGER.debug(e.getMessage());
+						}
+					}
+					//schedule reboot
+					client.scheduleReboot();
+					//empty queuers
+					client.deleteAllQueuers();
+					//send clientData for startup
+					client.getClientDataService().sendData("InfernalBotManager Startup");
+					//start infernalbot checker in a thread
+					InfernalBotManagerRunnable infernalRunnable = new InfernalBotManagerRunnable(client);
+					Thread infernalThread = new Thread(infernalRunnable);
+					threadMap.put(infernalThread, infernalRunnable);
+					infernalThread.setDaemon(false); 
+					infernalThread.start();
 				} else {
-					client.updateClient();
 					LOGGER.info("Closing InfernalBotManager Client");
 					exitWaitRunnable.exit();
 				}
 			} else {
+				client.updateClient();
 				LOGGER.info("Closing InfernalBotManager Client");
 				exitWaitRunnable.exit();
 			}
