@@ -245,7 +245,6 @@ public class InfernalBotManagerClient {
 	
 				//Start the updater
 				LOGGER.info("Starting updater");
-				LOGGER.info(command);
 				ProcessBuilder pb = new ProcessBuilder(command);
 				pb.directory(new File(managerMap));
 				@SuppressWarnings("unused")

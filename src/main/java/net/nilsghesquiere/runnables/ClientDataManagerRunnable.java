@@ -26,9 +26,10 @@ public class ClientDataManagerRunnable implements Runnable {
 
 	@Override
 	public void run() {
-		LOGGER.info("Starting ClientData Updater in 3 minutes");
+		LOGGER.info("Starting ClientData Updater in 2 minutes and 30 seconds");
 		try {
-			TimeUnit.MINUTES.sleep(3);
+			TimeUnit.MINUTES.sleep(2);
+			TimeUnit.SECONDS.sleep(30);
 		} catch (InterruptedException e2) {
 			LOGGER.debug(e2.getMessage());
 		}
@@ -37,7 +38,9 @@ public class ClientDataManagerRunnable implements Runnable {
 		}
 		while (!stop){
 			client.getClientDataService().sendData("ClientData Update");
-			if(!client.getClientDataService().hasActiveQueuer()){
+			//Only do the checks if the infernalbot process is running (infernal now empties queuers on exit).
+			Boolean proccessIsRunning = ProgramUtil.isProcessRunning(ProgramUtil.getInfernalProcessname(client.getClientSettings().getInfernalMap())) || ProgramUtil.isProcessRunning(ProgramConstants.LEGACY_LAUNCHER_NAME);
+			if(proccessIsRunning && !client.getClientDataService().hasActiveQueuer()){
 				if(client.getClientSettings().getRebootFromManager()){
 					LOGGER.info("No active queuers found");
 					rebootFromClientDataManagerClient = true;

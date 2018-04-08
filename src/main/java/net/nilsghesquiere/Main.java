@@ -231,7 +231,7 @@ public class Main{
 			ini.put("clientinfo", "region", "EUW");
 		
 			//clientsettings
-			ini.put("clientsettings", "infernalmap", "C:/PATH/TO/INFERNAL/MAP");
+			ini.put("clientsettings", "infernalpath", "C:/PATH/TO/INFERNAL/MAP");
 			ini.put("clientsettings", "accounts", "5");
 			ini.put("clientsettings", "accountbuffer", "2");
 			ini.put("clientsettings","uploadnewaccounts", "false");

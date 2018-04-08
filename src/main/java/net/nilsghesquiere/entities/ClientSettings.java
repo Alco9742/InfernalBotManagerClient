@@ -88,7 +88,7 @@ public class ClientSettings {
 		Region clientRegion = ini.get("clientinfo", "region", Region.class);
 		
 		//clientsettings
-		String infernalMap = ini.get("clientsettings", "infernalmap", String.class);
+		String infernalMap = ini.get("clientsettings", "infernalpath", String.class);
 		Integer numberOfAccounts = ini.get("clientsettings", "accounts", Integer.class);
 		Integer accountBuffer = ini.get("clientsettings", "accountbuffer", Integer.class);
 		Boolean uploadNewAccounts = ini.get("clientsettings","uploadnewaccounts", Boolean.class);
@@ -116,10 +116,6 @@ public class ClientSettings {
 		}
 		if(password == null || username.isEmpty()){
 			LOGGER.error("Bad value in settings.ini: value '" + password + "' is not accepted for password");
-			hasError = true;
-		}
-		if(infernalMap == null){
-			LOGGER.error("Bad value in settings.ini: value '" + infernalMap + "' is not accepted for infernalmap");
 			hasError = true;
 		}
 		if(numberOfAccounts == null){
@@ -154,7 +150,7 @@ public class ClientSettings {
 			}
 		}
 		if(infernalMap == null){
-			LOGGER.error("Bad value in settings.ini: value '" + infernalMap + "' is not accepted for infernalmap");
+			LOGGER.error("Bad value in settings.ini: value '" + infernalMap + "' is not accepted for infernalpath");
 			hasError = true;
 		}
 
