@@ -61,10 +61,10 @@ public class ProgramUtil {
 			Wini ini = new Wini(new File(infernalMap + "/configs/settings.ini" ));
 			newProcessName = ini.get("Programs", "Launcher", String.class);
 		} catch (InvalidFileFormatException e2) {
-			LOGGER.error("Failure reading the infernal settings.ini");
+			LOGGER.debug("Failure reading the infernal settings.ini");
 			LOGGER.debug(e2.getMessage());
 		} catch (IOException e2) {
-			LOGGER.error("Failure reading the infernal settings.ini");
+			LOGGER.debug("Failure reading the infernal settings.ini");
 			LOGGER.debug(e2.getMessage());
 		}
 		return newProcessName;
