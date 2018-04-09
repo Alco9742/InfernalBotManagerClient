@@ -13,7 +13,6 @@ import net.nilsghesquiere.util.ProgramUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-//TODO Transactions
 public class InfernalSettingsInfernalJDBCClient implements InfernalSettingsInfernalClient{
 	private static final Logger LOGGER = LoggerFactory.getLogger(InfernalSettingsInfernalJDBCClient.class);
 	private final String DATABASE_URI;

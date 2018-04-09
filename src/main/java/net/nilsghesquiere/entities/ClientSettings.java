@@ -12,8 +12,6 @@ import org.ini4j.Wini;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ch.qos.logback.classic.Level;
-
 @Data
 public class ClientSettings {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ClientSettings.class);
@@ -107,7 +105,7 @@ public class ClientSettings {
 		String infernalProgramName = ini.get("dev", "infernalprogramname", String.class);
 		String webServer = ini.get("dev", "webserver", String.class);
 		String port = ini.get("dev", "port", String.class);
-
+		
 		String readme = ini.get("extra", "readme", String.class);
 		
 		if(username == null || username.isEmpty()){

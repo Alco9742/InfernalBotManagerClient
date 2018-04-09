@@ -34,12 +34,9 @@ public class InfernalSettingsService {
 	
 	public boolean updateInfernalSettings(Long userid){
 		InfernalSettings infernalSettingsFromREST = managerClient.getUserInfernalSettings(userid);
-		//Disabled this for now: It is always the default set atm
-		//InfernalSettings infernalSettingsFromJDBC = jdbcClient.getInfernalBotManagerInfernalSettings();
 		InfernalSettings infernalSettingsFromJDBC = infernalClient.getDefaultInfernalSettings();
 		if (infernalSettingsFromREST != null){
 			if (infernalSettingsFromJDBC != null){
-				//TODO update every field from the jdbc setting with the settings from rest and update
 				InfernalSettings infernalSettingsForUpdate = prepareInfernalSettingsForJDBC(infernalSettingsFromJDBC, infernalSettingsFromREST);
 				Long newId = infernalClient.updateInfernalSettings(infernalSettingsForUpdate);
 				if (newId == infernalSettingsForUpdate.getId()){
@@ -51,7 +48,6 @@ public class InfernalSettingsService {
 			} else {
 				InfernalSettings infernalSettingsDefaultFromJDBC = infernalClient.getDefaultInfernalSettings();
 				if (infernalSettingsDefaultFromJDBC != null){
-					//TODO update every field from the jdbc setting with the settings from rest and update, set ID to -1
 					infernalSettingsDefaultFromJDBC.setId(-1L);
 					InfernalSettings infernalSettingsForInsert = prepareInfernalSettingsForJDBC(infernalSettingsDefaultFromJDBC, infernalSettingsFromREST);
 					Long newId = infernalClient.insertInfernalSettings(infernalSettingsForInsert);
@@ -84,7 +80,6 @@ public class InfernalSettingsService {
 		infernalSettingsFromJDBC.setGroups(infernalSettingsFromREST.getGroups());
 	//	infernalSettingsFromJDBC.setLevel(infernalSettingsFromREST.getLevel());
 		infernalSettingsFromJDBC.setClientPath(infernalSettingsFromREST.getClientPath());
-	//TODO: Check if bot checks the currentversion automatically at startup, if so we don't need this
 	//	infernalSettingsFromJDBC.setCurrentVersion(infernalSettingsFromREST.getCurrentVersion());
 		infernalSettingsFromJDBC.setWildcard(infernalSettingsFromREST.getWildcard());
 		infernalSettingsFromJDBC.setMaxLevel(infernalSettingsFromREST.getMaxLevel());

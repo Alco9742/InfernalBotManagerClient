@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.concurrent.TimeUnit;
 
-import javax.management.monitor.Monitor;
-
 import net.nilsghesquiere.InfernalBotManagerClient;
 import net.nilsghesquiere.Main;
 import net.nilsghesquiere.monitor.SystemMonitor;

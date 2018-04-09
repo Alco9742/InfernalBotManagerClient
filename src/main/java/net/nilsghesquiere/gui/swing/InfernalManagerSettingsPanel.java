@@ -1,17 +1,10 @@
 package net.nilsghesquiere.gui.swing;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 
-import java.io.PrintStream;
-
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
-import javax.swing.text.DefaultCaret;
 
 import com.regexlab.j2e.SystemTray;
 import com.regexlab.j2e.SystemTrayCallback;

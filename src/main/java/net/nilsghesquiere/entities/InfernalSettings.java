@@ -59,7 +59,7 @@ public class InfernalSettings implements Serializable{
 	private Integer timeoutInGameFF;
 	private Integer timeoutEndOfGame;
 	private Boolean timeUntilCheck;
-	private String timeUntilReboot; //TODO check this out
+	private String timeUntilReboot; 
 	private Boolean serverCon;
 	private Integer serverPort;
 	private Boolean openChest;

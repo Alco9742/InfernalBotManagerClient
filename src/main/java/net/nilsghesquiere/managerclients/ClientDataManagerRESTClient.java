@@ -5,7 +5,6 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 
 import net.nilsghesquiere.security.SSLBasicAuthenticationRestTemplate;
-import net.nilsghesquiere.util.ProgramUtil;
 import net.nilsghesquiere.util.wrappers.ClientDataMap;
 import net.nilsghesquiere.util.wrappers.ClientDataWrapper;
 
@@ -14,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.client.support.BasicAuthorizationInterceptor;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResourceAccessException;
@@ -53,9 +51,6 @@ public class ClientDataManagerRESTClient implements ClientDataManagerClient {
 		converter.setObjectMapper(mapper);
 		restTemplate.getMessageConverters().add(0,converter);
 	}
-	
-	//TODO: catch IOExceptions(probably) for when the server doesn't respond to a rest call(ALL REST REQUESTS) (see below)
-	
 	public boolean sendClientData(Long userid, ClientDataMap map){
 		boolean result = true;
 		HttpEntity<ClientDataMap> request = new HttpEntity<>(map, headers);

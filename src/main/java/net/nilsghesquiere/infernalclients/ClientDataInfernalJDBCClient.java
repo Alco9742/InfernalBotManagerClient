@@ -15,7 +15,6 @@ import net.nilsghesquiere.entities.QueuerLolAccount;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-//TODO Transactions
 public class ClientDataInfernalJDBCClient implements ClientDataInfernalClient{
 	private static final Logger LOGGER = LoggerFactory.getLogger(ClientDataInfernalJDBCClient.class);
 	private final String DATABASE_URI;

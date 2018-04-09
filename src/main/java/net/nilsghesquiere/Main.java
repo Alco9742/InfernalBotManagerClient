@@ -1,6 +1,8 @@
 package net.nilsghesquiere;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -152,7 +154,7 @@ public class Main{
 					//empty queuers
 					client.deleteAllQueuers();
 					//send clientData for startup
-					client.getClientDataService().sendData("InfernalBotManager Startup", "","");
+					client.getClientDataService().sendData("InfernalBotManager Startup", "INIT","INIT");
 					//start infernalbot checker in a thread
 					InfernalBotManagerRunnable infernalRunnable = new InfernalBotManagerRunnable(client);
 					Thread infernalThread = new Thread(infernalRunnable);
@@ -178,6 +180,7 @@ public class Main{
 		InfernalBotManagerClient client = null;
 		if(Files.exists(iniFilePath)){
 			try {
+				updateSettingsIni(iniFilePath);
 				Wini ini = new Wini(new File(iniFile));
 				ClientSettings settings = ClientSettings.buildFromIni(ini);
 				if (settings != null){
@@ -254,5 +257,12 @@ public class Main{
 			LOGGER.error("Failure creating file");
 			LOGGER.debug(e.getMessage());
 		}
+	}
+	
+	private static void updateSettingsIni(Path path) throws IOException{
+		Charset charset = StandardCharsets.UTF_8;
+		String content = new String(Files.readAllBytes(path), charset);
+		content = content.replaceAll("infernalmap", "infernalpath");
+		Files.write(path, content.getBytes(charset));
 	}
 }
