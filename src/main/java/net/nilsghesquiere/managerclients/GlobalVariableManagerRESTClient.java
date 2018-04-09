@@ -36,7 +36,11 @@ public class GlobalVariableManagerRESTClient implements GlobalVariableManagerCli
 			GlobalVariableSingleWrapper jsonResponse = restTemplate.getForObject(URI_GLOBALVARIABLES + "/" + name, GlobalVariableSingleWrapper.class);
 			GlobalVariable globalVariable = jsonResponse.getMap().get("data");
 			return globalVariable;
-		} catch (ResourceAccessException | HttpServerErrorException e){
+		} catch (ResourceAccessException e){
+			LOGGER.warn("Failure getting global variable from the server");
+			LOGGER.debug(e.getMessage());
+			return null;
+		} catch (HttpServerErrorException e){
 			LOGGER.warn("Failure getting global variable from the server");
 			LOGGER.debug(e.getMessage());
 			return null;

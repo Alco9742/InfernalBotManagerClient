@@ -36,7 +36,11 @@ public class InfernalSettingsManagerRESTClient implements InfernalSettingsManage
 				LOGGER.info("Received InfernalBot settings from the InfernalBotManager server.");
 			}
 			return infernalSettings;
-		} catch (ResourceAccessException | HttpServerErrorException e){
+		} catch (ResourceAccessException e){
+			LOGGER.warn("Failure getting infernal settings from the server");
+			LOGGER.debug(e.getMessage());
+			return null;
+		} catch (HttpServerErrorException e){
 			LOGGER.warn("Failure getting infernal settings from the server");
 			LOGGER.debug(e.getMessage());
 			return null;

@@ -62,7 +62,11 @@ public class ClientDataManagerRESTClient implements ClientDataManagerClient {
 				LOGGER.error("Failure updating Client data on the server: " + clientDataWrapper.getError());
 			} 
 			return result;
-		} catch (ResourceAccessException | HttpServerErrorException e){
+		} catch (ResourceAccessException e){
+			LOGGER.warn("Failure sending ClientData to server");
+			LOGGER.debug(e.getMessage());
+			return false;
+		} catch (HttpServerErrorException e){
 			LOGGER.warn("Failure sending ClientData to server");
 			LOGGER.debug(e.getMessage());
 			return false;

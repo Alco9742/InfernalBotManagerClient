@@ -64,7 +64,11 @@ public class LolAccountManagerRESTClient implements LolAccountManagerClient {
 				}
 			}
 			return returnAccounts;
-		} catch (ResourceAccessException | HttpServerErrorException e){
+		} catch (ResourceAccessException e){
+			LOGGER.warn("Failure getting accounts from the server");
+			LOGGER.debug(e.getMessage());
+			return null;
+		} catch (HttpServerErrorException e){
 			LOGGER.warn("Failure getting accounts from the server");
 			LOGGER.debug(e.getMessage());
 			return null;
@@ -85,7 +89,11 @@ public class LolAccountManagerRESTClient implements LolAccountManagerClient {
 				}
 			}
 			return returnAccounts;
-		} catch (ResourceAccessException | HttpServerErrorException e){
+		} catch (ResourceAccessException e){
+			LOGGER.warn("Failure getting bufferaccounts from the server");
+			LOGGER.debug(e.getMessage());
+			return null;
+		} catch (HttpServerErrorException e){
 			LOGGER.warn("Failure getting bufferaccounts from the server");
 			LOGGER.debug(e.getMessage());
 			return null;
@@ -96,7 +104,10 @@ public class LolAccountManagerRESTClient implements LolAccountManagerClient {
 		try{
 			LolAccount lolAccount = restTemplate.getForObject(URI_ACCOUNTS + "/user/" + userid + "/region/" + region + "/account/" + account, LolAccount.class);
 			return lolAccount;
-		} catch (ResourceAccessException | HttpServerErrorException e){
+		} catch (ResourceAccessException e){
+			LOGGER.debug(e.getMessage());
+			return null;
+		} catch (HttpServerErrorException e){
 			LOGGER.debug(e.getMessage());
 			return null;
 		}
@@ -116,8 +127,12 @@ public class LolAccountManagerRESTClient implements LolAccountManagerClient {
 			LolAccountWrapper lolAccountWrapperResponse = response.getBody();
 			List<LolAccount> returnAccounts = lolAccountWrapperResponse.getMap().get("data");
 			return returnAccounts;
-		} catch (ResourceAccessException | HttpServerErrorException e){
+		} catch (ResourceAccessException e){
 			LOGGER.warn("Failure updating accounts on the server");
+			LOGGER.debug(e.getMessage());
+			return null;
+		} catch (HttpServerErrorException e){
+			LOGGER.warn("updating getting accounts from the server");
 			LOGGER.debug(e.getMessage());
 			return null;
 		}
@@ -139,7 +154,11 @@ public class LolAccountManagerRESTClient implements LolAccountManagerClient {
 				LOGGER.info("Updated accounts on the InfernalBotManager server");
 			}
 			return result;
-		} catch (ResourceAccessException | HttpServerErrorException e){
+		} catch (ResourceAccessException e){
+			LOGGER.warn("Failure updating accounts on the server");
+			LOGGER.debug(e.getMessage());
+			return false;
+		} catch (HttpServerErrorException e){
 			LOGGER.warn("Failure updating accounts on the server");
 			LOGGER.debug(e.getMessage());
 			return false;

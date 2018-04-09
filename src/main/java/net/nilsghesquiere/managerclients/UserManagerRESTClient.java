@@ -30,9 +30,13 @@ public class UserManagerRESTClient implements UserManagerClient{
 		try{
 			Long jsonResponse = restTemplate.getForObject(URI_USERS + "/username/" + username, Long.class);
 			return jsonResponse;
-		} catch (ResourceAccessException | HttpServerErrorException e){
+		} catch (ResourceAccessException e){
 			LOGGER.warn("Failure getting user ID from the server");
 			LOGGER.debug(e.getMessage());
+			return null;
+		} catch (HttpServerErrorException e2){
+			LOGGER.warn("Failure getting user ID from the server");
+			LOGGER.debug(e2.getMessage());
 			return null;
 		}
 	}
