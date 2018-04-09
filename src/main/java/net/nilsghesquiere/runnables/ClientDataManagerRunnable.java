@@ -19,12 +19,14 @@ import org.slf4j.LoggerFactory;
 public class ClientDataManagerRunnable implements Runnable {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ClientDataManagerRunnable.class);
 	private final InfernalBotManagerClient client;
+	public final SystemMonitor monitor;
 	private volatile boolean stop = false;
 	private volatile boolean rebootFromClientDataManagerClient = false;
 	
 	public ClientDataManagerRunnable(InfernalBotManagerClient client) {
 		super();
 		this.client = client;
+		monitor = new SystemMonitor();
 	}
 
 	@Override
@@ -40,7 +42,7 @@ public class ClientDataManagerRunnable implements Runnable {
 			LOGGER.info("Starting InfernalBot ClientData Updater");
 		}
 		while (!stop){
-			client.getClientDataService().sendData("ClientData Update", Main.monitor.getRamUsage(), Main.monitor.getCpuUsage());
+			client.getClientDataService().sendData("InfernalBotManager Running", monitor.getRamUsage(), monitor.getCpuUsage());
 			//Only do the checks if the infernalbot process is running (infernal now empties queuers on exit).
 			Boolean proccessIsRunning = ProgramUtil.isProcessRunning(ProgramUtil.getInfernalProcessname(client.getClientSettings().getInfernalMap())) || ProgramUtil.isProcessRunning(ProgramConstants.LEGACY_LAUNCHER_NAME);
 			if(proccessIsRunning && !client.getClientDataService().hasActiveQueuer()){
@@ -94,7 +96,7 @@ public class ClientDataManagerRunnable implements Runnable {
 				LOGGER.debug(e1.getMessage());
 			}
 		}
-		client.getClientDataService().sendData("ClientDataUpdater Close", Main.monitor.getRamUsage(), Main.monitor.getCpuUsage());
+		client.getClientDataService().sendData("ClientDataUpdater Close", monitor.getRamUsage(), monitor.getCpuUsage());
 		LOGGER.info("Successfully closed ClientData Updater thread");
 	}
 

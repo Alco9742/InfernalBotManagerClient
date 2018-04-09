@@ -27,7 +27,6 @@ import org.springframework.web.client.HttpClientErrorException;
 public class Main{
 	private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 	private static InfernalBotManagerClient client;
-	public static final SystemMonitor monitor = new SystemMonitor();
 	public static Map<Thread, Runnable> threadMap = new HashMap<>();
 	public static ExitWaitRunnable exitWaitRunnable;
 	public static Thread exitWaitThread;
@@ -153,7 +152,7 @@ public class Main{
 					//empty queuers
 					client.deleteAllQueuers();
 					//send clientData for startup
-					client.getClientDataService().sendData("InfernalBotManager Startup", monitor.getRamUsage(),monitor.getCpuUsage());
+					client.getClientDataService().sendData("InfernalBotManager Startup", "","");
 					//start infernalbot checker in a thread
 					InfernalBotManagerRunnable infernalRunnable = new InfernalBotManagerRunnable(client);
 					Thread infernalThread = new Thread(infernalRunnable);
