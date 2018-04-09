@@ -8,7 +8,7 @@ import net.nilsghesquiere.security.SSLBasicAuthenticationRestTemplate;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.client.support.BasicAuthorizationInterceptor;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
@@ -30,7 +30,7 @@ public class UserManagerRESTClient implements UserManagerClient{
 		try{
 			Long jsonResponse = restTemplate.getForObject(URI_USERS + "/username/" + username, Long.class);
 			return jsonResponse;
-		} catch (ResourceAccessException e){
+		} catch (ResourceAccessException | HttpServerErrorException e){
 			LOGGER.warn("Failure getting user ID from the server");
 			LOGGER.debug(e.getMessage());
 			return null;

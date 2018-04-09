@@ -16,6 +16,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.client.support.BasicAuthorizationInterceptor;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
@@ -66,7 +67,7 @@ public class ClientDataManagerRESTClient implements ClientDataManagerClient {
 				LOGGER.error("Failure updating Client data on the server: " + clientDataWrapper.getError());
 			} 
 			return result;
-		} catch (ResourceAccessException e){
+		} catch (ResourceAccessException | HttpServerErrorException e){
 			LOGGER.warn("Failure sending ClientData to server");
 			LOGGER.debug(e.getMessage());
 			return false;

@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
@@ -63,7 +64,7 @@ public class LolAccountManagerRESTClient implements LolAccountManagerClient {
 				}
 			}
 			return returnAccounts;
-		} catch (ResourceAccessException e){
+		} catch (ResourceAccessException | HttpServerErrorException e){
 			LOGGER.warn("Failure getting accounts from the server");
 			LOGGER.debug(e.getMessage());
 			return null;
@@ -84,7 +85,7 @@ public class LolAccountManagerRESTClient implements LolAccountManagerClient {
 				}
 			}
 			return returnAccounts;
-		} catch (ResourceAccessException e){
+		} catch (ResourceAccessException | HttpServerErrorException e){
 			LOGGER.warn("Failure getting bufferaccounts from the server");
 			LOGGER.debug(e.getMessage());
 			return null;
@@ -95,7 +96,7 @@ public class LolAccountManagerRESTClient implements LolAccountManagerClient {
 		try{
 			LolAccount lolAccount = restTemplate.getForObject(URI_ACCOUNTS + "/user/" + userid + "/region/" + region + "/account/" + account, LolAccount.class);
 			return lolAccount;
-		} catch (ResourceAccessException e){
+		} catch (ResourceAccessException | HttpServerErrorException e){
 			LOGGER.debug(e.getMessage());
 			return null;
 		}
@@ -115,7 +116,7 @@ public class LolAccountManagerRESTClient implements LolAccountManagerClient {
 			LolAccountWrapper lolAccountWrapperResponse = response.getBody();
 			List<LolAccount> returnAccounts = lolAccountWrapperResponse.getMap().get("data");
 			return returnAccounts;
-		} catch (ResourceAccessException e){
+		} catch (ResourceAccessException | HttpServerErrorException e){
 			LOGGER.warn("Failure updating accounts on the server");
 			LOGGER.debug(e.getMessage());
 			return null;
@@ -138,7 +139,7 @@ public class LolAccountManagerRESTClient implements LolAccountManagerClient {
 				LOGGER.info("Updated accounts on the InfernalBotManager server");
 			}
 			return result;
-		} catch (ResourceAccessException e){
+		} catch (ResourceAccessException | HttpServerErrorException e){
 			LOGGER.warn("Failure updating accounts on the server");
 			LOGGER.debug(e.getMessage());
 			return false;
