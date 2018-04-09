@@ -15,6 +15,8 @@ public class ClientData implements Serializable{
 	private List<Queuer> queuers;
 	private LocalDateTime date;
 	private String status;
+	private String ramInfo;
+	private String cpuInfo;
 	
 	public ClientData() {}
 

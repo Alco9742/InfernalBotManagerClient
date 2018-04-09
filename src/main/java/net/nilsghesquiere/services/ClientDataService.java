@@ -35,8 +35,8 @@ public class ClientDataService {
 		this.clientData = clientData;
 	}
 	
-	public void sendData(String status){
-		ClientDataMap sendmap = prepareData(status);
+	public void sendData(String status, String ramInfo, String cpuInfo){
+		ClientDataMap sendmap = prepareData(status, ramInfo, cpuInfo);
 		managerClient.sendClientData(clientSettings.getUserId(), sendmap);
 	}
 	
@@ -48,7 +48,7 @@ public class ClientDataService {
 		return infernalClient.countQueuers();
 	}
 	
-	private ClientDataMap prepareData(String status){
+	private ClientDataMap prepareData(String status, String ramInfo, String cpuInfo){
 		ClientDataMap clientDataMap = new ClientDataMap();
 		List<Queuer> queuers = infernalClient.getQueuers();
 		for (Queuer queuer : queuers){
@@ -57,6 +57,8 @@ public class ClientDataService {
 		clientData.setDate(LocalDateTime.now());
 		clientData.setQueuers(queuers);
 		clientData.setStatus(status);
+		clientData.setRamInfo(ramInfo);
+		clientData.setCpuInfo(cpuInfo);
 		clientDataMap.add("0", clientData);
 		return clientDataMap;
 	}

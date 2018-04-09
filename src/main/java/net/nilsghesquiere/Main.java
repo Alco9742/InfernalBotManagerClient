@@ -4,9 +4,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -14,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 import net.nilsghesquiere.entities.ClientSettings;
 import net.nilsghesquiere.gui.swing.InfernalBotManagerGUI;
 import net.nilsghesquiere.hooks.GracefulExitHook;
+import net.nilsghesquiere.monitor.SystemMonitor;
 import net.nilsghesquiere.runnables.ExitWaitRunnable;
 import net.nilsghesquiere.runnables.InfernalBotManagerRunnable;
 import net.nilsghesquiere.runnables.ThreadCheckerRunnable;
@@ -26,11 +24,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.client.HttpClientErrorException;
 
-import ch.qos.logback.classic.Level;
-
 public class Main{
 	private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 	private static InfernalBotManagerClient client;
+	public static final SystemMonitor monitor = new SystemMonitor();
 	public static Map<Thread, Runnable> threadMap = new HashMap<>();
 	public static ExitWaitRunnable exitWaitRunnable;
 	public static Thread exitWaitThread;
@@ -85,8 +82,9 @@ public class Main{
 	}
 	
 	private static void test(){
-		client.testPragmas();
-		exitWaitRunnable.exit();
+		SystemMonitor monitor = new SystemMonitor();
+		System.out.println(monitor.getRamUsage());
+		System.out.println(monitor.getCpuUsage());
 	}
 	
 	private static void program(){
@@ -155,7 +153,7 @@ public class Main{
 					//empty queuers
 					client.deleteAllQueuers();
 					//send clientData for startup
-					client.getClientDataService().sendData("InfernalBotManager Startup");
+					client.getClientDataService().sendData("InfernalBotManager Startup", monitor.getRamUsage(),monitor.getCpuUsage());
 					//start infernalbot checker in a thread
 					InfernalBotManagerRunnable infernalRunnable = new InfernalBotManagerRunnable(client);
 					Thread infernalThread = new Thread(infernalRunnable);

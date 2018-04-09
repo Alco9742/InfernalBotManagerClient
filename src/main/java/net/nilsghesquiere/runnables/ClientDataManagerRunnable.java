@@ -5,8 +5,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.concurrent.TimeUnit;
 
+import javax.management.monitor.Monitor;
+
 import net.nilsghesquiere.InfernalBotManagerClient;
 import net.nilsghesquiere.Main;
+import net.nilsghesquiere.monitor.SystemMonitor;
 import net.nilsghesquiere.util.ProgramConstants;
 import net.nilsghesquiere.util.ProgramUtil;
 
@@ -37,7 +40,7 @@ public class ClientDataManagerRunnable implements Runnable {
 			LOGGER.info("Starting InfernalBot ClientData Updater");
 		}
 		while (!stop){
-			client.getClientDataService().sendData("ClientData Update");
+			client.getClientDataService().sendData("ClientData Update", Main.monitor.getRamUsage(), Main.monitor.getCpuUsage());
 			//Only do the checks if the infernalbot process is running (infernal now empties queuers on exit).
 			Boolean proccessIsRunning = ProgramUtil.isProcessRunning(ProgramUtil.getInfernalProcessname(client.getClientSettings().getInfernalMap())) || ProgramUtil.isProcessRunning(ProgramConstants.LEGACY_LAUNCHER_NAME);
 			if(proccessIsRunning && !client.getClientDataService().hasActiveQueuer()){
@@ -91,7 +94,7 @@ public class ClientDataManagerRunnable implements Runnable {
 				LOGGER.debug(e1.getMessage());
 			}
 		}
-		client.getClientDataService().sendData("ClientDataUpdater Close");
+		client.getClientDataService().sendData("ClientDataUpdater Close", Main.monitor.getRamUsage(), Main.monitor.getCpuUsage());
 		LOGGER.info("Successfully closed ClientData Updater thread");
 	}
 
