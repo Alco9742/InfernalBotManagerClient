@@ -21,7 +21,7 @@ public class Queuer implements Serializable{
 	private Integer playedGames;
 	private Integer winGames;
 	private Integer defeatGames;
-	//private ?? state;
+	private String state;
 	private List<QueuerLolAccount> queuerLolAccounts;
 	
 	public Queuer() {
@@ -38,7 +38,22 @@ public class Queuer implements Serializable{
 		queuer.setPlayedGames(resultSet.getInt("PlayedGames"));
 		queuer.setWinGames(resultSet.getInt("WinGames"));
 		queuer.setDefeatGames(resultSet.getInt("DefeatGames"));
+		String stateCode = resultSet.getString("State");
+		String state = "";
+		switch(stateCode){
+			case "000001": state="Login"; break;
+			case "000011": state="In Lobby"; break;
+			case "111111": state="End Of Game"; break;
+			default: state="Unknown state";
+		}
+		queuer.setState(state);
 		return queuer;
 	}
-	
+
+	/* 
+	 * INFO ABOUT STATE:
+	 * 000001 -> Login
+	 * 000011 -> Lobby
+	 * 111111 -> End of game stats
+	 */
 }

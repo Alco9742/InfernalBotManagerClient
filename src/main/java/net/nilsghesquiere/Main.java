@@ -6,19 +6,29 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import net.nilsghesquiere.entities.ClientData;
 import net.nilsghesquiere.entities.ClientSettings;
+import net.nilsghesquiere.entities.Queuer;
+import net.nilsghesquiere.entities.QueuerLolAccount;
+import net.nilsghesquiere.enums.Lane;
 import net.nilsghesquiere.gui.swing.InfernalBotManagerGUI;
 import net.nilsghesquiere.hooks.GracefulExitHook;
+import net.nilsghesquiere.managerclients.ClientDataManagerRESTClient;
 import net.nilsghesquiere.monitor.SystemMonitor;
 import net.nilsghesquiere.runnables.ExitWaitRunnable;
 import net.nilsghesquiere.runnables.InfernalBotManagerRunnable;
 import net.nilsghesquiere.runnables.ThreadCheckerRunnable;
+import net.nilsghesquiere.services.ClientDataService;
 import net.nilsghesquiere.util.ProgramConstants;
+import net.nilsghesquiere.util.wrappers.ClientDataMap;
 
+import org.apache.commons.collections.iterators.SingletonListIterator;
 import org.ini4j.InvalidFileFormatException;
 import org.ini4j.Reg;
 import org.ini4j.Wini;
@@ -83,9 +93,39 @@ public class Main{
 	}
 	
 	private static void test(){
-		SystemMonitor monitor = new SystemMonitor();
-		System.out.println(monitor.getRamUsage());
-		System.out.println(monitor.getCpuUsage());
+		QueuerLolAccount qLolAccount = new QueuerLolAccount();
+		qLolAccount.setAccount("test");
+		qLolAccount.setBe(2000);
+		qLolAccount.setChamp("Ashe");
+		qLolAccount.setId(50L);
+		qLolAccount.setLane(Lane.BOT);
+		qLolAccount.setLevel(29);
+		qLolAccount.setLpq(false);
+		qLolAccount.setMaxLevel(30);
+		qLolAccount.setXp(3000);
+		qLolAccount.setXpCap(12000);
+		List<QueuerLolAccount> queuerAccounts = new ArrayList<>();
+		queuerAccounts.add(qLolAccount);
+		Queuer queuer = new Queuer();
+		queuer.setAfterGame(10);
+		queuer.setDefeatGames(2);
+		queuer.setPlayedGames(5);
+		queuer.setQueuer("Queuer1");
+		queuer.setSoftEnd(false);
+		queuer.setState("In Game");
+		queuer.setWinGames(3);
+		queuer.setQueuerLolAccounts(queuerAccounts);
+		List<Queuer> queuers = new ArrayList<>();
+		queuers.add(queuer);
+		ClientData clientData = new ClientData("EUW","InfernalBotManager Running");
+		clientData.setQueuers(queuers);
+		ClientDataMap map = new ClientDataMap();
+		map.add("1", clientData);
+		client.setUserId();
+		ClientDataManagerRESTClient restClient = new ClientDataManagerRESTClient(client.getClientSettings().getWebServer() + ":" + client.getClientSettings().getPort(), client.getClientSettings().getUsername(), client.getClientSettings().getPassword(), client.getClientSettings().getDebugHTTP());
+		restClient.sendClientData(1L, map);
+		LOGGER.info("Sent test clientData");
+		exitWaitRunnable.exit();
 	}
 	
 	private static void program(){
