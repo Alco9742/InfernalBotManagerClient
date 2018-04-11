@@ -31,7 +31,7 @@ public class ManagerMonitorRunnable implements Runnable {
 		while (!stop){
 			uploadClientData();
 			try {
-				TimeUnit.SECONDS.sleep(5);
+				TimeUnit.SECONDS.sleep(30);
 			} catch (InterruptedException e2) {
 				LOGGER.debug(e2.getMessage());
 			}
@@ -49,6 +49,9 @@ public class ManagerMonitorRunnable implements Runnable {
 				break;
 			case UPDATE:
 				client.getClientDataService().sendData("Client Updating", monitor.getRamUsage(), monitor.getCpuUsage());
+				break;
+			case INFERNAL_STARTUP:
+				client.getClientDataService().sendData("Infernalbot Startup", monitor.getRamUsage(), monitor.getCpuUsage());
 				break;
 			case INFERNAL_RUNNING:
 				client.getClientDataService().sendData("Infernalbot Running", monitor.getRamUsage(), monitor.getCpuUsage());

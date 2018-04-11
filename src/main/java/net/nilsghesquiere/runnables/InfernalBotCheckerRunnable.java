@@ -57,6 +57,8 @@ public class InfernalBotCheckerRunnable implements Runnable {
 							ProgramUtil.killProcessIfRunning(processName);
 							ProgramUtil.killProcessIfRunning(ProgramConstants.LEGACY_LAUNCHER_NAME);
 						}
+					} else {
+						Main.managerMonitorRunnable.setClientStatus(ClientStatus.INFERNAL_RUNNING);
 					}
 				}
 			} else {
@@ -73,23 +75,30 @@ public class InfernalBotCheckerRunnable implements Runnable {
 	}
 
 	private void runInfernalbot(){
-		Main.managerMonitorRunnable.setClientStatus(ClientStatus.INFERNAL_RUNNING);
+		Main.managerMonitorRunnable.setClientStatus(ClientStatus.INFERNAL_STARTUP);
+		startInfernalBot();
+		LOGGER.info("InfernalBot started");
+		LOGGER.info("Starting InfernalBot Crash Checker in 2 minutes");
+		try {
+			TimeUnit.MINUTES.sleep(2);
+		} catch (InterruptedException e2) {
+			LOGGER.debug(e2.getMessage());
+		}
+	}
+	
+	private boolean startInfernalBot(){
 		try {
 			@SuppressWarnings("unused")
 			Process process = new ProcessBuilder(client.getClientSettings().getInfernalMap() + client.getClientSettings().getInfernalProgramName()).start();
 			LOGGER.info("InfernalBot started");
-			LOGGER.info("Starting InfernalBot Crash Checker in 2 minutes");
-			try {
-				TimeUnit.MINUTES.sleep(2);
-			} catch (InterruptedException e2) {
-				LOGGER.debug(e2.getMessage());
-			}
 		} catch (IOException e) {
 			LOGGER.info("Error starting infernalbot");
 			LOGGER.debug(e.getMessage());
+			return false;
 		}
+		return true;
 	}
-	
+
 	public void stop(){
 		stop = true;
 	}
@@ -102,3 +111,4 @@ public class InfernalBotCheckerRunnable implements Runnable {
 		return rebootFromManager;
 	}
 }
+	
