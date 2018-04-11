@@ -1,4 +1,4 @@
-package net.nilsghesquiere.monitor;
+package net.nilsghesquiere.monitoring;
 
 import java.text.DecimalFormat;
 

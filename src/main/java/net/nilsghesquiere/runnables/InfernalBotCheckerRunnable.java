@@ -1,28 +1,26 @@
 package net.nilsghesquiere.runnables;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
 
 import net.nilsghesquiere.InfernalBotManagerClient;
 import net.nilsghesquiere.Main;
+import net.nilsghesquiere.enums.ClientStatus;
 import net.nilsghesquiere.util.ProgramConstants;
 import net.nilsghesquiere.util.ProgramUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class InfernalBotManagerRunnable implements Runnable {
-	private static final Logger LOGGER = LoggerFactory.getLogger(InfernalBotManagerRunnable.class);
+public class InfernalBotCheckerRunnable implements Runnable {
+	private static final Logger LOGGER = LoggerFactory.getLogger(InfernalBotCheckerRunnable.class);
 	private final InfernalBotManagerClient client;
 	private volatile boolean stop = false;
-	public static Map<Thread, ClientDataManagerRunnable> dataThreadMap = new HashMap<>();
+	private volatile boolean rebootFromManager= false;
 	private String processName = "";
 	private String oldProcessName = "";
 	
-	public InfernalBotManagerRunnable(InfernalBotManagerClient client) {
+	public InfernalBotCheckerRunnable(InfernalBotManagerClient client) {
 		super();
 		this.client = client;
 	}
@@ -30,18 +28,10 @@ public class InfernalBotManagerRunnable implements Runnable {
 	@Override
 	public void run() {
 		runInfernalbot();
-		LOGGER.info("Starting InfernalBot Crash Checker in 2 minutes");
-		try {
-			TimeUnit.MINUTES.sleep(2);
-		} catch (InterruptedException e2) {
-			LOGGER.debug(e2.getMessage());
-		}
 		if (!stop) {
 			LOGGER.info("Starting InfernalBot CrashChecker");
 		}
 		while (!stop){
-			//get the process name from the infernal settings.configs file
-			//TODO add checks here for available location etc
 			oldProcessName = processName;
 			processName = ProgramUtil.getInfernalProcessname(client.getClientSettings().getInfernalMap());
 			if(!processName.equals(oldProcessName)){
@@ -50,22 +40,23 @@ public class InfernalBotManagerRunnable implements Runnable {
 			if(!processName.isEmpty()){
 				if(!ProgramUtil.isProcessRunning(processName) && !ProgramUtil.isProcessRunning(ProgramConstants.LEGACY_LAUNCHER_NAME)){ //Check legacy launchername aswel (launches this after updates)
 					LOGGER.warn("InfernalBot process not found, restarting client");
-					for(Entry<Thread,ClientDataManagerRunnable> entry : dataThreadMap.entrySet()){
-						entry.getKey().interrupt();
-						entry.getValue().stop();
-						try {
-							entry.getKey().join();
-							dataThreadMap.remove(entry.getKey());
-							Main.threadMap.remove(entry.getKey());
-						} catch (InterruptedException e) {
-							LOGGER.error("Failure closing thread");
-							LOGGER.debug(e.getMessage());
-						}
-					}
 					if(client.checkConnection() && client.exchangeAccounts()){
 						runInfernalbot();
 					} else {
 						LOGGER.info("Retrying in 1 minute..");
+					}
+				} else {
+					//Infernal is running, perform queuer checks here
+					if(!client.getClientDataService().hasActiveQueuer()){
+						if(client.getClientSettings().getRebootFromManager()){
+							LOGGER.info("No active queuers found, rebooting windows");
+							rebootFromManager = true;
+							Main.exitWaitRunnable.exit();
+						} else {
+							LOGGER.info("No active queuers found, closing InfernalBot process");
+							ProgramUtil.killProcessIfRunning(processName);
+							ProgramUtil.killProcessIfRunning(ProgramConstants.LEGACY_LAUNCHER_NAME);
+						}
 					}
 				}
 			} else {
@@ -82,16 +73,17 @@ public class InfernalBotManagerRunnable implements Runnable {
 	}
 
 	private void runInfernalbot(){
+		Main.managerMonitorRunnable.setClientStatus(ClientStatus.INFERNAL_RUNNING);
 		try {
 			@SuppressWarnings("unused")
 			Process process = new ProcessBuilder(client.getClientSettings().getInfernalMap() + client.getClientSettings().getInfernalProgramName()).start();
 			LOGGER.info("InfernalBot started");
-			ClientDataManagerRunnable dataRunnable = new ClientDataManagerRunnable(client);
-			Thread dataThread = new Thread(dataRunnable);
-			Main.threadMap.put(dataThread, dataRunnable);
-			dataThreadMap.put(dataThread, dataRunnable); // this is to close thread upon crash and reopen new ones
-			dataThread.setDaemon(false); 
-			dataThread.start();
+			LOGGER.info("Starting InfernalBot Crash Checker in 2 minutes");
+			try {
+				TimeUnit.MINUTES.sleep(2);
+			} catch (InterruptedException e2) {
+				LOGGER.debug(e2.getMessage());
+			}
 		} catch (IOException e) {
 			LOGGER.info("Error starting infernalbot");
 			LOGGER.debug(e.getMessage());
@@ -104,5 +96,9 @@ public class InfernalBotManagerRunnable implements Runnable {
 
 	public boolean isStopped() {
 		return stop;
+	}
+	
+	public boolean isRebootFromManager() {
+		return rebootFromManager;
 	}
 }

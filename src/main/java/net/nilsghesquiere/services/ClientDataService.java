@@ -6,6 +6,7 @@ import java.util.List;
 import net.nilsghesquiere.entities.ClientData;
 import net.nilsghesquiere.entities.ClientSettings;
 import net.nilsghesquiere.entities.Queuer;
+import net.nilsghesquiere.entities.QueuerLolAccount;
 import net.nilsghesquiere.infernalclients.ClientDataInfernalClient;
 import net.nilsghesquiere.infernalclients.ClientDataInfernalJDBCClient;
 import net.nilsghesquiere.managerclients.ClientDataManagerClient;
@@ -53,6 +54,11 @@ public class ClientDataService {
 		List<Queuer> queuers = infernalClient.getQueuers();
 		for (Queuer queuer : queuers){
 			queuer.setQueuerLolAccounts(infernalClient.getQueuerAccounts(queuer));
+			for (QueuerLolAccount accInQueuer: queuer.getQueuerLolAccounts()){
+				if (accInQueuer.getLpq()){
+					queuer.setLpq(true);
+				}
+			}
 		}
 		clientData.setDate(LocalDateTime.now());
 		clientData.setQueuers(queuers);

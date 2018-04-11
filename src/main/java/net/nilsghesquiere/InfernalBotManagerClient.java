@@ -51,13 +51,9 @@ public class InfernalBotManagerClient {
 	//Schedule Reboot
 	public void scheduleReboot(){
 		if (clientSettings.getReboot()){
-			try {
-				Runtime.getRuntime().exec("shutdown -r -t " + clientSettings.getRebootTime());
-			} catch (IOException e) {
-				LOGGER.error("Error scheduling reboot");
-				LOGGER.debug(e.getMessage().toString());
+			if (ProgramUtil.scheduleReboot(clientSettings.getRebootTime())){
+				LOGGER.info("Shutdown scheduled in " + clientSettings.getRebootTime() + " seconds");
 			}
-			LOGGER.info("Shutdown scheduled in " + clientSettings.getRebootTime() + " seconds");
 		}
 	}
 	
@@ -170,9 +166,13 @@ public class InfernalBotManagerClient {
 		}
 	}
 	
-	//Queuer methods
+	//ClientData methods
 	public void deleteAllQueuers(){
 		clientDataService.deleteAllQueuers();
+	}
+	
+	public void sendData(String status, String ramInfo, String cpuInfo){
+		clientDataService.sendData(status, ramInfo, cpuInfo);
 	}
 	
 	//Backup database methods

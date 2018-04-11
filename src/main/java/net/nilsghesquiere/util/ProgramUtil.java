@@ -32,6 +32,26 @@ public class ProgramUtil {
 		return boolString.substring(0, 1).toUpperCase() + boolString.substring(1);
 	}
 	
+	public static boolean killProcessIfRunning(String processName){
+		try {
+			if(ProgramUtil.isProcessRunning(processName)){
+				ProcessBuilder builder = new ProcessBuilder( "cmd.exe", "/c", "taskkill /F /IM " + processName);
+				builder.redirectErrorStream(true);
+				Process p = builder.start();
+				BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+				String line;
+				while (true) {
+					line = r.readLine();
+					if (line == null) { break; }
+					LOGGER.debug(line);
+				}
+			}
+		} catch (IOException e){
+			LOGGER.debug(e.getMessage());
+			return false;
+		}
+		return true;
+	}
 	
 	public static boolean isProcessRunning(String processName){
 		String line ="";
@@ -55,7 +75,48 @@ public class ProgramUtil {
 		return false;
 	}
 	
+	public static boolean unscheduleReboot(){
+		try {
+			ProcessBuilder builder = new ProcessBuilder( "cmd.exe", "/c", "shutdown -a");
+			builder.redirectErrorStream(true);
+			Process p = builder.start();
+			BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			String line;
+			while (true) {
+				line = r.readLine();
+				if (line == null) { break; }
+				LOGGER.debug(line);
+			}
+		} catch (IOException e){
+			LOGGER.error("Failure unscheduling reboot");
+			LOGGER.debug(e.getMessage());
+			return false;
+		}
+		return true;
+	}
+	
+	public static boolean scheduleReboot(int timeInSeconds){
+		try {
+			ProcessBuilder builder = new ProcessBuilder( "cmd.exe", "/c", "shutdown -r -t " + timeInSeconds);
+			builder.redirectErrorStream(true);
+			Process p = builder.start();
+			BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			String line;
+			while (true) {
+				line = r.readLine();
+				if (line == null) { break; }
+				LOGGER.debug(line);
+			}
+		} catch (IOException e){
+			LOGGER.error("Failure scheduling reboot");
+			LOGGER.debug(e.getMessage());
+			return false;
+		}
+		return true;
+	}
+	
 	public static String getInfernalProcessname(String infernalMap){
+		//TODO check for location
 		String newProcessName = "";
 		try {
 			Wini ini = new Wini(new File(infernalMap + "/configs/settings.ini" ));

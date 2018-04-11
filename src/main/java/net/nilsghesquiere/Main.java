@@ -16,19 +16,19 @@ import net.nilsghesquiere.entities.ClientData;
 import net.nilsghesquiere.entities.ClientSettings;
 import net.nilsghesquiere.entities.Queuer;
 import net.nilsghesquiere.entities.QueuerLolAccount;
+import net.nilsghesquiere.enums.ClientStatus;
 import net.nilsghesquiere.enums.Lane;
 import net.nilsghesquiere.gui.swing.InfernalBotManagerGUI;
 import net.nilsghesquiere.hooks.GracefulExitHook;
 import net.nilsghesquiere.managerclients.ClientDataManagerRESTClient;
-import net.nilsghesquiere.monitor.SystemMonitor;
+import net.nilsghesquiere.monitoring.SystemMonitor;
 import net.nilsghesquiere.runnables.ExitWaitRunnable;
-import net.nilsghesquiere.runnables.InfernalBotManagerRunnable;
+import net.nilsghesquiere.runnables.InfernalBotCheckerRunnable;
+import net.nilsghesquiere.runnables.ManagerMonitorRunnable;
 import net.nilsghesquiere.runnables.ThreadCheckerRunnable;
-import net.nilsghesquiere.services.ClientDataService;
 import net.nilsghesquiere.util.ProgramConstants;
 import net.nilsghesquiere.util.wrappers.ClientDataMap;
 
-import org.apache.commons.collections.iterators.SingletonListIterator;
 import org.ini4j.InvalidFileFormatException;
 import org.ini4j.Reg;
 import org.ini4j.Wini;
@@ -38,20 +38,20 @@ import org.springframework.web.client.HttpClientErrorException;
 
 public class Main{
 	private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
+	private static final SystemMonitor systemMonitor = new SystemMonitor();
 	private static InfernalBotManagerClient client;
+	public static Thread gracefullExitHook;
 	public static Map<Thread, Runnable> threadMap = new HashMap<>();
 	public static ExitWaitRunnable exitWaitRunnable;
 	public static Thread exitWaitThread;
-	public static Thread gracefullExitHook;
+	public static ManagerMonitorRunnable managerMonitorRunnable;
 	public static String iniLocation;
 	
+
 	public static void main(String[] args) throws InterruptedException{
-		gracefullExitHook = new GracefulExitHook();
-		Runtime.getRuntime().addShutdownHook(gracefullExitHook);
-		//start the ExitWaiter
-		exitWaitRunnable = new ExitWaitRunnable();
-		exitWaitThread = new Thread(exitWaitRunnable);
-		exitWaitThread.start();
+		addExitHook();
+		startExitWaitThread();
+		startMonitorThread();
 		if(ProgramConstants.useSwingGUI){
 			@SuppressWarnings("unused")
 			InfernalBotManagerGUI gui = new InfernalBotManagerGUI();
@@ -130,12 +130,7 @@ public class Main{
 	
 	private static void program(){
 		if (client.getClientSettings().getEnableDevMode()){
-			//start the ThreadChecker
-			ThreadCheckerRunnable threadCheckerRunnable = new ThreadCheckerRunnable();
-			Thread threadCheckerThread = new Thread(threadCheckerRunnable);
-			threadMap.put(threadCheckerThread, threadCheckerRunnable);
-			threadCheckerThread.setDaemon(false); 
-			threadCheckerThread.start();
+			startThreadCheckerThread();
 		}
 		boolean upToDate = true;
 		boolean connected = false;
@@ -170,6 +165,8 @@ public class Main{
 				}
 			}
 		}
+		//connection has been made: set client on the monitor
+		managerMonitorRunnable.setClient(client);
 		if (killSwitchOff){
 			//check for update
 			if (upToDate){
@@ -193,19 +190,16 @@ public class Main{
 					client.scheduleReboot();
 					//empty queuers
 					client.deleteAllQueuers();
-					//send clientData for startup
-					client.getClientDataService().sendData("InfernalBotManager Startup", "INIT","INIT");
+					//send client status
+					managerMonitorRunnable.setClientStatus(ClientStatus.CONNECTED);
 					//start infernalbot checker in a thread
-					InfernalBotManagerRunnable infernalRunnable = new InfernalBotManagerRunnable(client);
-					Thread infernalThread = new Thread(infernalRunnable);
-					threadMap.put(infernalThread, infernalRunnable);
-					infernalThread.setDaemon(false); 
-					infernalThread.start();
+					startInfernalCheckerThread();
 				} else {
 					LOGGER.info("Closing InfernalBotManager Client");
 					exitWaitRunnable.exit();
 				}
 			} else {
+				managerMonitorRunnable.setClientStatus(ClientStatus.UPDATE);
 				client.updateClient();
 				LOGGER.info("Closing InfernalBotManager Client");
 				exitWaitRunnable.exit();
@@ -304,5 +298,41 @@ public class Main{
 		String content = new String(Files.readAllBytes(path), charset);
 		content = content.replaceAll("infernalmap", "infernalpath");
 		Files.write(path, content.getBytes(charset));
+	}
+	
+	
+	private static void addExitHook(){
+		gracefullExitHook = new GracefulExitHook();
+		Runtime.getRuntime().addShutdownHook(gracefullExitHook);
+	}
+	
+	private static void startExitWaitThread(){
+		exitWaitRunnable = new ExitWaitRunnable();
+		exitWaitThread = new Thread(exitWaitRunnable);
+		exitWaitThread.start();
+	}
+	
+	private static void startThreadCheckerThread(){
+		ThreadCheckerRunnable threadCheckerRunnable = new ThreadCheckerRunnable();
+		Thread threadCheckerThread = new Thread(threadCheckerRunnable);
+		threadMap.put(threadCheckerThread, threadCheckerRunnable);
+		threadCheckerThread.setDaemon(false); 
+		threadCheckerThread.start();
+	}
+
+	private static void startMonitorThread(){
+		managerMonitorRunnable = new ManagerMonitorRunnable(systemMonitor);
+		Thread managerMonitorThread = new Thread(managerMonitorRunnable);
+		threadMap.put(managerMonitorThread, managerMonitorRunnable);
+		managerMonitorThread.setDaemon(false); 
+		managerMonitorThread.start();
+	}
+	
+	private static void startInfernalCheckerThread(){
+		InfernalBotCheckerRunnable infernalRunnable = new InfernalBotCheckerRunnable(client);
+		Thread infernalThread = new Thread(infernalRunnable);
+		threadMap.put(infernalThread, infernalRunnable);
+		infernalThread.setDaemon(false); 
+		infernalThread.start();
 	}
 }
