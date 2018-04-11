@@ -57,7 +57,7 @@ public class GracefulExitHook extends Thread {
 
 			if (entry.getValue() instanceof ManagerMonitorRunnable){
 				ManagerMonitorRunnable managerMonitorRunnable =(ManagerMonitorRunnable) entry.getValue();
-				LOGGER.info("Gracefully shutting down ClientData Updater, please don't close the program");
+				LOGGER.info("Gracefully shutting down Manager Client Monitor, please don't close the program");
 				entry.getKey().interrupt();
 				managerMonitorRunnable.stop();
 				try {

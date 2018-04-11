@@ -51,7 +51,6 @@ public class Main{
 	public static void main(String[] args) throws InterruptedException{
 		addExitHook();
 		startExitWaitThread();
-		startMonitorThread();
 		if(ProgramConstants.useSwingGUI){
 			@SuppressWarnings("unused")
 			InfernalBotManagerGUI gui = new InfernalBotManagerGUI();
@@ -93,6 +92,8 @@ public class Main{
 	}
 	
 	private static void test(){
+		startMonitorThread(client);
+		managerMonitorRunnable.setClientStatus(ClientStatus.CONNECTED);
 		QueuerLolAccount qLolAccount = new QueuerLolAccount();
 		qLolAccount.setAccount("test");
 		qLolAccount.setBe(2000);
@@ -100,7 +101,7 @@ public class Main{
 		qLolAccount.setId(50L);
 		qLolAccount.setLane(Lane.BOT);
 		qLolAccount.setLevel(29);
-		qLolAccount.setLpq(false);
+		qLolAccount.setLpq(true);
 		qLolAccount.setMaxLevel(30);
 		qLolAccount.setXp(3000);
 		qLolAccount.setXpCap(12000);
@@ -115,6 +116,7 @@ public class Main{
 		queuer.setState("In Game");
 		queuer.setWinGames(3);
 		queuer.setQueuerLolAccounts(queuerAccounts);
+		queuer.setLpq(true);
 		List<Queuer> queuers = new ArrayList<>();
 		queuers.add(queuer);
 		ClientData clientData = new ClientData("EUW","InfernalBotManager Running");
@@ -165,8 +167,8 @@ public class Main{
 				}
 			}
 		}
-		//connection has been made: set client on the monitor
-		managerMonitorRunnable.setClient(client);
+		//connection has been made start the monitor thread
+		startMonitorThread(client);
 		if (killSwitchOff){
 			//check for update
 			if (upToDate){
@@ -320,8 +322,8 @@ public class Main{
 		threadCheckerThread.start();
 	}
 
-	private static void startMonitorThread(){
-		managerMonitorRunnable = new ManagerMonitorRunnable(systemMonitor);
+	private static void startMonitorThread(InfernalBotManagerClient client){
+		managerMonitorRunnable = new ManagerMonitorRunnable(systemMonitor,client);
 		Thread managerMonitorThread = new Thread(managerMonitorRunnable);
 		threadMap.put(managerMonitorThread, managerMonitorRunnable);
 		managerMonitorThread.setDaemon(false); 

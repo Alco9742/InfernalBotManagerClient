@@ -16,9 +16,11 @@ public class ManagerMonitorRunnable implements Runnable {
 	private volatile boolean stop = false;
 	private volatile ClientStatus status;
 	
-	public ManagerMonitorRunnable(SystemMonitor monitor) {
+	public ManagerMonitorRunnable(SystemMonitor monitor, InfernalBotManagerClient client) {
 		super();
 		this.monitor = monitor;
+		this.client = client;
+		this.status = ClientStatus.INIT;
 	}
 	
 	@Override
@@ -35,7 +37,7 @@ public class ManagerMonitorRunnable implements Runnable {
 			}
 		}
 		uploadClientData();
-		LOGGER.info("Successfully closed ClientData Updater thread");
+		LOGGER.info("Successfully closed Manager Client Monitor thread");
 	}
 
 	private void uploadClientData(){
