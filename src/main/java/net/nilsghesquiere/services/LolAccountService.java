@@ -57,8 +57,13 @@ public class LolAccountService {
 					lolAccount.setAccountStatus(AccountStatus.IN_USE);
 					lolAccount.setAssignedTo(clientSettings.getClientTag());
 				}
-				LOGGER.debug("accountsForInfernal");
-				LOGGER.debug(accountsForInfernal.toString());
+				managerClient.updateLolAccounts(clientSettings.getUserId(), accountsForInfernal);
+			} else {
+				//The accounts are available again
+				for (LolAccount lolAccount : accountsForInfernal){
+					lolAccount.setAccountStatus(AccountStatus.READY_FOR_USE);
+					lolAccount.setAssignedTo("");
+				}
 				managerClient.updateLolAccounts(clientSettings.getUserId(), accountsForInfernal);
 			}
 			if (clientSettings.getAccountBuffer() > 0){
@@ -73,6 +78,13 @@ public class LolAccountService {
 						lolAccount.setAssignedTo(clientSettings.getClientTag());
 					}
 					managerClient.updateLolAccounts(clientSettings.getUserId(), accountsForInfernalBuffer);
+				} else {
+					//The accounts are available again
+					for (LolAccount lolAccount : accountsForInfernal){
+						lolAccount.setAccountStatus(AccountStatus.READY_FOR_USE);
+						lolAccount.setAssignedTo("");
+					}
+					managerClient.updateLolAccounts(clientSettings.getUserId(), accountsForInfernal);
 				}
 			}	
 			if (addedInfernalAccounts < 5) {
