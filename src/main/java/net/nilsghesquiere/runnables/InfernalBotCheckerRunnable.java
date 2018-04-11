@@ -77,7 +77,6 @@ public class InfernalBotCheckerRunnable implements Runnable {
 	private void runInfernalbot(){
 		Main.managerMonitorRunnable.setClientStatus(ClientStatus.INFERNAL_STARTUP);
 		startInfernalBot();
-		LOGGER.info("InfernalBot started");
 		LOGGER.info("Starting InfernalBot Crash Checker in 2 minutes");
 		try {
 			TimeUnit.MINUTES.sleep(2);
