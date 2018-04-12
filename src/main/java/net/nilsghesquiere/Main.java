@@ -46,6 +46,7 @@ public class Main{
 	public static Thread exitWaitThread;
 	public static ManagerMonitorRunnable managerMonitorRunnable;
 	public static String iniLocation;
+
 	
 
 	public static void main(String[] args) throws InterruptedException{
@@ -83,7 +84,12 @@ public class Main{
 				}
 				LOGGER.info("Closing InfernalBotManager Client");
 				exitWaitRunnable.exit();
-			} 
+			} catch(Exception e){
+				//UNHANDLED EXCEPTIONS
+				LOGGER.debug("Unhandled Exception:", e);
+				//restart program 
+				program();
+			}
 		} else {
 			LOGGER.info("Closing InfernalBotManager Client");
 			exitWaitRunnable.exit();
@@ -139,7 +145,7 @@ public class Main{
 		boolean killSwitchOff = true;
 		while(!connected){
 			try{
-				connected = client.checkConnection();
+				connected = client.checkConnection() && client.setUserId() ;
 				if (connected){
 					if(client.checkKillSwitch()){
 						killSwitchOff = false;
@@ -178,7 +184,7 @@ public class Main{
 					//Check if infernalbot tables have been changed since last version
 					client.checkTables();
 					//Attempt to get accounts, retry if fail
-					boolean initDone = client.checkConnection() && client.setUserId() && client.setInfernalSettings() && client.exchangeAccounts();
+					boolean initDone = client.checkConnection() && client.setInfernalSettings() && client.exchangeAccounts();
 					while (!initDone){
 						try {
 							LOGGER.info("Retrying in 1 minute...");
