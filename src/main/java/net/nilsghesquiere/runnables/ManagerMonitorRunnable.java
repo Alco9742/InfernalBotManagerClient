@@ -35,6 +35,7 @@ public class ManagerMonitorRunnable implements Runnable {
 				TimeUnit.SECONDS.sleep(30);
 			} catch (InterruptedException e2) {
 				LOGGER.debug(e2.getMessage());
+				Thread.currentThread().interrupt();
 			}
 		}
 		if (!finalized){
@@ -71,7 +72,6 @@ public class ManagerMonitorRunnable implements Runnable {
 			default:
 				client.getClientDataService().sendData("Manager Client Error", monitor.getRamUsage(), monitor.getCpuUsage());
 		}
-		client.sendData("InfernalBotManager Running", monitor.getRamUsage(), monitor.getCpuUsage());
 	}
 	
 	public void stop(){

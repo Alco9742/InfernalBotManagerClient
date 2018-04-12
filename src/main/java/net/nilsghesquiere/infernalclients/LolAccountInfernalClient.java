@@ -8,9 +8,10 @@ public interface LolAccountInfernalClient {
 	public boolean connect();
 	public boolean checkPragmas();
 	public String getPragmaString();
-	public List<LolAccount> getAccounts();
+	public List<LolAccount> getAccounts(Boolean log);
 	public void deleteAllAccounts();
 	public int insertAccounts(List<LolAccount> lolAccounts, Boolean buffer);
 	public String getOldPragmas();
 	public String getNewPragmas();
+	public int countActiveAccounts();
 }

@@ -196,6 +196,7 @@ public class Main{
 					managerMonitorRunnable.setClientStatus(ClientStatus.CONNECTED);
 					//start infernalbot checker in a thread
 					startInfernalCheckerThread();
+					
 				} else {
 					LOGGER.info("Closing InfernalBotManager Client");
 					exitWaitRunnable.exit();
@@ -311,6 +312,7 @@ public class Main{
 	private static void startExitWaitThread(){
 		exitWaitRunnable = new ExitWaitRunnable();
 		exitWaitThread = new Thread(exitWaitRunnable);
+		exitWaitThread.setName("Exit Wait Thread");
 		exitWaitThread.start();
 	}
 	
@@ -319,6 +321,7 @@ public class Main{
 		Thread threadCheckerThread = new Thread(threadCheckerRunnable);
 		threadMap.put(threadCheckerThread, threadCheckerRunnable);
 		threadCheckerThread.setDaemon(false); 
+		threadCheckerThread.setName("Thread Checker Thread");
 		threadCheckerThread.start();
 	}
 
@@ -327,6 +330,7 @@ public class Main{
 		Thread managerMonitorThread = new Thread(managerMonitorRunnable);
 		threadMap.put(managerMonitorThread, managerMonitorRunnable);
 		managerMonitorThread.setDaemon(false); 
+		managerMonitorThread.setName("Manager Monitor Thread");
 		managerMonitorThread.start();
 	}
 	
@@ -335,6 +339,7 @@ public class Main{
 		Thread infernalThread = new Thread(infernalRunnable);
 		threadMap.put(infernalThread, infernalRunnable);
 		infernalThread.setDaemon(false); 
+		infernalThread.setName("InfernalBot Checker Thread");
 		infernalThread.start();
 	}
 }

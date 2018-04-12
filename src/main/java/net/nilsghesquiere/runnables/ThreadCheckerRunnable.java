@@ -21,6 +21,7 @@ public class ThreadCheckerRunnable implements Runnable {
 				TimeUnit.MINUTES.sleep(1);
 			} catch (InterruptedException e2) {
 				LOGGER.debug(e2.getMessage());
+				Thread.currentThread().interrupt();
 			}
 			Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
 			LOGGER.debug("Currently running threads:");

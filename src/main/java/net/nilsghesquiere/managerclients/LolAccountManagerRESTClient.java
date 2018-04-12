@@ -117,9 +117,6 @@ public class LolAccountManagerRESTClient implements LolAccountManagerClient {
 		LolAccountMap lolAccountMap = new LolAccountMap();
 		for(LolAccount lolAccount : lolAccounts){
 			lolAccountMap.add(lolAccount.getId().toString(), lolAccount);
-			LOGGER.debug("updateLolAccounts");
-			LOGGER.debug(lolAccount.toString());
-			LOGGER.debug(lolAccountMap.getMap().get(lolAccount.getId().toString()).toString());
 		}
 		try{
 			HttpEntity<LolAccountMap> request = new HttpEntity<>(lolAccountMap, headers);

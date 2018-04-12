@@ -101,7 +101,6 @@ public class LolAccountService {
 	
 	public boolean setAccountsAsReadyForUse(){
 		LolMixedAccountMap sendMap = prepareAccountsToSend();
-		LOGGER.debug(sendMap.getMap().toString());
 		try{
 			if(managerClient.sendInfernalAccounts(clientSettings.getUserId(), sendMap)){
 				LOGGER.info("Updated accounts on server");
@@ -118,10 +117,46 @@ public class LolAccountService {
 		return true;
 	}
 	
+	public void updateAccountsOnServer(){
+		List<LolAccount> accountsForInfernal = new ArrayList<>();
+		List<LolAccount> accountsFromJDBC = infernalClient.getAccounts(false);
+		if (!accountsFromJDBC.isEmpty()){
+			for (LolAccount accountFromJDBC : accountsFromJDBC){
+				LolAccount accountFromREST = managerClient.getByUserIdRegionAndAccount(clientSettings.getUserId(), accountFromJDBC.getRegion(),accountFromJDBC.getAccount());
+				//added here to only touch accounts assigned to this client
+				if(accountFromREST != null && !accountFromREST.getAssignedTo().equals("")){ //nullpointer if it were to be empty, which shouldn't happen anyway
+					if(accountFromREST.getAssignedTo().equals(clientSettings.getClientTag())){
+						accountFromJDBC.setId(accountFromREST.getId());
+						accountFromJDBC.setMaxLevel(accountFromREST.getMaxLevel());
+						accountFromJDBC.setMaxBe(accountFromREST.getMaxBe());
+						accountFromJDBC.setRegion(accountFromREST.getRegion());
+						accountFromJDBC.setInfo(accountFromREST.getInfo());
+						accountFromJDBC.setPriority(accountFromREST.getPriority());
+						accountFromJDBC.setActive(accountFromREST.isActive());
+						if (accountFromJDBC.getAccountStatus() == AccountStatus.ERROR || accountFromJDBC.getAccountStatus() == AccountStatus.BANNED){
+							accountFromJDBC.setActive(false);
+						} else {
+							accountFromJDBC.setAccountStatus(accountFromREST.getAccountStatus());
+						}
+						accountFromJDBC.setAssignedTo(accountFromREST.getAssignedTo());
+						accountsForInfernal.add(accountFromJDBC);
+					}
+				}
+			}
+		}
+		if(!accountsForInfernal.isEmpty()){
+			managerClient.updateLolAccounts(clientSettings.getUserId(), accountsForInfernal);
+		}
+	}
+	
+	public int countActiveAccounts() {
+		return infernalClient.countActiveAccounts();
+	}
+	
 	private LolMixedAccountMap prepareAccountsToSend(){
 		LolMixedAccountMap lolAccountMap = new LolMixedAccountMap();
 		List<LolAccount> newAccounts = new ArrayList<>();
-		List<LolAccount> accountsFromJDBC = infernalClient.getAccounts();
+		List<LolAccount> accountsFromJDBC = infernalClient.getAccounts(true);
 		if (!accountsFromJDBC.isEmpty()){
 			for (LolAccount accountFromJDBC : accountsFromJDBC){
 				LolAccount accountFromREST = managerClient.getByUserIdRegionAndAccount(clientSettings.getUserId(), accountFromJDBC.getRegion(),accountFromJDBC.getAccount());
@@ -193,4 +228,5 @@ public class LolAccountService {
 			LOGGER.info("New accounts pragmas: " + newPragmas);
 		}
 	}
+
 } 

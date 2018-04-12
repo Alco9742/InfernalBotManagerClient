@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import net.nilsghesquiere.entities.LolAccount;
 
@@ -22,10 +23,13 @@ public class LoLAccountInfernalJDBCClient implements LolAccountInfernalClient {
 	private static final String SELECT_SQL = "SELECT * FROM Accountlist";
 	private static final String DELETE_SQL = "DELETE FROM Accountlist";
 	private static final String INSERT_SQL = "INSERT INTO Accountlist(Account,Password,Summoner,Region,Level,MaxLevel,XP,IP,MaxIP,Prioity,Status,Playtime,Sleeptime,Active) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-	
+	private static final String COUNT_ACTIVE_SQL ="SELECT count(*) as total FROM Accountlist WHERE  Active='True'";
+	private Properties readOnlyConfig;
 	
 	public LoLAccountInfernalJDBCClient(String infernalMap){
 		this.DATABASE_URI = "jdbc:sqlite:" + infernalMap +"InfernalDatabase.sqlite";
+		readOnlyConfig = new Properties();
+		readOnlyConfig.setProperty("open_mode", "1"); // 1 == readonly
 	}
 	
 	public boolean connect(){
@@ -70,9 +74,9 @@ public class LoLAccountInfernalJDBCClient implements LolAccountInfernalClient {
 		return result;
 	}
 	
-	public List<LolAccount> getAccounts(){
+	public List<LolAccount> getAccounts(Boolean log){
 		List<LolAccount> lolAccounts = new ArrayList<>();
-		try(Connection connection = DriverManager.getConnection(DATABASE_URI)){
+		try(Connection connection = DriverManager.getConnection(DATABASE_URI,readOnlyConfig)){
 			Statement statement = connection.createStatement();
 			ResultSet resultSet = statement.executeQuery(SELECT_SQL);
 			while (resultSet.next()){
@@ -80,9 +84,13 @@ public class LoLAccountInfernalJDBCClient implements LolAccountInfernalClient {
 				lolAccounts.add(lolAccount);
 			}
 			if (lolAccounts.size() > 0){
-				LOGGER.info("Received " + lolAccounts.size() + " accounts from InfernalBot.");
+				if (log){
+					LOGGER.info("Received " + lolAccounts.size() + " accounts from InfernalBot.");
+				}
 			} else {
-				LOGGER.warn("Infernalbot accountlist is empty: not sending to the server.");
+				if (log){
+					LOGGER.warn("Infernalbot accountlist is empty: not sending to the server.");
+				}
 			}
 		} catch (SQLException e) {
 			LOGGER.error("Failure receiving accounts from InfernalBot.");
@@ -144,6 +152,24 @@ public class LoLAccountInfernalJDBCClient implements LolAccountInfernalClient {
 			LOGGER.debug(e.getMessage());
 		}
 		return aantalToegevoegdeAccounts; 
+	}
+	
+	
+	@Override
+	public int countActiveAccounts() {
+		int result = 0;
+		try(Connection connection = DriverManager.getConnection(DATABASE_URI,readOnlyConfig)){
+			Statement statement = connection.createStatement();
+			ResultSet resultSet = statement.executeQuery(COUNT_ACTIVE_SQL);
+			while (resultSet.next()){
+				result = resultSet.getInt("total");
+			}
+		} catch (SQLException e) {
+			LOGGER.error("Failure receiving the number of active accounts from InfernalBot.");
+			LOGGER.debug(e.getMessage());
+			return result;
+		} 
+		return result;
 	}
 	
 	//TEST Methods

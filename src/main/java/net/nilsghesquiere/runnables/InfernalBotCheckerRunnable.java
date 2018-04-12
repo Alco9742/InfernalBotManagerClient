@@ -1,6 +1,9 @@
 package net.nilsghesquiere.runnables;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
 
 import net.nilsghesquiere.InfernalBotManagerClient;
@@ -20,6 +23,7 @@ public class InfernalBotCheckerRunnable implements Runnable {
 	private volatile boolean rebootFromManager= false;
 	private String processName = "";
 	private String oldProcessName = "";
+	public static Map<Thread, AccountlistUpdaterRunnable> accountListUpdaterThreadMap = new HashMap<>();
 	
 	public InfernalBotCheckerRunnable(InfernalBotManagerClient client) {
 		super();
@@ -33,6 +37,11 @@ public class InfernalBotCheckerRunnable implements Runnable {
 			LOGGER.info("Starting InfernalBot CrashChecker");
 		}
 		while (!stop){
+			//After patches it launches under the legacy name for some reason, we do not want that
+			if(ProgramUtil.isProcessRunning(ProgramConstants.LEGACY_LAUNCHER_NAME)){ 
+				LOGGER.warn("InfernalBot process is running as 'Infernal Launcher.exe', killing the process");
+				ProgramUtil.killProcessIfRunning(ProgramConstants.LEGACY_LAUNCHER_NAME);
+			}
 			oldProcessName = processName;
 			processName = ProgramUtil.getInfernalProcessname(client.getClientSettings().getInfernalMap());
 			if(!processName.equals(oldProcessName)){
@@ -40,16 +49,11 @@ public class InfernalBotCheckerRunnable implements Runnable {
 			}
 			if(!processName.isEmpty()){
 				if(!ProgramUtil.isProcessRunning(processName)){
-					if(ProgramUtil.isProcessRunning(ProgramConstants.LEGACY_LAUNCHER_NAME)){ //After patches it launches under the legacy name for some reason
-						LOGGER.warn("InfernalBot process is running as 'Infernal Launcher.exe', killing the process");
-						ProgramUtil.killProcessIfRunning(ProgramConstants.LEGACY_LAUNCHER_NAME);
+					LOGGER.warn("InfernalBot process not found, restarting client");
+					if(client.checkConnection() && client.exchangeAccounts()){
+						runInfernalbot();
 					} else {
-						LOGGER.warn("InfernalBot process not found, restarting client");
-						if(client.checkConnection() && client.exchangeAccounts()){
-							runInfernalbot();
-						} else {
-							LOGGER.info("Retrying in 1 minute..");
-						}
+						LOGGER.info("Retrying in 1 minute..");
 					}
 				} else {
 					//Infernal is running, perform queuer checks here
@@ -61,10 +65,16 @@ public class InfernalBotCheckerRunnable implements Runnable {
 						} else {
 							LOGGER.info("No active queuers found, closing InfernalBot process");
 							ProgramUtil.killProcessIfRunning(processName);
-							ProgramUtil.killProcessIfRunning(ProgramConstants.LEGACY_LAUNCHER_NAME);
 						}
 					} else {
-						Main.managerMonitorRunnable.setClientStatus(ClientStatus.INFERNAL_RUNNING);
+						if (!client.queuersHaveEnoughAccounts()){
+							LOGGER.info("Not enough active accounts, closing InfernalBot process");
+							client.getClientDataService().deleteAllQueuers();
+							ProgramUtil.killProcessIfRunning(processName);
+						} else {
+							//Everything is running as it should
+							Main.managerMonitorRunnable.setClientStatus(ClientStatus.INFERNAL_RUNNING);
+						}
 					}
 				}
 			} else {
@@ -74,6 +84,7 @@ public class InfernalBotCheckerRunnable implements Runnable {
 				TimeUnit.MINUTES.sleep(1);
 			} catch (InterruptedException e1) {
 				LOGGER.debug(e1.getMessage());
+				Thread.currentThread().interrupt();
 			}
 		}
 		if(!finalized){
@@ -95,21 +106,29 @@ public class InfernalBotCheckerRunnable implements Runnable {
 	}
 
 	private void runInfernalbot(){
-		Main.managerMonitorRunnable.setClientStatus(ClientStatus.INFERNAL_STARTUP);
-		startInfernalBot();
-		LOGGER.info("Starting InfernalBot Crash Checker in 2 minutes");
-		try {
-			TimeUnit.MINUTES.sleep(2);
-		} catch (InterruptedException e2) {
-			LOGGER.debug(e2.getMessage());
+		//extra check for the stop here (just to be sure)
+		if (!stop){
+			Main.managerMonitorRunnable.setClientStatus(ClientStatus.INFERNAL_STARTUP);
+			startInfernalBot();
+			LOGGER.info("Starting InfernalBot Crash Checker in 2 minutes");
+			try {
+				TimeUnit.MINUTES.sleep(2);
+			} catch (InterruptedException e2) {
+				LOGGER.debug(e2.getMessage());
+				Thread.currentThread().interrupt();
+			}
 		}
 	}
 	
 	private boolean startInfernalBot(){
 		try {
+			if(!accountListUpdaterThreadMap.isEmpty()){
+				stopAccountListUpdaterThread();
+			}
 			@SuppressWarnings("unused")
 			Process process = new ProcessBuilder(client.getClientSettings().getInfernalMap() + client.getClientSettings().getInfernalProgramName()).start();
 			LOGGER.info("InfernalBot started");
+			startAccountListUpdaterThread();
 		} catch (IOException e) {
 			LOGGER.debug("Error starting infernalbot");
 			LOGGER.debug(e.getMessage());
@@ -121,6 +140,31 @@ public class InfernalBotCheckerRunnable implements Runnable {
 	private void finishTasks(){
 		client.setAccountsAsReadyForUse();
 		this.finalized = true;
+	}
+	
+	private void startAccountListUpdaterThread(){
+		AccountlistUpdaterRunnable updaterRunnable = new AccountlistUpdaterRunnable(client);
+		Thread updaterThread = new Thread(updaterRunnable);
+		accountListUpdaterThreadMap.put(updaterThread, updaterRunnable);
+		Main.threadMap.put(updaterThread, updaterRunnable);
+		updaterThread.setDaemon(false);
+		updaterThread.setName("Accountlist Updater Thread");
+		updaterThread.start();
+	}
+	
+	private void stopAccountListUpdaterThread(){
+		for(Entry<Thread, AccountlistUpdaterRunnable> entry : accountListUpdaterThreadMap.entrySet()){
+			entry.getValue().stop();
+			entry.getKey().interrupt();
+			try {
+				entry.getKey().join();
+				accountListUpdaterThreadMap.remove(entry.getKey());
+				Main.threadMap.remove(entry.getKey());
+			} catch (InterruptedException e) {
+				LOGGER.error("Failure closing thread");
+				LOGGER.debug(e.getMessage());
+			}
+		}
 	}
 }
 	

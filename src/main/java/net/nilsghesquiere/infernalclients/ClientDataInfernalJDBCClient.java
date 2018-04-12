@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 public class ClientDataInfernalJDBCClient implements ClientDataInfernalClient{
 	private static final Logger LOGGER = LoggerFactory.getLogger(ClientDataInfernalJDBCClient.class);
 	private final String DATABASE_URI;
-	private Properties config;
+	private Properties readOnlyConfig;
 	private static final String SELECT_SQL = "SELECT * FROM QeuerExtent";
 	private static final String COUNT_SQL = "SELECT COUNT(*) AS rows FROM QeuerExtent";
 	private static final String DELETE_SQL = "DELETE FROM QeuerExtent";
@@ -26,12 +26,12 @@ public class ClientDataInfernalJDBCClient implements ClientDataInfernalClient{
 	
 	public ClientDataInfernalJDBCClient(String infernalMap){
 		this.DATABASE_URI = "jdbc:sqlite:" + infernalMap +"InfernalDatabase.sqlite";
-		config = new Properties();
-		config.setProperty("open_mode", "1"); // 1 == readonly
+		readOnlyConfig = new Properties();
+		readOnlyConfig.setProperty("open_mode", "1"); // 1 == readonly
 	}
 	
 	public boolean connect(){
-		try(Connection connection = DriverManager.getConnection(DATABASE_URI,config)){
+		try(Connection connection = DriverManager.getConnection(DATABASE_URI,readOnlyConfig)){
 			LOGGER.info("Connected to the InfernalBot database.");
 			return true;
 		} catch (SQLException e) {
@@ -43,7 +43,7 @@ public class ClientDataInfernalJDBCClient implements ClientDataInfernalClient{
 	
 	public List<Queuer> getQueuers(){
 		List<Queuer> queuers = new ArrayList<>();
-		try(Connection connection = DriverManager.getConnection(DATABASE_URI,config)){
+		try(Connection connection = DriverManager.getConnection(DATABASE_URI,readOnlyConfig)){
 			Statement statement = connection.createStatement();
 			ResultSet resultSet = statement.executeQuery(SELECT_SQL);
 			while (resultSet.next()){
@@ -59,7 +59,7 @@ public class ClientDataInfernalJDBCClient implements ClientDataInfernalClient{
 	
 	public List<QueuerLolAccount> getQueuerAccounts(Queuer queuer){
 		List<QueuerLolAccount> queuerAccounts = new ArrayList<>();
-		try(Connection connection = DriverManager.getConnection(DATABASE_URI,config)){
+		try(Connection connection = DriverManager.getConnection(DATABASE_URI,readOnlyConfig)){
 			Statement statement = connection.createStatement();
 			String selectQueuerAccountsSQL = "SELECT * FROM " + queuer.getQueuer();
 			ResultSet resultSet = statement.executeQuery(selectQueuerAccountsSQL);
@@ -76,7 +76,7 @@ public class ClientDataInfernalJDBCClient implements ClientDataInfernalClient{
 	
 	public Integer countQueuers(){
 		int queuerCount = 0;
-		try(Connection connection = DriverManager.getConnection(DATABASE_URI,config)){
+		try(Connection connection = DriverManager.getConnection(DATABASE_URI,readOnlyConfig)){
 			Statement statement = connection.createStatement();
 			ResultSet resultSet = statement.executeQuery(COUNT_SQL);
 			while (resultSet.next()){

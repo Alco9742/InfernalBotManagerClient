@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit;
 
 import net.nilsghesquiere.Main;
 import net.nilsghesquiere.enums.ClientStatus;
+import net.nilsghesquiere.runnables.AccountlistUpdaterRunnable;
 import net.nilsghesquiere.runnables.InfernalBotCheckerRunnable;
 import net.nilsghesquiere.runnables.ManagerMonitorRunnable;
 import net.nilsghesquiere.runnables.ThreadCheckerRunnable;
@@ -21,6 +22,21 @@ public class GracefulExitHook extends Thread {
 		LOGGER.info("Shutting down all threads");
 		boolean fail = false;
 		for(Entry<Thread,Runnable> entry: Main.threadMap.entrySet()){
+			
+			if (entry.getValue() instanceof AccountlistUpdaterRunnable){
+				AccountlistUpdaterRunnable accountlistUpdaterRunnable =(AccountlistUpdaterRunnable) entry.getValue();
+				LOGGER.debug("Gracefully shutting down Accountlist Updater thread");
+				accountlistUpdaterRunnable.stop();
+				entry.getKey().interrupt();
+				try {
+					entry.getKey().join();
+				} catch (InterruptedException e) {
+					fail = true;
+					LOGGER.error("Failure closing Accountlist Updater thread");
+					LOGGER.debug(e.getMessage());
+				}
+			}
+			
 			if (entry.getValue() instanceof InfernalBotCheckerRunnable){
 				InfernalBotCheckerRunnable infernalBotManagerRunnable =(InfernalBotCheckerRunnable) entry.getValue();
 				LOGGER.debug("Gracefully shutting down InfernalBotChecker");

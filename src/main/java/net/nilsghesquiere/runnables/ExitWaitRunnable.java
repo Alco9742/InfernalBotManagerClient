@@ -23,6 +23,7 @@ public class ExitWaitRunnable implements Runnable {
 				TimeUnit.SECONDS.sleep(5);
 			} catch (InterruptedException e2) {
 				LOGGER.debug(e2.getMessage());
+				Thread.currentThread().interrupt();
 			}
 		}
 		if (launchHook){

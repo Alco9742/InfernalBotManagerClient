@@ -10,6 +10,7 @@ import java.nio.file.StandardCopyOption;
 import lombok.Data;
 import net.nilsghesquiere.entities.ClientData;
 import net.nilsghesquiere.entities.ClientSettings;
+import net.nilsghesquiere.entities.Queuer;
 import net.nilsghesquiere.services.ClientDataService;
 import net.nilsghesquiere.services.GlobalVariableService;
 import net.nilsghesquiere.services.InfernalSettingsService;
@@ -161,9 +162,13 @@ public class InfernalBotManagerClient {
 		if (lolAccountPragmasOK){
 			return accountService.setAccountsAsReadyForUse();
 		} else {
-			//No need to repeat logger info
 			return true;
 		}
+	}
+	
+	
+	public void updateAccountsOnServer(){
+		accountService.updateAccountsOnServer();
 	}
 	
 	//ClientData methods
@@ -173,6 +178,24 @@ public class InfernalBotManagerClient {
 	
 	public void sendData(String status, String ramInfo, String cpuInfo){
 		clientDataService.sendData(status, ramInfo, cpuInfo);
+	}
+	
+	public boolean queuersHaveEnoughAccounts(){
+		//After that do a double check by looking if there are any queuers with less than 5 accounts
+		//This scenario happens when there are not enough accounts in the account list (bans etc etc)
+		//The client will make a queuer with not enough accounts and gets a popup with "need 5 accounts)
+		int activeAccounts = accountService.countActiveAccounts();
+		int neededAccounts = clientSettings.getAccountAmount();
+		//Check if there are enough active accounts in the list
+		if (activeAccounts < neededAccounts){
+			//check if there are any queuers running with < 5 accounts
+			for(Queuer queuer : clientDataService.getAllQueuers()){
+				if(queuer.getQueuerLolAccounts().size() < 5){
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 	
 	//Backup database methods

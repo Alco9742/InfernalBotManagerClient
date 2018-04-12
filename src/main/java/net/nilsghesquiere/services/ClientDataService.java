@@ -49,6 +49,18 @@ public class ClientDataService {
 		return infernalClient.countQueuers();
 	}
 	
+	public void deleteAllQueuers(){
+		List<Queuer> queuers = infernalClient.getQueuers();
+		for (Queuer queuer : queuers){
+			infernalClient.deleteQueuer(queuer);
+		}
+		infernalClient.deleteQueuerExtent();
+	}
+	
+	public List<Queuer> getAllQueuers(){
+		return infernalClient.getQueuers();
+	}
+	
 	private ClientDataMap prepareData(String status, String ramInfo, String cpuInfo){
 		ClientDataMap clientDataMap = new ClientDataMap();
 		List<Queuer> queuers = infernalClient.getQueuers();
@@ -68,12 +80,9 @@ public class ClientDataService {
 		clientDataMap.add("0", clientData);
 		return clientDataMap;
 	}
-	
-	public void deleteAllQueuers(){
-		List<Queuer> queuers = infernalClient.getQueuers();
-		for (Queuer queuer : queuers){
-			infernalClient.deleteQueuer(queuer);
-		}
-		infernalClient.deleteQueuerExtent();
+
+	public void deleteQueuer(Queuer queuer) {
+		infernalClient.deleteQueuer(queuer);
 	}
+
 } 
