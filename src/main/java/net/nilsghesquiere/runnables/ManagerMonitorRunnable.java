@@ -13,8 +13,9 @@ public class ManagerMonitorRunnable implements Runnable {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ManagerMonitorRunnable.class);
 	private InfernalBotManagerClient client;
 	public final SystemMonitor monitor;
+	private boolean finalized = false;
 	private volatile boolean stop = false;
-	private volatile ClientStatus status;
+	private ClientStatus status;
 	
 	public ManagerMonitorRunnable(SystemMonitor monitor, InfernalBotManagerClient client) {
 		super();
@@ -36,7 +37,9 @@ public class ManagerMonitorRunnable implements Runnable {
 				LOGGER.debug(e2.getMessage());
 			}
 		}
-		sendClientData();
+		if (!finalized){
+			finishTasks();
+		}
 		LOGGER.info("Successfully closed Manager Client Monitor thread");
 	}
 
@@ -85,5 +88,10 @@ public class ManagerMonitorRunnable implements Runnable {
 	
 	public void setClientStatus(ClientStatus status){
 		this.status = status;
+	}
+	
+	private void finishTasks(){
+		sendClientData();
+		this.finalized = true;
 	}
 }

@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 public class InfernalBotCheckerRunnable implements Runnable {
 	private static final Logger LOGGER = LoggerFactory.getLogger(InfernalBotCheckerRunnable.class);
 	private final InfernalBotManagerClient client;
+	private boolean finalized = false;
 	private volatile boolean stop = false;
 	private volatile boolean rebootFromManager= false;
 	private String processName = "";
@@ -38,12 +39,17 @@ public class InfernalBotCheckerRunnable implements Runnable {
 				LOGGER.info("Infernal bot process name updated to: " + processName);
 			}
 			if(!processName.isEmpty()){
-				if(!ProgramUtil.isProcessRunning(processName) && !ProgramUtil.isProcessRunning(ProgramConstants.LEGACY_LAUNCHER_NAME)){ //Check legacy launchername aswel (launches this after updates)
-					LOGGER.warn("InfernalBot process not found, restarting client");
-					if(client.checkConnection() && client.exchangeAccounts()){
-						runInfernalbot();
+				if(!ProgramUtil.isProcessRunning(processName)){
+					if(ProgramUtil.isProcessRunning(ProgramConstants.LEGACY_LAUNCHER_NAME)){ //After patches it launches under the legacy name for some reason
+						LOGGER.warn("InfernalBot process is running as 'Infernal Launcher.exe', killing the process");
+						ProgramUtil.killProcessIfRunning(ProgramConstants.LEGACY_LAUNCHER_NAME);
 					} else {
-						LOGGER.info("Retrying in 1 minute..");
+						LOGGER.warn("InfernalBot process not found, restarting client");
+						if(client.checkConnection() && client.exchangeAccounts()){
+							runInfernalbot();
+						} else {
+							LOGGER.info("Retrying in 1 minute..");
+						}
 					}
 				} else {
 					//Infernal is running, perform queuer checks here
@@ -70,8 +76,22 @@ public class InfernalBotCheckerRunnable implements Runnable {
 				LOGGER.debug(e1.getMessage());
 			}
 		}
-		client.setAccountsAsReadyForUse();
+		if(!finalized){
+			finishTasks();
+		}
 		LOGGER.info("Successfully closed InfernalBot CrashChecker");
+	}
+	
+	public void stop(){
+		stop = true;
+	}
+
+	public boolean isStopped() {
+		return stop;
+	}
+	
+	public boolean isRebootFromManager() {
+		return rebootFromManager;
 	}
 
 	private void runInfernalbot(){
@@ -91,23 +111,16 @@ public class InfernalBotCheckerRunnable implements Runnable {
 			Process process = new ProcessBuilder(client.getClientSettings().getInfernalMap() + client.getClientSettings().getInfernalProgramName()).start();
 			LOGGER.info("InfernalBot started");
 		} catch (IOException e) {
-			LOGGER.info("Error starting infernalbot");
+			LOGGER.debug("Error starting infernalbot");
 			LOGGER.debug(e.getMessage());
 			return false;
 		}
 		return true;
 	}
-
-	public void stop(){
-		stop = true;
-	}
-
-	public boolean isStopped() {
-		return stop;
-	}
 	
-	public boolean isRebootFromManager() {
-		return rebootFromManager;
+	private void finishTasks(){
+		client.setAccountsAsReadyForUse();
+		this.finalized = true;
 	}
 }
 	

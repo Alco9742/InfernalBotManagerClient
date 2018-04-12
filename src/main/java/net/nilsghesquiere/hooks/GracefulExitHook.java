@@ -23,62 +23,62 @@ public class GracefulExitHook extends Thread {
 		for(Entry<Thread,Runnable> entry: Main.threadMap.entrySet()){
 			if (entry.getValue() instanceof InfernalBotCheckerRunnable){
 				InfernalBotCheckerRunnable infernalBotManagerRunnable =(InfernalBotCheckerRunnable) entry.getValue();
-				LOGGER.info("Gracefully shutting down InfernalBotChecker, please don't close the program");
+				LOGGER.debug("Gracefully shutting down InfernalBotChecker");
 				if(infernalBotManagerRunnable.isRebootFromManager()){
 					this.rebootWindows = true;
 					Main.managerMonitorRunnable.setClientStatus(ClientStatus.CLOSE_REBOOT);
 				} else {
 					Main.managerMonitorRunnable.setClientStatus(ClientStatus.CLOSE);
 				}
-				entry.getKey().interrupt();
 				infernalBotManagerRunnable.stop();
+				entry.getKey().interrupt();
 				try {
 					entry.getKey().join();
 				} catch (InterruptedException e) {
 					fail = true;
-					LOGGER.error("Failure closing thread");
+					LOGGER.error("Failure closing InfernalBotChecker thread");
 					LOGGER.debug(e.getMessage());
 				}
 			}
 			
 			if (entry.getValue() instanceof ThreadCheckerRunnable){
 				ThreadCheckerRunnable threadCheckerRunnable =(ThreadCheckerRunnable) entry.getValue();
-				LOGGER.info("Gracefully shutting down ThreadChecker, please don't close the program");
-				entry.getKey().interrupt();
+				LOGGER.debug("Gracefully shutting down Thread Checker");
 				threadCheckerRunnable.stop();
+				entry.getKey().interrupt();
 				try {
 					entry.getKey().join();
 				} catch (InterruptedException e) {
 					fail = true;
-					LOGGER.error("Failure closing threads");
+					LOGGER.error("Failure closing Thread Checker thread");
 					LOGGER.debug(e.getMessage());
 				}
 			}
 
 			if (entry.getValue() instanceof ManagerMonitorRunnable){
 				ManagerMonitorRunnable managerMonitorRunnable =(ManagerMonitorRunnable) entry.getValue();
-				LOGGER.info("Gracefully shutting down Manager Client Monitor, please don't close the program");
-				entry.getKey().interrupt();
+				LOGGER.debug("Gracefully shutting down Manager Client Monitor");
 				managerMonitorRunnable.stop();
+				entry.getKey().interrupt();
 				try {
 					entry.getKey().join();
 				} catch (InterruptedException e) {
 					fail = true;
-					LOGGER.error("Failure closing threads");
+					LOGGER.error("Failure closing Manager Client Monitor thread");
 					LOGGER.debug(e.getMessage());
 				}
 			}
 		}
 		//Stop the runnable without launching hook
 		if (Main.exitWaitThread.isAlive()){
-			Main.exitWaitThread.interrupt();
 			Main.exitWaitRunnable.dontLaunchHook();
 			Main.exitWaitRunnable.exit();
+			Main.exitWaitThread.interrupt();
 			try {
 				Main.exitWaitThread.join();
 			} catch (InterruptedException e) {
 				fail = true;
-				LOGGER.error("Failure closing threads");
+				LOGGER.error("Failure closing Exit Wait thread");
 				LOGGER.debug(e.getMessage());
 			}
 		}
@@ -91,9 +91,9 @@ public class GracefulExitHook extends Thread {
 				ProgramUtil.scheduleReboot(20);
 			}
 		}
-		LOGGER.info("Closing InfernalBotManager Client in 5 seconds");
+		LOGGER.info("Closing InfernalBotManager Client");
 		try {
-			TimeUnit.SECONDS.sleep(5);
+			TimeUnit.SECONDS.sleep(1);
 		} catch (InterruptedException e) {
 			LOGGER.debug(e.getMessage());
 		}
