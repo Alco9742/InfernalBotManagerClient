@@ -342,10 +342,10 @@ public class InfernalBotManagerClient {
 				} else {
 					arg2 = "hard";
 				}
-				String command = "\"" + updaterPath.toString() + "\" \"" + arg0 + "\" \"" + arg1 + "\" \"" + arg2 + "\"";
+				String command = updaterPath.toString();
 				//Start the updater
 				LOGGER.info("Starting updater");
-				ProcessBuilder pb = new ProcessBuilder(command);
+				ProcessBuilder pb = new ProcessBuilder(command,arg0,arg1,arg2);
 				pb.directory(new File(managerMap));
 				@SuppressWarnings("unused")
 				Process p = pb.start();
