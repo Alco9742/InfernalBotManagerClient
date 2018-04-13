@@ -6,28 +6,21 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import net.nilsghesquiere.entities.ClientData;
 import net.nilsghesquiere.entities.ClientSettings;
-import net.nilsghesquiere.entities.Queuer;
-import net.nilsghesquiere.entities.QueuerLolAccount;
 import net.nilsghesquiere.enums.ClientStatus;
-import net.nilsghesquiere.enums.Lane;
 import net.nilsghesquiere.gui.swing.InfernalBotManagerGUI;
 import net.nilsghesquiere.hooks.GracefulExitHook;
-import net.nilsghesquiere.managerclients.ClientDataManagerRESTClient;
 import net.nilsghesquiere.monitoring.SystemMonitor;
 import net.nilsghesquiere.runnables.ExitWaitRunnable;
 import net.nilsghesquiere.runnables.InfernalBotCheckerRunnable;
 import net.nilsghesquiere.runnables.ManagerMonitorRunnable;
 import net.nilsghesquiere.runnables.ThreadCheckerRunnable;
+import net.nilsghesquiere.runnables.UpdateCheckerRunnable;
 import net.nilsghesquiere.util.ProgramConstants;
-import net.nilsghesquiere.util.wrappers.ClientDataMap;
 
 import org.ini4j.InvalidFileFormatException;
 import org.ini4j.Reg;
@@ -46,7 +39,9 @@ public class Main{
 	public static Thread exitWaitThread;
 	public static ManagerMonitorRunnable managerMonitorRunnable;
 	public static String iniLocation;
-
+	public static boolean softStop; //don't update any accounts / settings on close
+	public static boolean softStart; //don't update any accounts / settings on start
+	public static boolean serverUpToDate = true;;
 	
 
 	public static void main(String[] args) throws InterruptedException{
@@ -61,6 +56,7 @@ public class Main{
 		
 		try{
 			iniLocation = args[0];
+			softStart = args[1].equals("soft");
 		} catch (ArrayIndexOutOfBoundsException e){
 			iniLocation = System.getProperty("user.dir") + "\\" + ProgramConstants.INI_NAME; 
 		}
@@ -87,8 +83,6 @@ public class Main{
 			} catch(Exception e){
 				//UNHANDLED EXCEPTIONS
 				LOGGER.debug("Unhandled Exception:", e);
-				//restart program 
-				program();
 			}
 		} else {
 			LOGGER.info("Closing InfernalBotManager Client");
@@ -98,46 +92,10 @@ public class Main{
 	}
 	
 	private static void test(){
-		startMonitorThread(client);
-		managerMonitorRunnable.setClientStatus(ClientStatus.CONNECTED);
-		QueuerLolAccount qLolAccount = new QueuerLolAccount();
-		qLolAccount.setAccount("test");
-		qLolAccount.setBe(2000);
-		qLolAccount.setChamp("Ashe");
-		qLolAccount.setId(50L);
-		qLolAccount.setLane(Lane.BOT);
-		qLolAccount.setLevel(29);
-		qLolAccount.setLpq(true);
-		qLolAccount.setMaxLevel(30);
-		qLolAccount.setXp(3000);
-		qLolAccount.setXpCap(12000);
-		List<QueuerLolAccount> queuerAccounts = new ArrayList<>();
-		queuerAccounts.add(qLolAccount);
-		Queuer queuer = new Queuer();
-		queuer.setAfterGame(10);
-		queuer.setDefeatGames(2);
-		queuer.setPlayedGames(5);
-		queuer.setQueuer("Queuer1");
-		queuer.setSoftEnd(false);
-		queuer.setState("In Game");
-		queuer.setWinGames(3);
-		queuer.setQueuerLolAccounts(queuerAccounts);
-		queuer.setLpq(true);
-		List<Queuer> queuers = new ArrayList<>();
-		queuers.add(queuer);
-		ClientData clientData = new ClientData("EUW","InfernalBotManager Running");
-		clientData.setQueuers(queuers);
-		ClientDataMap map = new ClientDataMap();
-		map.add("1", clientData);
-		client.setUserId();
-		ClientDataManagerRESTClient restClient = new ClientDataManagerRESTClient(client.getClientSettings().getWebServer() + ":" + client.getClientSettings().getPort(), client.getClientSettings().getUsername(), client.getClientSettings().getPassword(), client.getClientSettings().getDebugHTTP());
-		restClient.sendClientData(1L, map);
-		LOGGER.info("Sent test clientData");
-		exitWaitRunnable.exit();
 	}
 	
 	private static void program(){
-		if (client.getClientSettings().getEnableDevMode()){
+		if (client.getClientSettings().getDebugThreads()){
 			startThreadCheckerThread();
 		}
 		boolean upToDate = true;
@@ -150,9 +108,13 @@ public class Main{
 					if(client.checkKillSwitch()){
 						killSwitchOff = false;
 					} else {
-						if(!client.checkVersion()){
+						if(!client.checkClientVersion()){
 							upToDate = false;
 						}
+						if(!client.checkServerVersion()){
+							serverUpToDate = false;
+						}
+						client.checkUpdateNow(); //Not doing anything with this yet, just placing it here to catch the nullpointer if server isn't set up correctly yet
 					}
 				}
 				if(!connected){
@@ -173,30 +135,33 @@ public class Main{
 				}
 			}
 		}
-		//connection has been made start the monitor thread
-		startMonitorThread(client);
+		//connection has been made start the monitor & updatechecker threads
+		if(!exitWaitRunnable.getExit()){
+			startMonitorThread(client);
+			startUpdateCheckerThread(client);
+		}
 		if (killSwitchOff){
 			//check for update
 			if (upToDate){
 				//backup sqllite file
 				if(client.backUpInfernalDatabase()){
 					//initial checks
-					//Check if infernalbot tables have been changed since last version
+					//Check if infernalbot tables have been changed since last version ((if it updates this launch the pragmas will still change after launch which is why we do another check later on)
 					client.checkTables();
 					//Attempt to get accounts, retry if fail
-					boolean initDone = client.checkConnection() && client.setInfernalSettings() && client.exchangeAccounts();
+					boolean initDone = client.checkConnection() && client.setInfernalSettings() && client.initialExchangeAccounts();
 					while (!initDone){
 						try {
 							LOGGER.info("Retrying in 1 minute...");
 							TimeUnit.MINUTES.sleep(1);
-							initDone = (client.checkConnection() && client.setInfernalSettings() && client.exchangeAccounts());
+							initDone = (client.checkConnection() && client.setInfernalSettings() && client.initialExchangeAccounts());
 						} catch (InterruptedException e) {
 							LOGGER.debug(e.getMessage());
 						}
 					}
 					//schedule reboot
 					client.scheduleReboot();
-					//empty queuers
+					//empty queuers (don't do this if softStart)
 					client.deleteAllQueuers();
 					//send client status
 					managerMonitorRunnable.setClientStatus(ClientStatus.CONNECTED);
@@ -347,5 +312,14 @@ public class Main{
 		infernalThread.setDaemon(false); 
 		infernalThread.setName("InfernalBot Checker Thread");
 		infernalThread.start();
+	}
+	
+	private static void startUpdateCheckerThread(InfernalBotManagerClient client){
+		UpdateCheckerRunnable updateCheckerRunnable = new UpdateCheckerRunnable(client);
+		Thread updateCheckerThread = new Thread(updateCheckerRunnable);
+		threadMap.put(updateCheckerThread, updateCheckerRunnable);
+		updateCheckerThread.setDaemon(false); 
+		updateCheckerThread.setName("Update Checker Thread");
+		updateCheckerThread.start();
 	}
 }

@@ -9,6 +9,7 @@ import net.nilsghesquiere.runnables.AccountlistUpdaterRunnable;
 import net.nilsghesquiere.runnables.InfernalBotCheckerRunnable;
 import net.nilsghesquiere.runnables.ManagerMonitorRunnable;
 import net.nilsghesquiere.runnables.ThreadCheckerRunnable;
+import net.nilsghesquiere.runnables.UpdateCheckerRunnable;
 import net.nilsghesquiere.util.ProgramUtil;
 
 import org.slf4j.Logger;
@@ -37,14 +38,32 @@ public class GracefulExitHook extends Thread {
 				}
 			}
 			
+			if (entry.getValue() instanceof UpdateCheckerRunnable){
+				UpdateCheckerRunnable updateCheckerRunnable =(UpdateCheckerRunnable) entry.getValue();
+				LOGGER.debug("Gracefully shutting down Update Checker threadd");
+				updateCheckerRunnable.stop();
+				entry.getKey().interrupt();
+				try {
+					entry.getKey().join();
+				} catch (InterruptedException e) {
+					fail = true;
+					LOGGER.error("Failure closing Update Checker thread");
+					LOGGER.debug(e.getMessage());
+				}
+			}
+			
 			if (entry.getValue() instanceof InfernalBotCheckerRunnable){
 				InfernalBotCheckerRunnable infernalBotManagerRunnable =(InfernalBotCheckerRunnable) entry.getValue();
 				LOGGER.debug("Gracefully shutting down InfernalBotChecker");
 				if(infernalBotManagerRunnable.isRebootFromManager()){
 					this.rebootWindows = true;
-					Main.managerMonitorRunnable.setClientStatus(ClientStatus.CLOSE_REBOOT);
+					if(Main.managerMonitorRunnable.getClientStatus() != ClientStatus.UPDATE){
+						Main.managerMonitorRunnable.setClientStatus(ClientStatus.CLOSE_REBOOT);
+					}
 				} else {
-					Main.managerMonitorRunnable.setClientStatus(ClientStatus.CLOSE);
+					if(Main.managerMonitorRunnable.getClientStatus() != ClientStatus.UPDATE){
+						Main.managerMonitorRunnable.setClientStatus(ClientStatus.CLOSE);
+					}
 				}
 				infernalBotManagerRunnable.stop();
 				entry.getKey().interrupt();

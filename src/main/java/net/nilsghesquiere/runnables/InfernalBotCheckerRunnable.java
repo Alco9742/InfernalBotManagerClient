@@ -32,11 +32,13 @@ public class InfernalBotCheckerRunnable implements Runnable {
 
 	@Override
 	public void run() {
-		runInfernalbot();
+		firstRunInfernalbot();
 		if (!stop) {
 			LOGGER.info("Starting InfernalBot CrashChecker");
 		}
 		while (!stop){
+			//recheck pragmas
+			client.checkTables();
 			//After patches it launches under the legacy name for some reason, we do not want that
 			if(ProgramUtil.isProcessRunning(ProgramConstants.LEGACY_LAUNCHER_NAME)){ 
 				LOGGER.warn("InfernalBot process is running as 'Infernal Launcher.exe', killing the process");
@@ -105,6 +107,25 @@ public class InfernalBotCheckerRunnable implements Runnable {
 		return rebootFromManager;
 	}
 
+	private void firstRunInfernalbot(){
+		//extra check for the stop here (just to be sure)
+		if (!stop){
+			Main.managerMonitorRunnable.setClientStatus(ClientStatus.INFERNAL_STARTUP);
+			if(!Main.softStart){
+				startInfernalBot();
+			} else {
+				LOGGER.debug("Not starting infernalbot (softstart)");
+			}
+			LOGGER.info("Starting InfernalBot Crash Checker in 2 minutes");
+			try {
+				TimeUnit.MINUTES.sleep(2);
+			} catch (InterruptedException e2) {
+				LOGGER.debug(e2.getMessage());
+				Thread.currentThread().interrupt();
+			}
+		}
+	}
+	
 	private void runInfernalbot(){
 		//extra check for the stop here (just to be sure)
 		if (!stop){

@@ -20,7 +20,7 @@ public class GlobalVariableService {
 		}
 	}
 	
-	public boolean checkVersion(){
+	public boolean checkClientVersion(){
 		String currentVersion = getClientVersion();
 		if(ProgramConstants.CLIENT_VERSION.equals(currentVersion)){
 			LOGGER.info("Client up to date (v" + currentVersion +")");
@@ -28,6 +28,31 @@ public class GlobalVariableService {
 		} else {
 			LOGGER.error("Client is outdated (v" + ProgramConstants.CLIENT_VERSION +")");
 			LOGGER.info("Updating to new version (v" +currentVersion +")");
+			return false;
+		}
+	}
+	
+	public boolean checkClientVersion(boolean log){
+		String currentVersion = getClientVersion();
+		if(ProgramConstants.CLIENT_VERSION.equals(currentVersion)){
+			if(log){
+				LOGGER.info("Client up to date (v" + currentVersion +")");
+			}
+			return true;
+		} else {
+			if (log){
+				LOGGER.error("Client is outdated (v" + ProgramConstants.CLIENT_VERSION +")");
+				LOGGER.info("Updating to new version (v" +currentVersion +")");
+			}
+			return false;
+		}
+	}
+	
+	public boolean checkServerVersion(){
+		String currentVersion = getServerVersion();
+		if(ProgramConstants.SERVER_VERSION.equals(currentVersion)){
+			return true;
+		} else {
 			return false;
 		}
 	}
@@ -51,8 +76,21 @@ public class GlobalVariableService {
 		}
 	}
 	
+	public boolean checkUpdateNow(){
+		String update = getUpdate();
+		if(update.equals("now")){
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	private String getClientVersion(){
 		return managerClient.getGlobalVariableByName("clientVersion").getValue();
+	}
+	
+	private String getServerVersion(){
+		return managerClient.getGlobalVariableByName("serverVersion").getValue();
 	}
 	
 	private String getKillSwitch(){
@@ -65,5 +103,9 @@ public class GlobalVariableService {
 	
 	private String getConnection(){
 		return managerClient.getGlobalVariableByName("connection").getValue();
+	}
+	
+	private String getUpdate(){
+		return managerClient.getGlobalVariableByName("update").getValue().toLowerCase();
 	}
 }

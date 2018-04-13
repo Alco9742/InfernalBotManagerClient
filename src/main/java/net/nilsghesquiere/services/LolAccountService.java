@@ -110,7 +110,7 @@ public class LolAccountService {
 				return false;
 			}
 		} catch (ResourceAccessException e){
-			LOGGER.warn("Failure getting bufferaccounts from the server");
+			LOGGER.warn("Failure updating accounts the server");
 			LOGGER.debug(e.getMessage());
 			return false;
 		}

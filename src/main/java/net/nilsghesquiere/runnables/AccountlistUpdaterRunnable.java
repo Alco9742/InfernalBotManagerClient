@@ -27,6 +27,7 @@ public class AccountlistUpdaterRunnable implements Runnable {
 				LOGGER.debug(e2.getMessage());
 				Thread.currentThread().interrupt();
 			}
+			LOGGER.info("Starting Accountlist Updater");
 		}
 		while (!stop){
 			client.updateAccountsOnServer();
@@ -49,7 +50,4 @@ public class AccountlistUpdaterRunnable implements Runnable {
 		return stop;
 	}
 	
-	public void setClient(InfernalBotManagerClient client){
-		this.client = client;
-	}
 }

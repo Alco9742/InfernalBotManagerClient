@@ -49,28 +49,28 @@ public class ManagerMonitorRunnable implements Runnable {
 			case INIT:
 				break;
 			case CONNECTED:
-				client.getClientDataService().sendData("Manager Client Connected", monitor.getRamUsage(), monitor.getCpuUsage());
+				client.sendData("Manager Client Connected", monitor.getRamUsage(), monitor.getCpuUsage());
 				break;
 			case UPDATE:
-				client.getClientDataService().sendData("Manager Client Updating", monitor.getRamUsage(), monitor.getCpuUsage());
+				client.sendData("Manager Client Updating", monitor.getRamUsage(), monitor.getCpuUsage());
 				break;
 			case INFERNAL_STARTUP:
-				client.getClientDataService().sendData("Infernalbot Startup", monitor.getRamUsage(), monitor.getCpuUsage());
+				client.sendData("Infernalbot Startup", monitor.getRamUsage(), monitor.getCpuUsage());
 				break;
 			case INFERNAL_RUNNING:
-				client.getClientDataService().sendData("Infernalbot Running", monitor.getRamUsage(), monitor.getCpuUsage());
+				client.sendData("Infernalbot Running", monitor.getRamUsage(), monitor.getCpuUsage());
 				break;
 			case CLOSE:
-				client.getClientDataService().sendData("Manager Client Closing", monitor.getRamUsage(), monitor.getCpuUsage());
+				client.sendData("Manager Client Closing", monitor.getRamUsage(), monitor.getCpuUsage());
 				break;
 			case CLOSE_REBOOT:
-				client.getClientDataService().sendData("Windows Rebooting", monitor.getRamUsage(), monitor.getCpuUsage());
+				client.sendData("Windows Rebooting", monitor.getRamUsage(), monitor.getCpuUsage());
 				break;
 			case ERROR:
-				client.getClientDataService().sendData("Manager Client Error", monitor.getRamUsage(), monitor.getCpuUsage());
+				client.sendData("Manager Client Error", monitor.getRamUsage(), monitor.getCpuUsage());
 				break;
 			default:
-				client.getClientDataService().sendData("Manager Client Error", monitor.getRamUsage(), monitor.getCpuUsage());
+				client.sendData("Manager Client Error", monitor.getRamUsage(), monitor.getCpuUsage());
 		}
 	}
 	
@@ -82,14 +82,13 @@ public class ManagerMonitorRunnable implements Runnable {
 		return stop;
 	}
 	
-	public void setClient(InfernalBotManagerClient client){
-		this.client = client;
-	}
-	
 	public void setClientStatus(ClientStatus status){
 		this.status = status;
 	}
 	
+	public ClientStatus getClientStatus(){
+		return this.status;
+	}
 	private void finishTasks(){
 		sendClientData();
 		this.finalized = true;

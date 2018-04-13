@@ -29,6 +29,7 @@ public class InfernalBotManagerClient {
 	
 	private boolean infernalSettingsPragmasOK;
 	private boolean lolAccountPragmasOK;
+	private boolean serverUpToDate = true;
 	
 	private ClientSettings clientSettings;
 	private ClientData clientData;
@@ -123,17 +124,41 @@ public class InfernalBotManagerClient {
 		}
 	}
 	
-	public boolean checkVersion(){
-		return globalVariableService.checkVersion();
+	public boolean checkClientVersion(){
+		return globalVariableService.checkClientVersion();
+	}
+	
+	public boolean checkClientVersion(boolean log) {
+		return globalVariableService.checkClientVersion(log);
+	}
+	
+	
+	public boolean checkServerVersion(){
+		return globalVariableService.checkServerVersion();
 	}
 	
 	public boolean checkKillSwitch(){
 		return globalVariableService.checkKillSwitch();
 	}
 	
+	public boolean checkUpdateNow() {
+		return globalVariableService.checkUpdateNow();
+	}
+	
+
 	//InfernalSettings methods
 	public boolean setInfernalSettings(){
+		if(Main.softStart){
+			LOGGER.debug("Not performing settings exchange (softstart)");
+			return true;
+		}
 		if (clientSettings.getFetchSettings()){
+			if(!Main.serverUpToDate){
+				LOGGER.info("InfernalBotManager server is outdated.");
+				LOGGER.info("Falling back to InfernalBots own settings until updated.");
+				LOGGER.debug("Not performing settings exchange (server outdated)");
+				return true;
+			}
 			if(infernalSettingsPragmasOK){
 				return infernalSettingsService.updateInfernalSettings(clientSettings.getUserId());
 			} else {
@@ -148,7 +173,33 @@ public class InfernalBotManagerClient {
 	}
 	
 	//LolAccount methods
+	public boolean initialExchangeAccounts(){
+		if(Main.softStart){
+			LOGGER.debug("Not performing account exchange (softstart)");
+			return true;
+		}
+		if(!Main.serverUpToDate){
+			LOGGER.info("InfernalBotManager server is outdated.");
+			LOGGER.info("Falling back to InfernalBots own accounts until updated.");
+			LOGGER.debug("Not performing account exchange (server outdated)");
+			return true;
+		}
+		if (lolAccountPragmasOK){
+			return accountService.exchangeAccounts();
+		} else {
+			LOGGER.info("InfernalBot accountlist table has changed since latest InfernalBotManager version");
+			LOGGER.info("Falling back to InfernalBots own accounts until updated.");
+			return true;
+		}
+	}
+	
 	public boolean exchangeAccounts(){
+		if(!Main.serverUpToDate){
+			LOGGER.info("InfernalBotManager server is outdated.");
+			LOGGER.info("Falling back to InfernalBots own accounts until updated.");
+			LOGGER.debug("Not performing account exchange (server outdated)");
+			return true;
+		}
 		if (lolAccountPragmasOK){
 			return accountService.exchangeAccounts();
 		} else {
@@ -159,25 +210,48 @@ public class InfernalBotManagerClient {
 	}
 	
 	public boolean setAccountsAsReadyForUse(){
+		if (!Main.serverUpToDate){
+			LOGGER.debug("Not setting accounts as ready for use (server outdated)");
+			return true; // niet doen als server outdated is
+		}
+		if (Main.softStop){
+			LOGGER.debug("Not setting accounts as ready for use (softstop)");
+			return true; // niet doen als server outdated is
+		}
 		if (lolAccountPragmasOK){
 			return accountService.setAccountsAsReadyForUse();
 		} else {
-			return true;
+			return true; //niet doen als pragmas outdated zijn
 		}
 	}
 	
 	
 	public void updateAccountsOnServer(){
-		accountService.updateAccountsOnServer();
+		if (Main.serverUpToDate){ 
+			if (!Main.softStop){
+				accountService.updateAccountsOnServer();
+			} else {
+				LOGGER.debug("Not updating accounts on server (softstop)");
+			}
+		} else {
+			LOGGER.debug("Not updating accounts on server (server outdated)");
+		}
 	}
 	
 	//ClientData methods
 	public void deleteAllQueuers(){
-		clientDataService.deleteAllQueuers();
+		if(!Main.softStart){
+			clientDataService.deleteAllQueuers();
+		} else {
+			LOGGER.debug("Not deleting queuers (softstart)");
+		}
+
 	}
 	
 	public void sendData(String status, String ramInfo, String cpuInfo){
-		clientDataService.sendData(status, ramInfo, cpuInfo);
+		if (Main.serverUpToDate){
+			clientDataService.sendData(status, ramInfo, cpuInfo);
+		} //don't log this, too many times
 	}
 	
 	public boolean queuersHaveEnoughAccounts(){
@@ -256,13 +330,19 @@ public class InfernalBotManagerClient {
 				//build the args
 				String arg0 = managerMap;
 				String arg1 = "";
+				String arg2 = "";
 				if(clientSettings.getPort().equals("")){
-					arg1 = clientSettings.getWebServer() + "/downloads/"; 
+					arg2 = clientSettings.getWebServer() + "/downloads/"; 
 				} else {
-					arg1 = clientSettings.getWebServer() + ":" + clientSettings.getPort() + "/downloads/"; 
+					arg2 = clientSettings.getWebServer() + ":" + clientSettings.getPort() + "/downloads/"; 
 				}
-				String command = "\"" + updaterPath.toString() + "\" \"" + arg0 + "\" \"" + arg1 + "\"";
-	
+				if(Main.softStop == true){
+					//softStop = stopStart aswell, pass the parameter to the updater so it can pass it back to the program
+					arg2 = "soft";
+				} else {
+					arg2 = "hard";
+				}
+				String command = "\"" + updaterPath.toString() + "\" \"" + arg0 + "\" \"" + arg1 + "\" \"" + arg2 + "\"";
 				//Start the updater
 				LOGGER.info("Starting updater");
 				ProcessBuilder pb = new ProcessBuilder(command);
