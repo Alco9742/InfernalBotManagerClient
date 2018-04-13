@@ -332,9 +332,9 @@ public class InfernalBotManagerClient {
 				String arg1 = "";
 				String arg2 = "";
 				if(clientSettings.getPort().equals("")){
-					arg2 = clientSettings.getWebServer() + "/downloads/"; 
+					arg1 = clientSettings.getWebServer() + "/downloads/"; 
 				} else {
-					arg2 = clientSettings.getWebServer() + ":" + clientSettings.getPort() + "/downloads/"; 
+					arg1 = clientSettings.getWebServer() + ":" + clientSettings.getPort() + "/downloads/"; 
 				}
 				if(Main.softStop == true){
 					//softStop = stopStart aswell, pass the parameter to the updater so it can pass it back to the program
