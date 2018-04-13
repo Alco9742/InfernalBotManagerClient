@@ -50,6 +50,9 @@ public class GlobalVariableService {
 	
 	public boolean checkServerVersion(){
 		String currentVersion = getServerVersion();
+		if (currentVersion == null){
+			return false;
+		}
 		if(ProgramConstants.SERVER_VERSION.equals(currentVersion)){
 			return true;
 		} else {
@@ -59,6 +62,9 @@ public class GlobalVariableService {
 	
 	public boolean checkKillSwitch(){
 		String killSwitch = getKillSwitch();
+		if (killSwitch == null){
+			return false;
+		}
 		if(killSwitch.equals("on")){
 			LOGGER.error(getKillSwitchMessage());
 			return true;
@@ -69,6 +75,9 @@ public class GlobalVariableService {
 	
 	public boolean checkConnection(){
 		String connection = getConnection();
+		if (connection == null){
+			return false;
+		}
 		if(connection.equals("Connected")){
 			return true;
 		} else {
@@ -78,6 +87,9 @@ public class GlobalVariableService {
 	
 	public boolean checkUpdateNow(){
 		String update = getUpdate();
+		if (update == null){
+			return false;
+		}
 		if(update.equals("now")){
 			return true;
 		} else {
