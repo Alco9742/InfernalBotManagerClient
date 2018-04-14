@@ -45,7 +45,7 @@
 		<appender-ref ref="HTTPFILE" />
 	</logger>
 	
-	<logger name="net.nilsghesquiere.monitoring" additivity="false" level="OFF">
+	<logger name="oshi" additivity="false" level="OFF">
 		<level value="OFF" />
 		<appender-ref ref="FILE" />
 	</logger>

@@ -55,10 +55,14 @@ public class Main{
 		LOGGER.info("Starting InfernalBotManager Client");
 		
 		try{
+			for (int i=0; i<args.length; i++){
+				LOGGER.debug("arg[" + i + "] = " + args[i]);
+			}
 			iniLocation = args[0];
 			softStart = args[1].equals("soft");
 		} catch (ArrayIndexOutOfBoundsException e){
 			iniLocation = System.getProperty("user.dir") + "\\" + ProgramConstants.INI_NAME; 
+			softStart = false;
 		}
 		client = buildClient(iniLocation);
 		if(client != null){
