@@ -1,7 +1,7 @@
 package net.nilsghesquiere.util;
 
 public class ProgramConstants {
-	public static final String CLIENT_VERSION = "0.9.2";
+	public static final String CLIENT_VERSION = "0.9.2.1";
 	public static final String SERVER_VERSION = "0.9.2";
 	public static final String INI_NAME = "settings.ini";
 	public static final String INFERNAL_PROG_NAME = "Infernal-Start.exe" ;
