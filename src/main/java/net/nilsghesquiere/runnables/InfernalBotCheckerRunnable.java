@@ -52,10 +52,14 @@ public class InfernalBotCheckerRunnable implements Runnable {
 			if(!processName.isEmpty()){
 				if(!ProgramUtil.isProcessRunning(processName)){
 					LOGGER.warn("InfernalBot process not found, restarting client");
-					if(client.checkConnection() && client.exchangeAccounts()){
-						runInfernalbot();
-					} else {
-						LOGGER.info("Retrying in 1 minute..");
+					try{
+						if(client.checkConnection() && client.exchangeAccounts()){
+							runInfernalbot();
+						} else {
+							LOGGER.info("Retrying in 1 minute..");
+						}
+					} catch (NullPointerException e){
+						LOGGER.warn("Failure connecting to the server");
 					}
 				} else {
 					//Infernal is running, perform queuer checks here

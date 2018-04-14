@@ -23,7 +23,6 @@
 			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{0} - %msg%n</pattern>
 		</encoder>
 	</appender>
-	
 	<root level="INFO">
 		<appender-ref ref="STDOUT" />
 	</root>
@@ -44,6 +43,11 @@
 	<logger name="net.nilsghesquiere.logging" additivity="false">
 		<level value="DEBUG" />
 		<appender-ref ref="HTTPFILE" />
+	</logger>
+	
+	<logger name="net.nilsghesquiere.monitoring" additivity="false" level="OFF">
+		<level value="OFF" />
+		<appender-ref ref="FILE" />
 	</logger>
 	
 </configuration>

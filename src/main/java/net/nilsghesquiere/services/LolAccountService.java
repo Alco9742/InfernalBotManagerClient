@@ -38,6 +38,7 @@ public class LolAccountService {
 	}
 	
 	public boolean exchangeAccounts(){
+		LOGGER.info("exchangeAccounts");
 		//TODO fix bug: if for some reason both clients have same accs in infernalbot database:
 		//     Client1 uploads the accs and puts them on READY, after that loads them and puts them on IN USE;
 		//     Client2 uploads the accs and does the same!!!! --> solution: check on assigned to
@@ -80,7 +81,7 @@ public class LolAccountService {
 					managerClient.updateLolAccounts(clientSettings.getUserId(), accountsForInfernalBuffer);
 				} else {
 					//The accounts are available again
-					for (LolAccount lolAccount : accountsForInfernal){
+					for (LolAccount lolAccount : accountsForInfernalBuffer){
 						lolAccount.setAccountStatus(AccountStatus.READY_FOR_USE);
 						lolAccount.setAssignedTo("");
 					}

@@ -33,14 +33,18 @@ public class UpdateCheckerRunnable implements Runnable {
 		}
 		while (!stop){
 			Main.serverUpToDate = client.checkServerVersion();
-			if(client.checkUpdateNow()){
-				if(!client.checkClientVersion(false)){
-					LOGGER.info("Update found, commencing updater");
-					Main.managerMonitorRunnable.setClientStatus(ClientStatus.UPDATE);
-					Main.softStop = true;
-					client.updateClient();
-					Main.exitWaitRunnable.exit();
+			try{
+				if(client.checkUpdateNow()){
+					if(!client.checkClientVersion(false)){
+						LOGGER.info("Update found, commencing updater");
+						Main.managerMonitorRunnable.setClientStatus(ClientStatus.UPDATE);
+						Main.softStop = true;
+						client.updateClient();
+						Main.exitWaitRunnable.exit();
+					}
 				}
+			} catch (NullPointerException e){
+				LOGGER.warn("Failure connecting to the server");
 			}
 			try {
 				TimeUnit.MINUTES.sleep(2);

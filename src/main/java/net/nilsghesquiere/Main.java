@@ -41,7 +41,7 @@ public class Main{
 	public static String iniLocation;
 	public static boolean softStop; //don't update any accounts / settings on close
 	public static boolean softStart; //don't update any accounts / settings on start
-	public static boolean serverUpToDate = true;;
+	public static boolean serverUpToDate = true;
 	
 
 	public static void main(String[] args) throws InterruptedException{

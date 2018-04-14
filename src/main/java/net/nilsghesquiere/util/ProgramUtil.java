@@ -35,7 +35,7 @@ public class ProgramUtil {
 	public static boolean killProcessIfRunning(String processName){
 		try {
 			if(ProgramUtil.isProcessRunning(processName)){
-				ProcessBuilder builder = new ProcessBuilder( "cmd.exe", "/c", "taskkill /F /IM " + processName);
+				ProcessBuilder builder = new ProcessBuilder( "cmd.exe", "/c", "taskkill /F /IM ", processName);
 				builder.redirectErrorStream(true);
 				Process p = builder.start();
 				BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
