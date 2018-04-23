@@ -23,24 +23,24 @@ import com.regexlab.j2e.SystemTrayMenu;
 
 public class InfernalManagerSettingsPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
-	private JCheckBox jCheckBox = null;
+	private JCheckBox minimizeToTrayCheckBox = null;
  	private SystemTray systemTray = null;
 	private SystemTrayMenu systemTrayMenu = null;
 	private Boolean drawn = false;
+	private Dimension labelDimension = new Dimension(150,20);
+	private Dimension textFieldDimension = new Dimension(200,20);
 	
 	
 	public void paintComponent (Graphics g) {
 		if (!drawn){
-			this.setLayout(new GridLayout(3, 1));
-			addSettings();
-			//addMinimizeToTaskbarButton();
+			this.setLayout(new GridLayout(5, 1));
+			this.add(getLoginSettingsPanel());
+			this.add(getCheckBoxesPanel());
 			this.drawn = true;
 		}
 	}
 
-	private void addSettings(){
-		Dimension labelDimension = new Dimension(80,20);
-		Dimension textFieldDimension = new Dimension(200,20);
+	private JPanel getLoginSettingsPanel(){
 		JPanel loginSettings = new JPanel();
 		loginSettings.setLayout(new GridLayout(2, 1));
 		
@@ -64,12 +64,24 @@ public class InfernalManagerSettingsPanel extends JPanel {
 		
 		loginSettings.add(emailPanel);
 		loginSettings.add(passwordPanel);
-		this.add(loginSettings);
+		return loginSettings;
 	}
 	
-	private void addMinimizeToTaskbarButton(){
-		this.add(getJCheckBox());
+	private JPanel getCheckBoxesPanel(){
+		JPanel checkBoxPanel = new JPanel();
+		checkBoxPanel.setLayout(new GridLayout(2, 1));
 		
+		JPanel minimizeToTrayPanel = new JPanel();
+		minimizeToTrayPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+		JLabel lMinimizeToTray = new JLabel("Minimize to tray");
+		lMinimizeToTray.setPreferredSize(labelDimension);
+		JCheckBox cMinimizeToTray = getMinimizeToTrayCheckBox();
+		cMinimizeToTray.setPreferredSize(textFieldDimension);
+		minimizeToTrayPanel.add(lMinimizeToTray);
+		minimizeToTrayPanel.add(cMinimizeToTray);
+		
+		checkBoxPanel.add(minimizeToTrayPanel);
+		/*
 		// Safely remove systray icon when System.exit()
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			public void run() {
@@ -87,7 +99,7 @@ public class InfernalManagerSettingsPanel extends JPanel {
 
 			public void OnMenuCommand(int menuid) {
 				if(menuid == 1) {
-					getJCheckBox().setSelected(false);
+					getMinimizeToTrayCheckBox().setSelected(false);
 					getSystemTray().Hide();
 				}
 				else if(menuid == 2) {
@@ -95,15 +107,16 @@ public class InfernalManagerSettingsPanel extends JPanel {
 				}
 			}
 		});
+		*/
+		return checkBoxPanel;
 	}
 	
-	private JCheckBox getJCheckBox() {
-		if (jCheckBox == null) {
-			jCheckBox = new JCheckBox();
-			jCheckBox.setText("Show System Tray");
-			jCheckBox.addItemListener(new java.awt.event.ItemListener() {
+	private JCheckBox getMinimizeToTrayCheckBox() {
+		if (minimizeToTrayCheckBox == null) {
+			minimizeToTrayCheckBox = new JCheckBox();
+			minimizeToTrayCheckBox.addItemListener(new java.awt.event.ItemListener() {
 				public void itemStateChanged(java.awt.event.ItemEvent e) {
-					if(jCheckBox.isSelected()) {
+					if(minimizeToTrayCheckBox.isSelected()) {
 						getSystemTray().Show();
 					}else {
 						getSystemTray().Hide();
@@ -111,7 +124,7 @@ public class InfernalManagerSettingsPanel extends JPanel {
 				}
 			});
 		}
-		return jCheckBox;
+		return minimizeToTrayCheckBox;
 	}
 
 	private SystemTray getSystemTray() {
