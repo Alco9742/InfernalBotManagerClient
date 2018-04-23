@@ -42,10 +42,10 @@ public class InfernalBotManagerGUI extends JFrame {
 		JTabbedPane tabbedPane = new JTabbedPane();
 
 		JPanel consolePanel = new InfernalManagerConsolePanel();
-		//JPanel settingsPanel = new InfernalManagerSettingsPanel();
+		JPanel settingsPanel = new InfernalManagerSettingsPanel();
 		
 		tabbedPane.addTab("Console", consolePanel);
-		//tabbedPane.addTab("Settings", settingsPanel);
+		tabbedPane.addTab("Settings", settingsPanel);
 		tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
 		
 		this.add(tabbedPane);

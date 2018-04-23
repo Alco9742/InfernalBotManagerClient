@@ -307,8 +307,14 @@ public class InfernalBotManagerClient {
 	}
 	
 	private boolean checkDir(){
-		Path infernalPath = Paths.get(clientSettings.getInfernalMap() + clientSettings.getInfernalProgramName());
-		return Files.exists(infernalPath);
+		Path infernalPath = clientSettings.getInfernalMap().resolve(clientSettings.getInfernalProgramName());
+		if(Files.exists(infernalPath)){
+			return  true;
+		} else {
+			LOGGER.debug("'" + clientSettings.getInfernalProgramName() + "' not found at path: " + infernalPath);
+			return false;
+		}
+		
 	}
 
 	//update client methods

@@ -2,6 +2,7 @@ package net.nilsghesquiere.monitoring;
 
 import java.text.DecimalFormat;
 
+import net.nilsghesquiere.util.ProgramConstants;
 import oshi.SystemInfo;
 import oshi.hardware.CentralProcessor;
 import oshi.hardware.GlobalMemory;
@@ -24,8 +25,12 @@ public class SystemMonitor {
 	
 	public String getCpuUsage(){
 		DecimalFormat format = new DecimalFormat("##0.00");
-		CentralProcessor processor = systemInfo.getHardware().getProcessor();
-		double cpuLoad = processor.getSystemCpuLoadBetweenTicks() * 100;
-		return format.format(cpuLoad) + "%";
+		if (ProgramConstants.enableOshiCPUCheck){
+			CentralProcessor processor = systemInfo.getHardware().getProcessor();
+			double cpuLoad = processor.getSystemCpuLoad() * 100;
+			return format.format(cpuLoad) + "%";
+		} else {
+			return "-";
+		}
 	}
 }

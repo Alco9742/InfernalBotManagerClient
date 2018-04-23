@@ -47,6 +47,7 @@ public class ManagerMonitorRunnable implements Runnable {
 	private void sendClientData(){
 		switch (status){
 			case INIT:
+				client.sendData("Manager Client Initializing", monitor.getRamUsage(), monitor.getCpuUsage());
 				break;
 			case CONNECTED:
 				client.sendData("Manager Client Connected", monitor.getRamUsage(), monitor.getCpuUsage());
@@ -70,7 +71,7 @@ public class ManagerMonitorRunnable implements Runnable {
 				client.sendData("Manager Client Error", monitor.getRamUsage(), monitor.getCpuUsage());
 				break;
 			default:
-				client.sendData("Manager Client Error", monitor.getRamUsage(), monitor.getCpuUsage());
+				client.sendData("Manager Client Unknown", monitor.getRamUsage(), monitor.getCpuUsage());
 		}
 	}
 	

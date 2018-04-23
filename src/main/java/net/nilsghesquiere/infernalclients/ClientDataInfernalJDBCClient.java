@@ -26,7 +26,6 @@ public class ClientDataInfernalJDBCClient implements ClientDataInfernalClient{
 	
 	
 	public ClientDataInfernalJDBCClient(Path path){
-		
 		this.DATABASE_URI = "jdbc:sqlite:" + path +"\\InfernalDatabase.sqlite";
 		readOnlyConfig = new Properties();
 		readOnlyConfig.setProperty("open_mode", "1"); // 1 == readonly

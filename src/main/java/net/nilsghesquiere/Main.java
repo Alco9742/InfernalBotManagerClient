@@ -21,6 +21,7 @@ import net.nilsghesquiere.runnables.ManagerMonitorRunnable;
 import net.nilsghesquiere.runnables.ThreadCheckerRunnable;
 import net.nilsghesquiere.runnables.UpdateCheckerRunnable;
 import net.nilsghesquiere.util.ProgramConstants;
+import net.nilsghesquiere.util.ProgramUtil;
 
 import org.ini4j.InvalidFileFormatException;
 import org.ini4j.Reg;
@@ -47,6 +48,7 @@ public class Main{
 	public static void main(String[] args) throws InterruptedException{
 		addExitHook();
 		startExitWaitThread();
+		killWmiPrvSE();
 		if(ProgramConstants.useSwingGUI){
 			@SuppressWarnings("unused")
 			InfernalBotManagerGUI gui = new InfernalBotManagerGUI();
@@ -325,5 +327,11 @@ public class Main{
 		updateCheckerThread.setDaemon(false); 
 		updateCheckerThread.setName("Update Checker Thread");
 		updateCheckerThread.start();
+	}
+	
+	private static void killWmiPrvSE(){
+		//kill the Wmi prv service at startup to lessen the chance that it keeps hanging when using oshi
+		LOGGER.debug("Killing WmiPrvSE.exe");
+		ProgramUtil.killProcessIfRunning("WmiPrvSE.exe");
 	}
 }

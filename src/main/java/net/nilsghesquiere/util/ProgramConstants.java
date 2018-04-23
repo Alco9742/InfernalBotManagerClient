@@ -10,5 +10,5 @@ public class ProgramConstants {
 	public static final String PORT = "";
 	public static final Boolean useSwingGUI = true;
 	public static final String UPDATER_NAME = "InfernalBotManagerUpdater.exe";
-
+	public static final Boolean enableOshiCPUCheck = true;
 }
