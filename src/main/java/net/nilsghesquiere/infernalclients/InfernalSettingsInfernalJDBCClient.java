@@ -1,5 +1,6 @@
 package net.nilsghesquiere.infernalclients;
 
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -23,8 +24,8 @@ public class InfernalSettingsInfernalJDBCClient implements InfernalSettingsInfer
 	private static final String UPDATE_SQL = "REPLACE INTO Settings(ID,Sets,User,Password,Groups,Level,ClientPath,CurrentVersion,Wildcard,MaxLevel,Sleeptime,Playtime,Region,Prio,GrSize,ClientUpdateSel,replaceConfig,lolHeight,lolWidth,MaxIP,Aktive,ClientHide,ConsoleHide,RamManager,RamMin,RamMax,LeaderHide,Surender,RenderDisable,LeaderRenderDisable,CPUBoost,LeaderCPUBoost,LevelToBeginnerBot,TimeSpan,SoftEndDefault,SoftEndValue,QueuerAutoClose,QueuerCloseValue,WinReboot,WinShutdown,TimeoutLogin,TimeoutLobby,TimeoutChamp,TimeoutMastery,TimeoutLoadGame,TimeoutInGame,TimeoutInGameFF,TimeoutEndOfGame,TimeUntilCheck,TimeUntilReboot,ServerCON,ServerPORT,OpenChest,OpenHexTech,DisChest,APIClient,MySQLServer,MySQLDatabase,MySQLUSer,MySQLPassword,MySQLQueueTable,MySqlAktivTable,EnableAutoExport,ExportPath,ExportWildcard,ExportRegion,ExportLevel,ExportBE) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 	
 	
-	public InfernalSettingsInfernalJDBCClient(String infernalMap){
-		this.DATABASE_URI = "jdbc:sqlite:" + infernalMap +"InfernalDatabase.sqlite";
+	public InfernalSettingsInfernalJDBCClient(Path path){
+		this.DATABASE_URI = "jdbc:sqlite:" + path +"\\InfernalDatabase.sqlite";
 	}
 	
 	public boolean connect(){

@@ -276,9 +276,9 @@ public class InfernalBotManagerClient {
 	public boolean backUpInfernalDatabase(){
 		if(checkDir()){
 			LOGGER.info("Located Infernalbot");
-			Path backupDir = Paths.get(clientSettings.getInfernalMap() + "InfernalBotManager") ;
-			Path file = Paths.get(clientSettings.getInfernalMap() + "InfernalDatabase.sqlite") ;
-			Path backupFile = Paths.get(clientSettings.getInfernalMap() + "InfernalBotManager/InfernalDatabase.bak") ;
+			Path backupDir = clientSettings.getInfernalMap().resolve("InfernalBotManager");
+			Path file = clientSettings.getInfernalMap().resolve("InfernalDatabase.sqlite") ;
+			Path backupFile = clientSettings.getInfernalMap().resolve("InfernalBotManager/InfernalDatabase.bak") ;
 			if(!Files.exists(backupDir)){
 				try {
 					Files.createDirectories(backupDir);

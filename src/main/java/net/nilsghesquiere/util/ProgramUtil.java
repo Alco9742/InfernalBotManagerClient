@@ -115,11 +115,11 @@ public class ProgramUtil {
 		return true;
 	}
 	
-	public static String getInfernalProcessname(String infernalMap){
+	public static String getInfernalProcessname(Path path){
 		//TODO check for location
 		String newProcessName = "";
 		try {
-			Wini ini = new Wini(new File(infernalMap + "/configs/settings.ini" ));
+			Wini ini = new Wini(new File(path + "\\configs\\settings.ini" ));
 			newProcessName = ini.get("Programs", "Launcher", String.class);
 		} catch (InvalidFileFormatException e2) {
 			LOGGER.debug("Failure reading the infernal settings.ini");

@@ -1,5 +1,6 @@
 package net.nilsghesquiere.infernalclients;
 
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -24,8 +25,9 @@ public class ClientDataInfernalJDBCClient implements ClientDataInfernalClient{
 	private static final String DELETE_SQL = "DELETE FROM QeuerExtent";
 	
 	
-	public ClientDataInfernalJDBCClient(String infernalMap){
-		this.DATABASE_URI = "jdbc:sqlite:" + infernalMap +"InfernalDatabase.sqlite";
+	public ClientDataInfernalJDBCClient(Path path){
+		
+		this.DATABASE_URI = "jdbc:sqlite:" + path +"\\InfernalDatabase.sqlite";
 		readOnlyConfig = new Properties();
 		readOnlyConfig.setProperty("open_mode", "1"); // 1 == readonly
 	}

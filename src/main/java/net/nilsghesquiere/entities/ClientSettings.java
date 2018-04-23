@@ -1,5 +1,7 @@
 package net.nilsghesquiere.entities;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,7 +22,7 @@ public class ClientSettings {
 	private String username;
 	private String password;
 	
-	private String infernalMap;
+	private Path infernalMap;
 	private Integer accountAmount;
 	private Integer accountBuffer;
 	private Boolean uploadNewAccounts;
@@ -44,7 +46,7 @@ public class ClientSettings {
 
 	private Boolean readme;
 	
-	public ClientSettings(String username, String password, String infernalMap,
+	public ClientSettings(String username, String password, Path infernalMap,
 			Integer accountAmount,Integer accountBuffer, Boolean uploadNewAccounts, String clientTag, Region clientRegion,
 			Boolean reboot, Integer rebootTime,
 			Boolean fetchSettings, Boolean overwriteSettings, Map<String, String> settingsOverwriteMap,
@@ -227,8 +229,9 @@ public class ClientSettings {
 			readmeRead = true;
 		}
 		
+		Path infernalPath = Paths.get(infernalMap);
 		if(!hasError){
-			ClientSettings settings = new ClientSettings(username,password,infernalMap,numberOfAccounts,accountBuffer, uploadNewAccounts, clientTag, clientRegion, reboot, rebootTime, fetchSettings, overwriteSettings, settingsOverwriteMap, rebootFromManager, enableDevMode, bypassDevChecks,testMode,debugHTTP,debugThreads, infernalProgramName, webServer, port, readmeRead);
+			ClientSettings settings = new ClientSettings(username,password,infernalPath,numberOfAccounts,accountBuffer, uploadNewAccounts, clientTag, clientRegion, reboot, rebootTime, fetchSettings, overwriteSettings, settingsOverwriteMap, rebootFromManager, enableDevMode, bypassDevChecks,testMode,debugHTTP,debugThreads, infernalProgramName, webServer, port, readmeRead);
 			LOGGER.info("Loaded settings from settings.ini");
 			return settings;
 		} else {

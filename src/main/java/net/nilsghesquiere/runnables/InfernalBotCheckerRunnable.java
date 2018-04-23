@@ -1,6 +1,7 @@
 package net.nilsghesquiere.runnables;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -151,7 +152,8 @@ public class InfernalBotCheckerRunnable implements Runnable {
 				stopAccountListUpdaterThread();
 			}
 			@SuppressWarnings("unused")
-			Process process = new ProcessBuilder(client.getClientSettings().getInfernalMap() + client.getClientSettings().getInfernalProgramName()).start();
+			Path infernalProgramPath = client.getClientSettings().getInfernalMap().resolve(client.getClientSettings().getInfernalProgramName());
+			Process process = new ProcessBuilder(infernalProgramPath.toString()).start();
 			LOGGER.info("InfernalBot started");
 			startAccountListUpdaterThread();
 		} catch (IOException e) {

@@ -1,5 +1,6 @@
 package net.nilsghesquiere.infernalclients;
 
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -26,8 +27,8 @@ public class LoLAccountInfernalJDBCClient implements LolAccountInfernalClient {
 	private static final String COUNT_ACTIVE_SQL ="SELECT count(*) as total FROM Accountlist WHERE  Active='True'";
 	private Properties readOnlyConfig;
 	
-	public LoLAccountInfernalJDBCClient(String infernalMap){
-		this.DATABASE_URI = "jdbc:sqlite:" + infernalMap +"InfernalDatabase.sqlite";
+	public LoLAccountInfernalJDBCClient(Path path){
+		this.DATABASE_URI = "jdbc:sqlite:" + path +"\\InfernalDatabase.sqlite";
 		readOnlyConfig = new Properties();
 		readOnlyConfig.setProperty("open_mode", "1"); // 1 == readonly
 	}
