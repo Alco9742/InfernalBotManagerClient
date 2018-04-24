@@ -43,7 +43,8 @@ public class InfernalBotCheckerRunnable implements Runnable {
 			//After patches it launches under the legacy name for some reason, we do not want that
 			if(ProgramUtil.isProcessRunning(ProgramConstants.LEGACY_LAUNCHER_NAME)){ 
 				LOGGER.warn("InfernalBot process is running as 'Infernal Launcher.exe', killing the process");
-				ProgramUtil.killProcessIfRunning(ProgramConstants.LEGACY_LAUNCHER_NAME);
+				ProgramUtil.killLegacyInfernalClient();
+				ProgramUtil.killLeagueClients();
 			}
 			oldProcessName = processName;
 			processName = ProgramUtil.getInfernalProcessname(client.getClientSettings().getInfernalMap());
@@ -53,6 +54,7 @@ public class InfernalBotCheckerRunnable implements Runnable {
 			if(!processName.isEmpty()){
 				if(!ProgramUtil.isProcessRunning(processName)){
 					LOGGER.warn("InfernalBot process not found, restarting client");
+					ProgramUtil.killLeagueClients();
 					try{
 						if(client.checkConnection() && client.exchangeAccounts()){
 							runInfernalbot();
@@ -72,12 +74,14 @@ public class InfernalBotCheckerRunnable implements Runnable {
 						} else {
 							LOGGER.info("No active queuers found, closing InfernalBot process");
 							ProgramUtil.killProcessIfRunning(processName);
+							ProgramUtil.killLeagueClients();
 						}
 					} else {
 						if (!client.queuersHaveEnoughAccounts()){
 							LOGGER.info("Not enough active accounts, closing InfernalBot process");
 							client.getClientDataService().deleteAllQueuers();
 							ProgramUtil.killProcessIfRunning(processName);
+							ProgramUtil.killLeagueClients();
 						} else {
 							//Everything is running as it should
 							Main.managerMonitorRunnable.setClientStatus(ClientStatus.INFERNAL_RUNNING);

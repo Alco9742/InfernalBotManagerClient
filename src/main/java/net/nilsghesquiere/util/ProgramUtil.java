@@ -32,6 +32,14 @@ public class ProgramUtil {
 		return boolString.substring(0, 1).toUpperCase() + boolString.substring(1);
 	}
 	
+	public static boolean killLeagueClients(){
+		return killProcessIfRunning("League of Legends.exe");
+	}
+	
+	public static boolean killLegacyInfernalClient(){
+		return killProcessIfRunning(ProgramConstants.LEGACY_LAUNCHER_NAME);
+	}
+	
 	public static boolean killProcessIfRunning(String processName){
 		try {
 			if(ProgramUtil.isProcessRunning(processName)){
