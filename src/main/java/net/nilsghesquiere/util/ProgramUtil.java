@@ -11,8 +11,13 @@ import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import net.nilsghesquiere.entities.ClientSettings;
 
@@ -26,18 +31,27 @@ import org.springframework.http.MediaType;
 
 public class ProgramUtil {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProgramUtil.class);
-	
-	public static String getCapitalizedString(boolean bool){
-		String boolString = String.valueOf(bool);
-		return boolString.substring(0, 1).toUpperCase() + boolString.substring(1);
+
+	public static boolean killAllInfernalProcesses(){
+		List<String> processesToKill = ProgramUtil.getPidsByDescriptionList(ProgramConstants.infernalProcList);
+		return ProgramUtil.killProcessByPidList(processesToKill);
 	}
 	
-	public static boolean killLeagueClients(){
-		return killProcessIfRunning("League of Legends.exe");
-	}
-	
-	public static boolean killLegacyInfernalClient(){
+	public static boolean killLegacyInfernalLauncher(){
 		return killProcessIfRunning(ProgramConstants.LEGACY_LAUNCHER_NAME);
+	}
+	
+	public static boolean killInfernalLauncher(Path infernalPath){
+		String infernalProcessName = getInfernalProcessname(infernalPath);
+		return killProcessIfRunning(infernalProcessName);
+	}
+	
+	public static boolean killProcessByPidList(List<String> pids){
+		boolean success = true;
+		for(String pid : pids){
+			success = killProcessByPid(pid);
+		}
+		return success;
 	}
 	
 	public static boolean killProcessIfRunning(String processName){
@@ -56,6 +70,26 @@ public class ProgramUtil {
 			}
 		} catch (IOException e){
 			LOGGER.debug(e.getMessage());
+			return false;
+		}
+		return true;
+	}
+	
+	public static boolean killProcessByPid(String pid){
+		try {
+			ProcessBuilder builder = new ProcessBuilder( "cmd.exe", "/c", "taskkill", "/PID", pid, "/F");
+			builder.redirectErrorStream(true);
+			Process p = builder.start();
+			BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			String line;
+			while (true) {
+				line = r.readLine();
+				if (line == null) { break; }
+				LOGGER.debug(line);
+			}
+		} catch (IOException e){
+			LOGGER.error("Failure killing process with PID " + pid);
+			LOGGER.debug("Exception executing command:",e);
 			return false;
 		}
 		return true;
@@ -123,11 +157,11 @@ public class ProgramUtil {
 		return true;
 	}
 	
-	public static String getInfernalProcessname(Path path){
-		//TODO check for location
+	public static String getInfernalProcessname(Path infernalPath){
+		Path infernalIni = infernalPath.resolve("configs").resolve("settings.ini");
 		String newProcessName = "";
 		try {
-			Wini ini = new Wini(new File(path + "\\configs\\settings.ini" ));
+			Wini ini = new Wini(infernalIni.toFile());
 			newProcessName = ini.get("Programs", "Launcher", String.class);
 		} catch (InvalidFileFormatException e2) {
 			LOGGER.debug("Failure reading the infernal settings.ini");
@@ -139,6 +173,57 @@ public class ProgramUtil {
 		return newProcessName;
 	}
 	
+	public static List<String> getPidsByDescriptionList(List<String> descriptions){
+		List<String> pids = new ArrayList<>();
+		Map<String,String> processMap = getProcessMap();
+		for(String description : descriptions){
+			for(Entry<String, String> entry : processMap.entrySet()){
+				if (entry.getValue().toLowerCase().trim().equals(description.toLowerCase().trim())){
+					pids.add(entry.getKey());
+				}
+			}
+		}
+		return pids;
+	}
+	
+	public static Map<String,String> getProcessMap(){
+		Map<String,String> output = new HashMap<>();
+		List<String> processList = getProcessList();
+		if (!processList.isEmpty()){
+			for (int i = 0; i < processList.size(); i= i+2){
+				String pid = processList.get(i+1).split("=")[1];
+				String description = processList.get(i).split("=")[1];
+				output.put(pid,description);
+			}
+		}
+		return output;
+	}
+	
+	public static List<String> getProcessList(){
+		String line ="";
+		List<String> output = new ArrayList<>();
+		try {
+			ProcessBuilder builder = new ProcessBuilder( "wmic.exe", "PROCESS", "get" , "ProcessId,Description", "/format:LIST");
+			builder.redirectErrorStream(true);
+			Process p = builder.start();
+			BufferedReader input =  new BufferedReader(new InputStreamReader(p.getInputStream()));
+			while ((line = input.readLine()) != null) {
+				if(!line.isEmpty()){
+					output.add(line);
+				} 
+			}
+			input.close();
+		} catch (IOException e){
+			LOGGER.error("Failure retrieving active processes");
+			LOGGER.debug("Exception executing command:",e);
+		}
+		return output;
+	}
+
+	public static String getCapitalizedString(boolean bool){
+		String boolString = String.valueOf(bool);
+		return boolString.substring(0, 1).toUpperCase() + boolString.substring(1);
+	}
 	
 	public static boolean downloadFileFromUrl(ClientSettings clientSettings, String filename) {
 		if(createDownloadsDir()){

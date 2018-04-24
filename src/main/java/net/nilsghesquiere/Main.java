@@ -98,6 +98,7 @@ public class Main{
 	}
 	
 	private static void test(){
+		ProgramUtil.killAllInfernalProcesses();
 	}
 	
 	private static void program(){

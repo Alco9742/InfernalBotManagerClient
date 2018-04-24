@@ -118,7 +118,7 @@ public class GracefulExitHook extends Thread {
 			}
 		}
 		if(!fail){
-			LOGGER.info("Closed all threads, ending program");
+			LOGGER.info("Closed all threads");
 			if (this.rebootWindows){
 				//Reboot windows
 				LOGGER.info("Rebooting windows");
@@ -126,6 +126,8 @@ public class GracefulExitHook extends Thread {
 				ProgramUtil.scheduleReboot(20);
 			}
 		}
+		LOGGER.info("Closing all InfernalBot processes");
+		ProgramUtil.killAllInfernalProcesses();
 		LOGGER.info("Closing InfernalBotManager Client");
 		try {
 			TimeUnit.SECONDS.sleep(1);

@@ -43,8 +43,9 @@ public class InfernalBotCheckerRunnable implements Runnable {
 			//After patches it launches under the legacy name for some reason, we do not want that
 			if(ProgramUtil.isProcessRunning(ProgramConstants.LEGACY_LAUNCHER_NAME)){ 
 				LOGGER.warn("InfernalBot process is running as 'Infernal Launcher.exe', killing the process");
-				ProgramUtil.killLegacyInfernalClient();
-				ProgramUtil.killLeagueClients();
+				ProgramUtil.killLegacyInfernalLauncher();
+				//TODO check what the legacy launchers description is
+				ProgramUtil.killAllInfernalProcesses();
 			}
 			oldProcessName = processName;
 			processName = ProgramUtil.getInfernalProcessname(client.getClientSettings().getInfernalMap());
@@ -54,7 +55,7 @@ public class InfernalBotCheckerRunnable implements Runnable {
 			if(!processName.isEmpty()){
 				if(!ProgramUtil.isProcessRunning(processName)){
 					LOGGER.warn("InfernalBot process not found, restarting client");
-					ProgramUtil.killLeagueClients();
+					ProgramUtil.killAllInfernalProcesses();
 					try{
 						if(client.checkConnection() && client.exchangeAccounts()){
 							runInfernalbot();
@@ -73,15 +74,13 @@ public class InfernalBotCheckerRunnable implements Runnable {
 							Main.exitWaitRunnable.exit();
 						} else {
 							LOGGER.info("No active queuers found, closing InfernalBot process");
-							ProgramUtil.killProcessIfRunning(processName);
-							ProgramUtil.killLeagueClients();
+							ProgramUtil.killAllInfernalProcesses();
 						}
 					} else {
 						if (!client.queuersHaveEnoughAccounts()){
 							LOGGER.info("Not enough active accounts, closing InfernalBot process");
 							client.getClientDataService().deleteAllQueuers();
-							ProgramUtil.killProcessIfRunning(processName);
-							ProgramUtil.killLeagueClients();
+							ProgramUtil.killAllInfernalProcesses();
 						} else {
 							//Everything is running as it should
 							Main.managerMonitorRunnable.setClientStatus(ClientStatus.INFERNAL_RUNNING);
@@ -121,6 +120,8 @@ public class InfernalBotCheckerRunnable implements Runnable {
 		if (!stop){
 			Main.managerMonitorRunnable.setClientStatus(ClientStatus.INFERNAL_STARTUP);
 			if(!Main.softStart){
+				LOGGER.info("Closing all InfernalBot processes");
+				ProgramUtil.killAllInfernalProcesses();
 				startInfernalBot();
 			} else {
 				LOGGER.debug("Not starting infernalbot (softstart)");
@@ -155,8 +156,8 @@ public class InfernalBotCheckerRunnable implements Runnable {
 			if(!accountListUpdaterThreadMap.isEmpty()){
 				stopAccountListUpdaterThread();
 			}
-			@SuppressWarnings("unused")
 			Path infernalProgramPath = client.getClientSettings().getInfernalMap().resolve(client.getClientSettings().getInfernalProgramName());
+			@SuppressWarnings("unused")
 			Process process = new ProcessBuilder(infernalProgramPath.toString()).start();
 			LOGGER.info("InfernalBot started");
 			startAccountListUpdaterThread();
