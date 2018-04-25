@@ -8,8 +8,11 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.nio.file.DirectoryStream;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.PathMatcher;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -32,8 +35,11 @@ import org.springframework.http.MediaType;
 public class ProgramUtil {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProgramUtil.class);
 
-	public static boolean killAllInfernalProcesses(){
-		List<String> processesToKill = ProgramUtil.getPidsByDescriptionList(ProgramConstants.infernalProcList);
+	public static boolean killAllInfernalProcesses(Path path){
+		List<String> processNames = ProgramUtil.getExecutablesInDirectory(path);
+		processNames.addAll(ProgramConstants.programsToClose);
+		processNames.removeAll(ProgramConstants.programsToKeepOpen);
+		List<String> processesToKill = getPidsByList(processNames);
 		return ProgramUtil.killProcessByPidList(processesToKill);
 	}
 	
@@ -172,13 +178,14 @@ public class ProgramUtil {
 		}
 		return newProcessName;
 	}
+
 	
-	public static List<String> getPidsByDescriptionList(List<String> descriptions){
+	public static List<String> getPidsByList(List<String> names){
 		List<String> pids = new ArrayList<>();
 		Map<String,String> processMap = getProcessMap();
-		for(String description : descriptions){
+		for(String name : names){
 			for(Entry<String, String> entry : processMap.entrySet()){
-				if (entry.getValue().toLowerCase().trim().equals(description.toLowerCase().trim())){
+				if (entry.getValue().toLowerCase().trim().equals(name.toLowerCase().trim())){
 					pids.add(entry.getKey());
 				}
 			}
@@ -192,18 +199,17 @@ public class ProgramUtil {
 		if (!processList.isEmpty()){
 			for (int i = 0; i < processList.size(); i= i+2){
 				String pid = processList.get(i+1).split("=")[1];
-				String description = processList.get(i).split("=")[1];
-				output.put(pid,description);
+				String caption = processList.get(i).split("=")[1];
+				output.put(pid,caption);
 			}
 		}
 		return output;
 	}
-	
 	public static List<String> getProcessList(){
 		String line ="";
 		List<String> output = new ArrayList<>();
 		try {
-			ProcessBuilder builder = new ProcessBuilder( "wmic.exe", "PROCESS", "get" , "ProcessId,Description", "/format:LIST");
+			ProcessBuilder builder = new ProcessBuilder( "wmic.exe", "PROCESS", "get" , "ProcessId,Caption", "/format:LIST");
 			builder.redirectErrorStream(true);
 			Process p = builder.start();
 			BufferedReader input =  new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -220,6 +226,19 @@ public class ProgramUtil {
 		return output;
 	}
 
+	public static List<String> getExecutablesInDirectory(Path directory) {
+		List<String> fileNames = new ArrayList<>();
+		PathMatcher matcher = FileSystems.getDefault().getPathMatcher("glob:**.exe");
+		try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(directory)) {
+			for (Path path : directoryStream) {
+				if (matcher.matches(path)) {
+					fileNames.add(path.getFileName().toString());
+				}
+			}
+		} catch (IOException ex) {}
+		return fileNames;
+	}
+	
 	public static String getCapitalizedString(boolean bool){
 		String boolString = String.valueOf(bool);
 		return boolString.substring(0, 1).toUpperCase() + boolString.substring(1);

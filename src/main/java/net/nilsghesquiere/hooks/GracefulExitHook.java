@@ -126,8 +126,6 @@ public class GracefulExitHook extends Thread {
 				ProgramUtil.scheduleReboot(20);
 			}
 		}
-		LOGGER.info("Closing all InfernalBot processes");
-		ProgramUtil.killAllInfernalProcesses();
 		LOGGER.info("Closing InfernalBotManager Client");
 		try {
 			TimeUnit.SECONDS.sleep(1);

@@ -15,8 +15,10 @@ public class ProgramConstants {
 	public static final Boolean useSwingGUI = true;
 	public static final String UPDATER_NAME = "InfernalBotManagerUpdater.exe";
 	public static final Boolean enableOshiCPUCheck = true;
-	public static final List<String> infernalProcList = 
-		    Collections.unmodifiableList(Arrays.asList("notepad.exe", "calc.exe"));
+	public static final List<String> programsToClose = 
+		    Collections.unmodifiableList(Arrays.asList("League of legends.exe"));
+	public static final List<String> programsToKeepOpen = 
+		    Collections.unmodifiableList(Arrays.asList("InfernalBotManager.exe"));
 	//TODO: add League of legends exe, infernal launcher and infernal queuer here.
 
 }
