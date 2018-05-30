@@ -19,6 +19,4 @@ public class ProgramConstants {
 		    Collections.unmodifiableList(Arrays.asList("League of legends.exe"));
 	public static final List<String> programsToKeepOpen = 
 		    Collections.unmodifiableList(Arrays.asList("InfernalBotManager.exe"));
-	//TODO: add League of legends exe, infernal launcher and infernal queuer here.
-
 }

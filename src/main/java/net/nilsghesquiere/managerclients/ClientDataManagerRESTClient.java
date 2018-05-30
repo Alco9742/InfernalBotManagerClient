@@ -32,7 +32,7 @@ public class ClientDataManagerRESTClient implements ClientDataManagerClient {
 	private HttpHeaders headers;
 	
 	public ClientDataManagerRESTClient(String uriServer, String username, String password, Boolean debugHTTP) {
-		this.URI_CLIENTS = uriServer +"/api/clients";
+		this.URI_CLIENTS = uriServer +"/api/clientdata";
 		
 		try {
 			this.restTemplate = new SSLBasicAuthenticationRestTemplate(username,password,debugHTTP);

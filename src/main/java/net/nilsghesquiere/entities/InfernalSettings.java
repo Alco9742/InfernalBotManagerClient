@@ -5,7 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import lombok.Data;
-import net.nilsghesquiere.enums.Region;
+import net.nilsghesquiere.util.enums.Region;
 
 @Data
 public class InfernalSettings implements Serializable{

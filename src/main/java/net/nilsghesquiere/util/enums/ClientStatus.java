@@ -1,5 +1,6 @@
-package net.nilsghesquiere.enums;
+package net.nilsghesquiere.util.enums;
 
+//TODO clean this
 public enum ClientStatus {
 	INIT, // Monitor created, no client
 	CONNECTED,  //Monitor created, client created, connected.
@@ -8,5 +9,7 @@ public enum ClientStatus {
 	INFERNAL_RUNNING,  //Infernalbot is running
 	CLOSE, // Closing client
 	CLOSE_REBOOT, // Closing client with reboot
-	ERROR //Error
+	ERROR, //Error
+	UNASSIGNED,
+	DISCONNECTED
 }

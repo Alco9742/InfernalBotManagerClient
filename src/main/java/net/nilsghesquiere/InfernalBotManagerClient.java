@@ -8,8 +8,8 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 import lombok.Data;
-import net.nilsghesquiere.entities.ClientData;
-import net.nilsghesquiere.entities.ClientSettings;
+import net.nilsghesquiere.entities.Client;
+import net.nilsghesquiere.entities.IniSettings;
 import net.nilsghesquiere.entities.Queuer;
 import net.nilsghesquiere.services.ClientDataService;
 import net.nilsghesquiere.services.GlobalVariableService;
@@ -31,8 +31,9 @@ public class InfernalBotManagerClient {
 	private boolean lolAccountPragmasOK;
 	private boolean serverUpToDate = true;
 	
-	private ClientSettings clientSettings;
-	private ClientData clientData;
+	private IniSettings iniSettings;
+	
+	private Client client;
 	
 	private UserService userService;
 	private GlobalVariableService globalVariableService;
@@ -40,21 +41,21 @@ public class InfernalBotManagerClient {
 	private InfernalSettingsService infernalSettingsService;
 	private ClientDataService clientDataService;
 
-	public InfernalBotManagerClient(ClientSettings clientSettings){
-		this.clientSettings = clientSettings;
-		this.clientData = new ClientData(clientSettings.getClientTag());
-		this.userService = new UserService(clientSettings);
-		this.globalVariableService = new GlobalVariableService(clientSettings);
-		this.accountService = new LolAccountService(clientSettings);
-		this.infernalSettingsService = new InfernalSettingsService(clientSettings);
-		this.clientDataService = new ClientDataService(clientSettings, clientData);
+	public InfernalBotManagerClient(IniSettings iniSettings, Client client){
+		this.iniSettings = iniSettings;
+		this.client = client;
+		this.userService = new UserService(iniSettings);
+		this.globalVariableService = new GlobalVariableService(iniSettings);
+		this.accountService = new LolAccountService(client, iniSettings);
+		this.infernalSettingsService = new InfernalSettingsService(client, iniSettings);
+		this.clientDataService = new ClientDataService(client, iniSettings);
 	}
 	
 	//Schedule Reboot
 	public void scheduleReboot(){
-		if (clientSettings.getReboot()){
-			if (ProgramUtil.scheduleReboot(clientSettings.getRebootTime())){
-				LOGGER.info("Shutdown scheduled in " + clientSettings.getRebootTime() + " seconds");
+		if (client.getClientSettings().getReboot()){
+			if (ProgramUtil.scheduleReboot(client.getClientSettings().getRebootTime())){
+				LOGGER.info("Shutdown scheduled in " + client.getClientSettings().getRebootTime() + " seconds");
 			}
 		}
 	}
@@ -87,28 +88,7 @@ public class InfernalBotManagerClient {
 	public boolean infernalUpToDate(){
 		return true;
 	}
-	
-	//User methods
-	public boolean setUserId() {
-		try{
-			Long id = userService.getUserId(clientSettings.getUsername());
-			if (id == null){
-				LOGGER.error("User '" +clientSettings.getUsername() +  "' not found on the server.");
-				return false;
-			} else {
-				clientSettings.setUserId(id);
-				return true;
-			}
-		} catch (ResourceAccessException e) {
-			LOGGER.error("Failure connecting to the InfernalBotManager server.");
-			LOGGER.debug(e.getMessage());
-				return false;
-		}
-	}
-	public Long getUserId(){
-		return userService.getUserId(clientSettings.getUsername());
-	}
-	
+
 	//GlobalVariables methods
 	public boolean checkConnection(){
 		try{
@@ -152,7 +132,7 @@ public class InfernalBotManagerClient {
 			LOGGER.debug("Not performing settings exchange (softstart)");
 			return true;
 		}
-		if (clientSettings.getFetchSettings()){
+		if (client.getClientSettings().getFetchInfernalSettings()){
 			if(!Main.serverUpToDate){
 				LOGGER.info("InfernalBotManager server is outdated.");
 				LOGGER.info("Falling back to InfernalBots own settings until updated.");
@@ -160,7 +140,7 @@ public class InfernalBotManagerClient {
 				return true;
 			}
 			if(infernalSettingsPragmasOK){
-				return infernalSettingsService.updateInfernalSettings(clientSettings.getUserId());
+				return infernalSettingsService.updateInfernalSettings(client.getUser().getId());
 			} else {
 				LOGGER.info("InfernalBot settings table has changed since latest InfernalBotManager version");
 				LOGGER.info("Falling back to InfernalBots own settings until updated.");
@@ -259,7 +239,7 @@ public class InfernalBotManagerClient {
 		//This scenario happens when there are not enough accounts in the account list (bans etc etc)
 		//The client will make a queuer with not enough accounts and gets a popup with "need 5 accounts)
 		int activeAccounts = accountService.countActiveAccounts();
-		int neededAccounts = clientSettings.getAccountAmount();
+		int neededAccounts = client.getClientSettings().getAccountAmount();
 		//Check if there are enough active accounts in the list
 		if (activeAccounts < neededAccounts){
 			//check if there are any queuers running with < 5 accounts
@@ -276,9 +256,10 @@ public class InfernalBotManagerClient {
 	public boolean backUpInfernalDatabase(){
 		if(checkDir()){
 			LOGGER.info("Located Infernalbot");
-			Path backupDir = clientSettings.getInfernalMap().resolve("InfernalBotManager");
-			Path file = clientSettings.getInfernalMap().resolve("InfernalDatabase.sqlite") ;
-			Path backupFile = clientSettings.getInfernalMap().resolve("InfernalBotManager/InfernalDatabase.bak") ;
+			
+			Path backupDir = client.getClientSettings().getInfernalMap().resolve("InfernalBotManager");
+			Path file = client.getClientSettings().getInfernalMap().resolve("InfernalDatabase.sqlite") ;
+			Path backupFile = client.getClientSettings().getInfernalMap().resolve("InfernalBotManager/InfernalDatabase.bak") ;
 			if(!Files.exists(backupDir)){
 				try {
 					Files.createDirectories(backupDir);
@@ -307,11 +288,11 @@ public class InfernalBotManagerClient {
 	}
 	
 	private boolean checkDir(){
-		Path infernalPath = clientSettings.getInfernalMap().resolve(clientSettings.getInfernalProgramName());
+		Path infernalPath = client.getClientSettings().getInfernalMap().resolve(client.getClientSettings().getInfernalProgramName());
 		if(Files.exists(infernalPath)){
 			return  true;
 		} else {
-			LOGGER.debug("'" + clientSettings.getInfernalProgramName() + "' not found at path: " + infernalPath);
+			LOGGER.debug("'" + client.getClientSettings().getInfernalProgramName() + "' not found at path: " + infernalPath);
 			return false;
 		}
 		
@@ -319,7 +300,7 @@ public class InfernalBotManagerClient {
 
 	//update client methods
 	public void updateClient() {
-		if(ProgramUtil.downloadFileFromUrl(clientSettings, ProgramConstants.UPDATER_NAME)){
+		if(ProgramUtil.downloadFileFromUrl(iniSettings, ProgramConstants.UPDATER_NAME)){
 			//vars
 			String managerMap = System.getProperty("user.dir");
 			Path updaterDownloadPath = Paths.get(managerMap + "\\downloads\\" + ProgramConstants.UPDATER_NAME);
@@ -337,10 +318,10 @@ public class InfernalBotManagerClient {
 				String arg0 = managerMap;
 				String arg1 = "";
 				String arg2 = "";
-				if(clientSettings.getPort().equals("")){
-					arg1 = clientSettings.getWebServer() + "/downloads/"; 
+				if(iniSettings.getPort().equals("")){
+					arg1 = iniSettings.getWebServer() + "/downloads/"; 
 				} else {
-					arg1 = clientSettings.getWebServer() + ":" + clientSettings.getPort() + "/downloads/"; 
+					arg1 = iniSettings.getWebServer() + ":" + iniSettings.getPort() + "/downloads/"; 
 				}
 				if(Main.softStop){
 					//softStop = stopStart aswell, pass the parameter to the updater so it can pass it back to the program
@@ -370,6 +351,5 @@ public class InfernalBotManagerClient {
 		infernalSettingsService.testPragmas();
 		accountService.testPragmas();
 	}
-
 }
 

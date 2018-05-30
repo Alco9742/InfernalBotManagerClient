@@ -3,7 +3,7 @@ package net.nilsghesquiere.runnables;
 import java.util.concurrent.TimeUnit;
 
 import net.nilsghesquiere.InfernalBotManagerClient;
-import net.nilsghesquiere.enums.ClientStatus;
+import net.nilsghesquiere.util.enums.ClientStatus;
 import net.nilsghesquiere.monitoring.SystemMonitor;
 
 import org.slf4j.Logger;

@@ -1,4 +1,4 @@
-package net.nilsghesquiere.enums;
+package net.nilsghesquiere.util.enums;
 
 public enum ProxyType {
 	HTTP("HTTP"),

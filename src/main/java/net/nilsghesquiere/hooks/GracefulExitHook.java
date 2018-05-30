@@ -4,13 +4,13 @@ import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
 
 import net.nilsghesquiere.Main;
-import net.nilsghesquiere.enums.ClientStatus;
 import net.nilsghesquiere.runnables.AccountlistUpdaterRunnable;
 import net.nilsghesquiere.runnables.InfernalBotCheckerRunnable;
 import net.nilsghesquiere.runnables.ManagerMonitorRunnable;
 import net.nilsghesquiere.runnables.ThreadCheckerRunnable;
 import net.nilsghesquiere.runnables.UpdateCheckerRunnable;
 import net.nilsghesquiere.util.ProgramUtil;
+import net.nilsghesquiere.util.enums.ClientStatus;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

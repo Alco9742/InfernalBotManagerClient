@@ -1,6 +1,6 @@
 package net.nilsghesquiere.services;
 
-import net.nilsghesquiere.entities.ClientSettings;
+import net.nilsghesquiere.entities.IniSettings;
 import net.nilsghesquiere.managerclients.GlobalVariableManagerClient;
 import net.nilsghesquiere.managerclients.GlobalVariableManagerRESTClient;
 import net.nilsghesquiere.util.ProgramConstants;
@@ -12,11 +12,11 @@ public class GlobalVariableService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(GlobalVariableService.class);
 	private final GlobalVariableManagerClient managerClient;
 	
-	public GlobalVariableService(ClientSettings clientSettings){
-		if(clientSettings.getPort().equals("")){
-			this.managerClient = new GlobalVariableManagerRESTClient(clientSettings.getWebServer(), clientSettings.getUsername(), clientSettings.getPassword(), clientSettings.getDebugHTTP());
+	public GlobalVariableService(IniSettings iniSettings){
+		if(iniSettings.getPort().equals("")){
+			this.managerClient = new GlobalVariableManagerRESTClient(iniSettings.getWebServer(), iniSettings.getUsername(), iniSettings.getPassword(), iniSettings.getDebugHTTP());
 		} else {
-			this.managerClient = new GlobalVariableManagerRESTClient(clientSettings.getWebServer() + ":" + clientSettings.getPort(), clientSettings.getUsername(), clientSettings.getPassword(), clientSettings.getDebugHTTP());
+			this.managerClient = new GlobalVariableManagerRESTClient(iniSettings.getWebServer() + ":" + iniSettings.getPort(), iniSettings.getUsername(), iniSettings.getPassword(), iniSettings.getDebugHTTP());
 		}
 	}
 	

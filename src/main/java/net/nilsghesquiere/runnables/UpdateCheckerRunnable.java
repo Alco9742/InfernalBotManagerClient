@@ -4,7 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 import net.nilsghesquiere.InfernalBotManagerClient;
 import net.nilsghesquiere.Main;
-import net.nilsghesquiere.enums.ClientStatus;
+import net.nilsghesquiere.util.enums.ClientStatus;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

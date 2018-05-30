@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.nilsghesquiere.entities.ClientSettings;
+import net.nilsghesquiere.entities.IniSettings;
 
 import org.ini4j.InvalidFileFormatException;
 import org.ini4j.Wini;
@@ -244,16 +244,16 @@ public class ProgramUtil {
 		return boolString.substring(0, 1).toUpperCase() + boolString.substring(1);
 	}
 	
-	public static boolean downloadFileFromUrl(ClientSettings clientSettings, String filename) {
+	public static boolean downloadFileFromUrl(IniSettings iniSettings, String filename) {
 		if(createDownloadsDir()){
 			String managerMap = System.getProperty("user.dir");
 			String filePath = managerMap + "\\downloads\\" + filename;
 			// Sample Url Location
 			String url = "";
-			if(clientSettings.getPort().equals("")){
-				url = clientSettings.getWebServer() + "/downloads/" + filename; 
+			if(iniSettings.getPort().equals("")){
+				url = iniSettings.getWebServer() + "/downloads/" + filename; 
 			} else {
-				url = clientSettings.getWebServer() + ":" + clientSettings.getPort() + "/downloads/" + filename; 
+				url = iniSettings.getWebServer() + ":" + iniSettings.getPort() + "/downloads/" + filename; 
 			}
 			URL urlObj = null;
 			ReadableByteChannel rbcObj = null;

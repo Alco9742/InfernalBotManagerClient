@@ -1,9 +1,8 @@
 package net.nilsghesquiere.services;
 
-import java.util.Map.Entry;
-
-import net.nilsghesquiere.entities.ClientSettings;
+import net.nilsghesquiere.entities.Client;
 import net.nilsghesquiere.entities.InfernalSettings;
+import net.nilsghesquiere.entities.IniSettings;
 import net.nilsghesquiere.infernalclients.InfernalSettingsInfernalClient;
 import net.nilsghesquiere.infernalclients.InfernalSettingsInfernalJDBCClient;
 import net.nilsghesquiere.managerclients.InfernalSettingsManagerClient;
@@ -14,18 +13,19 @@ import org.slf4j.LoggerFactory;
 
 public class InfernalSettingsService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(InfernalSettingsService.class);
+	private final Client client;
 	private final InfernalSettingsInfernalClient infernalClient;
 	private final InfernalSettingsManagerClient managerClient;
-	private final ClientSettings clientSettings;
+
 	
-	public InfernalSettingsService(ClientSettings clientSettings){
-		this.infernalClient =  new InfernalSettingsInfernalJDBCClient(clientSettings.getInfernalMap());
-		if(clientSettings.getPort().equals("")){
-			this.managerClient = new InfernalSettingsManagerRESTClient(clientSettings.getWebServer(), clientSettings.getUsername(), clientSettings.getPassword(), clientSettings.getDebugHTTP());
+	public InfernalSettingsService(Client client, IniSettings iniSettings){
+		this.client = client;
+		this.infernalClient =  new InfernalSettingsInfernalJDBCClient(client.getClientSettings().getInfernalMap());
+		if(iniSettings.getPort().equals("")){
+			this.managerClient = new InfernalSettingsManagerRESTClient(iniSettings.getWebServer(), iniSettings.getUsername(), iniSettings.getPassword(), iniSettings.getDebugHTTP());
 		} else {
-			this.managerClient = new InfernalSettingsManagerRESTClient(clientSettings.getWebServer() + ":" + clientSettings.getPort(), clientSettings.getUsername(), clientSettings.getPassword(), clientSettings.getDebugHTTP());
+			this.managerClient = new InfernalSettingsManagerRESTClient(iniSettings.getWebServer() + ":" + iniSettings.getPort(), iniSettings.getUsername(), iniSettings.getPassword(), iniSettings.getDebugHTTP());
 		}
-		this.clientSettings = clientSettings;
 	}
 	
 	public boolean checkPragmas(){
@@ -144,20 +144,7 @@ public class InfernalSettingsService {
 		infernalSettingsFromJDBC.setExportLevel(infernalSettingsFromREST.getExportLevel());
 		infernalSettingsFromJDBC.setExportBE(infernalSettingsFromREST.getExportBE());
 	//	Set Region from the settings in the ini
-		infernalSettingsFromJDBC.setRegion(clientSettings.getClientRegion());
-		if (clientSettings.getOverwriteSettings()){
-			//	Overwrite settings with the settings from the ini file
-			for (Entry <String,String >entry : clientSettings.getSettingsOverwriteMap().entrySet()){
-				if(entry.getKey().equals("groups")){
-					Integer groups = Integer.parseInt(entry.getValue());
-					infernalSettingsFromJDBC.setGroups(groups);
-				}
-				if(entry.getKey().equals("clientpath")){
-					String clientpath = entry.getValue();
-					infernalSettingsFromJDBC.setClientPath(clientpath);
-				}
-			}
-		}
+		infernalSettingsFromJDBC.setRegion(client.getClientSettings().getClientRegion());
 		return infernalSettingsFromJDBC;
 	}
 	

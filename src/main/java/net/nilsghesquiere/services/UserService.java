@@ -1,6 +1,6 @@
 package net.nilsghesquiere.services;
 
-import net.nilsghesquiere.entities.ClientSettings;
+import net.nilsghesquiere.entities.IniSettings;
 import net.nilsghesquiere.managerclients.UserManagerClient;
 import net.nilsghesquiere.managerclients.UserManagerRESTClient;
 
@@ -12,11 +12,11 @@ public class UserService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 	private final UserManagerClient managerClient;
 	
-	public UserService(ClientSettings clientSettings){
-		if(clientSettings.getPort().equals("")){
-			this.managerClient = new UserManagerRESTClient(clientSettings.getWebServer(), clientSettings.getUsername(), clientSettings.getPassword(), clientSettings.getDebugHTTP());
+	public UserService(IniSettings iniSettings){
+		if(iniSettings.getPort().equals("")){
+			this.managerClient = new UserManagerRESTClient(iniSettings.getWebServer(), iniSettings.getUsername(), iniSettings.getPassword(), iniSettings.getDebugHTTP());
 		} else {
-			this.managerClient = new UserManagerRESTClient(clientSettings.getWebServer() + ":" + clientSettings.getPort(), clientSettings.getUsername(), clientSettings.getPassword(), clientSettings.getDebugHTTP());
+			this.managerClient = new UserManagerRESTClient(iniSettings.getWebServer() + ":" + iniSettings.getPort(), iniSettings.getUsername(), iniSettings.getPassword(), iniSettings.getDebugHTTP());
 		}
 	}
 	

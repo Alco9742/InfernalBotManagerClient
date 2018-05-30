@@ -1,18 +1,17 @@
 package net.nilsghesquiere;
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
-import net.nilsghesquiere.entities.ClientSettings;
-import net.nilsghesquiere.enums.ClientStatus;
+import net.nilsghesquiere.entities.Client;
+import net.nilsghesquiere.entities.IniSettings;
+import net.nilsghesquiere.entities.User;
 import net.nilsghesquiere.gui.swing.InfernalBotManagerGUI;
 import net.nilsghesquiere.hooks.GracefulExitHook;
 import net.nilsghesquiere.monitoring.SystemMonitor;
@@ -21,8 +20,11 @@ import net.nilsghesquiere.runnables.InfernalBotCheckerRunnable;
 import net.nilsghesquiere.runnables.ManagerMonitorRunnable;
 import net.nilsghesquiere.runnables.ThreadCheckerRunnable;
 import net.nilsghesquiere.runnables.UpdateCheckerRunnable;
+import net.nilsghesquiere.services.ClientService;
+import net.nilsghesquiere.services.UserService;
 import net.nilsghesquiere.util.ProgramConstants;
 import net.nilsghesquiere.util.ProgramUtil;
+import net.nilsghesquiere.util.enums.ClientStatus;
 
 import org.ini4j.InvalidFileFormatException;
 import org.ini4j.Reg;
@@ -34,7 +36,7 @@ import org.springframework.web.client.HttpClientErrorException;
 public class Main{
 	private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 	private static final SystemMonitor systemMonitor = new SystemMonitor();
-	private static InfernalBotManagerClient client;
+	private static InfernalBotManagerClient infernalBotManagerClient;
 	public static Thread gracefullExitHook;
 	public static Map<Thread, Runnable> threadMap = new HashMap<>();
 	public static ExitWaitRunnable exitWaitRunnable;
@@ -47,16 +49,23 @@ public class Main{
 	
 
 	public static void main(String[] args) throws InterruptedException{
+		//Hook to ensure safe exits
 		addExitHook();
 		startExitWaitThread();
+		//Lessen the chance that WmiPrvServer keeps hanging (oshi)
 		killWmiPrvSE();
+		//Disable the windows error reporting
+		disableWindowsErrorReporting();
+		//Start the GUI
 		if(ProgramConstants.useSwingGUI){
 			@SuppressWarnings("unused")
 			InfernalBotManagerGUI gui = new InfernalBotManagerGUI();
 			TimeUnit.SECONDS.sleep(2);
 		}
+		
 		LOGGER.info("Starting InfernalBotManager Client");
 		
+		//Check the args -> Should only be used when updating
 		try{
 			for (int i=0; i<args.length; i++){
 				LOGGER.debug("arg[" + i + "] = " + args[i]);
@@ -67,10 +76,27 @@ public class Main{
 			iniLocation = System.getProperty("user.dir") + "\\" + ProgramConstants.INI_NAME; 
 			softStart = false;
 		}
-		client = buildClient(iniLocation);
-		if(client != null){
+		
+		//Build the IniSettings
+		Optional<IniSettings> iniSettings = buildIniSettings(iniLocation);
+		if(iniSettings.isPresent()){
+			//Build the user
+			Optional<User> user = buildUser(iniSettings.get());
+			if(user.isPresent()){
+				//build the client
+				Optional<Client> client = buildClient(iniSettings.get(), user.get());
+				if(client.isPresent()){
+					client.get().setUser(user.get());
+					infernalBotManagerClient = new InfernalBotManagerClient(iniSettings.get(), client.get());
+				}
+			}
+		}
+
+		LOGGER.info(infernalBotManagerClient.getClient().toString());
+		
+		if(infernalBotManagerClient != null){
 			try{
-				if(client.getClientSettings().getTestMode()){
+				if(infernalBotManagerClient.getIniSettings().getTestmode()){
 					test();
 				} else {
 					program();
@@ -99,11 +125,11 @@ public class Main{
 	}
 	
 	private static void test(){
-		ProgramUtil.killAllInfernalProcesses(client.getClientSettings().getInfernalMap());
+		LOGGER.info("testmode");
 	}
 	
 	private static void program(){
-		if (client.getClientSettings().getDebugThreads()){
+		if (infernalBotManagerClient.getIniSettings().getDebugThreads()){
 			startThreadCheckerThread();
 		}
 		boolean upToDate = true;
@@ -111,18 +137,18 @@ public class Main{
 		boolean killSwitchOff = true;
 		while(!connected){
 			try{
-				connected = client.checkConnection() && client.setUserId() ;
+				connected = infernalBotManagerClient.checkConnection();
 				if (connected){
-					if(client.checkKillSwitch()){
+					if(infernalBotManagerClient.checkKillSwitch()){
 						killSwitchOff = false;
 					} else {
-						if(!client.checkClientVersion()){
+						if(!infernalBotManagerClient.checkClientVersion()){
 							upToDate = false;
 						}
-						if(!client.checkServerVersion()){
+						if(!infernalBotManagerClient.checkServerVersion()){
 							serverUpToDate = false;
 						}
-						client.checkUpdateNow(); //Not doing anything with this yet, just placing it here to catch the nullpointer if server isn't set up correctly yet
+						infernalBotManagerClient.checkUpdateNow(); //Not doing anything with this yet, just placing it here to catch the nullpointer if server isn't set up correctly yet
 					}
 				}
 				if(!connected){
@@ -145,32 +171,32 @@ public class Main{
 		}
 		//connection has been made start the monitor & updatechecker threads
 		if(!exitWaitRunnable.getExit()){
-			startMonitorThread(client);
-			startUpdateCheckerThread(client);
+			startMonitorThread(infernalBotManagerClient);
+			startUpdateCheckerThread(infernalBotManagerClient);
 		}
 		if (killSwitchOff){
 			//check for update
 			if (upToDate){
 				//backup sqllite file
-				if(client.backUpInfernalDatabase()){
+				if(infernalBotManagerClient.backUpInfernalDatabase()){
 					//initial checks
 					//Check if infernalbot tables have been changed since last version ((if it updates this launch the pragmas will still change after launch which is why we do another check later on)
-					client.checkTables();
+					infernalBotManagerClient.checkTables();
 					//Attempt to get accounts, retry if fail
-					boolean initDone = client.checkConnection() && client.setInfernalSettings() && client.initialExchangeAccounts();
+					boolean initDone = infernalBotManagerClient.checkConnection() && infernalBotManagerClient.setInfernalSettings() && infernalBotManagerClient.initialExchangeAccounts();
 					while (!initDone){
 						try {
 							LOGGER.info("Retrying in 1 minute...");
 							TimeUnit.MINUTES.sleep(1);
-							initDone = (client.checkConnection() && client.setInfernalSettings() && client.initialExchangeAccounts());
+							initDone = (infernalBotManagerClient.checkConnection() && infernalBotManagerClient.setInfernalSettings() && infernalBotManagerClient.initialExchangeAccounts());
 						} catch (InterruptedException e) {
 							LOGGER.debug(e.getMessage());
 						}
 					}
 					//schedule reboot
-					client.scheduleReboot();
+					infernalBotManagerClient.scheduleReboot();
 					//empty queuers (don't do this if softStart)
-					client.deleteAllQueuers();
+					infernalBotManagerClient.deleteAllQueuers();
 					//send client status
 					managerMonitorRunnable.setClientStatus(ClientStatus.CONNECTED);
 					//start infernalbot checker in a thread
@@ -182,7 +208,7 @@ public class Main{
 				}
 			} else {
 				managerMonitorRunnable.setClientStatus(ClientStatus.UPDATE);
-				client.updateClient();
+				infernalBotManagerClient.updateClient();
 				LOGGER.info("Closing InfernalBotManager Client");
 				exitWaitRunnable.exit();
 			}
@@ -191,17 +217,15 @@ public class Main{
 			exitWaitRunnable.exit();
 		}
 	}
-	private static InfernalBotManagerClient buildClient(String iniFile){
+	
+	private static Optional<IniSettings> buildIniSettings(String iniFile){
+		//VARS
+		IniSettings iniSettings = null;
 		Path iniFilePath = Paths.get(iniFile);
-		InfernalBotManagerClient client = null;
 		if(Files.exists(iniFilePath)){
 			try {
-				updateSettingsIni(iniFilePath);
 				Wini ini = new Wini(new File(iniFile));
-				ClientSettings settings = ClientSettings.buildFromIni(ini);
-				if (settings != null){
-					client = new InfernalBotManagerClient(settings);
-				}
+				iniSettings = IniSettings.buildFromIni(ini);
 			} catch (InvalidFileFormatException e) {
 				LOGGER.error("Error reading settings.ini file");
 				LOGGER.debug(e.getMessage());
@@ -210,78 +234,26 @@ public class Main{
 				LOGGER.debug(e.getMessage());;
 			}
 		} else {
-			LOGGER.error("settings.ini file not found at path: " + iniFilePath);
-			LOGGER.info("Generating default settings.ini file");
-			generateDefaultSettings(iniFile);
+			LOGGER.error("settings.ini file not found at path: " + iniFilePath);;
 		}
-		disableWindowsErrorReporting();
-		return client;
+		return Optional.of(iniSettings);
 	}
-	
-	private static void disableWindowsErrorReporting(){
-		Reg reg = new Reg();
-		Reg.Key key = reg.add("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\Windows Error Reporting");
-		key.put("DontShowUI", 1);
-		key.putType("DontShowUI", Reg.Type.REG_DWORD);
-		try {
-			reg.write();
-		} catch (IOException e) {
-			LOGGER.debug("Failure trying to disable Windows error reporting UI");
-			LOGGER.debug(e.getMessage());
-		}
-		
-	}
-	
-	private static void generateDefaultSettings(String iniFile) {
-		try {
-			File file = new File(iniFile);
-			file.createNewFile();
-			Wini ini = new Wini(new File(iniFile));
-			
-			//login
-			ini.put("login", "username", "managerusername");
-			ini.put("login", "password", "managerpassword");
-			
-			//clientinfo
-			ini.put("clientinfo", "clienttag", "clienttag");
-			ini.put("clientinfo", "region", "EUW");
-		
-			//clientsettings
-			ini.put("clientsettings", "infernalpath", "C:/PATH/TO/INFERNAL/MAP");
-			ini.put("clientsettings", "accounts", "5");
-			ini.put("clientsettings", "accountbuffer", "2");
-			ini.put("clientsettings","uploadnewaccounts", "false");
-			ini.put("clientsettings", "reboot", "false");
-			ini.put("clientsettings", "reboottime", "10800");
-			ini.put("clientsettings","fetchsettings", "true");
-			ini.put("clientsettings","overwritesettings", "false");
-			ini.put("clientsettings", "rebootfrommanager", "false");
 
-			//botsettings
-			ini.put("botsettings", "groups", "2");
-			ini.put("botsettings", "clientpath", "C:/PATH/TO/LOL/MAP");
-			
-			//extra
-			ini.put("extra", "readme", "readthereadme!!!!");
-			
-			//write
-			ini.store();
-		} catch (InvalidFileFormatException e) {
-			LOGGER.error("Error reading settings.ini file");
-			LOGGER.debug(e.getMessage());
-		} catch (IOException e) {
-			LOGGER.error("Failure creating file");
-			LOGGER.debug(e.getMessage());
+	private static Optional<User> buildUser(IniSettings iniSettings){
+		User user = null;
+		UserService userService = new UserService(iniSettings);
+		Long userid = userService.getUserId(iniSettings.getUsername());
+		if(userid != 0){
+			user = new User(userid);
 		}
+		return Optional.of(user);
 	}
 	
-	private static void updateSettingsIni(Path path) throws IOException{
-		Charset charset = StandardCharsets.UTF_8;
-		String content = new String(Files.readAllBytes(path), charset);
-		content = content.replaceAll("infernalmap", "infernalpath");
-		Files.write(path, content.getBytes(charset));
+	private static Optional<Client> buildClient(IniSettings iniSettings, User user){
+		ClientService clientService = new ClientService(iniSettings);
+		Client client = clientService.getClient(user.getId(), iniSettings.getClientTag());
+		return Optional.of(client);
 	}
-	
 	
 	private static void addExitHook(){
 		gracefullExitHook = new GracefulExitHook();
@@ -314,7 +286,7 @@ public class Main{
 	}
 	
 	private static void startInfernalCheckerThread(){
-		InfernalBotCheckerRunnable infernalRunnable = new InfernalBotCheckerRunnable(client);
+		InfernalBotCheckerRunnable infernalRunnable = new InfernalBotCheckerRunnable(infernalBotManagerClient);
 		Thread infernalThread = new Thread(infernalRunnable);
 		threadMap.put(infernalThread, infernalRunnable);
 		infernalThread.setDaemon(false); 
@@ -335,5 +307,19 @@ public class Main{
 		//kill the Wmi prv service at startup to lessen the chance that it keeps hanging when using oshi
 		LOGGER.debug("Killing WmiPrvSE.exe");
 		ProgramUtil.killProcessIfRunning("WmiPrvSE.exe");
+	}
+	
+	private static void disableWindowsErrorReporting(){
+		Reg reg = new Reg();
+		Reg.Key key = reg.add("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\Windows Error Reporting");
+		key.put("DontShowUI", 1);
+		key.putType("DontShowUI", Reg.Type.REG_DWORD);
+		try {
+			reg.write();
+		} catch (IOException e) {
+			LOGGER.debug("Failure trying to disable Windows error reporting UI");
+			LOGGER.debug(e.getMessage());
+		}
+		
 	}
 }

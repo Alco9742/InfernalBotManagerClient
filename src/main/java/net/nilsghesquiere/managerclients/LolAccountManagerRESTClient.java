@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import net.nilsghesquiere.entities.LolAccount;
-import net.nilsghesquiere.enums.Region;
+import net.nilsghesquiere.util.enums.Region;
 import net.nilsghesquiere.security.SSLBasicAuthenticationRestTemplate;
 import net.nilsghesquiere.util.ProgramUtil;
 import net.nilsghesquiere.util.wrappers.LolAccountMap;

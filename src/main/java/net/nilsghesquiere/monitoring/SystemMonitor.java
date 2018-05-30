@@ -33,4 +33,8 @@ public class SystemMonitor {
 			return "-";
 		}
 	}
+	
+	public String getHWID(){
+		return systemInfo.getHardware().getNetworkIFs()[0].getMacaddr().toUpperCase();
+	}
 }

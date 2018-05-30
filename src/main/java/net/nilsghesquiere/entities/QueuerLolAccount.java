@@ -5,7 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import lombok.Data;
-import net.nilsghesquiere.enums.Lane;
+import net.nilsghesquiere.util.enums.Lane;
 
 @Data
 public class QueuerLolAccount implements Serializable{

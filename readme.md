@@ -1,20 +1,28 @@
 <h1>LeagueInformer base project</h1>
 <h2>InfernalManagerClient</h2>
-<h3>TODO BEFORE BETA:</h3>	
-<ul>
-<li>generate ini file if not found</li>
-</ul>
 
-
-<h3>TODO DURING BETA:</h3>	
+<h3>TODO Eventualy:</h3>	
 <ul>
-<li>Client settings fetch from server</li>
-<li>Register clients + simple commands</li>
 <li>Check server for riot server status --> add to network checks</li>
-<li>Change from nullchecks to Optionals</li>
 <li>API system from infernal</li>
-<li>OAuth2 authentication</li>
 </ul>
+
+<h3>TODO NOW</h3>
+<ul>
+<li>Register clients + simple commands</li>
+<li>Client settings fetch from server</li>
+<li>OAuth2 authentication</li>
+<li>Remove any unneeded code</li>
+<li>Clean used code</li>
+</ul>
+
+<h3>Client server connection for settings<h3>
+<ol>
+<li>Only username, password and tag in ini file<li>
+<li>Connect to the server to check if theres a client registered for the user with that tag</li>
+<li>If no: end program; if yes: check HWID</li>
+<li>If HWID nok: end program, if OK: fill all settings</li>
+</ol>
 
 <h3>Client server connection map(for LolAccounts</h3>
 <ol>

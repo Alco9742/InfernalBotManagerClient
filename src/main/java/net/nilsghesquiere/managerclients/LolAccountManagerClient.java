@@ -3,7 +3,7 @@ package net.nilsghesquiere.managerclients;
 import java.util.List;
 
 import net.nilsghesquiere.entities.LolAccount;
-import net.nilsghesquiere.enums.Region;
+import net.nilsghesquiere.util.enums.Region;
 import net.nilsghesquiere.util.wrappers.LolMixedAccountMap;
 
 public interface LolAccountManagerClient {
