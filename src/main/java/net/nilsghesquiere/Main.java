@@ -89,9 +89,13 @@ public class Main{
 				if(client.isPresent()){
 					client.get().setUser(user.get());
 					LOGGER.info(client.toString());
-					infernalBotManagerClient = new InfernalBotManagerClient(iniSettings.get(), client.get());
+					if(checkClientHWID(iniSettings.get(), client.get())){
+						infernalBotManagerClient = new InfernalBotManagerClient(iniSettings.get(), client.get());
+					}
+				} else {
+					LOGGER.info("Client '" + iniSettings.get().getClientTag() + "' not found on the server.");
 				}
-			}
+			} // TODO else voor user
 		}
 		
 		if(infernalBotManagerClient != null){
@@ -124,6 +128,7 @@ public class Main{
 
 	}
 	
+
 	private static void test(){
 		LOGGER.info("testmode");
 	}
@@ -237,20 +242,52 @@ public class Main{
 		} else {
 			LOGGER.error("settings.ini file not found at path: " + iniFilePath);;
 		}
-		return Optional.of(iniSettings);
+		if (iniSettings != null){
+			return Optional.of(iniSettings);
+		} else {
+			return Optional.empty();
+		}
 	}
 
 	private static Optional<User> buildUser(IniSettings iniSettings){
 		UserService userService = new UserService(iniSettings);
 		User user = userService.getUser(iniSettings.getUsername());
-		return Optional.of(user);
+		if (user != null){
+			return Optional.of(user);
+		} else {
+			return Optional.empty();
+		}
 	}
 	
 	private static Optional<Client> buildClient(IniSettings iniSettings, User user){
 		ClientService clientService = new ClientService(iniSettings);
 		Client client = clientService.getClient(user.getId(), iniSettings.getClientTag());
-		return Optional.of(client);
+		if (client != null){
+			return Optional.of(client);
+		} else {
+			return Optional.empty();
+		}
 	}
+	
+	private static Boolean checkClientHWID(IniSettings iniSettings, Client client) {
+		String clientHWID = client.getHWID();
+		String computerHWID = systemMonitor.getHWID();
+		
+		if (clientHWID.trim().equals(computerHWID.trim())){
+			return true;
+		}
+		
+		if (clientHWID.trim().isEmpty()){
+			LOGGER.info("Registering HWID " + computerHWID + " for client '" + client.getTag() +"'.");
+			ClientService clientService = new ClientService(iniSettings);
+			return clientService.registerHWID(client.getUser().getId(), client.getId(), computerHWID);
+		} else {
+			LOGGER.info("Incorrect HWID for for client '" + client.getTag() +"'.");
+			return false;
+		}
+
+	}
+
 	
 	private static void addExitHook(){
 		gracefullExitHook = new GracefulExitHook();
@@ -319,4 +356,6 @@ public class Main{
 		}
 		
 	}
+	
+
 }

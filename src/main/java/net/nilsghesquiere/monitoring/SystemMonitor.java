@@ -35,6 +35,6 @@ public class SystemMonitor {
 	}
 	
 	public String getHWID(){
-		return systemInfo.getHardware().getNetworkIFs()[0].getMacaddr().toUpperCase();
+		return systemInfo.getHardware().getNetworkIFs()[0].getMacaddr().toLowerCase();
 	}
 }

@@ -25,4 +25,8 @@ public class ClientService {
 	public Client getClient(Long userid, String tag){
 		return managerClient.getClientByUserIdAndTag(userid, tag);
 	}
+	
+	public Boolean registerHWID(Long userid, Long clientid, String hwid){
+		return managerClient.registerHWID(userid, clientid, hwid);
+	}
 }
