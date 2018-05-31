@@ -1,14 +1,14 @@
 package net.nilsghesquiere.infernalclients;
 
-import net.nilsghesquiere.entities.InfernalSettings;
+import net.nilsghesquiere.util.dto.InfernalSettingsDTO;
 
 public interface InfernalSettingsInfernalClient {
 	public boolean connect();
 	public boolean checkPragmas();
 	public String getPragmaString();
-	public InfernalSettings getDefaultInfernalSettings();
-	public Long insertInfernalSettings(InfernalSettings infernalSettings);
-	public Long updateInfernalSettings(InfernalSettings infernalSettings);
+	public InfernalSettingsDTO getDefaultInfernalSettings();
+	public Long insertInfernalSettings(InfernalSettingsDTO infernalSettingsDTO);
+	public boolean updateInfernalSettings(InfernalSettingsDTO infernalSettingsDTO);
 	public String getOldPragmas();
 	public String getNewPragmas();
 }

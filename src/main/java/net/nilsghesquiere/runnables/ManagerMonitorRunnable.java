@@ -32,7 +32,7 @@ public class ManagerMonitorRunnable implements Runnable {
 		while (!stop){
 			sendClientData();
 			try {
-				TimeUnit.SECONDS.sleep(30);
+				TimeUnit.SECONDS.sleep(120);
 			} catch (InterruptedException e2) {
 				LOGGER.debug(e2.getMessage());
 				Thread.currentThread().interrupt();

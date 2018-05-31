@@ -234,12 +234,13 @@ public class InfernalBotManagerClient {
 		} //don't log this, too many times
 	}
 	
+	//TODO checken wat dit precies doet momenteel
 	public boolean queuersHaveEnoughAccounts(){
 		//After that do a double check by looking if there are any queuers with less than 5 accounts
 		//This scenario happens when there are not enough accounts in the account list (bans etc etc)
 		//The client will make a queuer with not enough accounts and gets a popup with "need 5 accounts)
 		int activeAccounts = accountService.countActiveAccounts();
-		int neededAccounts = client.getClientSettings().getAccountAmount();
+		int neededAccounts = client.getClientSettings().getQueuerAmount() * 5;
 		//Check if there are enough active accounts in the list
 		if (activeAccounts < neededAccounts){
 			//check if there are any queuers running with < 5 accounts
@@ -257,9 +258,9 @@ public class InfernalBotManagerClient {
 		if(checkDir()){
 			LOGGER.info("Located Infernalbot");
 			
-			Path backupDir = client.getClientSettings().getInfernalMap().resolve("InfernalBotManager");
-			Path file = client.getClientSettings().getInfernalMap().resolve("InfernalDatabase.sqlite") ;
-			Path backupFile = client.getClientSettings().getInfernalMap().resolve("InfernalBotManager/InfernalDatabase.bak") ;
+			Path backupDir = client.getClientSettings().getInfernalPath().resolve("InfernalBotManager");
+			Path file = client.getClientSettings().getInfernalPath().resolve("InfernalDatabase.sqlite") ;
+			Path backupFile = client.getClientSettings().getInfernalPath().resolve("InfernalBotManager/InfernalDatabase.bak") ;
 			if(!Files.exists(backupDir)){
 				try {
 					Files.createDirectories(backupDir);
@@ -288,7 +289,7 @@ public class InfernalBotManagerClient {
 	}
 	
 	private boolean checkDir(){
-		Path infernalPath = client.getClientSettings().getInfernalMap().resolve(client.getClientSettings().getInfernalProgramName());
+		Path infernalPath = client.getClientSettings().getInfernalPath().resolve(client.getClientSettings().getInfernalProgramName());
 		if(Files.exists(infernalPath)){
 			return  true;
 		} else {

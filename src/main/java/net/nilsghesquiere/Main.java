@@ -78,6 +78,7 @@ public class Main{
 		}
 		
 		//Build the IniSettings
+		//TODO catch errors
 		Optional<IniSettings> iniSettings = buildIniSettings(iniLocation);
 		if(iniSettings.isPresent()){
 			//Build the user
@@ -87,12 +88,11 @@ public class Main{
 				Optional<Client> client = buildClient(iniSettings.get(), user.get());
 				if(client.isPresent()){
 					client.get().setUser(user.get());
+					LOGGER.info(client.toString());
 					infernalBotManagerClient = new InfernalBotManagerClient(iniSettings.get(), client.get());
 				}
 			}
 		}
-
-		LOGGER.info(infernalBotManagerClient.getClient().toString());
 		
 		if(infernalBotManagerClient != null){
 			try{
@@ -129,6 +129,7 @@ public class Main{
 	}
 	
 	private static void program(){
+		//start the ThreadChecker if enabled in ini
 		if (infernalBotManagerClient.getIniSettings().getDebugThreads()){
 			startThreadCheckerThread();
 		}
@@ -240,12 +241,8 @@ public class Main{
 	}
 
 	private static Optional<User> buildUser(IniSettings iniSettings){
-		User user = null;
 		UserService userService = new UserService(iniSettings);
-		Long userid = userService.getUserId(iniSettings.getUsername());
-		if(userid != 0){
-			user = new User(userid);
-		}
+		User user = userService.getUser(iniSettings.getUsername());
 		return Optional.of(user);
 	}
 	

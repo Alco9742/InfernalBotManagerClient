@@ -1,6 +1,7 @@
 package net.nilsghesquiere.services;
 
 import net.nilsghesquiere.entities.IniSettings;
+import net.nilsghesquiere.entities.User;
 import net.nilsghesquiere.managerclients.UserManagerClient;
 import net.nilsghesquiere.managerclients.UserManagerRESTClient;
 
@@ -22,5 +23,9 @@ public class UserService {
 	
 	public Long getUserId(String username){
 		return managerClient.getUserIdByUsername(username);
+	}
+	
+	public User getUser(String username){
+		return managerClient.getUserByUsername(username);
 	}
 }

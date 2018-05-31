@@ -46,17 +46,17 @@ public class InfernalBotCheckerRunnable implements Runnable {
 				LOGGER.warn("InfernalBot process is running as 'Infernal Launcher.exe', killing the process");
 				ProgramUtil.killLegacyInfernalLauncher();
 				//TODO check what the legacy launchers description is
-				ProgramUtil.killAllInfernalProcesses(infernalBotManagerClient.getClient().getClientSettings().getInfernalMap());
+				ProgramUtil.killAllInfernalProcesses(infernalBotManagerClient.getClient().getClientSettings().getInfernalPath());
 			}
 			oldProcessName = processName;
-			processName = ProgramUtil.getInfernalProcessname(infernalBotManagerClient.getClient().getClientSettings().getInfernalMap());
+			processName = ProgramUtil.getInfernalProcessname(infernalBotManagerClient.getClient().getClientSettings().getInfernalPath());
 			if(!processName.equals(oldProcessName)){
 				LOGGER.info("Infernal bot process name updated to: " + processName);
 			}
 			if(!processName.isEmpty()){
 				if(!ProgramUtil.isProcessRunning(processName)){
 					LOGGER.warn("InfernalBot process not found, restarting client");
-					ProgramUtil.killAllInfernalProcesses(infernalBotManagerClient.getClient().getClientSettings().getInfernalMap());
+					ProgramUtil.killAllInfernalProcesses(infernalBotManagerClient.getClient().getClientSettings().getInfernalPath());
 					try{
 						if(infernalBotManagerClient.checkConnection() && infernalBotManagerClient.exchangeAccounts()){
 							runInfernalbot();
@@ -75,13 +75,13 @@ public class InfernalBotCheckerRunnable implements Runnable {
 							Main.exitWaitRunnable.exit();
 						} else {
 							LOGGER.info("No active queuers found, closing InfernalBot process");
-							ProgramUtil.killAllInfernalProcesses(infernalBotManagerClient.getClient().getClientSettings().getInfernalMap());
+							ProgramUtil.killAllInfernalProcesses(infernalBotManagerClient.getClient().getClientSettings().getInfernalPath());
 						}
 					} else {
 						if (!infernalBotManagerClient.queuersHaveEnoughAccounts()){
 							LOGGER.info("Not enough active accounts, closing InfernalBot process");
 							infernalBotManagerClient.getClientDataService().deleteAllQueuers();
-							ProgramUtil.killAllInfernalProcesses(infernalBotManagerClient.getClient().getClientSettings().getInfernalMap());
+							ProgramUtil.killAllInfernalProcesses(infernalBotManagerClient.getClient().getClientSettings().getInfernalPath());
 						} else {
 							//Everything is running as it should
 							Main.managerMonitorRunnable.setClientStatus(ClientStatus.INFERNAL_RUNNING);
@@ -122,7 +122,7 @@ public class InfernalBotCheckerRunnable implements Runnable {
 			Main.managerMonitorRunnable.setClientStatus(ClientStatus.INFERNAL_STARTUP);
 			if(!Main.softStart){
 				LOGGER.info("Closing all InfernalBot processes");
-				ProgramUtil.killAllInfernalProcesses(infernalBotManagerClient.getClient().getClientSettings().getInfernalMap());
+				ProgramUtil.killAllInfernalProcesses(infernalBotManagerClient.getClient().getClientSettings().getInfernalPath());
 				startInfernalBot();
 			} else {
 				LOGGER.debug("Not starting infernalbot (softstart)");
@@ -157,7 +157,7 @@ public class InfernalBotCheckerRunnable implements Runnable {
 			if(!accountListUpdaterThreadMap.isEmpty()){
 				stopAccountListUpdaterThread();
 			}
-			Path infernalProgramPath = infernalBotManagerClient.getClient().getClientSettings().getInfernalMap().resolve(infernalBotManagerClient.getClient().getClientSettings().getInfernalProgramName());
+			Path infernalProgramPath = infernalBotManagerClient.getClient().getClientSettings().getInfernalPath().resolve(infernalBotManagerClient.getClient().getClientSettings().getInfernalProgramName());
 			@SuppressWarnings("unused")
 			Process process = new ProcessBuilder(infernalProgramPath.toString()).start();
 			LOGGER.info("InfernalBot started");
@@ -173,7 +173,7 @@ public class InfernalBotCheckerRunnable implements Runnable {
 	private void finishTasks(){
 		infernalBotManagerClient.setAccountsAsReadyForUse();
 		LOGGER.info("Closing all InfernalBot processes");
-		ProgramUtil.killAllInfernalProcesses(infernalBotManagerClient.getClient().getClientSettings().getInfernalMap());
+		ProgramUtil.killAllInfernalProcesses(infernalBotManagerClient.getClient().getClientSettings().getInfernalPath());
 		this.finalized = true;
 	}
 	

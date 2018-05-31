@@ -8,8 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import net.nilsghesquiere.entities.InfernalSettings;
 import net.nilsghesquiere.util.ProgramUtil;
+import net.nilsghesquiere.util.dto.InfernalSettingsDTO;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,13 +70,13 @@ public class InfernalSettingsInfernalJDBCClient implements InfernalSettingsInfer
 		return result;
 	}
 	
-	public InfernalSettings getDefaultInfernalSettings(){
-		InfernalSettings infernalSettings = null;
+	public InfernalSettingsDTO getDefaultInfernalSettings(){
+		InfernalSettingsDTO infernalSettings = null;
 		try(Connection connection = DriverManager.getConnection(DATABASE_URI)){
 			Statement statement = connection.createStatement();
 			ResultSet resultSet = statement.executeQuery(SELECT_DEFAULT_SQL);
 			while (resultSet.next()){
-				infernalSettings = InfernalSettings.buildFromResultSet(resultSet);
+				infernalSettings = InfernalSettingsDTO.buildFromResultSet(resultSet);
 			}
 			if (infernalSettings != null){
 				LOGGER.info("Received the Default settings from InfernalBot.");
@@ -90,7 +90,7 @@ public class InfernalSettingsInfernalJDBCClient implements InfernalSettingsInfer
 		return infernalSettings;
 	}
 	
-	public Long insertInfernalSettings(InfernalSettings infernalSettings){
+	public Long insertInfernalSettings(InfernalSettingsDTO infernalSettings){
 		Long key = -1L;
 		try(Connection connection = DriverManager.getConnection(DATABASE_URI);
 			PreparedStatement statement = connection.prepareStatement(INSERT_SQL, Statement.RETURN_GENERATED_KEYS)){
@@ -156,7 +156,6 @@ public class InfernalSettingsInfernalJDBCClient implements InfernalSettingsInfer
 			statement.setString(59, infernalSettings.getMySQLPassword());
 			statement.setString(60, infernalSettings.getMySQLQueueTable());
 			statement.setString(61, infernalSettings.getMySQLAktivTable());
-			//new 29/03/2018
 			statement.setString(62, ProgramUtil.getCapitalizedString(infernalSettings.getEnableAutoExport()));
 			statement.setString(63, infernalSettings.getExportPath());
 			statement.setString(64, infernalSettings.getExportWildCard());
@@ -176,7 +175,7 @@ public class InfernalSettingsInfernalJDBCClient implements InfernalSettingsInfer
 		}
 	}
 	
-	public Long updateInfernalSettings(InfernalSettings infernalSettings){
+	public boolean updateInfernalSettings(InfernalSettingsDTO infernalSettings){
 		Long key = infernalSettings.getId();
 		try(Connection connection = DriverManager.getConnection(DATABASE_URI);
 			PreparedStatement statement = connection.prepareStatement(UPDATE_SQL, Statement.RETURN_GENERATED_KEYS)){
@@ -251,16 +250,21 @@ public class InfernalSettingsInfernalJDBCClient implements InfernalSettingsInfer
 			statement.setString(67, ProgramUtil.getCapitalizedString(infernalSettings.getExportLevel()));
 			statement.setString(68, ProgramUtil.getCapitalizedString(infernalSettings.getExportBE()));
 			statement.executeUpdate();
-			LOGGER.info("Updated the Default settings in InfernalBot.");
+			LOGGER.info("Updated the settings in InfernalBot.");
 			ResultSet rs = statement.getGeneratedKeys();
 			if (rs != null && rs.next()) {
 				key = rs.getLong(1);
 			}
-			return key;
+			if (key == infernalSettings.getId()){
+				return true;
+			} else{
+				LOGGER.error("Failure updating the settings in InfernalBot.");
+				return false;
+			}
 		} catch (SQLException e) {
-			LOGGER.error("Failure updating the Default settings in InfernalBot.");
+			LOGGER.error("Failure updating the settings in InfernalBot.");
 			LOGGER.debug(e.getMessage());
-			return key;
+			return false;
 		}
 	}
 	

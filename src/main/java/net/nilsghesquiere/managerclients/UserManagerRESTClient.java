@@ -4,7 +4,9 @@ import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 
+import net.nilsghesquiere.entities.User;
 import net.nilsghesquiere.security.SSLBasicAuthenticationRestTemplate;
+import net.nilsghesquiere.util.wrappers.UserSingleWrapper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +30,7 @@ public class UserManagerRESTClient implements UserManagerClient{
 	
 	public Long getUserIdByUsername(String username){
 		try{
-			Long jsonResponse = restTemplate.getForObject(URI_USERS + "/username/" + username, Long.class);
+			Long jsonResponse = restTemplate.getForObject(URI_USERS + "/username/" + username +"/id", Long.class);
 			return jsonResponse;
 		} catch (ResourceAccessException e){
 			LOGGER.warn("Failure getting user ID from the server");
@@ -36,6 +38,25 @@ public class UserManagerRESTClient implements UserManagerClient{
 			return null;
 		} catch (HttpServerErrorException e2){
 			LOGGER.warn("Failure getting user ID from the server");
+			LOGGER.debug(e2.getMessage());
+			return null;
+		}
+	}
+	
+	public User getUserByUsername(String username){
+		try{
+			UserSingleWrapper jsonResponse = restTemplate.getForObject(URI_USERS + "/username/" + username , UserSingleWrapper.class);
+			User user = jsonResponse.getMap().get("data");
+			if (user != null){
+				LOGGER.info("Received settings for user '" + username + "'.");
+			}
+			return user;
+		} catch (ResourceAccessException e){
+			LOGGER.warn("Failure getting user from the server");
+			LOGGER.debug(e.getMessage());
+			return null;
+		} catch (HttpServerErrorException e2){
+			LOGGER.warn("Failure getting user from the server");
 			LOGGER.debug(e2.getMessage());
 			return null;
 		}

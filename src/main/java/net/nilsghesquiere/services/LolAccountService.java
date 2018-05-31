@@ -26,7 +26,7 @@ public class LolAccountService {
 	
 	public LolAccountService(Client client, IniSettings iniSettings){
 		this.client = client;
-		this.infernalClient =  new LoLAccountInfernalJDBCClient(client.getClientSettings().getInfernalMap());
+		this.infernalClient =  new LoLAccountInfernalJDBCClient(client.getClientSettings().getInfernalPath());
 		if(iniSettings.getPort().equals("")){
 			this.managerClient = new LolAccountManagerRESTClient(iniSettings.getWebServer(), iniSettings.getUsername(), iniSettings.getPassword(), iniSettings.getDebugHTTP());
 		} else {
@@ -49,7 +49,7 @@ public class LolAccountService {
 			if(sendMap != null){
 				infernalClient.deleteAllAccounts();
 			}
-			List<LolAccount> accountsForInfernal = managerClient.getUsableAccounts(client.getUser().getId(), client.getClientSettings().getClientRegion(), client.getClientSettings().getAccountAmount());
+			List<LolAccount> accountsForInfernal = managerClient.getUsableAccounts(client.getUser().getId(), client.getClientSettings().getClientRegion(), client.getClientSettings().getQueuerAmount() * 5);
 			int addedInfernalAccounts = 0;
 			if (!accountsForInfernal.isEmpty()){
 				addedInfernalAccounts = infernalClient.insertAccounts(accountsForInfernal, false);
@@ -154,11 +154,8 @@ public class LolAccountService {
 	public int countActiveAccounts() {
 		return infernalClient.countActiveAccounts();
 	}
-	
-	@SuppressWarnings("unused")
 	private LolMixedAccountMap prepareAccountsToSend(){
 		LolMixedAccountMap lolAccountMap = new LolMixedAccountMap();
-		List<LolAccount> newAccounts = new ArrayList<>();
 		List<LolAccount> accountsFromJDBC = infernalClient.getAccounts(true);
 		if (!accountsFromJDBC.isEmpty()){
 			for (LolAccount accountFromJDBC : accountsFromJDBC){
@@ -202,15 +199,7 @@ public class LolAccountService {
 						}
 						lolAccountMap.add(accountFromJDBC.getId().toString(), accountFromJDBC);
 					}
-				} else {
-					//TODO remove everything concerning importing new accounts, fuk dat
-					if(false){
-						accountFromJDBC.setAccountStatus(AccountStatus.NEW);
-						accountFromJDBC.setAssignedTo("");
-						newAccounts.add(accountFromJDBC);
-					}
-				}
-			lolAccountMap.setNewAccs(newAccounts);
+				} 
 			}
 		} else {
 			lolAccountMap = null;

@@ -6,6 +6,7 @@ import java.security.NoSuchAlgorithmException;
 
 import net.nilsghesquiere.entities.Client;
 import net.nilsghesquiere.security.SSLBasicAuthenticationRestTemplate;
+import net.nilsghesquiere.util.wrappers.ClientSingleWrapper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,8 +30,12 @@ public class ClientManagerRESTClient implements ClientManagerClient{
 	
 	public Client getClientByUserIdAndTag(Long userId, String tag){
 		try{
-			Client jsonResponse = restTemplate.getForObject(URI_CLIENTS + "/user/" + userId + "/tag/" + tag, Client.class);
-			return jsonResponse;
+			ClientSingleWrapper jsonResponse = restTemplate.getForObject(URI_CLIENTS + "/user/" + userId + "/tag/" + tag, ClientSingleWrapper.class);
+			Client client = jsonResponse.getMap().get("data");
+			if (client != null){
+				LOGGER.info("Received settings for client '" + client.getTag() + "'.");
+			}
+			return client;
 		} catch (ResourceAccessException e){
 			LOGGER.warn("Failure getting client from the server");
 			LOGGER.debug(e.getMessage());

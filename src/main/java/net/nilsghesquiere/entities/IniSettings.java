@@ -16,11 +16,12 @@ public class IniSettings {
 	private Boolean devmode;
 	private String webServer;
 	private String port;
+	private String infernalProgramName;
 	private Boolean debugHTTP;
 	private Boolean debugThreads;
 	private Boolean testmode;
 
-	public IniSettings(String username, String password, String clientTag, Boolean devmode, String webServer, String port, Boolean debugHTTP, Boolean debugThreads, Boolean testmode) {
+	public IniSettings(String username, String password, String clientTag, Boolean devmode, String webServer, String port, String infernalProgramName, Boolean debugHTTP, Boolean debugThreads, Boolean testmode) {
 		super();
 		this.username = username;
 		this.password = password;
@@ -28,6 +29,7 @@ public class IniSettings {
 		this.devmode = devmode;
 		this.webServer = webServer;
 		this.port = port;
+		this.infernalProgramName = infernalProgramName;
 		this.debugHTTP = debugHTTP;
 		this.debugThreads = debugThreads;
 		this.testmode = testmode;
@@ -46,6 +48,7 @@ public class IniSettings {
 		Boolean devmode = ini.get("dev", "devmode", Boolean.class);
 		String webServer = ini.get("dev", "webserver", String.class);
 		String port = ini.get("dev", "port", String.class);
+		String infernalProgramName = ini.get("dev", "infernalProgramName", String.class);
 		Boolean debugHTTP = ini.get("dev", "debugHTTP", Boolean.class);
 		Boolean debugThreads = ini.get("dev", "debugThreads", Boolean.class);
 		Boolean testmode = ini.get("dev", "testmode", Boolean.class);
@@ -72,6 +75,9 @@ public class IniSettings {
 			if(port == null){
 				port = ProgramConstants.PORT;
 			}
+			if(infernalProgramName == null){
+				infernalProgramName = ProgramConstants.INFERNAL_PROG_NAME;
+			}
 			if(debugHTTP == null){
 				debugHTTP = false;
 			}
@@ -85,17 +91,18 @@ public class IniSettings {
 			devmode = false;
 			webServer = ProgramConstants.WEBSERVER;
 			port = ProgramConstants.PORT;
+			infernalProgramName = ProgramConstants.INFERNAL_PROG_NAME;
 			debugHTTP = false;
 			debugThreads = false;
 			testmode = false;
 		}
 
 		if(!hasError){
-			IniSettings settings = new IniSettings(username,password,clientTag, devmode, webServer,port, debugHTTP, debugThreads, testmode);
-			LOGGER.info("Loaded settings from settings.ini");
+			IniSettings settings = new IniSettings(username,password,clientTag, devmode, webServer,port, infernalProgramName, debugHTTP, debugThreads, testmode);
+			LOGGER.info("Loaded user settings from settings.ini");
 			return settings;
 		} else {
-			LOGGER.error("Failure loading settings from settings.ini");
+			LOGGER.error("Failure loading user settings from settings.ini");
 			return null;
 		}
 	}
