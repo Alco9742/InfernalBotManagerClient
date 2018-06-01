@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -31,6 +33,11 @@ import org.ini4j.Reg;
 import org.ini4j.Wini;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
+import org.springframework.security.oauth2.client.OAuth2RestOperations;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
+import org.springframework.security.oauth2.client.token.DefaultAccessTokenRequest;
+import org.springframework.security.oauth2.client.token.grant.password.ResourceOwnerPasswordResourceDetails;
 import org.springframework.web.client.HttpClientErrorException;
 
 public class Main{
@@ -81,8 +88,11 @@ public class Main{
 		//TODO catch errors
 		Optional<IniSettings> iniSettings = buildIniSettings(iniLocation);
 		if(iniSettings.isPresent()){
+			//Build the RestTemplate
+			OAuth2RestOperations restTemplate = buildRestTemplate(iniSettings.get());
+			//TODO: test connection here
 			//Build the user
-			Optional<User> user = buildUser(iniSettings.get());
+			Optional<User> user = buildUser(iniSettings.get(), restTemplate);
 			if(user.isPresent()){
 				//build the client
 				Optional<Client> client = buildClient(iniSettings.get(), user.get());
@@ -90,7 +100,7 @@ public class Main{
 					client.get().setUser(user.get());
 					LOGGER.info(client.toString());
 					if(checkClientHWID(iniSettings.get(), client.get())){
-						infernalBotManagerClient = new InfernalBotManagerClient(iniSettings.get(), client.get());
+						infernalBotManagerClient = new InfernalBotManagerClient(iniSettings.get(), client.get(),restTemplate);
 					}
 				} else {
 					LOGGER.info("Client '" + iniSettings.get().getClientTag() + "' not found on the server.");
@@ -249,8 +259,33 @@ public class Main{
 		}
 	}
 
-	private static Optional<User> buildUser(IniSettings iniSettings){
-		UserService userService = new UserService(iniSettings);
+	private static OAuth2RestOperations buildRestTemplate(IniSettings iniSettings){
+		String uriServer = "";
+				
+		if(iniSettings.getPort().equals("")){
+			uriServer = iniSettings.getWebServer();
+		} else {
+			uriServer = iniSettings.getWebServer() + ":" + iniSettings.getPort();
+		}
+		ResourceOwnerPasswordResourceDetails resource = new ResourceOwnerPasswordResourceDetails();
+		
+		List<String> scopes = new ArrayList<>(2);
+		scopes.add("write");
+		scopes.add("read");
+		resource.setAccessTokenUri(uriServer + "/oauth/token");
+		resource.setClientId("infernalbotmanager");
+		resource.setClientSecret("secret");
+		resource.setGrantType("password");
+		resource.setScope(scopes);
+		resource.setUsername(iniSettings.getUsername());
+		resource.setPassword(iniSettings.getPassword());
+		OAuth2RestOperations restTemplate =  new OAuth2RestTemplate(resource, new DefaultOAuth2ClientContext(new DefaultAccessTokenRequest()));
+		restTemplate.getAccessToken();
+		return restTemplate;
+	}
+	
+	private static Optional<User> buildUser(IniSettings iniSettings, OAuth2RestOperations restTemplate){
+		UserService userService = new UserService(iniSettings,restTemplate);
 		User user = userService.getUser(iniSettings.getUsername());
 		if (user != null){
 			return Optional.of(user);

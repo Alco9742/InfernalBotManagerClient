@@ -7,18 +7,15 @@ import net.nilsghesquiere.managerclients.UserManagerRESTClient;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.oauth2.client.OAuth2RestOperations;
 
 public class UserService {
 	@SuppressWarnings("unused")
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 	private final UserManagerClient managerClient;
 	
-	public UserService(IniSettings iniSettings){
-		if(iniSettings.getPort().equals("")){
-			this.managerClient = new UserManagerRESTClient(iniSettings.getWebServer(), iniSettings.getUsername(), iniSettings.getPassword(), iniSettings.getDebugHTTP());
-		} else {
-			this.managerClient = new UserManagerRESTClient(iniSettings.getWebServer() + ":" + iniSettings.getPort(), iniSettings.getUsername(), iniSettings.getPassword(), iniSettings.getDebugHTTP());
-		}
+	public UserService(IniSettings iniSettings, OAuth2RestOperations restTemplate){
+		this.managerClient = new UserManagerRESTClient(iniSettings.getWebServer(), restTemplate);
 	}
 	
 	public Long getUserId(String username){
