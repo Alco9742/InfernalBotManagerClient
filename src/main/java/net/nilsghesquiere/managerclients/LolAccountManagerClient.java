@@ -4,7 +4,7 @@ import java.util.List;
 
 import net.nilsghesquiere.entities.LolAccount;
 import net.nilsghesquiere.util.enums.Region;
-import net.nilsghesquiere.util.wrappers.LolMixedAccountMap;
+import net.nilsghesquiere.util.wrappers.LolAccountMap;
 
 public interface LolAccountManagerClient {
 	public List<LolAccount> getUserLolAccounts(Long userid);
@@ -12,5 +12,5 @@ public interface LolAccountManagerClient {
 	public List<LolAccount> getBufferAccounts(Long userid, Region region, Integer amount);
 	public LolAccount getByUserIdRegionAndAccount(Long userid, Region region, String account);
 	public List<LolAccount> updateLolAccounts(Long userid, List<LolAccount> lolAccounts);
-	public boolean sendInfernalAccounts(Long userid, LolMixedAccountMap map);
+	public boolean sendInfernalAccounts(Long userid, LolAccountMap map);
 }

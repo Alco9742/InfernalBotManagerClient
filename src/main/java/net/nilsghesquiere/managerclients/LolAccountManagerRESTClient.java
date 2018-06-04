@@ -1,18 +1,13 @@
 package net.nilsghesquiere.managerclients;
 
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Map.Entry;
 
 import net.nilsghesquiere.entities.LolAccount;
-import net.nilsghesquiere.util.enums.Region;
-import net.nilsghesquiere.security.SSLBasicAuthenticationRestTemplate;
 import net.nilsghesquiere.util.ProgramUtil;
+import net.nilsghesquiere.util.enums.Region;
 import net.nilsghesquiere.util.wrappers.LolAccountMap;
 import net.nilsghesquiere.util.wrappers.LolAccountWrapper;
-import net.nilsghesquiere.util.wrappers.LolMixedAccountMap;
 import net.nilsghesquiere.util.wrappers.StringResponseMap;
 
 import org.slf4j.Logger;
@@ -20,29 +15,26 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResourceAccessException;
-import org.springframework.web.client.RestTemplate;
 
 
 
 public class LolAccountManagerRESTClient implements LolAccountManagerClient {
 	private static final Logger LOGGER = LoggerFactory.getLogger(LolAccountManagerRESTClient.class);
 	private final String URI_ACCOUNTS;
-	private RestTemplate restTemplate;
+	private OAuth2RestOperations restTemplate;
 	private HttpHeaders headers;
 	
-	public LolAccountManagerRESTClient(String uriServer, String username, String password, Boolean debugHTTP) {
+	public LolAccountManagerRESTClient(OAuth2RestOperations restTemplate) {
+		String uriAccesToken = restTemplate.getResource().getAccessTokenUri();
+		String uriServer = uriAccesToken.substring(0,uriAccesToken.indexOf("/oauth/token"));
+		
 		this.URI_ACCOUNTS = uriServer +"/api/accounts";
+		this.restTemplate = restTemplate;
 		
-		try {
-			this.restTemplate = new SSLBasicAuthenticationRestTemplate(username,password,debugHTTP);
-		} catch (KeyManagementException | NoSuchAlgorithmException | KeyStoreException e) {
-			LOGGER.debug(e.getMessage());
-		}	
-		
-		//set headers
-		headers = ProgramUtil.buildHttpHeaders();
+		this.headers = ProgramUtil.buildHttpHeaders();
 	}
 
 	public List<LolAccount> getUserLolAccounts(Long userid){
@@ -135,10 +127,10 @@ public class LolAccountManagerRESTClient implements LolAccountManagerClient {
 		}
 	} 
 	
-	public boolean sendInfernalAccounts(Long userid, LolMixedAccountMap map){
+	public boolean sendInfernalAccounts(Long userid, LolAccountMap map){
 		try{
 			boolean result = true;
-			HttpEntity<LolMixedAccountMap> request = new HttpEntity<>(map, headers);
+			HttpEntity<LolAccountMap> request = new HttpEntity<>(map, headers);
 			HttpEntity<StringResponseMap> response = restTemplate.exchange(URI_ACCOUNTS + "/user/" + userid + "/infernalImport", HttpMethod.PUT,request, StringResponseMap.class);
 			StringResponseMap stringResponseMap = response.getBody();
 			for(Entry<String,String> entry : stringResponseMap.getMap().entrySet()){

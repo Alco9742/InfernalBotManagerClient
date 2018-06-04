@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.nilsghesquiere.entities.Client;
-import net.nilsghesquiere.entities.IniSettings;
 import net.nilsghesquiere.entities.LolAccount;
 import net.nilsghesquiere.infernalclients.LoLAccountInfernalJDBCClient;
 import net.nilsghesquiere.infernalclients.LolAccountInfernalClient;
 import net.nilsghesquiere.managerclients.LolAccountManagerClient;
 import net.nilsghesquiere.managerclients.LolAccountManagerRESTClient;
 import net.nilsghesquiere.util.enums.AccountStatus;
-import net.nilsghesquiere.util.wrappers.LolMixedAccountMap;
+import net.nilsghesquiere.util.wrappers.LolAccountMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.web.client.ResourceAccessException;
 
 public class LolAccountService {
@@ -24,15 +24,10 @@ public class LolAccountService {
 	private final LolAccountManagerClient managerClient;
 
 	
-	public LolAccountService(Client client, IniSettings iniSettings){
+	public LolAccountService(Client client, OAuth2RestOperations restTemplate){
 		this.client = client;
 		this.infernalClient =  new LoLAccountInfernalJDBCClient(client.getClientSettings().getInfernalPath());
-		if(iniSettings.getPort().equals("")){
-			this.managerClient = new LolAccountManagerRESTClient(iniSettings.getWebServer(), iniSettings.getUsername(), iniSettings.getPassword(), iniSettings.getDebugHTTP());
-		} else {
-			this.managerClient = new LolAccountManagerRESTClient(iniSettings.getWebServer() + ":" + iniSettings.getPort(), iniSettings.getUsername(), iniSettings.getPassword(), iniSettings.getDebugHTTP());
-		}
-
+		this.managerClient = new LolAccountManagerRESTClient(restTemplate);
 	}
 	
 	public boolean checkPragmas(){
@@ -43,7 +38,7 @@ public class LolAccountService {
 		//TODO fix bug: if for some reason both clients have same accs in infernalbot database:
 		//     Client1 uploads the accs and puts them on READY, after that loads them and puts them on IN USE;
 		//     Client2 uploads the accs and does the same!!!! --> solution: check on assigned to
-		LolMixedAccountMap sendMap = prepareAccountsToSend();
+		LolAccountMap sendMap = prepareAccountsToSend();
 		//lege map niet senden
 		if(sendMap == null || managerClient.sendInfernalAccounts(client.getUser().getId(), sendMap)){
 			if(sendMap != null){
@@ -102,7 +97,7 @@ public class LolAccountService {
 	}
 	
 	public boolean setAccountsAsReadyForUse(){
-		LolMixedAccountMap sendMap = prepareAccountsToSend();
+		LolAccountMap sendMap = prepareAccountsToSend();
 		try{
 			if(managerClient.sendInfernalAccounts(client.getUser().getId(), sendMap)){
 				LOGGER.info("Updated accounts on server");
@@ -154,8 +149,8 @@ public class LolAccountService {
 	public int countActiveAccounts() {
 		return infernalClient.countActiveAccounts();
 	}
-	private LolMixedAccountMap prepareAccountsToSend(){
-		LolMixedAccountMap lolAccountMap = new LolMixedAccountMap();
+	private LolAccountMap prepareAccountsToSend(){
+		LolAccountMap lolAccountMap = new LolAccountMap();
 		List<LolAccount> accountsFromJDBC = infernalClient.getAccounts(true);
 		if (!accountsFromJDBC.isEmpty()){
 			for (LolAccount accountFromJDBC : accountsFromJDBC){
@@ -170,7 +165,6 @@ public class LolAccountService {
 						accountAssignedToOtherClient = false;
 					}
 					if(!accountAssignedToOtherClient){
-						//Account already exists in the database: copy the editable settings from serverside
 						//set the id
 						accountFromJDBC.setId(accountFromREST.getId());
 						//set the max level & max BE (this will always be filled in if it exists on the server)

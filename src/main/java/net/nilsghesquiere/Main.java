@@ -95,11 +95,11 @@ public class Main{
 			Optional<User> user = buildUser(iniSettings.get(), restTemplate);
 			if(user.isPresent()){
 				//build the client
-				Optional<Client> client = buildClient(iniSettings.get(), user.get());
+				Optional<Client> client = buildClient(iniSettings.get(),restTemplate, user.get());
 				if(client.isPresent()){
 					client.get().setUser(user.get());
 					LOGGER.info(client.toString());
-					if(checkClientHWID(iniSettings.get(), client.get())){
+					if(checkClientHWID(iniSettings.get(),restTemplate, client.get())){
 						infernalBotManagerClient = new InfernalBotManagerClient(iniSettings.get(), client.get(),restTemplate);
 					}
 				} else {
@@ -261,7 +261,7 @@ public class Main{
 
 	private static OAuth2RestOperations buildRestTemplate(IniSettings iniSettings){
 		String uriServer = "";
-				
+		
 		if(iniSettings.getPort().equals("")){
 			uriServer = iniSettings.getWebServer();
 		} else {
@@ -285,7 +285,7 @@ public class Main{
 	}
 	
 	private static Optional<User> buildUser(IniSettings iniSettings, OAuth2RestOperations restTemplate){
-		UserService userService = new UserService(iniSettings,restTemplate);
+		UserService userService = new UserService(restTemplate);
 		User user = userService.getUser(iniSettings.getUsername());
 		if (user != null){
 			return Optional.of(user);
@@ -294,8 +294,8 @@ public class Main{
 		}
 	}
 	
-	private static Optional<Client> buildClient(IniSettings iniSettings, User user){
-		ClientService clientService = new ClientService(iniSettings);
+	private static Optional<Client> buildClient(IniSettings iniSettings, OAuth2RestOperations restTemplate, User user){
+		ClientService clientService = new ClientService(restTemplate);
 		Client client = clientService.getClient(user.getId(), iniSettings.getClientTag());
 		if (client != null){
 			return Optional.of(client);
@@ -304,7 +304,7 @@ public class Main{
 		}
 	}
 	
-	private static Boolean checkClientHWID(IniSettings iniSettings, Client client) {
+	private static Boolean checkClientHWID(IniSettings iniSettings,OAuth2RestOperations restTemplate, Client client) {
 		String clientHWID = client.getHWID();
 		String computerHWID = systemMonitor.getHWID();
 		
@@ -314,7 +314,7 @@ public class Main{
 		
 		if (clientHWID.trim().isEmpty()){
 			LOGGER.info("Registering HWID " + computerHWID + " for client '" + client.getTag() +"'.");
-			ClientService clientService = new ClientService(iniSettings);
+			ClientService clientService = new ClientService(restTemplate);
 			return clientService.registerHWID(client.getUser().getId(), client.getId(), computerHWID);
 		} else {
 			LOGGER.info("Incorrect HWID for for client '" + client.getTag() +"'.");

@@ -1,6 +1,5 @@
 package net.nilsghesquiere.services;
 
-import net.nilsghesquiere.entities.IniSettings;
 import net.nilsghesquiere.entities.User;
 import net.nilsghesquiere.managerclients.UserManagerClient;
 import net.nilsghesquiere.managerclients.UserManagerRESTClient;
@@ -14,8 +13,8 @@ public class UserService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 	private final UserManagerClient managerClient;
 	
-	public UserService(IniSettings iniSettings, OAuth2RestOperations restTemplate){
-		this.managerClient = new UserManagerRESTClient(iniSettings.getWebServer(), restTemplate);
+	public UserService(OAuth2RestOperations restTemplate){
+		this.managerClient = new UserManagerRESTClient(restTemplate);
 	}
 	
 	public Long getUserId(String username){

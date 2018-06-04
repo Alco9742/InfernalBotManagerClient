@@ -2,7 +2,6 @@ package net.nilsghesquiere.services;
 
 import net.nilsghesquiere.entities.Client;
 import net.nilsghesquiere.entities.InfernalSettings;
-import net.nilsghesquiere.entities.IniSettings;
 import net.nilsghesquiere.infernalclients.InfernalSettingsInfernalClient;
 import net.nilsghesquiere.infernalclients.InfernalSettingsInfernalJDBCClient;
 import net.nilsghesquiere.util.dto.InfernalSettingsDTO;
@@ -16,7 +15,7 @@ public class InfernalSettingsService {
 	private final InfernalSettingsInfernalClient infernalClient;
 
 	
-	public InfernalSettingsService(Client client, IniSettings iniSettings){
+	public InfernalSettingsService(Client client){
 		this.client = client;
 		this.infernalClient =  new InfernalSettingsInfernalJDBCClient(client.getClientSettings().getInfernalPath());
 	}

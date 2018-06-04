@@ -1,23 +1,19 @@
 package net.nilsghesquiere.services;
 
-import net.nilsghesquiere.entities.IniSettings;
 import net.nilsghesquiere.managerclients.GlobalVariableManagerClient;
 import net.nilsghesquiere.managerclients.GlobalVariableManagerRESTClient;
 import net.nilsghesquiere.util.ProgramConstants;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.oauth2.client.OAuth2RestOperations;
 
 public class GlobalVariableService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(GlobalVariableService.class);
 	private final GlobalVariableManagerClient managerClient;
 	
-	public GlobalVariableService(IniSettings iniSettings){
-		if(iniSettings.getPort().equals("")){
-			this.managerClient = new GlobalVariableManagerRESTClient(iniSettings.getWebServer(), iniSettings.getUsername(), iniSettings.getPassword(), iniSettings.getDebugHTTP());
-		} else {
-			this.managerClient = new GlobalVariableManagerRESTClient(iniSettings.getWebServer() + ":" + iniSettings.getPort(), iniSettings.getUsername(), iniSettings.getPassword(), iniSettings.getDebugHTTP());
-		}
+	public GlobalVariableService(OAuth2RestOperations restTemplate){
+		this.managerClient = new GlobalVariableManagerRESTClient(restTemplate);
 	}
 	
 	public boolean checkClientVersion(){

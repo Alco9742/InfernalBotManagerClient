@@ -5,7 +5,6 @@ import java.util.List;
 
 import net.nilsghesquiere.entities.Client;
 import net.nilsghesquiere.entities.ClientData;
-import net.nilsghesquiere.entities.IniSettings;
 import net.nilsghesquiere.entities.Queuer;
 import net.nilsghesquiere.entities.QueuerLolAccount;
 import net.nilsghesquiere.infernalclients.ClientDataInfernalClient;
@@ -16,6 +15,7 @@ import net.nilsghesquiere.util.wrappers.ClientDataMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.oauth2.client.OAuth2RestOperations;
 
 public class ClientDataService {
 	@SuppressWarnings("unused")
@@ -25,14 +25,10 @@ public class ClientDataService {
 	private final ClientDataInfernalClient infernalClient;
 	
 	
-	public ClientDataService(Client client,IniSettings iniSettings){
+	public ClientDataService(Client client, OAuth2RestOperations restTemplate){
 		this.client = client;
 		this.infernalClient =  new ClientDataInfernalJDBCClient(client.getClientSettings().getInfernalPath());
-		if(iniSettings.getPort().equals("")){
-			this.managerClient = new ClientDataManagerRESTClient(iniSettings.getWebServer(), iniSettings.getUsername(), iniSettings.getPassword(), iniSettings.getDebugHTTP());
-		} else {
-			this.managerClient = new ClientDataManagerRESTClient(iniSettings.getWebServer() + ":" + iniSettings.getPort(), iniSettings.getUsername(), iniSettings.getPassword(), iniSettings.getDebugHTTP());
-		}
+		this.managerClient = new ClientDataManagerRESTClient(restTemplate);
 	}
 	
 	public void sendData(String status, String ramInfo, String cpuInfo){

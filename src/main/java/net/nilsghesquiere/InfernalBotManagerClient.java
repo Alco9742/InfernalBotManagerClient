@@ -48,11 +48,11 @@ public class InfernalBotManagerClient {
 		this.iniSettings = iniSettings;
 		this.client = client;
 		this.restTemplate = restTemplate;
-		this.userService = new UserService(iniSettings, restTemplate);
-		this.globalVariableService = new GlobalVariableService(iniSettings);
-		this.accountService = new LolAccountService(client, iniSettings);
-		this.infernalSettingsService = new InfernalSettingsService(client, iniSettings);
-		this.clientDataService = new ClientDataService(client, iniSettings);
+		this.userService = new UserService(restTemplate);
+		this.globalVariableService = new GlobalVariableService(restTemplate);
+		this.accountService = new LolAccountService(client, restTemplate);
+		this.infernalSettingsService = new InfernalSettingsService(client);
+		this.clientDataService = new ClientDataService(client, restTemplate);
 	}
 	
 	//Schedule Reboot
