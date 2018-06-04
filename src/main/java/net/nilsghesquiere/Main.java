@@ -34,7 +34,6 @@ import org.ini4j.Wini;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
-import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.token.DefaultAccessTokenRequest;
 import org.springframework.security.oauth2.client.token.grant.password.ResourceOwnerPasswordResourceDetails;
@@ -89,7 +88,7 @@ public class Main{
 		Optional<IniSettings> iniSettings = buildIniSettings(iniLocation);
 		if(iniSettings.isPresent()){
 			//Build the RestTemplate
-			OAuth2RestOperations restTemplate = buildRestTemplate(iniSettings.get());
+			OAuth2RestTemplate restTemplate = buildRestTemplate(iniSettings.get());
 			//TODO: test connection here
 			//Build the user
 			Optional<User> user = buildUser(iniSettings.get(), restTemplate);
@@ -259,7 +258,7 @@ public class Main{
 		}
 	}
 
-	private static OAuth2RestOperations buildRestTemplate(IniSettings iniSettings){
+	private static OAuth2RestTemplate buildRestTemplate(IniSettings iniSettings){
 		String uriServer = "";
 		
 		if(iniSettings.getPort().equals("")){
@@ -279,12 +278,12 @@ public class Main{
 		resource.setScope(scopes);
 		resource.setUsername(iniSettings.getUsername());
 		resource.setPassword(iniSettings.getPassword());
-		OAuth2RestOperations restTemplate =  new OAuth2RestTemplate(resource, new DefaultOAuth2ClientContext(new DefaultAccessTokenRequest()));
+		OAuth2RestTemplate restTemplate =  new OAuth2RestTemplate(resource, new DefaultOAuth2ClientContext(new DefaultAccessTokenRequest()));
 		restTemplate.getAccessToken();
 		return restTemplate;
 	}
 	
-	private static Optional<User> buildUser(IniSettings iniSettings, OAuth2RestOperations restTemplate){
+	private static Optional<User> buildUser(IniSettings iniSettings, OAuth2RestTemplate restTemplate){
 		UserService userService = new UserService(restTemplate);
 		User user = userService.getUser(iniSettings.getUsername());
 		if (user != null){
@@ -294,7 +293,7 @@ public class Main{
 		}
 	}
 	
-	private static Optional<Client> buildClient(IniSettings iniSettings, OAuth2RestOperations restTemplate, User user){
+	private static Optional<Client> buildClient(IniSettings iniSettings, OAuth2RestTemplate restTemplate, User user){
 		ClientService clientService = new ClientService(restTemplate);
 		Client client = clientService.getClient(user.getId(), iniSettings.getClientTag());
 		if (client != null){
@@ -304,7 +303,7 @@ public class Main{
 		}
 	}
 	
-	private static Boolean checkClientHWID(IniSettings iniSettings,OAuth2RestOperations restTemplate, Client client) {
+	private static Boolean checkClientHWID(IniSettings iniSettings,OAuth2RestTemplate restTemplate, Client client) {
 		String clientHWID = client.getHWID();
 		String computerHWID = systemMonitor.getHWID();
 		

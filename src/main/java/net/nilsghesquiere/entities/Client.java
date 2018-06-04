@@ -13,7 +13,6 @@ public class Client {
 	private User user;
 	private InfernalSettings infernalSettings;
 	private ClientSettings clientSettings;
-	private ClientData clientData;
 	private LocalDateTime lastPing;
 	private ClientStatus clientStatus;
 	

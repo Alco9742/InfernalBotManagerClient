@@ -14,7 +14,7 @@ import net.nilsghesquiere.util.wrappers.LolAccountMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.oauth2.client.OAuth2RestOperations;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.web.client.ResourceAccessException;
 
 public class LolAccountService {
@@ -24,7 +24,7 @@ public class LolAccountService {
 	private final LolAccountManagerClient managerClient;
 
 	
-	public LolAccountService(Client client, OAuth2RestOperations restTemplate){
+	public LolAccountService(Client client, OAuth2RestTemplate restTemplate){
 		this.client = client;
 		this.infernalClient =  new LoLAccountInfernalJDBCClient(client.getClientSettings().getInfernalPath());
 		this.managerClient = new LolAccountManagerRESTClient(restTemplate);

@@ -5,16 +5,16 @@ import net.nilsghesquiere.util.wrappers.UserSingleWrapper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.oauth2.client.OAuth2RestOperations;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResourceAccessException;
 
 public class UserManagerRESTClient implements UserManagerClient{
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserManagerRESTClient.class);
 	private final String URI_USERS;
-	private OAuth2RestOperations restTemplate;
+	private OAuth2RestTemplate restTemplate;
 	
-	public UserManagerRESTClient(OAuth2RestOperations restTemplate) {
+	public UserManagerRESTClient(OAuth2RestTemplate restTemplate) {
 		String uriAccesToken = restTemplate.getResource().getAccessTokenUri();
 		String uriServer = uriAccesToken.substring(0,uriAccesToken.indexOf("/oauth/token"));
 		

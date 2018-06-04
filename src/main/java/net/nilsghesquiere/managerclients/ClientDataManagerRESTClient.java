@@ -9,7 +9,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResourceAccessException;
@@ -24,10 +23,10 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 public class ClientDataManagerRESTClient implements ClientDataManagerClient {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ClientDataManagerRESTClient.class);
 	private final String URI_CLIENTDATA;
-	private OAuth2RestOperations restTemplate;
+	private OAuth2RestTemplate restTemplate;
 	private HttpHeaders headers;
 	
-	public ClientDataManagerRESTClient(OAuth2RestOperations restTemplate) {
+	public ClientDataManagerRESTClient(OAuth2RestTemplate restTemplate) {
 		String uriAccesToken = restTemplate.getResource().getAccessTokenUri();
 		String uriServer = uriAccesToken.substring(0,uriAccesToken.indexOf("/oauth/token"));
 		
@@ -43,13 +42,14 @@ public class ClientDataManagerRESTClient implements ClientDataManagerClient {
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		mapper.configure(MapperFeature.DEFAULT_VIEW_INCLUSION, false);
 		converter.setObjectMapper(mapper);
-	//	restTemplate.getMessageConverters().add(0,converter);
+		restTemplate.getMessageConverters().add(0,converter);
 	}
-	public boolean sendClientData(Long userid, ClientDataMap map){
+	public boolean sendClientData(Long userid,Long clientid, ClientDataMap map){
 		boolean result = true;
 		HttpEntity<ClientDataMap> request = new HttpEntity<>(map, headers);
 		try{ 
-			HttpEntity<ClientDataWrapper> response = restTemplate.exchange(URI_CLIENTDATA + "/user/" + userid,  HttpMethod.POST,request, ClientDataWrapper.class);
+			//Always only 1 clientdata getting sent tbh
+			HttpEntity<ClientDataWrapper> response = restTemplate.exchange(URI_CLIENTDATA + "/user/" + userid + "/client/" + clientid,  HttpMethod.POST,request, ClientDataWrapper.class);
 			ClientDataWrapper clientDataWrapper = response.getBody();
 			if (!clientDataWrapper.getError().equals((""))){
 				result = false;
@@ -57,11 +57,11 @@ public class ClientDataManagerRESTClient implements ClientDataManagerClient {
 			} 
 			return result;
 		} catch (ResourceAccessException e){
-			LOGGER.warn("Failure sending ClientData to server");
+			LOGGER.debug("Failure sending ClientData to server");
 			LOGGER.debug(e.getMessage());
 			return false;
 		} catch (HttpServerErrorException e){
-			LOGGER.warn("Failure sending ClientData to server");
+			LOGGER.debug("Failure sending ClientData to server");
 			LOGGER.debug(e.getMessage());
 			return false;
 		}

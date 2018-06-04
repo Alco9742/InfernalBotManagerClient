@@ -7,12 +7,13 @@ import net.nilsghesquiere.util.ProgramConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.oauth2.client.OAuth2RestOperations;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 
 public class GlobalVariableService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(GlobalVariableService.class);
 	private final GlobalVariableManagerClient managerClient;
 	
-	public GlobalVariableService(OAuth2RestOperations restTemplate){
+	public GlobalVariableService(OAuth2RestTemplate restTemplate){
 		this.managerClient = new GlobalVariableManagerRESTClient(restTemplate);
 	}
 	

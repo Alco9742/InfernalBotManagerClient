@@ -7,17 +7,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.oauth2.client.OAuth2RestOperations;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResourceAccessException;
 
 public class ClientManagerRESTClient implements ClientManagerClient{
 	private static final Logger LOGGER = LoggerFactory.getLogger(ClientManagerRESTClient.class);
 	private final String URI_CLIENTS;
-	private final OAuth2RestOperations restTemplate;
+	private final OAuth2RestTemplate restTemplate;
 	//private final HttpHeaders headers;
 	
-	public ClientManagerRESTClient(OAuth2RestOperations restTemplate) {
+	public ClientManagerRESTClient(OAuth2RestTemplate restTemplate) {
 		String uriAccesToken = restTemplate.getResource().getAccessTokenUri();
 		String uriServer = uriAccesToken.substring(0,uriAccesToken.indexOf("/oauth/token"));
 		

@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.oauth2.client.OAuth2RestOperations;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResourceAccessException;
 
@@ -24,10 +24,10 @@ import org.springframework.web.client.ResourceAccessException;
 public class LolAccountManagerRESTClient implements LolAccountManagerClient {
 	private static final Logger LOGGER = LoggerFactory.getLogger(LolAccountManagerRESTClient.class);
 	private final String URI_ACCOUNTS;
-	private OAuth2RestOperations restTemplate;
+	private OAuth2RestTemplate restTemplate;
 	private HttpHeaders headers;
 	
-	public LolAccountManagerRESTClient(OAuth2RestOperations restTemplate) {
+	public LolAccountManagerRESTClient(OAuth2RestTemplate restTemplate) {
 		String uriAccesToken = restTemplate.getResource().getAccessTokenUri();
 		String uriServer = uriAccesToken.substring(0,uriAccesToken.indexOf("/oauth/token"));
 		

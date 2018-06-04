@@ -6,14 +6,14 @@ import net.nilsghesquiere.managerclients.ClientManagerRESTClient;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.oauth2.client.OAuth2RestOperations;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 
 public class ClientService {
 	@SuppressWarnings("unused")
 	private static final Logger LOGGER = LoggerFactory.getLogger(ClientService.class);
 	private final ClientManagerClient managerClient;
 	
-	public ClientService(OAuth2RestOperations restTemplate){
+	public ClientService(OAuth2RestTemplate restTemplate){
 		this.managerClient = new ClientManagerRESTClient(restTemplate);
 	}
 	

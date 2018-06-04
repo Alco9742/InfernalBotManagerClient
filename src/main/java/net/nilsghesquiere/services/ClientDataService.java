@@ -15,7 +15,7 @@ import net.nilsghesquiere.util.wrappers.ClientDataMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.oauth2.client.OAuth2RestOperations;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 
 public class ClientDataService {
 	@SuppressWarnings("unused")
@@ -25,7 +25,7 @@ public class ClientDataService {
 	private final ClientDataInfernalClient infernalClient;
 	
 	
-	public ClientDataService(Client client, OAuth2RestOperations restTemplate){
+	public ClientDataService(Client client, OAuth2RestTemplate restTemplate){
 		this.client = client;
 		this.infernalClient =  new ClientDataInfernalJDBCClient(client.getClientSettings().getInfernalPath());
 		this.managerClient = new ClientDataManagerRESTClient(restTemplate);
@@ -33,7 +33,7 @@ public class ClientDataService {
 	
 	public void sendData(String status, String ramInfo, String cpuInfo){
 		ClientDataMap sendmap = prepareData(status, ramInfo, cpuInfo);
-		managerClient.sendClientData(client.getUser().getId(), sendmap);
+		managerClient.sendClientData(client.getUser().getId(),client.getId(), sendmap);
 	}
 	
 	public boolean hasActiveQueuer(){

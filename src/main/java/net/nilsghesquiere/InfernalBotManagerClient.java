@@ -22,6 +22,7 @@ import net.nilsghesquiere.util.ProgramUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.oauth2.client.OAuth2RestOperations;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.web.client.ResourceAccessException;
 
 @Data
@@ -44,7 +45,7 @@ public class InfernalBotManagerClient {
 	private InfernalSettingsService infernalSettingsService;
 	private ClientDataService clientDataService;
 
-	public InfernalBotManagerClient(IniSettings iniSettings, Client client, OAuth2RestOperations restTemplate){
+	public InfernalBotManagerClient(IniSettings iniSettings, Client client, OAuth2RestTemplate restTemplate){
 		this.iniSettings = iniSettings;
 		this.client = client;
 		this.restTemplate = restTemplate;

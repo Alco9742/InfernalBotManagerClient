@@ -7,11 +7,13 @@ import java.util.List;
 
 import lombok.Data;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Data
 public class ClientData implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private Long id;
-	private String tag;
 	private List<Queuer> queuers;
 	private LocalDateTime date;
 	private String status;
@@ -20,15 +22,13 @@ public class ClientData implements Serializable{
 	
 	public ClientData() {}
 
-	public ClientData(String tag) {
-		this.tag = tag;
+	public ClientData(Client client) {
 		this.queuers = new ArrayList<>();
 		this.date = LocalDateTime.now();
 		this.status= "";
 	}
 
-	public ClientData(String tag,String status) {
-		this.tag = tag;
+	public ClientData(Client client,String status) {
 		this.queuers = new ArrayList<>();
 		this.date = LocalDateTime.now();
 		this.status=status;
