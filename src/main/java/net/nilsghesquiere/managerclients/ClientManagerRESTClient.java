@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
-import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResourceAccessException;
 
 public class ClientManagerRESTClient implements ClientManagerClient{
@@ -29,26 +28,24 @@ public class ClientManagerRESTClient implements ClientManagerClient{
 	
 	public Client getClientByUserIdAndTag(Long userId, String tag){
 		try{
-			ClientSingleWrapper jsonResponse = restTemplate.getForObject(URI_CLIENTS + "/user/" + userId + "/tag/" + tag, ClientSingleWrapper.class);
+			ClientSingleWrapper jsonResponse = restTemplate.getForObject(URI_CLIENTS + "/user/" + userId + "/client/tag/" + tag, ClientSingleWrapper.class);
 			Client client = jsonResponse.getMap().get("data");
 			if (client != null){
 				LOGGER.info("Received settings for client '" + client.getTag() + "'.");
 			}
 			return client;
 		} catch (ResourceAccessException e){
-			LOGGER.warn("Failure getting client from the server");
-			LOGGER.debug(e.getMessage());
+			LOGGER.debug("Handled exception: " + e.getClass().getSimpleName());
+			LOGGER.debug("Client isn't connected to the internet or server is down");
 			return null;
-		} catch (HttpServerErrorException e2){
-			LOGGER.warn("Failure getting client from the server");
-			LOGGER.debug(e2.getMessage());
+		} catch (Exception e){
+			LOGGER.debug("Unhandled exception:", e);
 			return null;
 		}
 	}
 	
 	public Boolean registerHWID(Long userId, Long clientId, String hwid){
 		try{
-			//HttpEntity<String> request = new HttpEntity<>(hwid, headers);
 			HttpEntity<String> request = new HttpEntity<>(hwid);
 			HttpEntity<ClientSingleWrapper> response = restTemplate.exchange(URI_CLIENTS + "/user/" + userId + "/client/" + clientId + "/register/", HttpMethod.PUT,request, ClientSingleWrapper.class);
 			ClientSingleWrapper jsonResponse = response.getBody();
@@ -59,13 +56,26 @@ public class ClientManagerRESTClient implements ClientManagerClient{
 				return false;
 			}
 		} catch (ResourceAccessException e){
-			LOGGER.warn("Failed to register HWID for this client");
-			LOGGER.debug(e.getMessage());
-			return null;
-		} catch (HttpServerErrorException e2){
-			LOGGER.warn("Failure to register HWID for this client");
-			LOGGER.debug(e2.getMessage());
-			return null;
+			LOGGER.debug("Handled exception: " + e.getClass().getSimpleName());
+			LOGGER.debug("Client isn't connected to the internet or server is down");
+			return false;
+		} catch (Exception e){
+			LOGGER.debug("Unhandled exception:", e);
+			return false;
+		}
+	}
+	
+	public Boolean ping(Long userId, Long clientId){
+		try{
+			Boolean jsonResponse = restTemplate.getForObject(URI_CLIENTS + "/user/" + userId + "/client/" + clientId + "/ping/", Boolean.class);
+			return jsonResponse;
+		} catch (ResourceAccessException e){
+			LOGGER.debug("Handled exception: " + e.getClass().getSimpleName());
+			LOGGER.debug("Client isn't connected to the internet or server is down");
+			return false;
+		} catch (Exception e){
+			LOGGER.debug("Unhandled exception:", e);
+			return false;
 		}
 	}
 	

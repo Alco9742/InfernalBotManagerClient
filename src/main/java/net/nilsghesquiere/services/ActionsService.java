@@ -2,7 +2,7 @@ package net.nilsghesquiere.services;
 
 import net.nilsghesquiere.entities.ClientSettings;
 import net.nilsghesquiere.infernalclients.ActionsInfernalClient;
-import net.nilsghesquiere.infernalclients.ActionsInfernalCustomClient;
+import net.nilsghesquiere.infernalclients.ActionsInfernalRESTClient;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +14,6 @@ public class ActionsService {
 	private final ActionsInfernalClient infernalClient;
 	
 	public ActionsService(ClientSettings clientSettings){
-		this.infernalClient = new ActionsInfernalCustomClient();
+		this.infernalClient = new ActionsInfernalRESTClient();
 	}
 }

@@ -11,7 +11,7 @@ import net.nilsghesquiere.InfernalBotManagerClient;
 import net.nilsghesquiere.Main;
 import net.nilsghesquiere.util.ProgramConstants;
 import net.nilsghesquiere.util.ProgramUtil;
-import net.nilsghesquiere.util.enums.ActionOnNoQueuers;
+import net.nilsghesquiere.util.ProgramVariables;
 import net.nilsghesquiere.util.enums.ClientStatus;
 
 import org.slf4j.Logger;
@@ -45,7 +45,6 @@ public class InfernalBotCheckerRunnable implements Runnable {
 			if(ProgramUtil.isProcessRunning(ProgramConstants.LEGACY_LAUNCHER_NAME)){ 
 				LOGGER.warn("InfernalBot process is running as 'Infernal Launcher.exe', killing the process");
 				ProgramUtil.killLegacyInfernalLauncher();
-				//TODO check what the legacy launchers description is
 				ProgramUtil.killAllInfernalProcesses(infernalBotManagerClient.getClient().getClientSettings().getInfernalPath());
 			}
 			oldProcessName = processName;
@@ -69,19 +68,30 @@ public class InfernalBotCheckerRunnable implements Runnable {
 				} else {
 					//Infernal is running, perform queuer checks here
 					if(!infernalBotManagerClient.getClientDataService().hasActiveQueuer()){
-						if(infernalBotManagerClient.getClient().getClientSettings().getActionOnNoQueuers().equals(ActionOnNoQueuers.REBOOT_WINDOWS)){
-							LOGGER.info("No active queuers found, rebooting windows");
-							rebootFromManager = true;
-							Main.exitWaitRunnable.exit();
-						} else {
-							LOGGER.info("No active queuers found, closing InfernalBot process");
-							ProgramUtil.killAllInfernalProcesses(infernalBotManagerClient.getClient().getClientSettings().getInfernalPath());
+						switch(infernalBotManagerClient.getClient().getClientSettings().getActionOnNoQueuers()){
+							case REBOOT_WINDOWS:{
+								LOGGER.info("No active queuers found, rebooting windows");
+								rebootFromManager = true;
+								Main.exitWaitRunnable.exit();
+							}
+							case RESTART_INFERNALBOT:{
+								LOGGER.info("No active queuers found, closing InfernalBot process");
+								ProgramUtil.killAllInfernalProcesses(infernalBotManagerClient.getClient().getClientSettings().getInfernalPath());
+							}
+							case DO_NOTHING:
+								break;
+							default:
+								break;
 						}
 					} else {
 						if (!infernalBotManagerClient.queuersHaveEnoughAccounts()){
+							LOGGER.debug("!infernalBotManagerClient.queuersHaveEnoughAccounts()");
+							LOGGER.debug("Deleted this for now, I believe this causes unwanted behaviour");
+							/*
 							LOGGER.info("Not enough active accounts, closing InfernalBot process");
 							infernalBotManagerClient.getClientDataService().deleteAllQueuers();
 							ProgramUtil.killAllInfernalProcesses(infernalBotManagerClient.getClient().getClientSettings().getInfernalPath());
+							*/
 						} else {
 							//Everything is running as it should
 							Main.managerMonitorRunnable.setClientStatus(ClientStatus.INFERNAL_RUNNING);
@@ -120,7 +130,7 @@ public class InfernalBotCheckerRunnable implements Runnable {
 		//extra check for the stop here (just to be sure)
 		if (!stop){
 			Main.managerMonitorRunnable.setClientStatus(ClientStatus.INFERNAL_STARTUP);
-			if(!Main.softStart){
+			if(!ProgramVariables.softStart){
 				LOGGER.info("Closing all InfernalBot processes");
 				ProgramUtil.killAllInfernalProcesses(infernalBotManagerClient.getClient().getClientSettings().getInfernalPath());
 				startInfernalBot();
@@ -157,7 +167,7 @@ public class InfernalBotCheckerRunnable implements Runnable {
 			if(!accountListUpdaterThreadMap.isEmpty()){
 				stopAccountListUpdaterThread();
 			}
-			Path infernalProgramPath = infernalBotManagerClient.getClient().getClientSettings().getInfernalPath().resolve(infernalBotManagerClient.getClient().getClientSettings().getInfernalProgramName());
+			Path infernalProgramPath = infernalBotManagerClient.getClient().getClientSettings().getInfernalPath().resolve(infernalBotManagerClient.getIniSettings().getInfernalProgramName());
 			@SuppressWarnings("unused")
 			Process process = new ProcessBuilder(infernalProgramPath.toString()).start();
 			LOGGER.info("InfernalBot started");

@@ -16,7 +16,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
-import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResourceAccessException;
 
 
@@ -57,12 +56,11 @@ public class LolAccountManagerRESTClient implements LolAccountManagerClient {
 			}
 			return returnAccounts;
 		} catch (ResourceAccessException e){
-			LOGGER.warn("Failure getting accounts from the server");
-			LOGGER.debug(e.getMessage());
+			LOGGER.debug("Handled exception: " + e.getClass().getSimpleName());
+			LOGGER.debug("Client isn't connected to the internet or server is down");
 			return null;
-		} catch (HttpServerErrorException e){
-			LOGGER.warn("Failure getting accounts from the server");
-			LOGGER.debug(e.getMessage());
+		} catch (Exception e){
+			LOGGER.debug("Unhandled exception:", e);
 			return null;
 		}
 	}
@@ -82,12 +80,11 @@ public class LolAccountManagerRESTClient implements LolAccountManagerClient {
 			}
 			return returnAccounts;
 		} catch (ResourceAccessException e){
-			LOGGER.warn("Failure getting bufferaccounts from the server");
-			LOGGER.debug(e.getMessage());
+			LOGGER.debug("Handled exception: " + e.getClass().getSimpleName());
+			LOGGER.debug("Client isn't connected to the internet or server is down");
 			return null;
-		} catch (HttpServerErrorException e){
-			LOGGER.warn("Failure getting bufferaccounts from the server");
-			LOGGER.debug(e.getMessage());
+		} catch (Exception e){
+			LOGGER.debug("Unhandled exception:", e);
 			return null;
 		}
 	}
@@ -97,10 +94,11 @@ public class LolAccountManagerRESTClient implements LolAccountManagerClient {
 			LolAccount lolAccount = restTemplate.getForObject(URI_ACCOUNTS + "/user/" + userid + "/region/" + region + "/account/" + account, LolAccount.class);
 			return lolAccount;
 		} catch (ResourceAccessException e){
-			LOGGER.debug(e.getMessage());
+			LOGGER.debug("Handled exception: " + e.getClass().getSimpleName());
+			LOGGER.debug("Client isn't connected to the internet or server is down");
 			return null;
-		} catch (HttpServerErrorException e){
-			LOGGER.debug(e.getMessage());
+		} catch (Exception e){
+			LOGGER.debug("Unhandled exception:", e);
 			return null;
 		}
 	}
@@ -117,12 +115,11 @@ public class LolAccountManagerRESTClient implements LolAccountManagerClient {
 			List<LolAccount> returnAccounts = lolAccountWrapperResponse.getMap().get("data");
 			return returnAccounts;
 		} catch (ResourceAccessException e){
-			LOGGER.warn("Failure updating accounts on the server");
-			LOGGER.debug(e.getMessage());
+			LOGGER.debug("Handled exception: " + e.getClass().getSimpleName());
+			LOGGER.debug("Client isn't connected to the internet or server is down");
 			return null;
-		} catch (HttpServerErrorException e){
-			LOGGER.warn("updating getting accounts from the server");
-			LOGGER.debug(e.getMessage());
+		} catch (Exception e){
+			LOGGER.debug("Unhandled exception:", e);
 			return null;
 		}
 	} 
@@ -144,12 +141,11 @@ public class LolAccountManagerRESTClient implements LolAccountManagerClient {
 			}
 			return result;
 		} catch (ResourceAccessException e){
-			LOGGER.warn("Failure updating accounts on the server");
-			LOGGER.debug(e.getMessage());
+			LOGGER.debug("Handled exception: " + e.getClass().getSimpleName());
+			LOGGER.debug("Client isn't connected to the internet or server is down");
 			return false;
-		} catch (HttpServerErrorException e){
-			LOGGER.warn("Failure updating accounts on the server");
-			LOGGER.debug(e.getMessage());
+		} catch (Exception e){
+			LOGGER.debug("Unhandled exception:", e);
 			return false;
 		}
 	}

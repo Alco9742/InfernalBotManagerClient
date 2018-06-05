@@ -22,13 +22,8 @@ public class ClientSettings {
 	private Integer rebootTime;
 	private Boolean fetchInfernalSettings;
 	private ActionOnNoQueuers actionOnNoQueuers; 
-	
-	private Boolean debug;
-	private String infernalProgramName;
 
 	public ClientSettings() {
-		//TODO move to inisettings?
-		this.infernalProgramName = "Infernal-Start.exe";
 	}
 	
 	@SuppressWarnings("unused")

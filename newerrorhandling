@@ -1,0 +1,5 @@
+Done:
+-When building RestTemplate: Wrong credentials, no connection to the server, no internet connection.
+-Every REST call: ResourceAccessException
+-Old catches are still in use
+-Placed try-catches for generic exceptions, use this to identify the actual exceptions

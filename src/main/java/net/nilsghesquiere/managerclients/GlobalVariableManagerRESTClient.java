@@ -8,7 +8,6 @@ import net.nilsghesquiere.util.wrappers.GlobalVariableSingleWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.oauth2.client.OAuth2RestOperations;
-import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResourceAccessException;
 
 
@@ -30,12 +29,12 @@ public class GlobalVariableManagerRESTClient implements GlobalVariableManagerCli
 			GlobalVariable globalVariable = jsonResponse.getMap().get("data");
 			return globalVariable;
 		} catch (ResourceAccessException e){
-			LOGGER.warn("Failure getting global variable from the server");
-			LOGGER.debug(e.getMessage());
+			LOGGER.debug("Handled exception: " + e.getClass().getSimpleName());
+			LOGGER.debug("Client isn't connected to the internet or server is down");
 			return null;
-		} catch (HttpServerErrorException e){
-			LOGGER.warn("Failure getting global variable from the server");
-			LOGGER.debug(e.getMessage());
+		
+		} catch (Exception e){
+			LOGGER.debug("Unhandled exception:", e);
 			return null;
 		}
 	}

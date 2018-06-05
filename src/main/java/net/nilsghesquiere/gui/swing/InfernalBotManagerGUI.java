@@ -35,17 +35,16 @@ public class InfernalBotManagerGUI extends JFrame {
 			LOGGER.debug(e.getMessage());
 		}
 		
-		ImageIcon icon = createImageIcon("/i.png","InfernalBotManagerClient");
-		this.setTitle("InfernalBotManager");
-		this.setIconImage(icon.getImage());
+		setIconConnected();
+		this.setTitle("IBMC");
 		
 		JTabbedPane tabbedPane = new JTabbedPane();
 
 		JPanel consolePanel = new InfernalManagerConsolePanel();
-		JPanel settingsPanel = new InfernalManagerSettingsPanel();
+		//JPanel settingsPanel = new InfernalManagerSettingsPanel();
 		
 		tabbedPane.addTab("Console", consolePanel);
-		tabbedPane.addTab("Settings", settingsPanel);
+		//tabbedPane.addTab("Settings", settingsPanel);
 		tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
 		
 		this.add(tabbedPane);
@@ -74,4 +73,23 @@ public class InfernalBotManagerGUI extends JFrame {
 				return null;
 			}
 	}
+	
+	public void changeTitle(String newTitle){
+		LOGGER.debug("Changing windows title to: '" + newTitle + "'");
+		this.setTitle(newTitle);
+	}
+	
+	public void setIconConnected(){
+		changeIcon("/i.png","InfernalBotManagerClient");
+	}
+	
+	public void setIconDisconnected(){
+		changeIcon("/i-err.png","InfernalBotManagerClient");
+	}
+	
+	private void changeIcon(String path,String description){
+		ImageIcon newIcon = createImageIcon(path, description);
+		this.setIconImage(newIcon.getImage());
+	}
+	
 }

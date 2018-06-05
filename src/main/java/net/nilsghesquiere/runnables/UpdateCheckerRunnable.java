@@ -4,6 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 import net.nilsghesquiere.InfernalBotManagerClient;
 import net.nilsghesquiere.Main;
+import net.nilsghesquiere.util.ProgramVariables;
 import net.nilsghesquiere.util.enums.ClientStatus;
 
 import org.slf4j.Logger;
@@ -32,13 +33,13 @@ public class UpdateCheckerRunnable implements Runnable {
 			LOGGER.debug("Starting Update Checker");
 		}
 		while (!stop){
-			Main.serverUpToDate = client.checkServerVersion();
+			ProgramVariables.serverUpToDate = client.checkServerVersion();
 			try{
 				if(client.checkUpdateNow()){
 					if(!client.checkClientVersion(false)){
 						LOGGER.info("Update found, commencing updater");
 						Main.managerMonitorRunnable.setClientStatus(ClientStatus.UPDATE);
-						Main.softStop = true;
+						ProgramVariables.softStop = true;
 						client.updateClient();
 						Main.exitWaitRunnable.exit();
 					}

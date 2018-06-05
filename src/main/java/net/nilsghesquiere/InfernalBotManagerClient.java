@@ -11,17 +11,19 @@ import lombok.Data;
 import net.nilsghesquiere.entities.Client;
 import net.nilsghesquiere.entities.IniSettings;
 import net.nilsghesquiere.entities.Queuer;
+import net.nilsghesquiere.gui.swing.InfernalBotManagerGUI;
 import net.nilsghesquiere.services.ClientDataService;
+import net.nilsghesquiere.services.ClientService;
 import net.nilsghesquiere.services.GlobalVariableService;
 import net.nilsghesquiere.services.InfernalSettingsService;
 import net.nilsghesquiere.services.LolAccountService;
 import net.nilsghesquiere.services.UserService;
 import net.nilsghesquiere.util.ProgramConstants;
 import net.nilsghesquiere.util.ProgramUtil;
+import net.nilsghesquiere.util.ProgramVariables;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.web.client.ResourceAccessException;
 
@@ -37,15 +39,19 @@ public class InfernalBotManagerClient {
 	
 	private Client client;
 	
-	private OAuth2RestOperations restTemplate;
+	private OAuth2RestTemplate restTemplate;
+	
+	private InfernalBotManagerGUI gui;
 	
 	private UserService userService;
 	private GlobalVariableService globalVariableService;
 	private LolAccountService accountService;
 	private InfernalSettingsService infernalSettingsService;
 	private ClientDataService clientDataService;
+	private ClientService clientService;
 
-	public InfernalBotManagerClient(IniSettings iniSettings, Client client, OAuth2RestTemplate restTemplate){
+	public InfernalBotManagerClient(InfernalBotManagerGUI gui, IniSettings iniSettings, Client client, OAuth2RestTemplate restTemplate){
+		this.gui = gui;
 		this.iniSettings = iniSettings;
 		this.client = client;
 		this.restTemplate = restTemplate;
@@ -54,6 +60,7 @@ public class InfernalBotManagerClient {
 		this.accountService = new LolAccountService(client, restTemplate);
 		this.infernalSettingsService = new InfernalSettingsService(client);
 		this.clientDataService = new ClientDataService(client, restTemplate);
+		this.clientService = new ClientService(restTemplate);
 	}
 	
 	//Schedule Reboot
@@ -71,19 +78,6 @@ public class InfernalBotManagerClient {
 		lolAccountPragmasOK = accountService.checkPragmas();
 	}
 	
-	//Check connection to riot server, infernalbot server & infernalbotmanager server
-	public boolean checkConnectionComplete(){
-		//TODO implements checks for riot & infernal connection
-		boolean connectedToRiot = true;
-		boolean connectedToInfernal = true;
-		boolean connectedToManager = checkConnection();
-		if(connectedToRiot && connectedToInfernal && connectedToManager){
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
 	//check if lol is up to date TODO implement
 	public boolean lolUpToDate(){
 		return true;
@@ -93,7 +87,7 @@ public class InfernalBotManagerClient {
 	public boolean infernalUpToDate(){
 		return true;
 	}
-
+	
 	//GlobalVariables methods
 	public boolean checkConnection(){
 		try{
@@ -102,12 +96,16 @@ public class InfernalBotManagerClient {
 				LOGGER.error("Failure connecting to the InfernalBotManager server.");
 			}
 			return globalVariableService.checkConnection();
-		} catch (ResourceAccessException e) {
-			LOGGER.error("Failure connecting to the InfernalBotManager server.");
-			LOGGER.debug(e.getMessage());
-				return false;
+		} catch (ResourceAccessException e){
+			LOGGER.debug("Handled exception: " + e.getClass().getSimpleName());
+			LOGGER.debug("Client isn't connected to the internet or server is down");
+			return false;
+		} catch (Exception e){
+			LOGGER.debug("Unhandled exception:", e);
+			return false;
 		}
 	}
+		
 	
 	public boolean checkClientVersion(){
 		return globalVariableService.checkClientVersion();
@@ -133,12 +131,12 @@ public class InfernalBotManagerClient {
 
 	//InfernalSettings methods
 	public boolean setInfernalSettings(){
-		if(Main.softStart){
+		if(ProgramVariables.softStart){
 			LOGGER.debug("Not performing settings exchange (softstart)");
 			return true;
 		}
 		if (client.getClientSettings().getFetchInfernalSettings()){
-			if(!Main.serverUpToDate){
+			if(!ProgramVariables.serverUpToDate){
 				LOGGER.info("InfernalBotManager server is outdated.");
 				LOGGER.info("Falling back to InfernalBots own settings until updated.");
 				LOGGER.debug("Not performing settings exchange (server outdated)");
@@ -159,11 +157,11 @@ public class InfernalBotManagerClient {
 	
 	//LolAccount methods
 	public boolean initialExchangeAccounts(){
-		if(Main.softStart){
+		if(ProgramVariables.softStart){
 			LOGGER.debug("Not performing account exchange (softstart)");
 			return true;
 		}
-		if(!Main.serverUpToDate){
+		if(!ProgramVariables.serverUpToDate){
 			LOGGER.info("InfernalBotManager server is outdated.");
 			LOGGER.info("Falling back to InfernalBots own accounts until updated.");
 			LOGGER.debug("Not performing account exchange (server outdated)");
@@ -179,7 +177,7 @@ public class InfernalBotManagerClient {
 	}
 	
 	public boolean exchangeAccounts(){
-		if(!Main.serverUpToDate){
+		if(!ProgramVariables.serverUpToDate){
 			LOGGER.info("InfernalBotManager server is outdated.");
 			LOGGER.info("Falling back to InfernalBots own accounts until updated.");
 			LOGGER.debug("Not performing account exchange (server outdated)");
@@ -195,11 +193,11 @@ public class InfernalBotManagerClient {
 	}
 	
 	public boolean setAccountsAsReadyForUse(){
-		if (!Main.serverUpToDate){
+		if (!ProgramVariables.serverUpToDate){
 			LOGGER.debug("Not setting accounts as ready for use (server outdated)");
 			return true; // niet doen als server outdated is
 		}
-		if (Main.softStop){
+		if (ProgramVariables.softStop){
 			LOGGER.debug("Not setting accounts as ready for use (softstop)");
 			return true; // niet doen als server outdated is
 		}
@@ -212,8 +210,8 @@ public class InfernalBotManagerClient {
 	
 	
 	public void updateAccountsOnServer(){
-		if (Main.serverUpToDate){ 
-			if (!Main.softStop){
+		if (ProgramVariables.serverUpToDate){ 
+			if (!ProgramVariables.softStop){
 				accountService.updateAccountsOnServer();
 			} else {
 				LOGGER.debug("Not updating accounts on server (softstop)");
@@ -225,7 +223,7 @@ public class InfernalBotManagerClient {
 	
 	//ClientData methods
 	public void deleteAllQueuers(){
-		if(!Main.softStart){
+		if(!ProgramVariables.softStart){
 			clientDataService.deleteAllQueuers();
 		} else {
 			LOGGER.debug("Not deleting queuers (softstart)");
@@ -234,12 +232,12 @@ public class InfernalBotManagerClient {
 	}
 	
 	public void sendData(String status, String ramInfo, String cpuInfo){
-		if (Main.serverUpToDate){
+		if (ProgramVariables.serverUpToDate){
 			clientDataService.sendData(status, ramInfo, cpuInfo);
 		} //don't log this, too many times
 	}
 	
-	//TODO checken wat dit precies doet momenteel
+	//TODO checken wat dit precies doet momenteel, disabled in de checker, denk dat dit zorgt dat close gebeurd
 	public boolean queuersHaveEnoughAccounts(){
 		//After that do a double check by looking if there are any queuers with less than 5 accounts
 		//This scenario happens when there are not enough accounts in the account list (bans etc etc)
@@ -294,11 +292,11 @@ public class InfernalBotManagerClient {
 	}
 	
 	private boolean checkDir(){
-		Path infernalPath = client.getClientSettings().getInfernalPath().resolve(client.getClientSettings().getInfernalProgramName());
+		Path infernalPath = client.getClientSettings().getInfernalPath().resolve(iniSettings.getInfernalProgramName());
 		if(Files.exists(infernalPath)){
 			return  true;
 		} else {
-			LOGGER.debug("'" + client.getClientSettings().getInfernalProgramName() + "' not found at path: " + infernalPath);
+			LOGGER.debug("'" + iniSettings.getInfernalProgramName() + "' not found at path: " + infernalPath);
 			return false;
 		}
 		
@@ -329,7 +327,7 @@ public class InfernalBotManagerClient {
 				} else {
 					arg1 = iniSettings.getWebServer() + ":" + iniSettings.getPort() + "/downloads/"; 
 				}
-				if(Main.softStop){
+				if(ProgramVariables.softStop){
 					//softStop = stopStart aswell, pass the parameter to the updater so it can pass it back to the program
 					arg2 = "soft";
 				} else {

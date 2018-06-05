@@ -1,12 +1,12 @@
 package net.nilsghesquiere.services;
 
+import net.nilsghesquiere.entities.GlobalVariable;
 import net.nilsghesquiere.managerclients.GlobalVariableManagerClient;
 import net.nilsghesquiere.managerclients.GlobalVariableManagerRESTClient;
 import net.nilsghesquiere.util.ProgramConstants;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 
 public class GlobalVariableService {
@@ -48,7 +48,7 @@ public class GlobalVariableService {
 	public boolean checkServerVersion(){
 		String currentVersion = getServerVersion();
 		if (currentVersion == null){
-			return false;
+			return true;
 		}
 		if(ProgramConstants.SERVER_VERSION.equals(currentVersion)){
 			return true;
@@ -95,26 +95,34 @@ public class GlobalVariableService {
 	}
 	
 	private String getClientVersion(){
-		return managerClient.getGlobalVariableByName("clientVersion").getValue();
+		return getVar("clientVersion");
 	}
 	
 	private String getServerVersion(){
-		return managerClient.getGlobalVariableByName("serverVersion").getValue();
+		return getVar("serverVersion");
 	}
 	
 	private String getKillSwitch(){
-		return managerClient.getGlobalVariableByName("killSwitch").getValue().toLowerCase();
+		return getVar("killSwitch");
 	}
 	
 	private String getKillSwitchMessage(){
-		return managerClient.getGlobalVariableByName("killSwitchMessage").getValue();
+		return getVar("killSwitchMessage");
 	}
 	
 	private String getConnection(){
-		return managerClient.getGlobalVariableByName("connection").getValue();
+		return getVar("connection");
 	}
 	
 	private String getUpdate(){
-		return managerClient.getGlobalVariableByName("update").getValue().toLowerCase();
+		return getVar("update");
+	}
+	
+	private String getVar(String varName){
+		GlobalVariable var = managerClient.getGlobalVariableByName(varName);
+		if (var != null){
+			return var.getValue();
+		}
+		return null;
 	}
 }

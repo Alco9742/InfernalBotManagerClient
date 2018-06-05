@@ -6,7 +6,6 @@ import net.nilsghesquiere.util.wrappers.UserSingleWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
-import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResourceAccessException;
 
 public class UserManagerRESTClient implements UserManagerClient{
@@ -27,12 +26,11 @@ public class UserManagerRESTClient implements UserManagerClient{
 			Long jsonResponse = restTemplate.getForObject(URI_USERS + "/username/" + username +"/id", Long.class);
 			return jsonResponse;
 		} catch (ResourceAccessException e){
-			LOGGER.warn("Failure getting user ID from the server");
-			LOGGER.debug(e.getMessage());
+			LOGGER.debug("Handled exception: " + e.getClass().getSimpleName());
+			LOGGER.debug("Client isn't connected to the internet or server is down");
 			return null;
-		} catch (HttpServerErrorException e2){
-			LOGGER.warn("Failure getting user ID from the server");
-			LOGGER.debug(e2.getMessage());
+		} catch (Exception e){
+			LOGGER.debug("Unhandled exception:", e);
 			return null;
 		}
 	}
@@ -46,12 +44,11 @@ public class UserManagerRESTClient implements UserManagerClient{
 			}
 			return user;
 		} catch (ResourceAccessException e){
-			LOGGER.warn("Failure getting user from the server");
-			LOGGER.debug(e.getMessage());
+			LOGGER.debug("Handled exception: " + e.getClass().getSimpleName());
+			LOGGER.debug("Client isn't connected to the internet or server is down");
 			return null;
-		} catch (HttpServerErrorException e2){
-			LOGGER.warn("Failure getting user from the server");
-			LOGGER.debug(e2.getMessage());
+		} catch (Exception e){
+			LOGGER.debug("Unhandled exception:", e);
 			return null;
 		}
 	}

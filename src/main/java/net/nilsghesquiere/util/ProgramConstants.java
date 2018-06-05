@@ -12,7 +12,6 @@ public class ProgramConstants {
 	public static final String LEGACY_LAUNCHER_NAME = "Infernal Launcher.exe";
 	public static final String WEBSERVER = "https://infernalbotmanager.com" ;
 	public static final String PORT = "";
-	public static final Boolean useSwingGUI = true;
 	public static final String UPDATER_NAME = "InfernalBotManagerUpdater.exe";
 	public static final Boolean enableOshiCPUCheck = true;
 	public static final List<String> programsToClose = 

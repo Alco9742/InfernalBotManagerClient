@@ -7,9 +7,6 @@ import java.util.List;
 
 import lombok.Data;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 @Data
 public class ClientData implements Serializable{
 	private static final long serialVersionUID = 1L;

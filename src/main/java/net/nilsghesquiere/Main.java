@@ -14,18 +14,23 @@ import java.util.concurrent.TimeUnit;
 import net.nilsghesquiere.entities.Client;
 import net.nilsghesquiere.entities.IniSettings;
 import net.nilsghesquiere.entities.User;
+import net.nilsghesquiere.exceptionhandlers.RestErrorHandler;
 import net.nilsghesquiere.gui.swing.InfernalBotManagerGUI;
 import net.nilsghesquiere.hooks.GracefulExitHook;
 import net.nilsghesquiere.monitoring.SystemMonitor;
+import net.nilsghesquiere.runnables.ClientActionCheckerRunnable;
 import net.nilsghesquiere.runnables.ExitWaitRunnable;
 import net.nilsghesquiere.runnables.InfernalBotCheckerRunnable;
 import net.nilsghesquiere.runnables.ManagerMonitorRunnable;
 import net.nilsghesquiere.runnables.ThreadCheckerRunnable;
 import net.nilsghesquiere.runnables.UpdateCheckerRunnable;
 import net.nilsghesquiere.services.ClientService;
+import net.nilsghesquiere.services.GlobalVariableService;
 import net.nilsghesquiere.services.UserService;
+import net.nilsghesquiere.util.InternetAvailabilityChecker;
 import net.nilsghesquiere.util.ProgramConstants;
 import net.nilsghesquiere.util.ProgramUtil;
+import net.nilsghesquiere.util.ProgramVariables;
 import net.nilsghesquiere.util.enums.ClientStatus;
 
 import org.ini4j.InvalidFileFormatException;
@@ -35,9 +40,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
+import org.springframework.security.oauth2.client.resource.OAuth2AccessDeniedException;
 import org.springframework.security.oauth2.client.token.DefaultAccessTokenRequest;
 import org.springframework.security.oauth2.client.token.grant.password.ResourceOwnerPasswordResourceDetails;
-import org.springframework.web.client.HttpClientErrorException;
 
 public class Main{
 	private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
@@ -48,11 +53,6 @@ public class Main{
 	public static ExitWaitRunnable exitWaitRunnable;
 	public static Thread exitWaitThread;
 	public static ManagerMonitorRunnable managerMonitorRunnable;
-	public static String iniLocation;
-	public static boolean softStop; //don't update any accounts / settings on close
-	public static boolean softStart; //don't update any accounts / settings on start
-	public static boolean serverUpToDate = true;
-	
 
 	public static void main(String[] args) throws InterruptedException{
 		//Hook to ensure safe exits
@@ -63,11 +63,8 @@ public class Main{
 		//Disable the windows error reporting
 		disableWindowsErrorReporting();
 		//Start the GUI
-		if(ProgramConstants.useSwingGUI){
-			@SuppressWarnings("unused")
-			InfernalBotManagerGUI gui = new InfernalBotManagerGUI();
-			TimeUnit.SECONDS.sleep(2);
-		}
+		InfernalBotManagerGUI gui = new InfernalBotManagerGUI();
+		TimeUnit.SECONDS.sleep(2);
 		
 		LOGGER.info("Starting InfernalBotManager Client");
 		
@@ -76,65 +73,91 @@ public class Main{
 			for (int i=0; i<args.length; i++){
 				LOGGER.debug("arg[" + i + "] = " + args[i]);
 			}
-			iniLocation = args[0];
-			softStart = args[1].equals("soft");
+			ProgramVariables.iniLocation = args[0];
+			ProgramVariables.softStart = args[1].equals("soft");
 		} catch (ArrayIndexOutOfBoundsException e){
-			iniLocation = System.getProperty("user.dir") + "\\" + ProgramConstants.INI_NAME; 
-			softStart = false;
+			ProgramVariables.iniLocation = System.getProperty("user.dir") + "\\" + ProgramConstants.INI_NAME; 
+			ProgramVariables.softStart = false;
 		}
+		
+		//FROM HERE ON WE BUILD THE REST TEMPLATE, USE IT TO CHECK AUTH AND CHECK OR UPDATES BEFORE CONTINUEING
+		//Initializing optionals
+		Optional<IniSettings> iniSettings = Optional.empty();
+		Optional<OAuth2RestTemplate> restTemplate= Optional.empty();
+		Optional<User> user= Optional.empty();
+		Optional<Client> client = Optional.empty();
+		//Conditions we should check before launching the actual program
+		boolean outdated = false;
+		boolean killswitch = false;
+		boolean badconfig = false;
+		boolean runprogram = true;
 		
 		//Build the IniSettings
-		//TODO catch errors
-		Optional<IniSettings> iniSettings = buildIniSettings(iniLocation);
+		iniSettings = buildIniSettings(ProgramVariables.iniLocation);
 		if(iniSettings.isPresent()){
 			//Build the RestTemplate
-			OAuth2RestTemplate restTemplate = buildRestTemplate(iniSettings.get());
-			//TODO: test connection here
-			//Build the user
-			Optional<User> user = buildUser(iniSettings.get(), restTemplate);
-			if(user.isPresent()){
-				//build the client
-				Optional<Client> client = buildClient(iniSettings.get(),restTemplate, user.get());
-				if(client.isPresent()){
-					client.get().setUser(user.get());
-					LOGGER.info(client.toString());
-					if(checkClientHWID(iniSettings.get(),restTemplate, client.get())){
-						infernalBotManagerClient = new InfernalBotManagerClient(iniSettings.get(), client.get(),restTemplate);
-					}
-				} else {
-					LOGGER.info("Client '" + iniSettings.get().getClientTag() + "' not found on the server.");
-				}
-			} // TODO else voor user
+			restTemplate = buildRestTemplate(gui,iniSettings.get());
 		}
 		
-		if(infernalBotManagerClient != null){
+		//If the template is present the user is already authenticated
+		if(restTemplate.isPresent()){
+			//We got connection with the server, check for updates before actually launching the core program
+			GlobalVariableService globalVariableService = new GlobalVariableService(restTemplate.get());
 			try{
-				if(infernalBotManagerClient.getIniSettings().getTestmode()){
-					test();
+				killswitch = globalVariableService.checkKillSwitch();
+				ProgramVariables.serverUpToDate = globalVariableService.checkServerVersion();
+				outdated = !globalVariableService.checkClientVersion();
+			} catch (NullPointerException ex){
+				LOGGER.debug("Handled exception:", ex);
+				badconfig = true;
+			}	
+		
+			if(badconfig || killswitch || outdated ){
+				runprogram = false;
+			}
+			
+			if (runprogram){
+				user = buildUser(iniSettings.get(), restTemplate.get());
+				if(user.isPresent()){
+					//Build the client optional
+					client = buildClient(iniSettings.get(),restTemplate.get(), user.get());
+					if(client.isPresent()){
+						//Set user on the client
+						client.get().setUser(user.get());
+						//Check or register the client HWID
+						if(checkClientHWID(iniSettings.get(),restTemplate.get(), client.get())){
+							infernalBotManagerClient = new InfernalBotManagerClient(gui, iniSettings.get(), client.get(),restTemplate.get());
+							if(infernalBotManagerClient.getIniSettings().getTestmode()){
+								try{
+									test();
+								} catch (Exception e){
+									LOGGER.debug("Unhandled exception in testmode:", e);
+								}
+							} else {
+								try{
+									program();
+								} catch (Exception e){
+									LOGGER.debug("Unhandled exception:", e);
+								}
+							}
+						}
+					}
+				} 
+			} else {
+				if(badconfig){
+					LOGGER.error("Bad configuration on the server, contact Alco");
 				} else {
-					program();
+					if(outdated){
+						managerMonitorRunnable.setClientStatus(ClientStatus.UPDATE);
+						infernalBotManagerClient.updateClient();
+						LOGGER.info("Closing InfernalBotManager Client");
+						exitWaitRunnable.exit();
+					}
 				}
-				//test();
-			} catch(HttpClientErrorException e){
-				//AuthenticationException
-				LOGGER.debug("Received the following response from the server: " + e.getMessage());
-				if (e.getMessage().toLowerCase().contains("unauthorized")){
-					LOGGER.error("Failure authenticating to the server, check your credentials");
-				}
-				if (e.getMessage().toLowerCase().contains("not found")){
-					LOGGER.error("Something went wrong, contact Alco");
-				}
-				LOGGER.info("Closing InfernalBotManager Client");
-				exitWaitRunnable.exit();
-			} catch(Exception e){
-				//UNHANDLED EXCEPTIONS
-				LOGGER.debug("Unhandled Exception:", e);
 			}
 		} else {
-			LOGGER.info("Closing InfernalBotManager Client");
-			exitWaitRunnable.exit();
+			LOGGER.info("Client failed to launch, fix your set-up and relaunch.");
 		}
-
 	}
 	
 
@@ -147,90 +170,43 @@ public class Main{
 		if (infernalBotManagerClient.getIniSettings().getDebugThreads()){
 			startThreadCheckerThread();
 		}
-		boolean upToDate = true;
-		boolean connected = false;
-		boolean killSwitchOff = true;
-		while(!connected){
-			try{
-				connected = infernalBotManagerClient.checkConnection();
-				if (connected){
-					if(infernalBotManagerClient.checkKillSwitch()){
-						killSwitchOff = false;
-					} else {
-						if(!infernalBotManagerClient.checkClientVersion()){
-							upToDate = false;
-						}
-						if(!infernalBotManagerClient.checkServerVersion()){
-							serverUpToDate = false;
-						}
-						infernalBotManagerClient.checkUpdateNow(); //Not doing anything with this yet, just placing it here to catch the nullpointer if server isn't set up correctly yet
-					}
-				}
-				if(!connected){
-					LOGGER.info("Retrying in 1 minute..");
-					try {
-						TimeUnit.MINUTES.sleep(1);
-					} catch (InterruptedException e2) {
-						LOGGER.debug(e2.getMessage());
-					}
-				}
-			} catch (NullPointerException ex){
-				LOGGER.error("Bad configuration on the server, contact Alco");
-				exitWaitRunnable.exit();
+		//connection has been made start the monitor & update & client action checker threads
+		if(!exitWaitRunnable.getExit()){
+			startMonitorThread(infernalBotManagerClient);
+			startUpdateCheckerThread(infernalBotManagerClient);
+			startClientActionCheckerThread(infernalBotManagerClient);
+		}
+
+		//backup sqllite file
+		if(infernalBotManagerClient.backUpInfernalDatabase()){
+			//initial checks
+			//Check if infernalbot tables have been changed since last version ((if it updates this launch the pragmas will still change after launch which is why we do another check later on)
+			infernalBotManagerClient.checkTables();
+			//Attempt to get accounts, retry if fail
+			boolean initDone = infernalBotManagerClient.checkConnection() && infernalBotManagerClient.setInfernalSettings() && infernalBotManagerClient.initialExchangeAccounts();
+			while (!initDone){
 				try {
-					TimeUnit.SECONDS.sleep(10);
+					LOGGER.info("Retrying in 1 minute...");
+					TimeUnit.MINUTES.sleep(1);
+					initDone = (infernalBotManagerClient.checkConnection() && infernalBotManagerClient.setInfernalSettings() && infernalBotManagerClient.initialExchangeAccounts());
 				} catch (InterruptedException e) {
 					LOGGER.debug(e.getMessage());
 				}
 			}
-		}
-		//connection has been made start the monitor & updatechecker threads
-		if(!exitWaitRunnable.getExit()){
-			startMonitorThread(infernalBotManagerClient);
-			startUpdateCheckerThread(infernalBotManagerClient);
-		}
-		if (killSwitchOff){
-			//check for update
-			if (upToDate){
-				//backup sqllite file
-				if(infernalBotManagerClient.backUpInfernalDatabase()){
-					//initial checks
-					//Check if infernalbot tables have been changed since last version ((if it updates this launch the pragmas will still change after launch which is why we do another check later on)
-					infernalBotManagerClient.checkTables();
-					//Attempt to get accounts, retry if fail
-					boolean initDone = infernalBotManagerClient.checkConnection() && infernalBotManagerClient.setInfernalSettings() && infernalBotManagerClient.initialExchangeAccounts();
-					while (!initDone){
-						try {
-							LOGGER.info("Retrying in 1 minute...");
-							TimeUnit.MINUTES.sleep(1);
-							initDone = (infernalBotManagerClient.checkConnection() && infernalBotManagerClient.setInfernalSettings() && infernalBotManagerClient.initialExchangeAccounts());
-						} catch (InterruptedException e) {
-							LOGGER.debug(e.getMessage());
-						}
-					}
-					//schedule reboot
-					infernalBotManagerClient.scheduleReboot();
-					//empty queuers (don't do this if softStart)
-					infernalBotManagerClient.deleteAllQueuers();
-					//send client status
-					managerMonitorRunnable.setClientStatus(ClientStatus.CONNECTED);
-					//start infernalbot checker in a thread
-					startInfernalCheckerThread();
-					
-				} else {
-					LOGGER.info("Closing InfernalBotManager Client");
-					exitWaitRunnable.exit();
-				}
-			} else {
-				managerMonitorRunnable.setClientStatus(ClientStatus.UPDATE);
-				infernalBotManagerClient.updateClient();
-				LOGGER.info("Closing InfernalBotManager Client");
-				exitWaitRunnable.exit();
-			}
+			//schedule reboot
+			infernalBotManagerClient.scheduleReboot();
+			//empty queuers (don't do this if softStart)
+			infernalBotManagerClient.deleteAllQueuers();
+			//send client status
+			managerMonitorRunnable.setClientStatus(ClientStatus.CONNECTED);
+			//start infernalbot checker in a thread
+			startInfernalCheckerThread();
+			
 		} else {
 			LOGGER.info("Closing InfernalBotManager Client");
 			exitWaitRunnable.exit();
 		}
+
 	}
 	
 	private static Optional<IniSettings> buildIniSettings(String iniFile){
@@ -258,7 +234,7 @@ public class Main{
 		}
 	}
 
-	private static OAuth2RestTemplate buildRestTemplate(IniSettings iniSettings){
+	private static Optional<OAuth2RestTemplate> buildRestTemplate(InfernalBotManagerGUI gui, IniSettings iniSettings){
 		String uriServer = "";
 		
 		if(iniSettings.getPort().equals("")){
@@ -279,8 +255,43 @@ public class Main{
 		resource.setUsername(iniSettings.getUsername());
 		resource.setPassword(iniSettings.getPassword());
 		OAuth2RestTemplate restTemplate =  new OAuth2RestTemplate(resource, new DefaultOAuth2ClientContext(new DefaultAccessTokenRequest()));
-		restTemplate.getAccessToken();
-		return restTemplate;
+		restTemplate.setErrorHandler(new RestErrorHandler());
+		
+		do{
+			try{
+				restTemplate.getAccessToken();
+				gui.changeTitle("IBMC - Connected");
+				gui.setIconConnected();
+				return Optional.of(restTemplate);
+			} catch (OAuth2AccessDeniedException e){
+				if(e.getMessage().equals("Access token denied.")){
+					LOGGER.info("Access to the server denied, check your login details.");
+					return Optional.empty();
+				}
+				if(e.getMessage().equals("Error requesting access token.")){
+					LOGGER.info("Failed to connect to the server");
+					// this can be either server offline or their internet offline
+					if(InternetAvailabilityChecker.isInternetAvailable()){
+						LOGGER.info("Server may be having issues, contact Alco");
+						gui.changeTitle("IBMC - Disconnected - Server Down");
+						gui.setIconDisconnected();
+					} else {
+						LOGGER.info("No available connection found, check you internet settings");
+						gui.changeTitle("IBMC - Disconnected - Internet Down");
+						gui.setIconDisconnected();
+					}
+				}
+				LOGGER.debug("Handled exception: " + e.getClass().getSimpleName());
+			} catch (Exception e){
+				LOGGER.debug("Unhandled exception:", e);
+			}
+			try {
+				LOGGER.info("Retrying in 1 minute...");
+				TimeUnit.MINUTES.sleep(1);
+			} catch (InterruptedException e) {
+				LOGGER.debug(e.getMessage());
+			}
+		} while (true);
 	}
 	
 	private static Optional<User> buildUser(IniSettings iniSettings, OAuth2RestTemplate restTemplate){
@@ -371,6 +382,15 @@ public class Main{
 		updateCheckerThread.start();
 	}
 	
+	private static void startClientActionCheckerThread(InfernalBotManagerClient client){
+		ClientActionCheckerRunnable clientActionCheckerRunnable = new ClientActionCheckerRunnable(client);
+		Thread clientActionCheckerThread = new Thread(clientActionCheckerRunnable);
+		threadMap.put(clientActionCheckerThread, clientActionCheckerRunnable);
+		clientActionCheckerThread.setDaemon(false); 
+		clientActionCheckerThread.setName("Client Action Checker Thread");
+		clientActionCheckerThread.start();
+	}
+	
 	private static void killWmiPrvSE(){
 		//kill the Wmi prv service at startup to lessen the chance that it keeps hanging when using oshi
 		LOGGER.debug("Killing WmiPrvSE.exe");
@@ -385,8 +405,8 @@ public class Main{
 		try {
 			reg.write();
 		} catch (IOException e) {
+			LOGGER.debug("Handled exception: " + e.getClass().getSimpleName());
 			LOGGER.debug("Failure trying to disable Windows error reporting UI");
-			LOGGER.debug(e.getMessage());
 		}
 		
 	}

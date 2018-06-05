@@ -16,13 +16,6 @@
 			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{0} - %msg%n</pattern>
 		</encoder>
 	</appender>
-<!-- HTTP file log appender -->
-	<appender name="HTTPFILE" class="ch.qos.logback.core.FileAppender">
-		<file>logs/http.log</file>
-		<encoder>
-			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{0} - %msg%n</pattern>
-		</encoder>
-	</appender>
 	<root level="INFO">
 		<appender-ref ref="STDOUT" />
 	</root>
@@ -30,19 +23,8 @@
 		<appender-ref ref="FILE" />
 	</root>
 	
-	<logger name="org.apache.http" additivity="false">
-		<level value="ERROR" />
-		<appender-ref ref="HTTPFILE" />
-	</logger>
-	
-	<logger name="net.nilsghesquiere.security" additivity="false">
-		<level value="OFF" />
-		<appender-ref ref="HTTPFILE" />
-	</logger>
-	
 	<logger name="net.nilsghesquiere.logging" additivity="false">
 		<level value="DEBUG" />
-		<appender-ref ref="HTTPFILE" />
 	</logger>
 	
 	<logger name="oshi" additivity="false" level="OFF">

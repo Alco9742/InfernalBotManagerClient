@@ -10,7 +10,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
-import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResourceAccessException;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -57,12 +56,11 @@ public class ClientDataManagerRESTClient implements ClientDataManagerClient {
 			} 
 			return result;
 		} catch (ResourceAccessException e){
-			LOGGER.debug("Failure sending ClientData to server");
-			LOGGER.debug(e.getMessage());
+			LOGGER.debug("Handled exception: " + e.getClass().getSimpleName());
+			LOGGER.debug("Client isn't connected to the internet or server is down");
 			return false;
-		} catch (HttpServerErrorException e){
-			LOGGER.debug("Failure sending ClientData to server");
-			LOGGER.debug(e.getMessage());
+		} catch (Exception e){
+			LOGGER.debug("Unhandled exception:", e);
 			return false;
 		}
 	}

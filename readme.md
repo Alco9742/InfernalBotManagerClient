@@ -9,11 +9,12 @@
 
 <h3>TODO NOW</h3>
 <ul>
-<li>Register clients + simple commands</li>
-<li>Client settings fetch from server</li>
-<li>OAuth2 authentication</li>
-<li>Remove any unneeded code</li>
-<li>Clean used code</li>
+<li>Simple commands</li>
+<li>'Ping' server -> Show connection info somewhere</li>
+<li>On server do check for last ping on every client using cronlike stuff (every 5 minutes?)</li>
+<li>Check for updates before building client?</li>
+<li>ActionOnNoQueurs</li>
+<li>Clean entities and DTO's on server</li>
 </ul>
 
 <h3>Client server connection for settings<h3>

@@ -24,4 +24,8 @@ public class ClientService {
 	public Boolean registerHWID(Long userid, Long clientid, String hwid){
 		return managerClient.registerHWID(userid, clientid, hwid);
 	}
+	
+	public Boolean ping(Long userid, Long clientid){
+		return managerClient.ping(userid, clientid);
+	}
 }

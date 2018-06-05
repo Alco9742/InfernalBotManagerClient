@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit;
 
 import net.nilsghesquiere.Main;
 import net.nilsghesquiere.runnables.AccountlistUpdaterRunnable;
+import net.nilsghesquiere.runnables.ClientActionCheckerRunnable;
 import net.nilsghesquiere.runnables.InfernalBotCheckerRunnable;
 import net.nilsghesquiere.runnables.ManagerMonitorRunnable;
 import net.nilsghesquiere.runnables.ThreadCheckerRunnable;
@@ -18,6 +19,7 @@ import org.slf4j.LoggerFactory;
 public class GracefulExitHook extends Thread {
 	private static final Logger LOGGER = LoggerFactory.getLogger(GracefulExitHook.class);
 	private boolean rebootWindows = false;
+	
 	@Override
 	public void run(){
 		LOGGER.info("Shutting down all threads");
@@ -40,7 +42,7 @@ public class GracefulExitHook extends Thread {
 			
 			if (entry.getValue() instanceof UpdateCheckerRunnable){
 				UpdateCheckerRunnable updateCheckerRunnable =(UpdateCheckerRunnable) entry.getValue();
-				LOGGER.debug("Gracefully shutting down Update Checker threadd");
+				LOGGER.debug("Gracefully shutting down Update Checker thread");
 				updateCheckerRunnable.stop();
 				entry.getKey().interrupt();
 				try {
@@ -51,6 +53,21 @@ public class GracefulExitHook extends Thread {
 					LOGGER.debug(e.getMessage());
 				}
 			}
+			
+			if (entry.getValue() instanceof ClientActionCheckerRunnable){
+				ClientActionCheckerRunnable clientActionCheckerRunnable =(ClientActionCheckerRunnable) entry.getValue();
+				LOGGER.debug("Gracefully shutting down Client Action Checker thread");
+				clientActionCheckerRunnable.stop();
+				entry.getKey().interrupt();
+				try {
+					entry.getKey().join();
+				} catch (InterruptedException e) {
+					fail = true;
+					LOGGER.error("Failure closing Client Action Checker thread");
+					LOGGER.debug(e.getMessage());
+				}
+			}
+			
 			
 			if (entry.getValue() instanceof InfernalBotCheckerRunnable){
 				InfernalBotCheckerRunnable infernalBotManagerRunnable =(InfernalBotCheckerRunnable) entry.getValue();

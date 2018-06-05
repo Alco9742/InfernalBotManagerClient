@@ -75,7 +75,8 @@ public class ProgramUtil {
 				}
 			}
 		} catch (IOException e){
-			LOGGER.debug(e.getMessage());
+			LOGGER.debug("Handled exception: " + e.getClass().getSimpleName());
+			LOGGER.debug("Failed to kill proccess '" + processName + "'");
 			return false;
 		}
 		return true;
@@ -94,7 +95,7 @@ public class ProgramUtil {
 				LOGGER.debug(line);
 			}
 		} catch (IOException e){
-			LOGGER.error("Failure killing process with PID " + pid);
+			LOGGER.debug("Failure killing process with PID " + pid);
 			LOGGER.debug("Exception executing command:",e);
 			return false;
 		}
