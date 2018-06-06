@@ -15,6 +15,7 @@ public class Client {
 	private ClientSettings clientSettings;
 	private LocalDateTime lastPing;
 	private ClientStatus clientStatus;
+	private Boolean error;
 	
 	public Client() {}
 	
@@ -28,5 +29,6 @@ public class Client {
 		this.clientSettings = clientSettings;
 		this.clientStatus = ClientStatus.UNASSIGNED;
 		this.lastPing = null;
+		this.error = false;
 	}
 }

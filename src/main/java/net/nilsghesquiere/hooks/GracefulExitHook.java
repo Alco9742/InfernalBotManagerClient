@@ -6,12 +6,12 @@ import java.util.concurrent.TimeUnit;
 import net.nilsghesquiere.Main;
 import net.nilsghesquiere.runnables.AccountlistUpdaterRunnable;
 import net.nilsghesquiere.runnables.ClientActionCheckerRunnable;
+import net.nilsghesquiere.runnables.ClientDataRunnable;
 import net.nilsghesquiere.runnables.InfernalBotCheckerRunnable;
-import net.nilsghesquiere.runnables.ManagerMonitorRunnable;
 import net.nilsghesquiere.runnables.ThreadCheckerRunnable;
 import net.nilsghesquiere.runnables.UpdateCheckerRunnable;
 import net.nilsghesquiere.util.ProgramUtil;
-import net.nilsghesquiere.util.enums.ClientStatus;
+import net.nilsghesquiere.util.enums.ClientDataStatus;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,8 +35,7 @@ public class GracefulExitHook extends Thread {
 					entry.getKey().join();
 				} catch (InterruptedException e) {
 					fail = true;
-					LOGGER.error("Failure closing Accountlist Updater thread");
-					LOGGER.debug(e.getMessage());
+					LOGGER.debug("Failure closing Accountlist Updater thread",e);
 				}
 			}
 			
@@ -49,8 +48,7 @@ public class GracefulExitHook extends Thread {
 					entry.getKey().join();
 				} catch (InterruptedException e) {
 					fail = true;
-					LOGGER.error("Failure closing Update Checker thread");
-					LOGGER.debug(e.getMessage());
+					LOGGER.debug("Failure closing Update Checker thread",e);
 				}
 			}
 			
@@ -63,23 +61,21 @@ public class GracefulExitHook extends Thread {
 					entry.getKey().join();
 				} catch (InterruptedException e) {
 					fail = true;
-					LOGGER.error("Failure closing Client Action Checker thread");
-					LOGGER.debug(e.getMessage());
+					LOGGER.debug("Failure closing Client Action Checker thread",e);
 				}
 			}
 			
-			
 			if (entry.getValue() instanceof InfernalBotCheckerRunnable){
 				InfernalBotCheckerRunnable infernalBotManagerRunnable =(InfernalBotCheckerRunnable) entry.getValue();
-				LOGGER.debug("Gracefully shutting down InfernalBotChecker");
+				LOGGER.debug("Gracefully shutting down InfernalBotChecker thread");
 				if(infernalBotManagerRunnable.isRebootFromManager()){
 					this.rebootWindows = true;
-					if(Main.managerMonitorRunnable.getClientStatus() != ClientStatus.UPDATE){
-						Main.managerMonitorRunnable.setClientStatus(ClientStatus.CLOSE_REBOOT);
+					if(Main.managerMonitorRunnable.getClientDataStatus() != ClientDataStatus.UPDATE){
+						Main.managerMonitorRunnable.setClientDataStatus(ClientDataStatus.CLOSE_REBOOT);
 					}
 				} else {
-					if(Main.managerMonitorRunnable.getClientStatus() != ClientStatus.UPDATE){
-						Main.managerMonitorRunnable.setClientStatus(ClientStatus.CLOSE);
+					if(Main.managerMonitorRunnable.getClientDataStatus() != ClientDataStatus.UPDATE){
+						Main.managerMonitorRunnable.setClientDataStatus(ClientDataStatus.CLOSE);
 					}
 				}
 				infernalBotManagerRunnable.stop();
@@ -88,7 +84,7 @@ public class GracefulExitHook extends Thread {
 					entry.getKey().join();
 				} catch (InterruptedException e) {
 					fail = true;
-					LOGGER.error("Failure closing InfernalBotChecker thread");
+					LOGGER.debug("Failure closing InfernalBotChecker thread",e);
 					LOGGER.debug(e.getMessage());
 				}
 			}
@@ -102,22 +98,20 @@ public class GracefulExitHook extends Thread {
 					entry.getKey().join();
 				} catch (InterruptedException e) {
 					fail = true;
-					LOGGER.error("Failure closing Thread Checker thread");
-					LOGGER.debug(e.getMessage());
+					LOGGER.debug("Failure closing Thread Checker thread",e);
 				}
 			}
 
-			if (entry.getValue() instanceof ManagerMonitorRunnable){
-				ManagerMonitorRunnable managerMonitorRunnable =(ManagerMonitorRunnable) entry.getValue();
-				LOGGER.debug("Gracefully shutting down Manager Client Monitor");
+			if (entry.getValue() instanceof ClientDataRunnable){
+				ClientDataRunnable managerMonitorRunnable =(ClientDataRunnable) entry.getValue();
+				LOGGER.debug("Gracefully shutting down Client Data Monitor");
 				managerMonitorRunnable.stop();
 				entry.getKey().interrupt();
 				try {
 					entry.getKey().join();
 				} catch (InterruptedException e) {
 					fail = true;
-					LOGGER.error("Failure closing Manager Client Monitor thread");
-					LOGGER.debug(e.getMessage());
+					LOGGER.debug("Failure closing Client Data Monitor thread",e);
 				}
 			}
 		}
@@ -130,8 +124,7 @@ public class GracefulExitHook extends Thread {
 				Main.exitWaitThread.join();
 			} catch (InterruptedException e) {
 				fail = true;
-				LOGGER.error("Failure closing Exit Wait thread");
-				LOGGER.debug(e.getMessage());
+				LOGGER.debug("Failure closing Exit Wait thread",e);
 			}
 		}
 		if(!fail){

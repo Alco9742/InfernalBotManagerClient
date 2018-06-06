@@ -20,14 +20,14 @@ public class AccountlistUpdaterRunnable implements Runnable {
 	@Override
 	public void run() {
 		if (!stop) {
-			LOGGER.info("Starting Accountlist Updater in 5 minutes");
+			LOGGER.debug("Starting Accountlist Updater in 5 minutes");
 			try {
 				TimeUnit.MINUTES.sleep(5);
 			} catch (InterruptedException e2) {
 				LOGGER.debug(e2.getMessage());
 				Thread.currentThread().interrupt();
 			}
-			LOGGER.info("Starting Accountlist Updater");
+			LOGGER.debug("Starting Accountlist Updater");
 		}
 		while (!stop){
 			client.updateAccountsOnServer();
@@ -38,7 +38,7 @@ public class AccountlistUpdaterRunnable implements Runnable {
 				Thread.currentThread().interrupt();
 			}
 		}
-		LOGGER.info("Successfully closed Accountlist Updater");
+		LOGGER.debug("Successfully closed Accountlist Updater");
 	}
 
 	

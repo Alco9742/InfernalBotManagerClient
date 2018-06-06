@@ -21,7 +21,7 @@ import net.nilsghesquiere.monitoring.SystemMonitor;
 import net.nilsghesquiere.runnables.ClientActionCheckerRunnable;
 import net.nilsghesquiere.runnables.ExitWaitRunnable;
 import net.nilsghesquiere.runnables.InfernalBotCheckerRunnable;
-import net.nilsghesquiere.runnables.ManagerMonitorRunnable;
+import net.nilsghesquiere.runnables.ClientDataRunnable;
 import net.nilsghesquiere.runnables.ThreadCheckerRunnable;
 import net.nilsghesquiere.runnables.UpdateCheckerRunnable;
 import net.nilsghesquiere.services.ClientService;
@@ -31,7 +31,7 @@ import net.nilsghesquiere.util.InternetAvailabilityChecker;
 import net.nilsghesquiere.util.ProgramConstants;
 import net.nilsghesquiere.util.ProgramUtil;
 import net.nilsghesquiere.util.ProgramVariables;
-import net.nilsghesquiere.util.enums.ClientStatus;
+import net.nilsghesquiere.util.enums.ClientDataStatus;
 
 import org.ini4j.InvalidFileFormatException;
 import org.ini4j.Reg;
@@ -52,7 +52,8 @@ public class Main{
 	public static Map<Thread, Runnable> threadMap = new HashMap<>();
 	public static ExitWaitRunnable exitWaitRunnable;
 	public static Thread exitWaitThread;
-	public static ManagerMonitorRunnable managerMonitorRunnable;
+	public static ClientDataRunnable managerMonitorRunnable;
+	public static ClientActionCheckerRunnable clientActionCheckerRunnable;
 
 	public static void main(String[] args) throws InterruptedException{
 		//Hook to ensure safe exits
@@ -148,7 +149,7 @@ public class Main{
 					LOGGER.error("Bad configuration on the server, contact Alco");
 				} else {
 					if(outdated){
-						managerMonitorRunnable.setClientStatus(ClientStatus.UPDATE);
+						managerMonitorRunnable.setClientDataStatus(ClientDataStatus.UPDATE);
 						infernalBotManagerClient.updateClient();
 						LOGGER.info("Closing InfernalBotManager Client");
 						exitWaitRunnable.exit();
@@ -198,7 +199,7 @@ public class Main{
 			//empty queuers (don't do this if softStart)
 			infernalBotManagerClient.deleteAllQueuers();
 			//send client status
-			managerMonitorRunnable.setClientStatus(ClientStatus.CONNECTED);
+			managerMonitorRunnable.setClientDataStatus(ClientDataStatus.INIT);
 			//start infernalbot checker in a thread
 			startInfernalCheckerThread();
 			
@@ -356,7 +357,7 @@ public class Main{
 	}
 
 	private static void startMonitorThread(InfernalBotManagerClient client){
-		managerMonitorRunnable = new ManagerMonitorRunnable(systemMonitor,client);
+		managerMonitorRunnable = new ClientDataRunnable(systemMonitor,client);
 		Thread managerMonitorThread = new Thread(managerMonitorRunnable);
 		threadMap.put(managerMonitorThread, managerMonitorRunnable);
 		managerMonitorThread.setDaemon(false); 
@@ -383,7 +384,7 @@ public class Main{
 	}
 	
 	private static void startClientActionCheckerThread(InfernalBotManagerClient client){
-		ClientActionCheckerRunnable clientActionCheckerRunnable = new ClientActionCheckerRunnable(client);
+		clientActionCheckerRunnable = new ClientActionCheckerRunnable(client);
 		Thread clientActionCheckerThread = new Thread(clientActionCheckerRunnable);
 		threadMap.put(clientActionCheckerThread, clientActionCheckerRunnable);
 		clientActionCheckerThread.setDaemon(false); 

@@ -5,7 +5,7 @@ import java.util.concurrent.TimeUnit;
 import net.nilsghesquiere.InfernalBotManagerClient;
 import net.nilsghesquiere.Main;
 import net.nilsghesquiere.util.ProgramVariables;
-import net.nilsghesquiere.util.enums.ClientStatus;
+import net.nilsghesquiere.util.enums.ClientDataStatus;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,14 +38,14 @@ public class UpdateCheckerRunnable implements Runnable {
 				if(client.checkUpdateNow()){
 					if(!client.checkClientVersion(false)){
 						LOGGER.info("Update found, commencing updater");
-						Main.managerMonitorRunnable.setClientStatus(ClientStatus.UPDATE);
+						Main.managerMonitorRunnable.setClientDataStatus(ClientDataStatus.UPDATE);
 						ProgramVariables.softStop = true;
 						client.updateClient();
 						Main.exitWaitRunnable.exit();
 					}
 				}
 			} catch (NullPointerException e){
-				LOGGER.warn("Failure connecting to the server");
+				LOGGER.debug("Failure connecting to the server");
 			}
 			try {
 				TimeUnit.MINUTES.sleep(2);
@@ -54,7 +54,7 @@ public class UpdateCheckerRunnable implements Runnable {
 				Thread.currentThread().interrupt();
 			}
 		}
-		LOGGER.info("Successfully closed Update Checker");
+		LOGGER.debug("Successfully closed Update Checker");
 	}
 
 	

@@ -12,7 +12,7 @@ import net.nilsghesquiere.Main;
 import net.nilsghesquiere.util.ProgramConstants;
 import net.nilsghesquiere.util.ProgramUtil;
 import net.nilsghesquiere.util.ProgramVariables;
-import net.nilsghesquiere.util.enums.ClientStatus;
+import net.nilsghesquiere.util.enums.ClientDataStatus;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,7 +94,7 @@ public class InfernalBotCheckerRunnable implements Runnable {
 							*/
 						} else {
 							//Everything is running as it should
-							Main.managerMonitorRunnable.setClientStatus(ClientStatus.INFERNAL_RUNNING);
+							Main.managerMonitorRunnable.setClientDataStatus(ClientDataStatus.INFERNAL_RUNNING);
 						}
 					}
 				}
@@ -129,7 +129,7 @@ public class InfernalBotCheckerRunnable implements Runnable {
 	private void firstRunInfernalbot(){
 		//extra check for the stop here (just to be sure)
 		if (!stop){
-			Main.managerMonitorRunnable.setClientStatus(ClientStatus.INFERNAL_STARTUP);
+			Main.managerMonitorRunnable.setClientDataStatus(ClientDataStatus.INFERNAL_STARTUP);
 			if(!ProgramVariables.softStart){
 				LOGGER.info("Closing all InfernalBot processes");
 				ProgramUtil.killAllInfernalProcesses(infernalBotManagerClient.getClient().getClientSettings().getInfernalPath());
@@ -150,7 +150,7 @@ public class InfernalBotCheckerRunnable implements Runnable {
 	private void runInfernalbot(){
 		//extra check for the stop here (just to be sure)
 		if (!stop){
-			Main.managerMonitorRunnable.setClientStatus(ClientStatus.INFERNAL_STARTUP);
+			Main.managerMonitorRunnable.setClientDataStatus(ClientDataStatus.INFERNAL_STARTUP);
 			startInfernalBot();
 			LOGGER.info("Starting InfernalBot Crash Checker in 2 minutes");
 			try {

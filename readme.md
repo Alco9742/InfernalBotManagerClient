@@ -10,10 +10,7 @@
 <h3>TODO NOW</h3>
 <ul>
 <li>Simple commands</li>
-<li>'Ping' server -> Show connection info somewhere</li>
 <li>On server do check for last ping on every client using cronlike stuff (every 5 minutes?)</li>
-<li>Check for updates before building client?</li>
-<li>ActionOnNoQueurs</li>
 <li>Clean entities and DTO's on server</li>
 </ul>
 

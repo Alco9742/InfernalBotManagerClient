@@ -1,6 +1,7 @@
 package net.nilsghesquiere.managerclients;
 
 import net.nilsghesquiere.entities.Client;
+import net.nilsghesquiere.util.enums.ClientStatus;
 import net.nilsghesquiere.util.wrappers.ClientSingleWrapper;
 
 import org.slf4j.Logger;
@@ -65,9 +66,11 @@ public class ClientManagerRESTClient implements ClientManagerClient{
 		}
 	}
 	
-	public Boolean ping(Long userId, Long clientId){
+	public Boolean ping(Long userId, Long clientId, ClientStatus status){
 		try{
-			Boolean jsonResponse = restTemplate.getForObject(URI_CLIENTS + "/user/" + userId + "/client/" + clientId + "/ping/", Boolean.class);
+			HttpEntity<ClientStatus> request = new HttpEntity<>(status);
+			HttpEntity<Boolean> response = restTemplate.exchange(URI_CLIENTS + "/user/" + userId + "/client/" + clientId + "/ping/", HttpMethod.PUT,request, Boolean.class);
+			Boolean jsonResponse = response.getBody();
 			return jsonResponse;
 		} catch (ResourceAccessException e){
 			LOGGER.debug("Handled exception: " + e.getClass().getSimpleName());

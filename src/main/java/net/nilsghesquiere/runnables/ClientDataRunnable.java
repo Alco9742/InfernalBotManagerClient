@@ -3,36 +3,36 @@ package net.nilsghesquiere.runnables;
 import java.util.concurrent.TimeUnit;
 
 import net.nilsghesquiere.InfernalBotManagerClient;
-import net.nilsghesquiere.util.enums.ClientStatus;
+import net.nilsghesquiere.util.enums.ClientDataStatus;
 import net.nilsghesquiere.monitoring.SystemMonitor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ManagerMonitorRunnable implements Runnable {
-	private static final Logger LOGGER = LoggerFactory.getLogger(ManagerMonitorRunnable.class);
+public class ClientDataRunnable implements Runnable {
+	private static final Logger LOGGER = LoggerFactory.getLogger(ClientDataRunnable.class);
 	private InfernalBotManagerClient client;
 	public final SystemMonitor monitor;
 	private boolean finalized = false;
 	private volatile boolean stop = false;
-	private ClientStatus status;
+	private ClientDataStatus status;
 	
-	public ManagerMonitorRunnable(SystemMonitor monitor, InfernalBotManagerClient client) {
+	public ClientDataRunnable(SystemMonitor monitor, InfernalBotManagerClient client) {
 		super();
 		this.monitor = monitor;
 		this.client = client;
-		this.status = ClientStatus.INIT;
+		this.status = ClientDataStatus.INIT;
 	}
 	
 	@Override
 	public void run() {
 		if (!stop) {
-			LOGGER.info("Starting Manager Client Monitor");
+			LOGGER.debug("Starting Client Data Monitor");
 		}
 		while (!stop){
 			sendClientData();
 			try {
-				TimeUnit.SECONDS.sleep(120);
+				TimeUnit.MINUTES.sleep(5);
 			} catch (InterruptedException e2) {
 				LOGGER.debug(e2.getMessage());
 				Thread.currentThread().interrupt();
@@ -41,16 +41,13 @@ public class ManagerMonitorRunnable implements Runnable {
 		if (!finalized){
 			finishTasks();
 		}
-		LOGGER.info("Successfully closed Manager Client Monitor thread");
+		LOGGER.debug("Successfully closed Client Data Monitor thread");
 	}
 
 	private void sendClientData(){
 		switch (status){
 			case INIT:
 				client.sendData("Manager Client Initializing", monitor.getRamUsage(), monitor.getCpuUsage());
-				break;
-			case CONNECTED:
-				client.sendData("Manager Client Connected", monitor.getRamUsage(), monitor.getCpuUsage());
 				break;
 			case UPDATE:
 				client.sendData("Manager Client Updating", monitor.getRamUsage(), monitor.getCpuUsage());
@@ -83,11 +80,11 @@ public class ManagerMonitorRunnable implements Runnable {
 		return stop;
 	}
 	
-	public void setClientStatus(ClientStatus status){
+	public void setClientDataStatus(ClientDataStatus status){
 		this.status = status;
 	}
 	
-	public ClientStatus getClientStatus(){
+	public ClientDataStatus getClientDataStatus(){
 		return this.status;
 	}
 	private void finishTasks(){

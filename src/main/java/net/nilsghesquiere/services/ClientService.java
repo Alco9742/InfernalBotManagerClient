@@ -3,6 +3,7 @@ package net.nilsghesquiere.services;
 import net.nilsghesquiere.entities.Client;
 import net.nilsghesquiere.managerclients.ClientManagerClient;
 import net.nilsghesquiere.managerclients.ClientManagerRESTClient;
+import net.nilsghesquiere.util.enums.ClientStatus;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +26,7 @@ public class ClientService {
 		return managerClient.registerHWID(userid, clientid, hwid);
 	}
 	
-	public Boolean ping(Long userid, Long clientid){
-		return managerClient.ping(userid, clientid);
+	public Boolean ping(Long userid, Long clientid, ClientStatus status){
+		return managerClient.ping(userid, clientid, status);
 	}
 }
