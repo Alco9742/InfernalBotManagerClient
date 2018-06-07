@@ -40,7 +40,7 @@ public class UserManagerRESTClient implements UserManagerClient{
 			UserSingleWrapper jsonResponse = restTemplate.getForObject(URI_USERS + "/username/" + username , UserSingleWrapper.class);
 			User user = jsonResponse.getMap().get("data");
 			if (user != null){
-				LOGGER.info("Received settings for user '" + username + "'.");
+				LOGGER.info("Received settings for user '" + username + "'");
 			}
 			return user;
 		} catch (ResourceAccessException e){

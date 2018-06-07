@@ -5,6 +5,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import net.nilsghesquiere.util.error.RESTAuthenticationException;
+import net.nilsghesquiere.util.error.ServerInternalErrorException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -21,13 +24,18 @@ public class RestErrorHandler implements ResponseErrorHandler {
     	LOGGER.debug("Entered handleError");
     	  if (clienthttpresponse.getStatusCode() == HttpStatus.FORBIDDEN) {
           	LOGGER.debug(HttpStatus.FORBIDDEN + " response. Throwing authentication exception");
-           //   throw new AuthenticationException();
+            throw new RESTAuthenticationException(HttpStatus.FORBIDDEN + " response");
           }
     	  
     	  if (clienthttpresponse.getStatusCode() == HttpStatus.BAD_REQUEST) {
           	LOGGER.debug(HttpStatus.BAD_REQUEST + " response. Throwing authentication exception");
-           //   throw new AuthenticationException();
+          	throw new RESTAuthenticationException(HttpStatus.BAD_REQUEST + " response");
           }
+    	  
+    	  if (clienthttpresponse.getStatusCode() == HttpStatus.INTERNAL_SERVER_ERROR) {
+            	LOGGER.debug(HttpStatus.INTERNAL_SERVER_ERROR + " response. Throwing server internal error exception");
+            	throw new ServerInternalErrorException("Internal server error occured, please send your logs to Alco");
+            }
     }
 
     @Override

@@ -32,6 +32,7 @@ import net.nilsghesquiere.util.ProgramConstants;
 import net.nilsghesquiere.util.ProgramUtil;
 import net.nilsghesquiere.util.ProgramVariables;
 import net.nilsghesquiere.util.enums.ClientDataStatus;
+import net.nilsghesquiere.util.error.ServerInternalErrorException;
 
 import org.ini4j.InvalidFileFormatException;
 import org.ini4j.Reg;
@@ -137,13 +138,21 @@ public class Main{
 							} else {
 								try{
 									program();
+								} catch(ServerInternalErrorException e){
+									LOGGER.error(e.getMessage());
+									LOGGER.debug("Unhandled internal server exception:", e);
 								} catch (Exception e){
 									LOGGER.debug("Unhandled exception:", e);
 								}
 							}
 						}
+					} else {
+						LOGGER.error("Client '" + iniSettings.get().getClientTag() + "' not found on the server");
 					}
-				} 
+				} else {
+					//Should never happen since the user is already authenticated by the resttemplate here
+					LOGGER.error("User not found on the server");
+				}
 			} else {
 				if(badconfig){
 					LOGGER.error("Bad configuration on the server, contact Alco");
@@ -156,9 +165,8 @@ public class Main{
 					}
 				}
 			}
-		} else {
-			LOGGER.info("Client failed to launch, fix your set-up and relaunch.");
 		}
+	LOGGER.info("Client failed to launch, fix your set-up and relaunch");
 	}
 	
 
