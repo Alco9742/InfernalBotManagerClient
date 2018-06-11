@@ -3,6 +3,8 @@ package net.nilsghesquiere.entities;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import com.fasterxml.jackson.annotation.JsonSetter;
+
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
@@ -14,7 +16,6 @@ public class ClientSettings {
 	private Long id;
 	private String name;
 	private Region clientRegion;
-	@Setter(AccessLevel.NONE)
 	private Path infernalPath;
 	private Integer queuerAmount;
 	private Integer accountBufferAmount;
@@ -26,7 +27,7 @@ public class ClientSettings {
 	public ClientSettings() {
 	}
 	
-	@SuppressWarnings("unused")
+	@JsonSetter("infernalPath")
 	private void setInfernalPath(String infernalpath){
 		this.infernalPath = Paths.get(infernalpath);
 	}

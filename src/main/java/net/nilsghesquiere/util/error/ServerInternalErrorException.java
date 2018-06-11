@@ -1,8 +1,6 @@
 package net.nilsghesquiere.util.error;
 
-import org.springframework.security.core.AuthenticationException;
-
-public class ServerInternalErrorException extends AuthenticationException{
+public class ServerInternalErrorException extends RuntimeException{
 	private static final long serialVersionUID = 1L;
 
 	public ServerInternalErrorException(String msg) {

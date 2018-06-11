@@ -22,6 +22,7 @@ public class RestErrorHandler implements ResponseErrorHandler {
     @Override
     public void handleError(ClientHttpResponse clienthttpresponse) throws IOException {
     	LOGGER.debug("Entered handleError");
+    	
     	  if (clienthttpresponse.getStatusCode() == HttpStatus.FORBIDDEN) {
           	LOGGER.debug(HttpStatus.FORBIDDEN + " response. Throwing authentication exception");
             throw new RESTAuthenticationException(HttpStatus.FORBIDDEN + " response");

@@ -8,10 +8,12 @@ import net.nilsghesquiere.entities.Client;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ClientSingleWrapper implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private Map<String, Client> map;
+	@JsonProperty("error")
 	private String error;
 
 	public ClientSingleWrapper() {

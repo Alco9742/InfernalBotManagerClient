@@ -93,6 +93,7 @@ public class Main{
 		boolean killswitch = false;
 		boolean badconfig = false;
 		boolean runprogram = true;
+		boolean launchError =false;
 		
 		//Build the IniSettings
 		iniSettings = buildIniSettings(ProgramVariables.iniLocation);
@@ -116,6 +117,7 @@ public class Main{
 		
 			if(badconfig || killswitch || outdated ){
 				runprogram = false;
+				launchError = true;
 			}
 			
 			if (runprogram){
@@ -145,13 +147,17 @@ public class Main{
 									LOGGER.debug("Unhandled exception:", e);
 								}
 							}
+						} else {
+							launchError = true;
 						}
 					} else {
 						LOGGER.error("Client '" + iniSettings.get().getClientTag() + "' not found on the server");
+						launchError = true;
 					}
 				} else {
 					//Should never happen since the user is already authenticated by the resttemplate here
 					LOGGER.error("User not found on the server");
+					launchError = true;
 				}
 			} else {
 				if(badconfig){
@@ -165,8 +171,18 @@ public class Main{
 					}
 				}
 			}
+		} else {
+			launchError = true;
 		}
-	LOGGER.info("Client failed to launch, fix your set-up and relaunch");
+		if(launchError){
+			if(killswitch){
+				LOGGER.info("Infernalbotmanager is currently disabled, try again later");
+			} else {
+				if(!outdated && !badconfig){
+					LOGGER.info("Client failed to launch, fix your set-up and relaunch");
+				}
+			}
+		}
 	}
 	
 
@@ -278,16 +294,18 @@ public class Main{
 					return Optional.empty();
 				}
 				if(e.getMessage().equals("Error requesting access token.")){
-					LOGGER.info("Failed to connect to the server");
-					// this can be either server offline or their internet offline
-					if(InternetAvailabilityChecker.isInternetAvailable()){
-						LOGGER.info("Server may be having issues, contact Alco");
-						gui.changeTitle("IBMC - Disconnected - Server Down");
-						gui.setIconDisconnected();
+					if(e.getHttpErrorCode() == 403){
+						LOGGER.info("IP blocked due to too many failed attempts, contact Alco");
 					} else {
-						LOGGER.info("No available connection found, check you internet settings");
-						gui.changeTitle("IBMC - Disconnected - Internet Down");
-						gui.setIconDisconnected();
+						if(InternetAvailabilityChecker.isInternetAvailable()){
+							LOGGER.info("Server may be having issues, contact Alco");
+							gui.changeTitle("IBMC - Disconnected - Server Down");
+							gui.setIconDisconnected();
+						} else {
+							LOGGER.info("No available connection found, check you internet settings");
+							gui.changeTitle("IBMC - Disconnected - Internet Down");
+							gui.setIconDisconnected();
+						}
 					}
 				}
 				LOGGER.debug("Handled exception: " + e.getClass().getSimpleName());
