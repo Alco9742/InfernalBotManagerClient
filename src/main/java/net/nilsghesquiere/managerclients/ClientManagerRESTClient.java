@@ -31,7 +31,6 @@ public class ClientManagerRESTClient implements ClientManagerClient{
 		try{
 			ClientSingleWrapper jsonResponse = restTemplate.getForObject(URI_CLIENTS + "/user/" + userId + "/client/tag/" + tag, ClientSingleWrapper.class);
 			Client client = jsonResponse.getMap().get("data");
-			LOGGER.info(client.toString());
 			if (client != null){
 				LOGGER.info("Received settings for client '" + client.getTag() + "'.");
 			}

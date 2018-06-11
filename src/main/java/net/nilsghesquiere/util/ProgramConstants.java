@@ -5,8 +5,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class ProgramConstants {
-	public static final String CLIENT_VERSION = "0.9.2.1";
-	public static final String SERVER_VERSION = "0.9.2";
+	public static final String CLIENT_VERSION = "0.9.8";
+	public static final String SERVER_VERSION = "0.9.8";
 	public static final String INI_NAME = "settings.ini";
 	public static final String INFERNAL_PROG_NAME = "Infernal-Start.exe" ;
 	public static final String LEGACY_LAUNCHER_NAME = "Infernal Launcher.exe";

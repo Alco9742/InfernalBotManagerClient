@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -164,8 +165,7 @@ public class Main{
 					LOGGER.error("Bad configuration on the server, contact Alco");
 				} else {
 					if(outdated){
-						managerMonitorRunnable.setClientDataStatus(ClientDataStatus.UPDATE);
-						infernalBotManagerClient.updateClient();
+						updateClient(iniSettings.get());
 						LOGGER.info("Closing InfernalBotManager Client");
 						exitWaitRunnable.exit();
 					}
@@ -360,6 +360,52 @@ public class Main{
 
 	}
 
+	//update client methods
+	public static void updateClient(IniSettings iniSettings) {
+		if(ProgramUtil.downloadFileFromUrl(iniSettings, ProgramConstants.UPDATER_NAME)){
+			//vars
+			String managerMap = System.getProperty("user.dir");
+			Path updaterDownloadPath = Paths.get(managerMap + "\\downloads\\" + ProgramConstants.UPDATER_NAME);
+			Path updaterPath = Paths.get(managerMap + "\\" + ProgramConstants.UPDATER_NAME);
+			
+			//move the updater
+			try {
+				Files.copy(updaterDownloadPath,updaterPath, StandardCopyOption.REPLACE_EXISTING);
+			} catch (IOException e) {
+				LOGGER.error("Failure moving the updater");
+				LOGGER.debug(e.getMessage());
+			}
+			try{
+				//build the args
+				String arg0 = managerMap;
+				String arg1 = "";
+				String arg2 = "";
+				if(iniSettings.getPort().equals("")){
+					arg1 = iniSettings.getWebServer() + "/downloads/"; 
+				} else {
+					arg1 = iniSettings.getWebServer() + ":" + iniSettings.getPort() + "/downloads/"; 
+				}
+				if(ProgramVariables.softStop){
+					//softStop = stopStart aswell, pass the parameter to the updater so it can pass it back to the program
+					arg2 = "soft";
+				} else {
+					arg2 = "hard";
+				}
+				String command = updaterPath.toString();
+				//Start the updater
+				LOGGER.info("Starting updater");
+				ProcessBuilder pb = new ProcessBuilder(command,arg0,arg1,arg2);
+				pb.directory(new File(managerMap));
+				@SuppressWarnings("unused")
+				Process p = pb.start();
+				} catch (IOException e) {
+					LOGGER.error("Failed to start the updater");
+					LOGGER.debug(e.getMessage());
+				}
+		} else{
+			LOGGER.error("Failed to download the updater");
+		}
+	}
 	
 	private static void addExitHook(){
 		gracefullExitHook = new GracefulExitHook();

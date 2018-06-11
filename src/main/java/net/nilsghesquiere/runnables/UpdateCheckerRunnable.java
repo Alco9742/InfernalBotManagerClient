@@ -4,6 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 import net.nilsghesquiere.InfernalBotManagerClient;
 import net.nilsghesquiere.Main;
+import net.nilsghesquiere.entities.IniSettings;
 import net.nilsghesquiere.util.ProgramVariables;
 import net.nilsghesquiere.util.enums.ClientDataStatus;
 
@@ -40,7 +41,8 @@ public class UpdateCheckerRunnable implements Runnable {
 						LOGGER.info("Update found, commencing updater");
 						Main.managerMonitorRunnable.setClientDataStatus(ClientDataStatus.UPDATE);
 						ProgramVariables.softStop = true;
-						client.updateClient();
+						//TODO pretty dirty code
+						Main.updateClient(client.getIniSettings());
 						Main.exitWaitRunnable.exit();
 					}
 				}
