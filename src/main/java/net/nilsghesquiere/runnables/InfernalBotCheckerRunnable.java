@@ -7,15 +7,15 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import net.nilsghesquiere.InfernalBotManagerClient;
 import net.nilsghesquiere.Main;
 import net.nilsghesquiere.util.ProgramConstants;
 import net.nilsghesquiere.util.ProgramUtil;
 import net.nilsghesquiere.util.ProgramVariables;
 import net.nilsghesquiere.util.enums.ClientDataStatus;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class InfernalBotCheckerRunnable implements Runnable {
 	private static final Logger LOGGER = LoggerFactory.getLogger(InfernalBotCheckerRunnable.class);
@@ -184,9 +184,11 @@ public class InfernalBotCheckerRunnable implements Runnable {
 	}
 	
 	private void finishTasks(){
-		infernalBotManagerClient.setAccountsAsReadyForUse();
-		LOGGER.info("Closing all InfernalBot processes");
-		ProgramUtil.killAllInfernalProcesses(infernalBotManagerClient.getClient().getClientSettings().getInfernalPath());
+		if(!ProgramVariables.softStop){
+			infernalBotManagerClient.setAccountsAsReadyForUse();
+			LOGGER.info("Closing all InfernalBot processes");
+			ProgramUtil.killAllInfernalProcesses(infernalBotManagerClient.getClient().getClientSettings().getInfernalPath());
+		}
 		this.finalized = true;
 	}
 	
