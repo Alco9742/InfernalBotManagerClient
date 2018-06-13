@@ -73,10 +73,12 @@ public class InfernalBotCheckerRunnable implements Runnable {
 								LOGGER.info("No active queuers found, rebooting windows");
 								rebootFromManager = true;
 								Main.exitWaitRunnable.exit();
+								break;
 							}
 							case RESTART_INFERNALBOT:{
 								LOGGER.info("No active queuers found, closing InfernalBot process");
 								ProgramUtil.killAllInfernalProcesses(infernalBotManagerClient.getClient().getClientSettings().getInfernalPath());
+								break;
 							}
 							case DO_NOTHING:
 								break;
