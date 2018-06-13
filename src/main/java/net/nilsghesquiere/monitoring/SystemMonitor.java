@@ -45,7 +45,7 @@ public class SystemMonitor {
 		NetworkIF[] networkIFs = systemInfo.getHardware().getNetworkIFs();
 		for(NetworkIF nIF : networkIFs){
 			String macAddr = nIF.getMacaddr().toLowerCase();
-			if(macAddr != "00:00:00:00:00:00:00:e0"){
+			if(!macAddr.equals("00:00:00:00:00:00:00:e0")){
 				return macAddr;
 			}
 		}
