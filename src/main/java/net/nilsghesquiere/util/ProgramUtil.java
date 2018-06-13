@@ -180,6 +180,22 @@ public class ProgramUtil {
 		return newProcessName;
 	}
 
+	public static void emptyInfernalConfigsFile(Path infernalPath){
+		Path infernalIni = infernalPath.resolve("configs").resolve("settings.ini");
+		String newProcessName = "";
+		try {
+			Wini ini = new Wini(infernalIni.toFile());
+			ini.put("Programs", "Launcher", "");
+			ini.put("Programs", "Queuer", "");
+			ini.store();
+		} catch (InvalidFileFormatException e2) {
+			LOGGER.debug("Failure reading the infernal settings.ini");
+			LOGGER.debug(e2.getMessage());
+		} catch (IOException e2) {
+			LOGGER.debug("Failure reading the infernal settings.ini");
+			LOGGER.debug(e2.getMessage());
+		}
+	}
 	
 	public static List<String> getPidsByList(List<String> names){
 		List<String> pids = new ArrayList<>();

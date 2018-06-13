@@ -167,6 +167,7 @@ public class InfernalBotCheckerRunnable implements Runnable {
 			if(!accountListUpdaterThreadMap.isEmpty()){
 				stopAccountListUpdaterThread();
 			}
+			ProgramUtil.emptyInfernalConfigsFile(infernalBotManagerClient.getClient().getClientSettings().getInfernalPath());
 			Path infernalProgramPath = infernalBotManagerClient.getClient().getClientSettings().getInfernalPath().resolve(infernalBotManagerClient.getIniSettings().getInfernalProgramName());
 			@SuppressWarnings("unused")
 			Process process = new ProcessBuilder(infernalProgramPath.toString()).start();

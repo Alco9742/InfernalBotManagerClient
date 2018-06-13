@@ -4,14 +4,17 @@
 <h3>TODO Eventualy:</h3>	
 <ul>
 <li>Check server for riot server status --> add to network checks</li>
-<li>API system from infernal</li>
+<li>Check lol version -> update</li>
+<li>Maybe check what version of lol infernal is updated for?</li>
 </ul>
 
 <h3>TODO NOW</h3>
 <ul>
+<li>API system from infernal</li>
+<li>Implement riot API, orriana?</li>
 <li>Simple commands</li>
-<li>On server do check for last ping on every client using cronlike stuff (every 5 minutes?)</li>
-<li>Clean entities and DTO's on server</li>
+<li>Empty queuer etc from settings</li>
+<li>HWID fix</li>
 </ul>
 
 <h3>Client server connection for settings<h3>

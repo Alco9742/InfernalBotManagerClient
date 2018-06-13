@@ -3,12 +3,18 @@ package net.nilsghesquiere.monitoring;
 import java.text.DecimalFormat;
 
 import net.nilsghesquiere.util.ProgramConstants;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import oshi.SystemInfo;
 import oshi.hardware.CentralProcessor;
 import oshi.hardware.GlobalMemory;
+import oshi.hardware.NetworkIF;
 
 public class SystemMonitor {
 	SystemInfo systemInfo;
+	private static final Logger LOGGER = LoggerFactory.getLogger(SystemMonitor.class);
 	public SystemMonitor(){
 		systemInfo = new SystemInfo();
 	}
@@ -35,6 +41,14 @@ public class SystemMonitor {
 	}
 	
 	public String getHWID(){
-		return systemInfo.getHardware().getNetworkIFs()[0].getMacaddr().toLowerCase();
+		//reworked to bypass problems with macAddr 00:00:00:00:00:00:00:e0
+		NetworkIF[] networkIFs = systemInfo.getHardware().getNetworkIFs();
+		for(NetworkIF nIF : networkIFs){
+			String macAddr = nIF.getMacaddr();
+			if(macAddr != "00:00:00:00:00:00:00:e0"){
+				return macAddr;
+			}
+		}
+		return "invalidMAC";
 	}
 }

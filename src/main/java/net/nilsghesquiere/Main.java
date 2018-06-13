@@ -188,6 +188,8 @@ public class Main{
 
 	private static void test(){
 		LOGGER.info("testmode");
+		SystemMonitor monitor = new SystemMonitor();
+		LOGGER.info(monitor.getHWID());
 	}
 	
 	private static void program(){
@@ -310,6 +312,7 @@ public class Main{
 				}
 				LOGGER.debug("Handled exception: " + e.getClass().getSimpleName());
 			} catch (Exception e){
+				LOGGER.info("An unhandled exception occured during token request, contact Alco");
 				LOGGER.debug("Unhandled exception:", e);
 			}
 			try {
@@ -344,6 +347,12 @@ public class Main{
 	private static Boolean checkClientHWID(IniSettings iniSettings,OAuth2RestTemplate restTemplate, Client client) {
 		String clientHWID = client.getHWID();
 		String computerHWID = systemMonitor.getHWID();
+		
+		//check if client has HWID registered as 00:00:00:00:00:00:00:e0 if so, reset it
+		if(clientHWID.trim().equals("00:00:00:00:00:00:00:e0")){
+			LOGGER.info("Client HWID was registered as '00:00:00:00:00:00:00:e0', resetting.");
+			clientHWID = "";
+		}
 		
 		if (clientHWID.trim().equals(computerHWID.trim())){
 			return true;
