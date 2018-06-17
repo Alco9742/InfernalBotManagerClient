@@ -100,7 +100,7 @@ public class Main{
 		iniSettings = buildIniSettings(ProgramVariables.iniLocation);
 		if(iniSettings.isPresent()){
 			//Build the RestTemplate
-			restTemplate = buildRestTemplate(gui,iniSettings.get());
+			restTemplate = buildManagerRestTemplate(gui,iniSettings.get());
 		}
 		
 		//If the template is present the user is already authenticated
@@ -188,8 +188,10 @@ public class Main{
 
 	private static void test(){
 		LOGGER.info("testmode");
-		SystemMonitor monitor = new SystemMonitor();
-		LOGGER.info(monitor.getHWID());
+		//Build ulr
+		String resquestString = "http://localhost:100/API/auth/v1/token?UserEmail=ghesquiere.nils@gmail.com&Password=Cutie247";
+		String bearerToken = infernalBotManagerClient.getInfernalRestTemplate().getForObject(resquestString, String.class);
+		LOGGER.info(bearerToken);
 	}
 	
 	private static void program(){
@@ -261,7 +263,7 @@ public class Main{
 		}
 	}
 
-	private static Optional<OAuth2RestTemplate> buildRestTemplate(InfernalBotManagerGUI gui, IniSettings iniSettings){
+	private static Optional<OAuth2RestTemplate> buildManagerRestTemplate(InfernalBotManagerGUI gui, IniSettings iniSettings){
 		String uriServer = "";
 		
 		if(iniSettings.getPort().equals("")){

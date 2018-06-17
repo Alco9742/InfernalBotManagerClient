@@ -1,11 +1,17 @@
 package net.nilsghesquiere;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
+import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.client.RestTemplate;
 
 import lombok.Data;
 import net.nilsghesquiere.entities.Client;
@@ -18,14 +24,8 @@ import net.nilsghesquiere.services.GlobalVariableService;
 import net.nilsghesquiere.services.InfernalSettingsService;
 import net.nilsghesquiere.services.LolAccountService;
 import net.nilsghesquiere.services.UserService;
-import net.nilsghesquiere.util.ProgramConstants;
 import net.nilsghesquiere.util.ProgramUtil;
 import net.nilsghesquiere.util.ProgramVariables;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.security.oauth2.client.OAuth2RestTemplate;
-import org.springframework.web.client.ResourceAccessException;
 
 @Data
 public class InfernalBotManagerClient {
@@ -39,7 +39,9 @@ public class InfernalBotManagerClient {
 	
 	private Client client;
 	
-	private OAuth2RestTemplate restTemplate;
+	private OAuth2RestTemplate managerRestTemplate;
+	private RestTemplate infernalRestTemplate;
+	private HttpHeaders infernalRestHeaders;
 	
 	private InfernalBotManagerGUI gui;
 	
@@ -50,17 +52,19 @@ public class InfernalBotManagerClient {
 	private ClientDataService clientDataService;
 	private ClientService clientService;
 
-	public InfernalBotManagerClient(InfernalBotManagerGUI gui, IniSettings iniSettings, Client client, OAuth2RestTemplate restTemplate){
+	public InfernalBotManagerClient(InfernalBotManagerGUI gui, IniSettings iniSettings, Client client, OAuth2RestTemplate managerRestTemplate){
 		this.gui = gui;
 		this.iniSettings = iniSettings;
 		this.client = client;
-		this.restTemplate = restTemplate;
-		this.userService = new UserService(restTemplate);
-		this.globalVariableService = new GlobalVariableService(restTemplate);
-		this.accountService = new LolAccountService(client, restTemplate);
+		this.managerRestTemplate = managerRestTemplate;
+		this.infernalRestTemplate = new RestTemplate();
+		infernalRestTemplate.getMessageConverters().add(new StringHttpMessageConverter());
+		this.userService = new UserService(managerRestTemplate);
+		this.globalVariableService = new GlobalVariableService(managerRestTemplate);
+		this.accountService = new LolAccountService(client, managerRestTemplate);
 		this.infernalSettingsService = new InfernalSettingsService(client);
-		this.clientDataService = new ClientDataService(client, restTemplate);
-		this.clientService = new ClientService(restTemplate);
+		this.clientDataService = new ClientDataService(client, managerRestTemplate);
+		this.clientService = new ClientService(managerRestTemplate);
 	}
 	
 	//Schedule Reboot

@@ -9,6 +9,8 @@ import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 
 import net.nilsghesquiere.InfernalBotManagerClient;
 import net.nilsghesquiere.Main;
@@ -181,6 +183,13 @@ public class InfernalBotCheckerRunnable implements Runnable {
 			return false;
 		}
 		return true;
+	}
+	
+	private void setInfernalRESTAuth(){
+		//Build ulr
+		String resquestString = "http://localhost:100/API/auth/v1/token?UserEmail=" + infernalBotManagerClient.getIniSettings().getUsername() + "&Password=" + infernalBotManagerClient.getIniSettings().getPassword();
+		//TODO
+		String bearerToken = infernalBotManagerClient.getInfernalRestTemplate().getForObject(resquestString, String.class);
 	}
 	
 	private void finishTasks(){

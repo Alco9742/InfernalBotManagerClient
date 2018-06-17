@@ -13,9 +13,21 @@
 <li>API system from infernal</li>
 <li>Implement riot API, orriana?</li>
 <li>Simple commands</li>
-<li>Empty queuer etc from settings</li>
-<li>HWID fix</li>
 </ul>
+
+<h3>REST SYSTEM</h3>
+<ul>
+<li>Autostart API server & Disable bot autostart</li>
+<li>update accountlist (dont empty anymore) -> check every account(done or banned = set on server and remove from infernal, , don't check prio for now)</li>
+<li>get amount of accounts we have and we need and fetch the ones we're short</li>
+<li>Check how many accounts are 1 level lower than max and fetch that amount of accounts to be sure</li>
+<li>Start bot through rest</li>
+<li>with accountlist updater do the checks again every minute or so</li>
+<li>Keep an automatic buffer in case there are bans, figure out what amount but keep them on lowest priority so they only get used on very rare occasions</li>
+</ul>
+
+
+
 
 <h3>Client server connection for settings<h3>
 <ol>

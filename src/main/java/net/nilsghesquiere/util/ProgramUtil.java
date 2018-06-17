@@ -15,14 +15,11 @@ import java.nio.file.Path;
 import java.nio.file.PathMatcher;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import net.nilsghesquiere.entities.IniSettings;
 
 import org.ini4j.InvalidFileFormatException;
 import org.ini4j.Wini;
@@ -30,6 +27,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+
+import net.nilsghesquiere.entities.IniSettings;
 
 
 public class ProgramUtil {
@@ -332,22 +331,6 @@ public class ProgramUtil {
 		}
 		return Files.exists(backupDir);
 	}
-
-
-	public static HttpHeaders buildHttpHeaders(String username, String password){
-		HttpHeaders headers = new HttpHeaders();
-		//accept
-		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-		//contenttype
-		headers.setContentType(MediaType.APPLICATION_JSON);
-		//authentication
-		String plainCreds  = username + ":" + password;
-		byte[] plainCredsBytes = plainCreds.getBytes();
-		byte[] base64CredsBytes = Base64.getEncoder().encode(plainCredsBytes);
-		String authHeader = "Basic " + new String(base64CredsBytes);
-		headers.add("Authorization", authHeader);
-		return headers;
-	}
 	
 	public static HttpHeaders buildHttpHeaders(){
 		HttpHeaders headers = new HttpHeaders();
@@ -355,6 +338,12 @@ public class ProgramUtil {
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 		//contenttype
 		headers.setContentType(MediaType.APPLICATION_JSON);
+		return headers;
+	}	
+	
+	public static HttpHeaders buildInfernalRestHeaders(String bearerToken){
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("Authorization", bearerToken);
 		return headers;
 	}	
 }
