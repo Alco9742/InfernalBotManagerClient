@@ -1,6 +1,7 @@
 package net.nilsghesquiere.managerclients;
 
 import net.nilsghesquiere.entities.Client;
+import net.nilsghesquiere.util.enums.ClientAction;
 import net.nilsghesquiere.util.enums.ClientStatus;
 import net.nilsghesquiere.util.wrappers.ClientSingleWrapper;
 
@@ -66,19 +67,19 @@ public class ClientManagerRESTClient implements ClientManagerClient{
 		}
 	}
 	
-	public Boolean ping(Long userId, Long clientId, ClientStatus status){
+	public ClientAction ping(Long userId, Long clientId, ClientStatus status){
 		try{
 			HttpEntity<ClientStatus> request = new HttpEntity<>(status);
-			HttpEntity<Boolean> response = restTemplate.exchange(URI_CLIENTS + "/user/" + userId + "/client/" + clientId + "/ping/", HttpMethod.PUT,request, Boolean.class);
-			Boolean jsonResponse = response.getBody();
+			HttpEntity<ClientAction> response = restTemplate.exchange(URI_CLIENTS + "/user/" + userId + "/client/" + clientId + "/ping/", HttpMethod.PUT,request, ClientAction.class);
+			ClientAction jsonResponse = response.getBody();
 			return jsonResponse;
 		} catch (ResourceAccessException e){
 			LOGGER.debug("Handled exception: " + e.getClass().getSimpleName());
 			LOGGER.debug("Client isn't connected to the internet or server is down");
-			return false;
+			return ClientAction.DISCONNECTED;
 		} catch (Exception e){
 			LOGGER.debug("Unhandled exception:", e);
-			return false;
+			return ClientAction.DISCONNECTED;
 		}
 	}
 	

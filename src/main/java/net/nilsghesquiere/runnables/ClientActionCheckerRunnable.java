@@ -4,6 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 import net.nilsghesquiere.InfernalBotManagerClient;
 import net.nilsghesquiere.util.InternetAvailabilityChecker;
+import net.nilsghesquiere.util.enums.ClientAction;
 import net.nilsghesquiere.util.enums.ClientStatus;
 
 import org.slf4j.Logger;
@@ -18,6 +19,7 @@ public class ClientActionCheckerRunnable implements Runnable {
 	private boolean connectedToServer = true;
 	private boolean connectedToInternet = true;
 	private ClientStatus status;
+	private ClientAction action;
 	
 	public ClientActionCheckerRunnable(InfernalBotManagerClient ibmClient) {
 		super();
@@ -31,7 +33,16 @@ public class ClientActionCheckerRunnable implements Runnable {
 			LOGGER.debug("Starting Client Action Checker");
 		}
 		while (!stop){
-			connectedToServer = ping();
+			//get action by pinging
+			action = ping();
+			
+			//old ping used boolean, now we use disconnected for this
+			if(!action.equals(ClientAction.DISCONNECTED)){
+				connectedToServer = true;
+			} else {
+				connectedToServer = false;
+			}
+			
 			if (connectedToServer){
 				ibmClient.getGui().changeTitle("IBMC - Connected");
 				ibmClient.getGui().setIconConnected();
@@ -45,6 +56,9 @@ public class ClientActionCheckerRunnable implements Runnable {
 					ibmClient.getGui().setIconDisconnected();
 				}
 			}
+			
+			performAction(action);
+			
 			try {
 				TimeUnit.SECONDS.sleep(30);
 			} catch (InterruptedException e2) {
@@ -58,7 +72,6 @@ public class ClientActionCheckerRunnable implements Runnable {
 		LOGGER.debug("Successfully closed Client Action Checker");
 	}
 
-	
 	public void stop(){
 		stop = true;
 	}
@@ -80,7 +93,37 @@ public class ClientActionCheckerRunnable implements Runnable {
 		this.finalized = true;
 	}
 	
-	private Boolean ping(){
+	private ClientAction ping(){
 		return ibmClient.getClientService().ping(ibmClient.getClient().getUser().getId(), ibmClient.getClient().getId(), status);
+	}
+	
+	
+	//figure out how exactly were going to do this
+	private void performAction(ClientAction action) {
+		switch(action){
+			case DISCONNECTED:
+				//DO nothing
+				break;
+			case RUN:
+				//Do nothing
+				break;
+			case SAFESTOP:
+				//Command safestop, set action on no queuer to nothing, return run?
+				break;
+			case SAFESTOP_REBOOT:
+				//Command safestop, set action on no queuer to reboot, return run?
+				break;
+			case SAFESTOP_RESTART_INFERNAL:
+				//Command safestop, set action on no queuer to restart infernal, return run?
+				break;
+			case STOP:
+				//Close program
+				break;
+			case STOP_REBOOT:
+				//Close program with reboot
+				break;
+			default:
+				break;
+		}
 	}
 }
