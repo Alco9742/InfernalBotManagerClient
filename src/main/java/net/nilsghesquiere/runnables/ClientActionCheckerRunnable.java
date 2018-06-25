@@ -3,7 +3,9 @@ package net.nilsghesquiere.runnables;
 import java.util.concurrent.TimeUnit;
 
 import net.nilsghesquiere.InfernalBotManagerClient;
+import net.nilsghesquiere.Main;
 import net.nilsghesquiere.util.InternetAvailabilityChecker;
+import net.nilsghesquiere.util.enums.ActionOnNoQueuers;
 import net.nilsghesquiere.util.enums.ClientAction;
 import net.nilsghesquiere.util.enums.ClientStatus;
 
@@ -109,18 +111,27 @@ public class ClientActionCheckerRunnable implements Runnable {
 				break;
 			case SAFESTOP:
 				//Command safestop, set action on no queuer to nothing, return run?
+				ibmClient.getClient().getClientSettings().setActionOnNoQueuers(ActionOnNoQueuers.DO_NOTHING);
 				break;
 			case SAFESTOP_REBOOT:
 				//Command safestop, set action on no queuer to reboot, return run?
+				ibmClient.getClient().getClientSettings().setActionOnNoQueuers(ActionOnNoQueuers.REBOOT_WINDOWS);
 				break;
 			case SAFESTOP_RESTART_INFERNAL:
 				//Command safestop, set action on no queuer to restart infernal, return run?
+				ibmClient.getClient().getClientSettings().setActionOnNoQueuers(ActionOnNoQueuers.RESTART_INFERNALBOT);
 				break;
 			case STOP:
-				//Close program
+				ibmClient.getClient().getClientSettings().setActionOnNoQueuers(ActionOnNoQueuers.DO_NOTHING);
+				Main.exitWaitRunnable.exit();
 				break;
 			case STOP_REBOOT:
-				//Close program with reboot
+				ibmClient.getClient().getClientSettings().setActionOnNoQueuers(ActionOnNoQueuers.REBOOT_WINDOWS);
+				Main.exitWaitRunnable.exit();
+				break;
+			case STOP_RESTART_INFERNAL:
+				ibmClient.getClient().getClientSettings().setActionOnNoQueuers(ActionOnNoQueuers.RESTART_INFERNALBOT);
+				Main.exitWaitRunnable.exit();
 				break;
 			default:
 				break;
