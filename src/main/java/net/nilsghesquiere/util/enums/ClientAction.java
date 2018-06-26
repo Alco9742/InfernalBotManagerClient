@@ -1,6 +1,7 @@
 package net.nilsghesquiere.util.enums;
 
 public enum ClientAction {
+	NONE,
 	RUN,
 	SAFESTOP, 
 	SAFESTOP_RESTART_INFERNAL,
