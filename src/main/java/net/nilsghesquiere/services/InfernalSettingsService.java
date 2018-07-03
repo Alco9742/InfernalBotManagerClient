@@ -89,6 +89,8 @@ public class InfernalSettingsService {
 		infernalSettingsFromJDBC.setExportRegion(infernalSettingsFromREST.getExportRegion());
 		infernalSettingsFromJDBC.setExportLevel(infernalSettingsFromREST.getExportLevel());
 		infernalSettingsFromJDBC.setExportBE(infernalSettingsFromREST.getExportBE());
+		//new 03/07/2018
+		infernalSettingsFromJDBC.setCpuBoostInPercent(infernalSettingsFromREST.getCpuBoostInPercent());
 	//	Set Region from the settings in the ini
 		infernalSettingsFromJDBC.setRegion(client.getClientSettings().getClientRegion());
 		return infernalSettingsFromJDBC;

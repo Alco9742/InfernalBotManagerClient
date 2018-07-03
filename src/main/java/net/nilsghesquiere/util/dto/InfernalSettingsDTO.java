@@ -76,6 +76,7 @@ public class InfernalSettingsDTO {
 	private Boolean exportRegion;
 	private Boolean exportLevel;
 	private Boolean exportBE;
+	private Integer cpuBoostInPercent;
 	
 	public InfernalSettingsDTO() {
 		super();
@@ -151,6 +152,7 @@ public class InfernalSettingsDTO {
 		infernalSettings.setExportRegion(resultSet.getBoolean("ExportRegion"));
 		infernalSettings.setExportLevel(resultSet.getBoolean("ExportLevel"));
 		infernalSettings.setExportBE(resultSet.getBoolean("ExportBE"));
+		infernalSettings.setCpuBoostInPercent(resultSet.getInt("CPUBoostInPercent"));
 		return infernalSettings;
 	}
 }

@@ -188,6 +188,7 @@ public class Main{
 
 	private static void test(){
 		LOGGER.info("testmode");
+		infernalBotManagerClient.getInfernalSettingsService().testPragmas();
 		//Build ulr
 		//String resquestString = "http://localhost:100/API/auth/v1/token?UserEmail=ghesquiere.nils@gmail.com&Password=Cutie247";
 		//String bearerToken = infernalBotManagerClient.getInfernalRestTemplate().getForObject(resquestString, String.class);

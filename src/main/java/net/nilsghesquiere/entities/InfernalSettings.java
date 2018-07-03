@@ -53,6 +53,8 @@ public class InfernalSettings implements Serializable{
 	private Boolean exportRegion;
 	private Boolean exportLevel;
 	private Boolean exportBE;
+	//03072018
+	private Integer cpuBoostInPercent;
 	
 	
 	public InfernalSettings(){} 
