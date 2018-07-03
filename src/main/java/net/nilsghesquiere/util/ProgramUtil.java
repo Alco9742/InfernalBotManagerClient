@@ -21,14 +21,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.nilsghesquiere.entities.IniSettings;
+
 import org.ini4j.InvalidFileFormatException;
 import org.ini4j.Wini;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-
-import net.nilsghesquiere.entities.IniSettings;
 
 
 public class ProgramUtil {
@@ -179,6 +179,26 @@ public class ProgramUtil {
 		return newProcessName;
 	}
 
+	public static String buildBearerTokenRequestUrl(Path infernalPath){
+		Path infernalIni = infernalPath.resolve("configs").resolve("settings.ini");
+		String email = "";
+		String password ="";
+		try {
+			Wini ini = new Wini(infernalIni.toFile());
+			email = ini.get("Account", "Email", String.class);
+			password = ini.get("Account", "Password", String.class);
+		} catch (InvalidFileFormatException e2) {
+			LOGGER.debug("Failure reading the infernal settings.ini");
+			LOGGER.debug(e2.getMessage());
+		} catch (IOException e2) {
+			LOGGER.debug("Failure reading the infernal settings.ini");
+			LOGGER.debug(e2.getMessage());
+		}
+	
+		String bearerUrl = ProgramConstants.INFERNAL_REST_BASE + "/auth/v1/token?UserEmail=" + email + "&Password=" + password;
+		return bearerUrl;
+	}
+	
 	public static void emptyInfernalConfigsFile(Path infernalPath){
 		Path infernalIni = infernalPath.resolve("configs").resolve("settings.ini");
 		String newProcessName = "";

@@ -190,9 +190,13 @@ public class Main{
 		LOGGER.info("testmode");
 		infernalBotManagerClient.getInfernalSettingsService().testPragmas();
 		//Build ulr
-		//String resquestString = "http://localhost:100/API/auth/v1/token?UserEmail=ghesquiere.nils@gmail.com&Password=Cutie247";
-		//String bearerToken = infernalBotManagerClient.getInfernalRestTemplate().getForObject(resquestString, String.class);
-		//LOGGER.info(bearerToken);
+		//String requestString = "http://localhost:100/API/auth/v1/token?UserEmail=ghesquiere.nils@gmail.com&Password=Cutie247";
+		//String bearerToken = infernalBotManagerClient.getInfernalRestTemplate().getForObject(requestString, String.class);
+		
+		String requestString = "http://infernalbotmanager.mockable.io/API/auth/v1/token";
+		String bearerToken = infernalBotManagerClient.getInfernalRestTemplate().getForObject(requestString, String.class);
+		
+		LOGGER.info(bearerToken);
 	}
 	
 	private static void program(){

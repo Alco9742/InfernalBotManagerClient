@@ -93,6 +93,9 @@ public class InfernalSettingsService {
 		infernalSettingsFromJDBC.setCpuBoostInPercent(infernalSettingsFromREST.getCpuBoostInPercent());
 	//	Set Region from the settings in the ini
 		infernalSettingsFromJDBC.setRegion(client.getClientSettings().getClientRegion());
+	//  Enable the REST API on port 100
+		infernalSettingsFromJDBC.setServerCon(true);
+		infernalSettingsFromJDBC.setServerPort(100);
 		return infernalSettingsFromJDBC;
 	}
 	

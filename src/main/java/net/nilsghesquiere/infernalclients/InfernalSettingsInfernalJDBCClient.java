@@ -252,8 +252,6 @@ public class InfernalSettingsInfernalJDBCClient implements InfernalSettingsInfer
 			statement.setString(67, ProgramUtil.getCapitalizedString(infernalSettings.getExportLevel()));
 			statement.setString(68, ProgramUtil.getCapitalizedString(infernalSettings.getExportBE()));
 			//new 03/07/2018
-			LOGGER.info("test1");
-			LOGGER.info(infernalSettings.getCpuBoostInPercent() + "");
 			statement.setInt(69, infernalSettings.getCpuBoostInPercent());
 			statement.executeUpdate();
 			LOGGER.info("Updated the settings in InfernalBot.");

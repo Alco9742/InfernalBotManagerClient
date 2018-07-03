@@ -18,6 +18,7 @@ import net.nilsghesquiere.entities.Client;
 import net.nilsghesquiere.entities.IniSettings;
 import net.nilsghesquiere.entities.Queuer;
 import net.nilsghesquiere.gui.swing.InfernalBotManagerGUI;
+import net.nilsghesquiere.services.ActionsService;
 import net.nilsghesquiere.services.ClientDataService;
 import net.nilsghesquiere.services.ClientService;
 import net.nilsghesquiere.services.GlobalVariableService;
@@ -51,20 +52,25 @@ public class InfernalBotManagerClient {
 	private InfernalSettingsService infernalSettingsService;
 	private ClientDataService clientDataService;
 	private ClientService clientService;
+	private ActionsService actionsService;
 
 	public InfernalBotManagerClient(InfernalBotManagerGUI gui, IniSettings iniSettings, Client client, OAuth2RestTemplate managerRestTemplate){
 		this.gui = gui;
 		this.iniSettings = iniSettings;
 		this.client = client;
 		this.managerRestTemplate = managerRestTemplate;
-		this.infernalRestTemplate = new RestTemplate();
-		infernalRestTemplate.getMessageConverters().add(new StringHttpMessageConverter());
+
 		this.userService = new UserService(managerRestTemplate);
 		this.globalVariableService = new GlobalVariableService(managerRestTemplate);
 		this.accountService = new LolAccountService(client, managerRestTemplate);
 		this.infernalSettingsService = new InfernalSettingsService(client);
 		this.clientDataService = new ClientDataService(client, managerRestTemplate);
 		this.clientService = new ClientService(managerRestTemplate);
+		
+		this.infernalRestTemplate = new RestTemplate();
+		infernalRestTemplate.getMessageConverters().add(new StringHttpMessageConverter());
+		this.infernalRestHeaders = new HttpHeaders();
+		this.actionsService = new ActionsService(infernalRestTemplate,infernalRestHeaders);
 	}
 	
 	//Schedule Reboot

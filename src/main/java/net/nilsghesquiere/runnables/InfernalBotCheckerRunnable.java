@@ -7,17 +7,15 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-
 import net.nilsghesquiere.InfernalBotManagerClient;
 import net.nilsghesquiere.Main;
 import net.nilsghesquiere.util.ProgramConstants;
 import net.nilsghesquiere.util.ProgramUtil;
 import net.nilsghesquiere.util.ProgramVariables;
 import net.nilsghesquiere.util.enums.ClientDataStatus;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class InfernalBotCheckerRunnable implements Runnable {
 	private static final Logger LOGGER = LoggerFactory.getLogger(InfernalBotCheckerRunnable.class);
@@ -148,6 +146,9 @@ public class InfernalBotCheckerRunnable implements Runnable {
 				LOGGER.debug(e2.getMessage());
 				Thread.currentThread().interrupt();
 			}
+			//TODO
+			//get Bearer token
+			//setInfernalRESTAuth();
 		}
 	}
 	
@@ -163,6 +164,9 @@ public class InfernalBotCheckerRunnable implements Runnable {
 				LOGGER.debug(e2.getMessage());
 				Thread.currentThread().interrupt();
 			}
+			//TODO
+			//get Bearer token
+			//setInfernalRESTAuth();
 		}
 	}
 	
@@ -186,10 +190,10 @@ public class InfernalBotCheckerRunnable implements Runnable {
 	}
 	
 	private void setInfernalRESTAuth(){
-		//Build ulr
-		String resquestString = "http://localhost:100/API/auth/v1/token?UserEmail=" + infernalBotManagerClient.getIniSettings().getUsername() + "&Password=" + infernalBotManagerClient.getIniSettings().getPassword();
-		//TODO
-		String bearerToken = infernalBotManagerClient.getInfernalRestTemplate().getForObject(resquestString, String.class);
+		String requestString = ProgramUtil.buildBearerTokenRequestUrl(infernalBotManagerClient.getClient().getClientSettings().getInfernalPath());
+		String bearerToken = infernalBotManagerClient.getInfernalRestTemplate().getForObject(requestString, String.class);
+		LOGGER.info(bearerToken);
+		infernalBotManagerClient.getInfernalRestHeaders().add("Authorization", bearerToken);
 	}
 	
 	private void finishTasks(){

@@ -3,9 +3,7 @@ package net.nilsghesquiere.runnables;
 import java.util.concurrent.TimeUnit;
 
 import net.nilsghesquiere.InfernalBotManagerClient;
-import net.nilsghesquiere.Main;
 import net.nilsghesquiere.util.InternetAvailabilityChecker;
-import net.nilsghesquiere.util.enums.ActionOnNoQueuers;
 import net.nilsghesquiere.util.enums.ClientAction;
 import net.nilsghesquiere.util.enums.ClientStatus;
 
@@ -100,8 +98,10 @@ public class ClientActionCheckerRunnable implements Runnable {
 	}
 	
 	
+	//TODO
 	//figure out how exactly were going to do this
 	private void performAction(ClientAction action) {
+		//LOGGER.info(action.toString());
 		switch(action){
 			case DISCONNECTED:
 				//DO nothing
@@ -110,28 +110,32 @@ public class ClientActionCheckerRunnable implements Runnable {
 				//Do nothing
 				break;
 			case SAFESTOP:
+				//TODO
 				//Command safestop, set action on no queuer to nothing, return run?
-				ibmClient.getClient().getClientSettings().setActionOnNoQueuers(ActionOnNoQueuers.DO_NOTHING);
+				//ibmClient.getClient().getClientSettings().setActionOnNoQueuers(ActionOnNoQueuers.DO_NOTHING);
+				//ibmClient.getActionsService().sendSafestopCommand();
 				break;
 			case SAFESTOP_REBOOT:
 				//Command safestop, set action on no queuer to reboot, return run?
-				ibmClient.getClient().getClientSettings().setActionOnNoQueuers(ActionOnNoQueuers.REBOOT_WINDOWS);
+				//ibmClient.getClient().getClientSettings().setActionOnNoQueuers(ActionOnNoQueuers.REBOOT_WINDOWS);
+				//ibmClient.getActionsService().sendSafestopCommand();
 				break;
 			case SAFESTOP_RESTART_INFERNAL:
 				//Command safestop, set action on no queuer to restart infernal, return run?
-				ibmClient.getClient().getClientSettings().setActionOnNoQueuers(ActionOnNoQueuers.RESTART_INFERNALBOT);
+				//ibmClient.getClient().getClientSettings().setActionOnNoQueuers(ActionOnNoQueuers.RESTART_INFERNALBOT);
+				//ibmClient.getActionsService().sendSafestopCommand();
 				break;
 			case STOP:
-				ibmClient.getClient().getClientSettings().setActionOnNoQueuers(ActionOnNoQueuers.DO_NOTHING);
-				Main.exitWaitRunnable.exit();
+				//ibmClient.getClient().getClientSettings().setActionOnNoQueuers(ActionOnNoQueuers.DO_NOTHING);
+				//Main.exitWaitRunnable.exit();
 				break;
 			case STOP_REBOOT:
-				ibmClient.getClient().getClientSettings().setActionOnNoQueuers(ActionOnNoQueuers.REBOOT_WINDOWS);
-				Main.exitWaitRunnable.exit();
+				//ibmClient.getClient().getClientSettings().setActionOnNoQueuers(ActionOnNoQueuers.REBOOT_WINDOWS);
+				//Main.exitWaitRunnable.exit();
 				break;
 			case STOP_RESTART_INFERNAL:
-				ibmClient.getClient().getClientSettings().setActionOnNoQueuers(ActionOnNoQueuers.RESTART_INFERNALBOT);
-				Main.exitWaitRunnable.exit();
+				//ibmClient.getClient().getClientSettings().setActionOnNoQueuers(ActionOnNoQueuers.RESTART_INFERNALBOT);
+				//Main.exitWaitRunnable.exit();
 				break;
 			default:
 				break;
