@@ -11,6 +11,7 @@ public class ExitWaitRunnable implements Runnable {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ExitWaitRunnable.class);
 	private volatile boolean exit = false;
 	private volatile boolean launchHook = true;
+	private volatile boolean forceReboot = false;
 	
 	public ExitWaitRunnable() {
 		super();
@@ -41,6 +42,14 @@ public class ExitWaitRunnable implements Runnable {
 	
 	public void dontLaunchHook(){
 		launchHook = false;
+	}
+
+	public void forceReboot() {
+		forceReboot = true;
+	}
+	
+	public boolean getForceReboot(){
+		return forceReboot;
 	}
 
 }

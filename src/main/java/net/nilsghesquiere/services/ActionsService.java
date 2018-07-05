@@ -16,8 +16,13 @@ public class ActionsService {
 		this.infernalClient = new ActionsInfernalRESTClient(infernalRestTemplate,infernalRestHeaders);
 	}
 	
-	public void sendSafestopCommand(){
-		String response = infernalClient.sendSafestopCommand();
-		LOGGER.info(response);
+	public boolean sendSafestopCommand(){
+		boolean safestop = infernalClient.sendSafestopCommand();
+		if (safestop){
+			LOGGER.info("Safestop scheduled in 1 game");
+		} else {
+			LOGGER.debug("Failure scheduling safestop");
+		}
+		return safestop;
 	}
 }

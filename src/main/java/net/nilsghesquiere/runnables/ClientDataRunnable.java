@@ -32,7 +32,7 @@ public class ClientDataRunnable implements Runnable {
 		while (!stop){
 			sendClientData();
 			try {
-				TimeUnit.MINUTES.sleep(2);
+				TimeUnit.MINUTES.sleep(1);
 			} catch (InterruptedException e2) {
 				LOGGER.debug(e2.getMessage());
 				Thread.currentThread().interrupt();

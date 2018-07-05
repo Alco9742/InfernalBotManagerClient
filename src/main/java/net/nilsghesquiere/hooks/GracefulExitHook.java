@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 
 public class GracefulExitHook extends Thread {
 	private static final Logger LOGGER = LoggerFactory.getLogger(GracefulExitHook.class);
-	private boolean rebootWindows = false;
+	public boolean rebootWindows = false;
 	
 	@Override
 	public void run(){
@@ -115,6 +115,12 @@ public class GracefulExitHook extends Thread {
 				}
 			}
 		}
+		
+		//check if we need to force a reboot
+		if (Main.exitWaitRunnable.getForceReboot()){
+			this.rebootWindows = true;
+		}
+		
 		//Stop the runnable without launching hook
 		if (Main.exitWaitThread.isAlive()){
 			Main.exitWaitRunnable.dontLaunchHook();

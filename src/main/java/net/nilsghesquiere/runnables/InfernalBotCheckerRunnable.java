@@ -146,9 +146,8 @@ public class InfernalBotCheckerRunnable implements Runnable {
 				LOGGER.debug(e2.getMessage());
 				Thread.currentThread().interrupt();
 			}
-			//TODO
 			//get Bearer token
-			//setInfernalRESTAuth();
+			setInfernalRESTAuth();
 		}
 	}
 	
@@ -164,9 +163,8 @@ public class InfernalBotCheckerRunnable implements Runnable {
 				LOGGER.debug(e2.getMessage());
 				Thread.currentThread().interrupt();
 			}
-			//TODO
 			//get Bearer token
-			//setInfernalRESTAuth();
+			setInfernalRESTAuth();
 		}
 	}
 	

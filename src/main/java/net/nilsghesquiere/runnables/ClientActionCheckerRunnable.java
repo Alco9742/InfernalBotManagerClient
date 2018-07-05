@@ -109,20 +109,23 @@ public class ClientActionCheckerRunnable implements Runnable {
 				//TODO
 				//Command safestop, set action on no queuer to nothing, return safestopping
 				ibmClient.getClient().getClientSettings().setActionOnNoQueuers(ActionOnNoQueuers.DO_NOTHING);
-				ibmClient.getActionsService().sendSafestopCommand();
-				ibmClient.getClientService().action(ibmClient.getClient().getUser().getId(), ibmClient.getClient().getId(), ClientAction.SAFESTOPPING);
+				if(ibmClient.getActionsService().sendSafestopCommand()){
+					ibmClient.getClientService().action(ibmClient.getClient().getUser().getId(), ibmClient.getClient().getId(), ClientAction.SAFESTOPPING);
+				}
 				break;
 			case SAFESTOP_REBOOT:
 				//Command safestop, set action on no queuer to reboot, return run?
 				ibmClient.getClient().getClientSettings().setActionOnNoQueuers(ActionOnNoQueuers.REBOOT_WINDOWS);
-				ibmClient.getActionsService().sendSafestopCommand();
-				ibmClient.getClientService().action(ibmClient.getClient().getUser().getId(), ibmClient.getClient().getId(), ClientAction.SAFESTOPPING);
+				if(ibmClient.getActionsService().sendSafestopCommand()){
+					ibmClient.getClientService().action(ibmClient.getClient().getUser().getId(), ibmClient.getClient().getId(), ClientAction.SAFESTOPPING);
+				}
 				break;
 			case SAFESTOP_RESTART_INFERNAL:
 				//Command safestop, set action on no queuer to restart infernal, return run?
 				ibmClient.getClient().getClientSettings().setActionOnNoQueuers(ActionOnNoQueuers.RESTART_INFERNALBOT);
-				ibmClient.getActionsService().sendSafestopCommand();
-				ibmClient.getClientService().action(ibmClient.getClient().getUser().getId(), ibmClient.getClient().getId(), ClientAction.SAFESTOPPING);
+				if(ibmClient.getActionsService().sendSafestopCommand()){
+					ibmClient.getClientService().action(ibmClient.getClient().getUser().getId(), ibmClient.getClient().getId(), ClientAction.SAFESTOPPING);
+				}
 				break;
 			case STOP:
 				ibmClient.getClient().getClientSettings().setActionOnNoQueuers(ActionOnNoQueuers.DO_NOTHING);
@@ -130,9 +133,9 @@ public class ClientActionCheckerRunnable implements Runnable {
 				Main.exitWaitRunnable.exit();
 				break;
 			case STOP_REBOOT:
-				//TODO dit moet wss anders
 				ibmClient.getClient().getClientSettings().setActionOnNoQueuers(ActionOnNoQueuers.REBOOT_WINDOWS);
 				ibmClient.getClientService().action(ibmClient.getClient().getUser().getId(), ibmClient.getClient().getId(), ClientAction.STOPPING);
+				Main.exitWaitRunnable.forceReboot();
 				Main.exitWaitRunnable.exit();
 				break;
 			default:
