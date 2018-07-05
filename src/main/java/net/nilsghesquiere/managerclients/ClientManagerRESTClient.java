@@ -83,4 +83,20 @@ public class ClientManagerRESTClient implements ClientManagerClient{
 		}
 	}
 	
+	public ClientAction action(Long userId, Long clientId, ClientAction action){
+		try{
+			HttpEntity<ClientAction> request = new HttpEntity<>(action);
+			HttpEntity<ClientAction> response = restTemplate.exchange(URI_CLIENTS + "/user/" + userId + "/client/" + clientId + "/action/", HttpMethod.PUT,request, ClientAction.class);
+			ClientAction jsonResponse = response.getBody();
+			return jsonResponse;
+		} catch (ResourceAccessException e){
+			LOGGER.debug("Handled exception: " + e.getClass().getSimpleName());
+			LOGGER.debug("Client isn't connected to the internet or server is down");
+			return ClientAction.DISCONNECTED;
+		} catch (Exception e){
+			LOGGER.debug("Unhandled exception:", e);
+			return ClientAction.DISCONNECTED;
+		}
+	}
+	
 }

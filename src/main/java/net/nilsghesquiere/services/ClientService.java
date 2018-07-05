@@ -30,4 +30,8 @@ public class ClientService {
 	public ClientAction ping(Long userid, Long clientid, ClientStatus status){
 		return managerClient.ping(userid, clientid, status);
 	}
+	
+	public ClientAction action(Long userid, Long clientid, ClientAction action){
+		return managerClient.action(userid, clientid, action);
+	}
 }
