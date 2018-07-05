@@ -22,12 +22,10 @@ public class ActionsInfernalRESTClient implements ActionsInfernalClient {
 	}
 	
 	public boolean sendSafestopCommand(){
-		LOGGER.info("Sending safestop command");
-		LOGGER.info("Headers: " + httpHeaders.toString());
 		if(checkAuthHeader()){
 			try{
 				HttpEntity<String> request = new HttpEntity<>(httpHeaders);
-				HttpEntity<String> response = restTemplate.exchange(ProgramConstants.INFERNAL_REST_BASE + "/action/v1/safestopAllQueuer", HttpMethod.POST,request, String.class);
+				HttpEntity<String> response = restTemplate.exchange(ProgramConstants.INFERNAL_REST_BASE + "/action/v1/safestopAllQueuer/1", HttpMethod.POST,request, String.class);
 				String responseString = response.getBody();
 				if(responseString.equals("Safestop complete")){
 					return true;

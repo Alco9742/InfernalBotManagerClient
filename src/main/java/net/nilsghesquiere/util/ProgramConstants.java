@@ -13,7 +13,7 @@ public class ProgramConstants {
 	public static final String WEBSERVER = "https://infernalbotmanager.com" ;
 	public static final String PORT = "";
 	public static final String UPDATER_NAME = "InfernalBotManagerUpdater.exe";
-	public static final String INFERNAL_REST_BASE = "http://infernalbotmanager.mockable.io/API";
+	public static final String INFERNAL_REST_BASE = "http://localhost:100/API";
 	public static final Boolean enableOshiCPUCheck = true;
 	public static final List<String> programsToClose = 
 		    Collections.unmodifiableList(Arrays.asList("League of legends.exe"));
