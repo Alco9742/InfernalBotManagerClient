@@ -190,7 +190,6 @@ public class InfernalBotCheckerRunnable implements Runnable {
 	private void setInfernalRESTAuth(){
 		String requestString = ProgramUtil.buildBearerTokenRequestUrl(infernalBotManagerClient.getClient().getClientSettings().getInfernalPath());
 		String bearerToken = infernalBotManagerClient.getInfernalRestTemplate().getForObject(requestString, String.class);
-		LOGGER.info(bearerToken);
 		infernalBotManagerClient.getInfernalRestHeaders().add("Authorization", bearerToken);
 	}
 	
